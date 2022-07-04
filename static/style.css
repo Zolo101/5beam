@@ -1,0 +1,15 @@
+/* Globals */
+body {
+    font-family: Arial, serif;
+    margin: 0;
+    background: darkgrey;
+    /*background: linear-gradient(gainsboro, ghostwhite 80%, gainsboro) no-repeat, gainsboro;*/
+}
+
+button {
+    padding: 5px;
+}
+
+.error {
+    color: red;
+}

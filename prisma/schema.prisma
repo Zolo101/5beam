@@ -1,0 +1,30 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Level {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  creator      User       @relation(fields: [creatorId], references: [id])
+  creatorId    Int
+  title        String
+  description  String
+  data         String
+  plays        Int        @default(0)
+  stars        Int        @default(0)
+  difficulty   Int        @default(0)
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  discordId    Int        @unique
+  createdAt    DateTime   @default(now())
+  name         String
+  levels       Level[]
+  //starred      Level[]
+}
