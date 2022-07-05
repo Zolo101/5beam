@@ -72,10 +72,44 @@
     </APIEndpoint>
 
     <APIEndpoint
+            endpoint={["api", "level", "vote"]}
+            params={[
+                ["id", "Level ID", ParamType.INTEGER],
+                ["difficulty", "1 - 7 (easiest to hardest)", ParamType.INTEGER],
+            ]}
+            wip
+            token_required
+    >
+        <p>Lets a user give a difficulty for a level. This will be used to calculate the final difficulty of the level.</p>
+    </APIEndpoint>
+
+    <APIEndpoint
+            endpoint={["api", "level", "star"]}
+            params={[
+                ["id", "Level ID", ParamType.INTEGER],
+            ]}
+            wip
+            token_required
+    >
+        <p>Stars a level.</p>
+    </APIEndpoint>
+
+    <APIEndpoint
+            endpoint={["api", "level", "unstar"]}
+            params={[
+                ["id", "Level ID", ParamType.INTEGER],
+            ]}
+            wip
+            token_required
+    >
+        <p>Un-stars a level. This will eventually be merged with <APIReference type={"GET"} reference={["api", "level", "star"]}/></p>
+    </APIEndpoint>
+
+    <APIEndpoint
             endpoint={["api", "user"]}
             params={[
                 ["id", "User ID", ParamType.INTEGER],
-                ["discordId", "User's Discord ID", ParamType.INTEGER],
+                ["discordId", "User's Discord ID (WIP)", ParamType.INTEGER],
             ]}
     >
         <p>Returns a <APIReference type={"STRUCT"} reference={"User"}/>.</p>
@@ -97,7 +131,7 @@
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
             ["0", "By Age (new > old)"],
             ["1", "Top (by plays)"],
-            ["2", "Top (by likes?)"],
+            ["2", "Top (by stars)"],
             ["3", "Featured (new > old)"],
         ]}/>
     </APIEndpoint>
@@ -128,6 +162,7 @@
             type="POST"
             wip
             game_only
+            token_required
     >
         <p>Create a <APIReference type={"STRUCT"} reference={"Level"}/>. You will need to give 5beam the following:</p>
         <Table heads={["Property", "Meaning", "Type"]} content={[
@@ -144,6 +179,7 @@
             type="POST"
             wip
             game_only
+            token_required
     >
         <p>Create a <APIReference type={"STRUCT"} reference={"User"}/>. You will need to give 5beam the following:</p>
         <Table heads={["Property", "Meaning", "Type"]} content={[

@@ -24,6 +24,10 @@
         padding: 5px;
     }
 
+    .text {
+        padding: 0 5px;
+    }
+
     .colour-GET {
         color: lawngreen;
     }

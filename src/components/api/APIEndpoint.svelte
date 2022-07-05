@@ -2,34 +2,38 @@
     import Table from "../Table.svelte";
     import Filepath from "./Filepath.svelte";
 
-    export let endpoint: string[] = undefined
-    export let deprecated: boolean = false
-    export let wip: boolean = false
-    export let game_only: boolean = false
+    export let endpoint: string[]
+    export let deprecated = false
+    export let wip = false
+    export let game_only = false
+    export let token_required = false
     export let type: "GET" | "POST" | "STRUCT" = "GET"
-    export let params: [[string, string, string, string?]] = undefined
-    export let example: string = undefined
+    export let params: [[string, string, string, string?]]
+    export let example: string
 </script>
 
 <div class="endpoint"
      class:deprecated={deprecated | wip}
      class:game_only={game_only}
 >
-    <div class="endpoint-title">
-        <span class="endpoint-type-{type}">{type}</span>
-        <span class="endpoint-name"><Filepath directory={endpoint}/></span>
+    <div class="title">
+        <span class="type-{type}">{type}</span>
+        <span class="name"><Filepath directory={endpoint}/></span>
+        {#if token_required}
+            <span class="token-required">user token required</span>
+        {/if}
     </div>
-    <div class="endpoint-desc-container">
+    <div class="header">
         {#if deprecated}
-            <p class="endpoint-warning">Warning, this endpoint is deprecated! Do not use!</p>
+            <p class="warning">Warning, this endpoint is deprecated! Do not use!</p>
         {/if}
 
         {#if wip}
-            <p class="endpoint-warning">Warning, this endpoint is in progress! Do not use!</p>
+            <p class="warning">Warning, this endpoint is in progress! Do not use!</p>
         {/if}
 
         {#if game_only}
-            <p class="endpoint-warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>
+            <p class="warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>
         {/if}
 
         {#if params}
@@ -40,7 +44,7 @@
             <p class="endpoint-example">{example}</p>
         {/if}
 
-        <div class="endpoint-description">
+        <div class="description">
             <slot></slot>
         </div>
     </div>
@@ -51,11 +55,11 @@
         background: grey;
         width: min(60vw, 1000px);
         margin: 20px;
-        box-shadow: 0px 0px 5px 2px black;
+        box-shadow: 0 0 5px 2px black;
         border-radius: 2px;
     }
 
-    .endpoint-title {
+    .title {
         display: inline;
         background-color: black;
         color: whitesmoke;
@@ -64,23 +68,23 @@
         padding: 10px;
     }
 
-    .endpoint-type-GET {
+    .type-GET {
         color: lawngreen;
     }
 
-    .endpoint-type-POST {
+    .type-POST {
         color: hotpink;
     }
 
-    .endpoint-type-STRUCT {
+    .type-STRUCT {
         color: deepskyblue;
     }
 
-    .endpoint-desc-container {
+    .header {
         padding: 20px;
     }
 
-    .endpoint-warning {
+    .warning {
         display: inline-block;
         background-color: black;
         color: whitesmoke;
@@ -88,6 +92,14 @@
         font-weight: bold;
         padding: 10px;
         margin: 0 0 30px 0;
+    }
+
+    .token-required {
+        font-size: 0.5em;
+        float: right;
+        color: orangered;
+        background-color: black;
+        padding: 5px;
     }
 
     .endpoint.deprecated {
@@ -98,15 +110,15 @@
         background: #847877
     }
 
-    .endpoint.deprecated .endpoint-name, .endpoint-warning {
+    .endpoint.deprecated .name, .warning {
         color: orange;
     }
 
-    .endpoint.game_only .endpoint-name, .endpoint-game_only {
+    .endpoint.game_only .name, .endpoint-game_only {
         color: palevioletred;
     }
 
-    .endpoint-description {
+    .description {
         color: whitesmoke;
     }
 </style>
