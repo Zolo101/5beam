@@ -4,10 +4,9 @@
     import { page } from "$app/stores";
 
     const ID = $page.params.id
-    const levelRequest = getLevelClient(ID)
 </script>
 
-{#await levelRequest}
+{#await getLevelClient(ID)}
     <p>Loading...</p>
 {:then level}
     <Levelpack {level}/>

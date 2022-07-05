@@ -17,9 +17,11 @@ export async function createLevel(request: Request) {
     })
 }
 
-// TODO: Currently this gets every single level.ts
-export async function getLevels() {
-    return await prisma.level.findMany()
+export async function getLevels(amount: number, offset: number) {
+    return await prisma.level.findMany({
+        skip: offset,
+        take: amount,
+    })
 }
 
 export async function getLevel(id: number) {

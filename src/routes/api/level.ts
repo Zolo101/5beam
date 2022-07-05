@@ -13,6 +13,8 @@ export const get: RequestHandler = async ({request}) => {
         }
     }
 
+    // e()
+
     return {
         status: 200,
         body: await getLevel(id)
@@ -21,26 +23,26 @@ export const get: RequestHandler = async ({request}) => {
 
 
 // ugly debug function
+/*
+let why = false
 async function e() {
-    const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
+    if (why) return
+    why = true
+    // console.log(levels)
+    const parsedLevels = levels.split("\n\n").map(lvl => "loadedLevels=\n" + lvl)
+    console.log(parsedLevels)
+    let i = 1;
 
-    for (let i = 0; i < 10; i++) {
+    for (const parsedLevel of parsedLevels) {
         await prisma.level.create({
             data: {
                 creatorId: 1,
-                title: randomString(10),
-                description: randomString(100),
-                data: randomString(100),
+                title: `Level ${`${i}`.padStart(3, "0")}`,
+                description: "Created by carykh, uploaded by me (zelo)",
+                data: parsedLevel,
             }
         })
+        i += 1;
     }
-
-    function randomString(length: number) {
-        let str = ""
-        for (let i = 0; i < length; i++) {
-            str += alphabet.at(Math.floor(Math.random() * alphabet.length))
-        }
-
-        return str
-    }
-}
+    why = false
+}*/

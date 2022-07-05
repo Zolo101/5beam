@@ -1,4 +1,4 @@
-export async function getLevelsClient(page: string) {
+export async function getLevelPageClient(page: number) {
     const call = await fetch(`http://localhost:3000/api/page?page=${page}`, {
         headers: { // Record<string, string>
             "Content-Type": "application/json"
