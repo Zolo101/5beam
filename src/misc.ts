@@ -1,3 +1,5 @@
+import { dev } from "$app/env";
+
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
     [1, "Easy"],
@@ -16,3 +18,6 @@ export function URLParamSet(url: URL, prop: string, param: number | string | und
         url.searchParams.set(prop, param.toString())
     }
 }
+
+export const apiURL = dev ? "https://localhost:3000" : "https://5beam.zelo.dev"
+export const redirectURL = `${apiURL}/api/auth/callback/discord`
