@@ -8,3 +8,11 @@ export const difficultyMap = new Map<number, string>([
     [6, "Insane"],
     [7, "Impossible"],
 ]);
+
+
+// Only sets if the param isn't undefined
+export function URLParamSet(url: URL, prop: string, param: number | string | undefined) {
+    if (param !== undefined) {
+        url.searchParams.set(prop, param.toString())
+    }
+}

@@ -3,7 +3,7 @@
     import { getLevelPageClient } from "../components/ClientSideAPI";
 
     $: page = 0
-    $: levelsRequest = getLevelPageClient(page);
+    $: levelsRequest = getLevelPageClient(page, 16);
 
     const changePage = (by: number) => {
         // dont go below zero
