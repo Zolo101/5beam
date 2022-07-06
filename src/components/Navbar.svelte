@@ -1,14 +1,9 @@
 <script lang="ts">
-    import { signOut as authSignOut } from 'sk-auth/client';
     import { session } from '$app/stores';
 
-    $: user = $session.user;
-    let loggedIn = !!user;
-    let username;
-
-    function signOut() {
-        authSignOut().then(session.set);
-    }
+    let user = $session.user
+    let loggedIn = !!user
+    // console.log("userinfo", user)
 </script>
 
 <div class="navbar">
@@ -18,9 +13,9 @@
         <a href="/upload">Upload</a>
         <a href="/api">API</a>
         {#if loggedIn}
-            <a href="" on:click={signOut}>Sign Out ({username})</a>
+            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
         {:else}
-            <a href="/api/auth/signin/discord">Log In</a>
+            <a href="/api/auth/discord">Log In</a>
         {/if}
     </div>
 </div>
