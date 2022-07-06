@@ -3,7 +3,7 @@
     import { session } from '$app/stores';
 
     $: user = $session.user;
-    let loggedIn
+    let loggedIn = !!user;
     let username;
 
     function signOut() {
@@ -18,7 +18,7 @@
         <a href="/upload">Upload</a>
         <a href="/api">API</a>
         {#if loggedIn}
-            <a on:click={() => signOut()}>Sign Out ({username})</a>
+            <a href="" on:click={signOut}>Sign Out ({username})</a>
         {:else}
             <a href="/api/auth/signin/discord">Log In</a>
         {/if}
