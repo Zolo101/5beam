@@ -32,11 +32,7 @@ export async function getLevel(id: number) {
     })
 }
 
-export async function createUser(request: Request) {
-    const form = await request.formData()
-    const discordId = Number(form.get("discordId"))
-    const name = `${form.get("name")}`
-
+export async function createUser(discordId: number, name: string) {
     await prisma.user.create({
         data: {
             discordId: discordId,
