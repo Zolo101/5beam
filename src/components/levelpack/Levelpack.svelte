@@ -1,13 +1,13 @@
 <script lang="ts">
     import type { Level } from "../../lib/prisma";
-    import { getUserClient } from "../ClientSideAPI";
+    import { getUserByIdClient } from "../ClientSideAPI";
     import Table from "../Table.svelte";
     import { difficultyMap } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
     import Star from "../Star.svelte";
 
     export let level: any
-    const userRequest = getUserClient(level.creatorId)
+    const userRequest = getUserByIdClient(level.creatorId)
     console.log(level)
 </script>
 

@@ -50,10 +50,29 @@ export async function getUsers() {
     return await prisma.user.findMany()
 }
 
-export async function getUser(id: number) {
+export async function getUserById(id: number) {
     return await prisma.user.findUnique({
         where: {
-            id: id
+            id: id,
         }
     })
 }
+
+export async function getUserByDiscordId(discordId: number) {
+    return await prisma.user.findUnique({
+        where: {
+            discordId: discordId,
+        }
+    })
+}
+
+export async function getUserLevels(creatorId: number, amount: number, offset: number) {
+    return await prisma.level.findMany({
+        where: {
+            creatorId: creatorId
+        },
+        skip: offset,
+        take: amount,
+    })
+}
+

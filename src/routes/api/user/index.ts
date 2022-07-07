@@ -1,9 +1,10 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getLevel, getUser } from "../../talk";
+import { getLevel, getUserByDiscordId, getUserById } from "../../../talk";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const id = Number(url.searchParams.get("id"))
+    const discordId = Number(url.searchParams.get("discordId"))
 
     if (id === null) {
         return {
@@ -12,6 +13,6 @@ export const get: RequestHandler = async ({request}) => {
     }
     return {
         status: 200,
-        body: await getUser(id)
+        body: (id === NaN) ? await getUserByDiscordId(discordId) : await getUserById(id)
     }
 }

@@ -36,6 +36,7 @@
         <Table heads={["Property", "Meaning", "Type"]} content={[
                 ["id", "Level ID", ParamType.INTEGER],
                 ["createdAt", "Date when created", "Date"],
+                ["creator", "See User STRUCT", "User"],
                 ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
@@ -56,7 +57,9 @@
                 ["discordId", "Discord user ID", ParamType.INTEGER],
                 ["createdAt", "Date when created", "Date"],
                 ["name", "Username", ParamType.STRING],
-                ["levels", "Levels created by user (WIP)", "Array<Level>"],
+                ["levels", "Level IDs created by user (WIP)", "Array<ParamType.INTEGER>"],
+                ["starred", "Level IDs starred by user (WIP)", "Array<ParamType.INTEGER>"],
+                ["voted", "Level IDs voted by user (WIP)", "Array<ParamType.INTEGER>"],
             ]}>
         </Table>
     </APIEndpoint>
@@ -65,9 +68,9 @@
             endpoint={["api", "level"]}
             params={[
                 ["id", "Level ID", ParamType.INTEGER],
-                ["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],
             ]}
     >
+                <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a <APIReference type={"STRUCT"} reference={"Level"}/>.</p>
     </APIEndpoint>
 
@@ -87,6 +90,7 @@
             endpoint={["api", "level", "star"]}
             params={[
                 ["id", "Level ID", ParamType.INTEGER],
+                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],
             ]}
             wip
             token_required
@@ -95,37 +99,25 @@
     </APIEndpoint>
 
     <APIEndpoint
-            endpoint={["api", "level", "unstar"]}
-            params={[
-                ["id", "Level ID", ParamType.INTEGER],
-            ]}
-            wip
-            token_required
-    >
-        <p>Un-stars a level. This will eventually be merged with <APIReference type={"GET"} reference={["api", "level", "star"]}/></p>
-    </APIEndpoint>
-
-    <APIEndpoint
             endpoint={["api", "user"]}
             params={[
                 ["id", "User ID", ParamType.INTEGER],
-                ["discordId", "User's Discord ID (WIP)", ParamType.INTEGER],
+                ["discordId", "User's Discord ID", ParamType.INTEGER],
             ]}
     >
         <p>Returns a <APIReference type={"STRUCT"} reference={"User"}/>.</p>
-        <p>You can use either "id" or "discordId".</p>
+        <p>You can use either "id" or "discordId", but not both.</p>
     </APIEndpoint>
 
     <APIEndpoint
             endpoint={["api", "page"]}
             params={[
                 ["page", "Page number", ParamType.INTEGER],
-                ["sort", "Sort by", ParamType.INTEGER, 0],
+                ["sort", "Sort by (WIP)", ParamType.INTEGER, 0],
                 ["amount", "Amount of levels", ParamType.INTEGER, 8],
-                ["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],
             ]}
-            wip
     >
+                <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/>.</p>
         <p>Sort codes:</p>
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
@@ -141,20 +133,19 @@
             params={[
                 ["id", "User ID", ParamType.INTEGER],
                 ["page", "Page number", ParamType.INTEGER],
-                ["sort", "Sort by", ParamType.INTEGER, 0],
+                ["sort", "Sort by (WIP)", ParamType.INTEGER, 0],
                 ["amount", "Amount of levels", ParamType.INTEGER, 8],
-                ["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],
             ]}
-            wip
     >
+                <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> created by the user.</p>
-<!--        <p>Sort codes:</p>-->
-<!--        <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[-->
-<!--            ["0", "By Age (new > old)"],-->
-<!--            ["1", "Top (by plays)"],-->
-<!--            ["2", "Top (by likes?)"],-->
-<!--            ["3", "Featured (new > old)"],-->
-<!--        ]}/>-->
+        <p>Sort codes:</p>
+        <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
+            ["0", "By Age (new > old)"],
+            ["1", "Top (by plays)"],
+            ["2", "Top (by likes?)"],
+            ["3", "Featured (new > old)"],
+        ]}/>
     </APIEndpoint>
 
     <APIEndpoint
@@ -169,7 +160,7 @@
                 ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
-                ["data", "Level data (can be omitted by API)", ParamType.STRING],
+                ["data", "Level data", ParamType.STRING],
             ]}>
         </Table>
     </APIEndpoint>
@@ -185,7 +176,6 @@
         <Table heads={["Property", "Meaning", "Type"]} content={[
                 ["name", "Username", ParamType.STRING],
                 ["discordId", "Discord user ID", ParamType.INTEGER],
-                ["email (maybe idk)", "Discord email", ParamType.STRING],
             ]}>
         </Table>
     </APIEndpoint>
