@@ -2,7 +2,7 @@
 	"name": "5beam_next",
 	"version": "1.0.0",
 	"scripts": {
-		"dev": "svelte-kit dev --https",
+		"dev": "svelte-kit dev",
 		"studio": "prisma studio",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",

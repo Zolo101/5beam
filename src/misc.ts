@@ -19,5 +19,5 @@ export function URLParamSet(url: URL, prop: string, param: number | string | und
     }
 }
 
-export const apiURL = dev ? "https://localhost:3000" : "https://5beam.zelo.dev"
+export const apiURL = dev ? "http://localhost:3000" : "https://5beam.zelo.dev"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
