@@ -1,10 +1,10 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getLevel, getUserByDiscordId, getUserById } from "../../../talk";
+import { getUserByDiscordId, getUserById } from "../../../talk";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const id = Number(url.searchParams.get("id"))
-    const discordId = Number(url.searchParams.get("discordId"))
+    const discordId = url.searchParams.get("discordId") ?? ""
 
     if (id === null) {
         return {
@@ -13,6 +13,7 @@ export const get: RequestHandler = async ({request}) => {
     }
     return {
         status: 200,
+        // TODO: apparently this will always be false? "=== NaN"
         body: (id === NaN) ? await getUserByDiscordId(discordId) : await getUserById(id)
     }
 }

@@ -36,7 +36,6 @@
         <Table heads={["Property", "Meaning", "Type"]} content={[
                 ["id", "Level ID", ParamType.INTEGER],
                 ["createdAt", "Date when created", "Date"],
-                ["creator", "See User STRUCT", "User"],
                 ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
@@ -54,7 +53,7 @@
     >
         <Table heads={["Property", "Meaning", "Type"]} content={[
                 ["id", "Level ID", ParamType.INTEGER],
-                ["discordId", "Discord user ID", ParamType.INTEGER],
+                ["discordId", "Discord user ID", ParamType.STRING],
                 ["createdAt", "Date when created", "Date"],
                 ["name", "Username", ParamType.STRING],
                 ["levels", "Level IDs created by user (WIP)", "Array<ParamType.INTEGER>"],
@@ -151,7 +150,6 @@
     <APIEndpoint
             endpoint={["api", "create", "level"]}
             type="POST"
-            wip
             game_only
             token_required
     >
@@ -161,21 +159,6 @@
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
                 ["data", "Level data", ParamType.STRING],
-            ]}>
-        </Table>
-    </APIEndpoint>
-
-    <APIEndpoint
-            endpoint={["api", "create", "user"]}
-            type="POST"
-            wip
-            game_only
-            token_required
-    >
-        <p>Create a <APIReference type={"STRUCT"} reference={"User"}/>. You will need to give 5beam the following:</p>
-        <Table heads={["Property", "Meaning", "Type"]} content={[
-                ["name", "Username", ParamType.STRING],
-                ["discordId", "Discord user ID", ParamType.INTEGER],
             ]}>
         </Table>
     </APIEndpoint>

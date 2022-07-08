@@ -1,14 +1,14 @@
 import { oauth } from "./lib/auth";
 import cookie from "cookie";
+import type { User } from "discord-oauth2";
 
-// TODO: Figure out the type for request
-export async function getSession(event: any) {
+// TODO: Figure out the type for event
+export async function getSession(event: any): Promise<{user: User} | {user: false}> {
     const cookies = cookie.parse(event.request.headers.get("cookie") || '');
 
-    // console.log("token:", cookies.access_token);
     if (cookies.access_token) {
         const user = await oauth.getUser(cookies.access_token);
-        console.log(user)
+        // console.log(user)
         return {user}
     }
 

@@ -1,5 +1,13 @@
 import { apiURL, URLParamSet } from "../misc";
 
+export async function postCreateLevelClient(formData: FormData) {
+    const url = new URL(`${apiURL}/api/create/level`)
+    const call = await fetch(url.toString(), {
+        method: "POST",
+        body: formData
+    })
+    return call.json()
+}
 
 export async function getLevelPageClient(page: number, amount?: number, sort?: number) {
     const url = new URL(`${apiURL}/api/page`)
@@ -44,9 +52,7 @@ export async function getUserLevelPageClient(creatorId: number, page: number, am
 
 async function callAPI(url: URL) {
     const call = await fetch(url.toString(), {
-        headers: { // Record<string, string>
-            "Content-Type": "application/json"
-        },
+        method: "GET"
     })
     return call.json()
 }
