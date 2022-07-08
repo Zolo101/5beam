@@ -26,6 +26,18 @@ export async function getLevel(id: number) {
     })
 }
 
+export async function getSearch(text: string, amount: number) {
+    return await prisma.level.findMany({
+        where: {
+            title: {
+                // search: text
+                contains: text
+            }
+        },
+        take: amount
+    })
+}
+
 export async function createUser(discordId: string, name: string) {
     return await prisma.user.create({
         data: {

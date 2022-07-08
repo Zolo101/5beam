@@ -128,6 +128,18 @@
     </APIEndpoint>
 
     <APIEndpoint
+            endpoint={["api", "search"]}
+            params={[
+                ["text", "Search text", ParamType.STRING],
+                ["page", "Page number (WIP, NOT IMPLEMENTED YET)", ParamType.INTEGER],
+                ["amount", "Amount of levels", ParamType.INTEGER, 8],
+            ]}
+    >
+        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
+        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> who's title contains the search text.</p>
+    </APIEndpoint>
+
+    <APIEndpoint
             endpoint={["api", "user", "page"]}
             params={[
                 ["id", "User ID", ParamType.INTEGER],

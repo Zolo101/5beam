@@ -25,6 +25,14 @@ export async function getLevelClient(id: string) {
     return callAPI(url)
 }
 
+export async function getSearchClient(text: string, amount?: number) {
+    const url = new URL(`${apiURL}/api/search`)
+    URLParamSet(url, "text", text)
+    URLParamSet(url, "amount", amount)
+
+    return callAPI(url)
+}
+
 export async function getUserByIdClient(id: number) {
     const url = new URL(`${apiURL}/api/user`)
     URLParamSet(url, "id", id)
