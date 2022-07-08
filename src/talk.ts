@@ -1,13 +1,7 @@
 import prisma from "./lib/prisma";
 
-export async function createLevel(request: Request) {
-    const form = await request.formData()
-    const creatorId = Number(form.get("creatorId"))
-    const title = `${form.get("title")}`
-    const description = `${form.get("description")}`
-    const data = `${form.get("data")}`
-
-    await prisma.level.create({
+export async function createLevel(creatorId: number, title: string, description: string, data: string) {
+    return await prisma.level.create({
         data: {
             creatorId: creatorId,
             title: title,
@@ -32,8 +26,8 @@ export async function getLevel(id: number) {
     })
 }
 
-export async function createUser(discordId: number, name: string) {
-    await prisma.user.create({
+export async function createUser(discordId: string, name: string) {
+    return await prisma.user.create({
         data: {
             discordId: discordId,
             name: name,
@@ -54,7 +48,7 @@ export async function getUserById(id: number) {
     })
 }
 
-export async function getUserByDiscordId(discordId: number) {
+export async function getUserByDiscordId(discordId: string) {
     return await prisma.user.findUnique({
         where: {
             discordId: discordId,

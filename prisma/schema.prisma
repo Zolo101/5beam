@@ -10,7 +10,6 @@ generator client {
 model Level {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
-  creator     User     @relation(fields: [creatorId], references: [id])
   creatorId   Int
   title       String
   description String
@@ -22,10 +21,10 @@ model Level {
 
 model User {
   id        Int      @id @default(autoincrement())
-  discordId Int      @unique
+  discordId String   @unique
   createdAt DateTime @default(now())
   name      String
-  levels    Level[]
+  levels    Int[]
   starred   Int[]
   voted     Int[]
 }
