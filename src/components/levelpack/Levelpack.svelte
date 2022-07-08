@@ -1,10 +1,8 @@
 <script lang="ts">
-    import type { Level } from "../../lib/prisma";
     import { getUserByIdClient } from "../ClientSideAPI";
     import Table from "../Table.svelte";
-    import { difficultyMap } from "../../misc";
+    import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
-    import Star from "../Star.svelte";
 
     export let level: any
     const userRequest = getUserByIdClient(level.creatorId)
@@ -33,7 +31,7 @@
         </div>
         <div class="info">
             <Table content={[
-                ["Created on", level.createdAt],
+                ["Created on", formatDate_Full(level.createdAt)],
                 ["Plays", level.plays],
                 ["Stars", level.stars],
                 ["Difficulty", `${difficultyMap.get(level.difficulty)} (${level.difficulty})`],

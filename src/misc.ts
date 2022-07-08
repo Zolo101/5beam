@@ -15,6 +15,19 @@ export const difficultyMap = new Map<number, string>([
 ]);
 
 
+// TODO: Research temporal https://tc39.es/proposal-temporal/docs/index.html
+export function formatDate_Day(date: string) {
+    return new Date(date).toLocaleDateString("en-gb", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    })
+}
+
+export function formatDate_Full(date: string) {
+    return new Date(date).toString()
+}
+
 // Only sets if the param isn't undefined
 export function URLParamSet(url: URL, prop: string, param: number | string | undefined) {
     if (param !== undefined) {
