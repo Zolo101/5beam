@@ -31,11 +31,6 @@
 </div>
 
 <style>
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
-
     .levelpacks {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));

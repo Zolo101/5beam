@@ -35,11 +35,6 @@
 </div>
 
 <style>
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
-
     .results {
         display: flex;
         flex-direction: column;

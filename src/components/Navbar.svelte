@@ -23,7 +23,9 @@
 </script>
 
 <div class="navbar">
-    <h1>5beam</h1>
+    <a href="/" class="title">
+        <h1>5beam</h1>
+    </a>
     <div class="list-left">
         <a href="/">Browse</a>
         <a href="/upload">Upload</a>
@@ -61,6 +63,10 @@
         font-size: 3rem;
         margin: 0;
         padding: 0 20px;
+    }
+
+    .title:hover {
+        background-color: #e1e1e1;
     }
 
     ul {
