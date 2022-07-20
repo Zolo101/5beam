@@ -2,7 +2,7 @@
     export let title: string
     export let heads: string[]
     export let content: string[[]]
-    export let dynamicWidth: boolean = false
+    export let dynamicWidth: boolean = true
 </script>
 
 <table class:dynamicWidth={dynamicWidth}>
@@ -57,6 +57,6 @@
     }
 
     .dynamicWidth {
-        width: 75%;
+        width: 100%;
     }
 </style>

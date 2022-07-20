@@ -2,7 +2,7 @@
     import { session } from '$app/stores';
     import { onMount } from "svelte";
     import SearchResults from "./SearchResults.svelte";
-    import { getSearchClient } from "./ClientSideAPI";
+    import { getSearchClient } from "./client/ClientSideAPI";
     import { writable } from "svelte/store";
 
     let user = $session.user

@@ -40,8 +40,8 @@
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
                 ["data", "Level data (can be omitted by API)", ParamType.STRING],
-                ["plays", "Amount of people who've played this", ParamType.INTEGER, 0],
-                ["difficulty", "The difficulty of the level (manually set?)", ParamType.INTEGER, 0],
+                ["plays", "Amount of people who've played this", ParamType.INTEGER],
+                ["difficulty", "The difficulty of the level (manually set?)", ParamType.INTEGER],
                 ["creators_starred", "List of creators who've starred this level", "Array<User>"],
                 ["creators_voted", "List of creators who've voted on this level", "Array<User>"],
             ]}>

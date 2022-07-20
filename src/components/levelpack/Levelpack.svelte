@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getUserByIdClient } from "../ClientSideAPI";
+    import { getUserByIdClient } from "../client/ClientSideAPI";
     import Table from "../Table.svelte";
     import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";

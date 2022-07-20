@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getUserByIdClient, getUserLevelPageClient } from "../../components/ClientSideAPI";
+    import { getUserByIdClient, getUserLevelPageClient } from "../../components/client/ClientSideAPI";
     import LevelpackComponent from "../../components/browse/LevelComponent.svelte";
     import { page } from "$app/stores";
 

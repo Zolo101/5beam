@@ -1,4 +1,4 @@
-import { apiURL, URLParamSet } from "../misc";
+import { apiURL, URLParamSet } from "../../misc";
 
 export async function postCreateLevelClient(formData: FormData) {
     const url = new URL(`${apiURL}/api/create/level`)

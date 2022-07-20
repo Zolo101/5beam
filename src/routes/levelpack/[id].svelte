@@ -1,6 +1,6 @@
 <script lang="ts">
     import Levelpack from "../../components/levelpack/Level.svelte";
-    import { getLevelpackClient } from "../../components/ClientSideAPI";
+    import { getLevelpackClient } from "../../components/client/ClientSideAPI";
     import { page } from "$app/stores";
 
     const ID = $page.params.id
