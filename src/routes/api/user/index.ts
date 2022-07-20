@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByDiscordId, getUserById } from "../../../talk";
+import { getUserByProps } from "../../../talk/get";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
@@ -14,6 +14,6 @@ export const get: RequestHandler = async ({request}) => {
     return {
         status: 200,
         // TODO: apparently this will always be false? "=== NaN"
-        body: (id === NaN) ? await getUserByDiscordId(discordId) : await getUserById(id)
+        body: (id === NaN) ? await getUserByProps({ discordId }) : await getUserByProps({ id })
     }
 }

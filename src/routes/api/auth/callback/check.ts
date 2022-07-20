@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { createUser, getUserByDiscordId } from "../../../../talk";
+import { getUserByProps } from "../../../../talk/get";
 import { getSession } from "../../../../hooks";
+import { createUser } from "../../../../talk/create";
 
 // TODO: Another redirect :( Necessary?
 export const get: RequestHandler = async ({request}) => {
@@ -19,8 +20,11 @@ async function checkUser(request: Request) {
     const user = (await getSession({request})).user
     if (user === false) return // not logged in
 
-    const userData = await getUserByDiscordId(user.id)
+    const userData = await getUserByProps({discordId: user.id})
     if (userData === null) { // not in database
-        await createUser(user.id, user.username) // create user
+        await createUser({
+            discordId: user.id,
+            name: user.username
+        }) // create user
     }
 }

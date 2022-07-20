@@ -8,15 +8,31 @@ generator client {
 }
 
 model Level {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  creatorId   Int
-  title       String
-  description String
-  data        String
-  plays       Int      @default(0)
-  stars       Int      @default(0)
-  difficulty  Int      @default(0)
+  id               Int      @id @default(autoincrement())
+  creator          User     @relation(fields: [creatorId], references: [id])
+  creatorId        Int
+  createdAt        DateTime @default(now())
+  title            String
+  description      String
+  data             String
+  plays            Int      @default(0)
+  difficulty       Int      @default(0)
+  creators_starred User[]   @relation(name: "starred")
+  creators_voted   User[]   @relation(name: "voted")
+
+  levelpack   Levelpack? @relation(fields: [levelpackId], references: [id])
+  levelpackId Int?
+}
+
+model Levelpack {
+  id        Int  @id @default(autoincrement())
+  creator   User @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  createdAt        DateTime @default(now())
+  title            String
+  description      String
+  levels           Level[]
+  creators_starred User[]   @relation(name: "starredLevelpacks")
 }
 
 model User {
@@ -24,7 +40,10 @@ model User {
   discordId String   @unique
   createdAt DateTime @default(now())
   name      String
-  levels    Int[]
-  starred   Int[]
-  voted     Int[]
+  levels    Level[]
+  starred   Level[]  @relation(name: "starred")
+  voted     Level[]  @relation(name: "voted")
+
+  levelpack         Levelpack[]
+  starredLevelpacks Levelpack[] @relation(name: "starredLevelpacks")
 }

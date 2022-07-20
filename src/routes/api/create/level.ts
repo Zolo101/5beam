@@ -1,6 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { createLevel, getUserByDiscordId } from "../../../talk";
+import { getUserByProps } from "../../../talk/get";
 import { getSession } from "../../../hooks";
+import { createLevel } from "../../../talk/create";
 
 export const post: RequestHandler = async ({request}) => {
     const user = (await getSession({request})).user;
@@ -35,9 +36,14 @@ export const post: RequestHandler = async ({request}) => {
 
     // TODO: Remove non-null symbol
     // This is to get the user's ID rather than Discord ID
-    const userDBID = (await getUserByDiscordId(user.id))!.id
+    const userDBID = (await getUserByProps({id: Number(user.id) }))!.id
 
-    const level = await createLevel(userDBID, data.title, data.description, fileText)
+    const level = await createLevel({
+        creatorId: userDBID,
+        title: data.title,
+        description: data.description,
+        data: fileText
+    })
 
     return {
         status: 200,

@@ -25,6 +25,13 @@ export async function getLevelClient(id: string) {
     return callAPI(url)
 }
 
+export async function getLevelpackClient(id: string) {
+    const url = new URL(`${apiURL}/api/levelpack`)
+    URLParamSet(url, "id", id)
+
+    return callAPI(url)
+}
+
 export async function getSearchClient(text: string, amount?: number) {
     const url = new URL(`${apiURL}/api/search`)
     URLParamSet(url, "text", text)

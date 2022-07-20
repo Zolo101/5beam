@@ -1,15 +1,15 @@
 <script lang="ts">
-    import Level from "../../components/levelpack/Level.svelte";
-    import { getLevelClient } from "../../components/ClientSideAPI";
+    import Levelpack from "../../components/levelpack/Level.svelte";
+    import { getLevelpackClient } from "../../components/ClientSideAPI";
     import { page } from "$app/stores";
 
     const ID = $page.params.id
 </script>
 
-{#await getLevelClient(ID)}
+{#await getLevelpackClient(ID)}
     <p>Loading...</p>
 {:then level}
-    <Level {level}/>
+    <Levelpack {level}/>
 {:catch error}
     <p class="error">Error while requesting level: {error}</p>
 {/await}

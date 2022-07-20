@@ -2,7 +2,6 @@
     import Difficulty from "../Difficulty.svelte";
 
     export let level: any
-    console.log(level)
 </script>
 
 <div class="levelpack">

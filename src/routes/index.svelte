@@ -1,6 +1,6 @@
 <script lang="ts">
-    import LevelpackComponent from "../components/browse/LevelpackComponent.svelte";
     import { getLevelPageClient } from "../components/ClientSideAPI";
+    import LevelComponent from "../components/browse/LevelComponent.svelte";
 
     $: page = 0
     $: levelsRequest = getLevelPageClient(page, 8);
@@ -17,7 +17,7 @@
     {:then levels}
         {#each levels as level}
             <a href="level/{level.id}">
-                <LevelpackComponent {level}/>
+                <LevelComponent {level}/>
             </a>
         {/each}
     {:catch error}

@@ -1,6 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getLevel } from "../../talk";
-import prisma from "../../lib/prisma";
+import { getLevelByProps } from "../../talk/get";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
@@ -17,7 +16,7 @@ export const get: RequestHandler = async ({request}) => {
 
     return {
         status: 200,
-        body: await getLevel(id)
+        body: await getLevelByProps({ id })
     }
 }
 

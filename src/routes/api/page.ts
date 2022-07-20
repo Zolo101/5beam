@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getLevels } from "../../talk";
+import { getLevels } from "../../talk/get";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)

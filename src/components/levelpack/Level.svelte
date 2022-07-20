@@ -1,28 +1,17 @@
 <script lang="ts">
-    import { getUserByIdClient } from "../ClientSideAPI";
     import Table from "../Table.svelte";
     import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
 
     export let level: any
-    const userRequest = getUserByIdClient(level.creatorId)
     console.log(level)
 </script>
 
-<div class="levelpack">
+<div class="level">
     <div class="header">
         <span class="title">{level.title}</span>
         <Difficulty difficulty={level.difficulty}/>
-        <span class="user">
-            {#await userRequest}
-                by (Loading...)
-            {:then user}
-                by {user.name}
-            {:catch error}
-                <span class="error">by Unknown</span>
-        <!--            <p class="error">Error while requesting user: {error}</p>-->
-            {/await}
-        </span>
+        <span class="user">by {level.creator.name}</span>
     </div>
     <div class="profile">
         <div class="main">

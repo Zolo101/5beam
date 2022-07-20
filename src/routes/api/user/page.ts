@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserLevels } from "../../../talk";
+import { getUserLevels } from "../../../talk/get";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
@@ -13,6 +13,6 @@ export const get: RequestHandler = async ({request}) => {
 
     return {
         status: 200,
-        body: await getUserLevels(creatorId, amount, offset)
+        body: await getUserLevels({ creatorId }, amount, offset)
     }
 }

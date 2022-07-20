@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getUserByIdClient, getUserLevelPageClient } from "../../components/ClientSideAPI";
-    import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
+    import LevelpackComponent from "../../components/browse/LevelComponent.svelte";
     import { page } from "$app/stores";
 
     const ID = Number($page.params.id)
