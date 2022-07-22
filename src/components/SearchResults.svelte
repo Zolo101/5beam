@@ -26,7 +26,7 @@
                     <p class="title">{result.title}</p>
                 {/if}
                 <div class="footer">
-                    <p class="creator">By <span class="creator-name">{result.creatorId}</span></p>
+                    <p class="creator">By <span class="creator-name">{result.creator.name}</span></p>
                     <p class="date">@ {formatDate_Day(result.createdAt)}</p>
                 </div>
             </div>
