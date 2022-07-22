@@ -11,11 +11,15 @@
     $: valid = false
 
     function onSubmit(event: any) {
-        if (result.levels.length === 1) {
-            postCreateLevelClient(new FormData(event.target))
-        } else {
-            postCreateLevelpackClient(new FormData(event.target))
-        }
+        const type = result.levels.length === 1
+        const typeName = type ? "level" : "levelpack"
+        const func = type ? postCreateLevelClient : postCreateLevelpackClient
+        func(new FormData(event.target))
+            .then(res => window.location.href = `/${typeName}/${res.id}`)
+            .catch(err => {
+                console.error(err)
+                alert("Unfortunately your upload has failed. Please contact Zelo101#0138 on discord with your level(s).")
+            })
     }
 
     async function validateFile(event: any) {

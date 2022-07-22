@@ -208,9 +208,8 @@
         <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> created by the user.</p>
         <p>Type codes:</p>
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "All"],
-            ["1", "Levels Only"],
-            ["2", "Levelpacks Only"],
+            ["0", "Levels"],
+            ["1", "Levelpacks"],
         ]}/>
         <p>Sort codes:</p>
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
