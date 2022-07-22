@@ -8,8 +8,16 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter({out: "dist"})
-	}
+		adapter: adapter({out: "dist"}),
+		csp: {
+			mode: "auto",
+			directives: {
+				'default-src': undefined
+				// ...
+			}
+		}
+
+	},
 };
 
 export default config;
