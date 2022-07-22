@@ -1,37 +1,45 @@
 <script lang="ts">
-    import Difficulty from "../Difficulty.svelte";
+    import { difficultyColorMap, to5bLevelFormat } from "../../misc";
 
     export let level: any
 </script>
 
-<div class="level">
-    <div class="header">
-        <span class="title">{level.title}</span>
-        <Difficulty difficulty={level.difficulty}/>
+
+<a href="/level/{level.id}">
+    <div class="level" style="background-color: {difficultyColorMap.get(level.difficulty)}">
+<!--        <div class="header">-->
+<!--            <span class="title">{level.title}</span>-->
+<!--            <Difficulty difficulty={level.difficulty}/>-->
+<!--        </div>-->
+<!--        <div class="info">-->
+<!--            <span class="plays">{level.plays} plays,</span>-->
+<!--            <span class="stars">{level.stars} stars</span>-->
+<!--        </div>-->
+        <h1>{to5bLevelFormat(level.levelpackPart)}</h1>
     </div>
-    <div class="info">
-        <span class="user">by {level.creator.name}</span>
-        <span class="plays">{level.plays} plays,</span>
-        <span class="stars">{level.stars} stars</span>
-        <p class="description">{level.description}</p>
-    </div>
-</div>
+</a>
 
 <style>
+    h1 {
+        font-size: 3em;
+        text-align: center;
+        margin: 0;
+    }
+
     .level {
-        box-shadow: 2px 2px 0px 6px black;
-        padding: 10px;
+        outline: 3px solid black;
+        /*box-shadow: 2px 2px 0px 6px black;*/
+        /*padding: 10px;*/
         background-color: rgba(98, 98, 98, 0.75);
         backdrop-filter: blur(5px) invert();
-        border-radius: 2px;
-        transition: box-shadow 0.3s;
+        /*border-radius: 2px;*/
 
-        min-height: 140px;
+        max-height: 50px;
     }
 
     .level:hover {
         cursor: pointer;
-        box-shadow: 0px 0px 0px 3px whitesmoke;
+        /*background-color: lightgrey !important;*/
     }
 
     .header {

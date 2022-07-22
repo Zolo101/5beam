@@ -1,10 +1,10 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserByProps } from "../../../talk/get";
 import { getSession } from "../../../hooks";
-import { createLevel } from "../../../talk/create";
+import { createLevelpack } from "../../../talk/create";
+import { validateData } from "./level";
 
 export const post: RequestHandler = async ({request}) => {
-    // Make sure user is logged in
     const user = (await getSession({request})).user;
     if (user === false) {
         return {
@@ -16,7 +16,6 @@ export const post: RequestHandler = async ({request}) => {
     const formData = await request.formData()
     const data: any = {};
 
-    // Turn formData into an object
     // TODO: idk why this gives a typescript error
     // @ts-ignore
     for (let field of formData) {
@@ -33,30 +32,41 @@ export const post: RequestHandler = async ({request}) => {
     }
 
     // console.log(data, user)
-    const fileText = await data.file.text()
+    const fileText: string = await data.file.text()
+
+    // remove loadedLevels=
+    let levels = fileText.split("\r\n").splice(1).join("\r\n").split("\r\n\r\n")
+    levels = levels.map(level => "loadedLevels=\r\n" + level)
+
     // console.log(fileText)
 
     // TODO: Remove non-null symbol
     // This is to get the user's ID rather than Discord ID
+    console.log(user)
     const userDBID = (await getUserByProps({discordId: user.id }))!.id
 
-    const level = await createLevel({
+    const levelsParamArray = levels.map((level, index) => {
+        const i = index + 1;
+        return {
+            creatorId: userDBID,
+            title: `${data.title}, Pt. ${i.toString().padStart(3, "0")}`,
+            description: `Part ${i} of the levelpack: '${data.title}'`,
+            data: level,
+            levelpackPart: i
+        }
+    })
+
+    const levelpack = await createLevelpack({
         creatorId: userDBID,
         title: data.title,
         description: data.description,
-        data: fileText
+        levels: {
+            create: levelsParamArray
+        }
     })
 
     return {
         status: 200,
-        body: level
+        body: levelpack
     }
-}
-
-export function validateData(data: any) {
-    if (data.title.length === 0 || data.title.length > 64) return false;
-    if (data.description.length === 0 || data.description.length > 1024) return false;
-    if (data.file.size === 0 || data.file.size > 1_000_000) return false; // 1 megabyte
-    // console.log(data.title.length, data.description.length, data.file.size)
-    return true;
 }

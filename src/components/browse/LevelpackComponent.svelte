@@ -1,20 +1,16 @@
 <script lang="ts">
-    import Difficulty from "../Difficulty.svelte";
 
-    export let level: any
-    console.log(level)
+    export let levelpack: any
+    console.log(levelpack)
 </script>
 
 <div class="levelpack">
     <div class="header">
-        <span class="title">{level.title}</span>
-        <Difficulty difficulty={level.difficulty}/>
+        <span class="title">{levelpack.title}</span>
     </div>
     <div class="info">
-        <span class="user">by {level.creator.name}</span>
-        <span class="plays">{level.plays} plays,</span>
-        <span class="stars">{level.stars} stars</span>
-        <p class="description">{level.description}</p>
+        <span class="user">by {levelpack.creator.name}</span>
+        <p class="description">{levelpack.description}</p>
     </div>
 </div>
 

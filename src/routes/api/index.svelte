@@ -35,6 +35,7 @@
     >
         <Table heads={["Property", "Meaning", "Type"]} content={[
                 ["id", "Level ID", ParamType.INTEGER],
+                ["creator", "User who made this", "User"],
                 ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
                 ["createdAt", "Date when created", "Date"],
                 ["title", "Level title", ParamType.STRING],
@@ -42,8 +43,12 @@
                 ["data", "Level data (can be omitted by API)", ParamType.STRING],
                 ["plays", "Amount of people who've played this", ParamType.INTEGER],
                 ["difficulty", "The difficulty of the level (manually set?)", ParamType.INTEGER],
-                ["creators_starred", "List of creators who've starred this level", "Array<User>"],
-                ["creators_voted", "List of creators who've voted on this level", "Array<User>"],
+                ["creators_starred", "List of creators who've starred this level", "User[]"],
+                ["creators_voted", "List of creators who've voted on this level", "User[]"],
+
+                ["levelpack", "Levelpack this level is for", "Levelpack (optional)"],
+                ["levelpackId", "Levelpack id", "Int (optional)"],
+                ["levelpackPart", "Levelpack level number", "Int (optional)"],
             ]}>
         </Table>
     </APIEndpoint>
@@ -54,12 +59,13 @@
     >
         <Table heads={["Property", "Meaning", "Type"]} content={[
                 ["id", "Levelpack ID", ParamType.INTEGER],
+                ["creator", "User who made this", "User"],
                 ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
                 ["createdAt", "Date when created", "Date"],
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
-                ["levels", "List of levels this levelpack contains", "Array<Level>"],
-                ["creators_starred", "List of creators who've starred this levelpack", "Array<User>"],
+                ["levels", "List of levels this levelpack contains", "Level[]"],
+                ["creators_starred", "List of creators who've starred this levelpack", "User[]"],
             ]}>
         </Table>
     </APIEndpoint>
@@ -73,12 +79,12 @@
                 ["discordId", "Discord user ID", ParamType.STRING],
                 ["createdAt", "Date when created", "Date"],
                 ["name", "Username", ParamType.STRING],
-                ["levels", "Level created by user", "Array<Level>"],
-                ["starred", "Level starred by user", "Array<Level>"],
-                ["voted", "Level voted by user", "Array<Level>"],
+                ["levels", "Level created by user", "Level[]"],
+                ["starred", "Level starred by user", "Level[]"],
+                ["voted", "Level voted by user", "Level[]"],
 
-                ["levelpack", "Levelpacks IDs created by user", "Array<Levelpack>"],
-                ["starredLevelpacks", "Levelpacks starred by user", "Array<Levelpack>"],
+                ["levelpack", "Levelpacks IDs created by user", "Levelpack[]"],
+                ["starredLevelpacks", "Levelpacks starred by user", "Levelpack[]"],
             ]}>
         </Table>
     </APIEndpoint>
@@ -155,7 +161,7 @@
             endpoint={["api", "page"]}
             params={[
                 ["page", "Page number", ParamType.INTEGER],
-                ["type", "Type of (WIP)", ParamType.INTEGER, 0],
+                ["type", "Type of", ParamType.INTEGER, 0],
                 ["sort", "Sort by (WIP)", ParamType.INTEGER, 0],
                 ["amount", "Amount of levels", ParamType.INTEGER, 8],
             ]}
@@ -164,9 +170,8 @@
         <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/>.</p>
         <p>Type codes:</p>
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "All"],
-            ["1", "Levels Only"],
-            ["2", "Levelpacks Only"],
+            ["0", "Levels"],
+            ["1", "Levelpacks"],
         ]}/>
         <p>Sort codes:</p>
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
@@ -227,7 +232,23 @@
                 ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
-                ["data", "Level data", ParamType.STRING],
+                ["data", "Level file", ParamType.STRING],
+            ]}>
+        </Table>
+    </APIEndpoint>
+
+    <APIEndpoint
+            endpoint={["api", "create", "levelpack"]}
+            type="POST"
+            game_only
+            token_required
+    >
+        <p>Create a <APIReference type={"STRUCT"} reference={"Levelpack"}/>. You will need to give 5beam the following:</p>
+        <Table heads={["Property", "Meaning", "Type"]} content={[
+                ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
+                ["title", "Levelpack title", ParamType.STRING],
+                ["description", "Levelpack description", ParamType.STRING],
+                ["data", "Levelpack file", ParamType.STRING],
             ]}>
         </Table>
     </APIEndpoint>

@@ -27,7 +27,8 @@
         <h1>5beam</h1>
     </a>
     <div class="list-left">
-        <a href="/">Browse</a>
+        <a href="/">Levels</a>
+        <a href="/levelpacks">Levelpacks</a>
         <a href="/upload">Upload</a>
         <a href="/api">API</a>
         {#if loggedIn}

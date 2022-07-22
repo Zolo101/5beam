@@ -9,10 +9,21 @@ export async function postCreateLevelClient(formData: FormData) {
     return call.json()
 }
 
-export async function getLevelPageClient(page: number, amount?: number, sort?: number) {
+export async function postCreateLevelpackClient(formData: FormData) {
+    const url = new URL(`${apiURL}/api/create/levelpack`)
+    const call = await fetch(url.toString(), {
+        method: "POST",
+        body: formData
+    })
+    return call.json()
+}
+
+
+export async function getLevelPageClient(page: number, amount?: number, type?: number, sort?: number) {
     const url = new URL(`${apiURL}/api/page`)
     URLParamSet(url, "page", page)
     URLParamSet(url, "amount", amount)
+    URLParamSet(url, "type", type)
     URLParamSet(url, "sort", sort)
 
     return callAPI(url)
@@ -54,11 +65,12 @@ export async function getUserByDiscordIdClient(discordId: number) {
     return callAPI(url)
 }
 
-export async function getUserLevelPageClient(creatorId: number, page: number, amount?: number, sort?: number) {
+export async function getUserLevelPageClient(creatorId: number, page: number, amount?: number, type?: number, sort?: number) {
     const url = new URL(`${apiURL}/api/user/page`)
     URLParamSet(url, "creatorId", creatorId)
     URLParamSet(url, "page", page)
     URLParamSet(url, "amount", amount)
+    URLParamSet(url, "type", type)
     URLParamSet(url, "sort", sort)
 
     return callAPI(url)

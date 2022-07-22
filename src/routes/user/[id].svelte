@@ -1,12 +1,15 @@
 <script lang="ts">
     import { getUserByIdClient, getUserLevelPageClient } from "../../components/client/ClientSideAPI";
-    import LevelpackComponent from "../../components/browse/LevelComponent.svelte";
+    import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
     import { page } from "$app/stores";
+    import { formatDate_Full } from "../../misc";
+    import LevelComponent from "../../components/browse/LevelComponent.svelte";
 
     const ID = Number($page.params.id)
     $: userRequest = getUserByIdClient(ID)
     $: levels_page = 0 // known as page
-    $: userLevelsRequest = getUserLevelPageClient(ID, levels_page, 16);
+    $: userLevelsRequest = getUserLevelPageClient(ID, levels_page, 16, 0);
+    $: userLevelpacksRequest = getUserLevelPageClient(ID, levels_page, 16, 1);
 
     const changePage = (by: number) => {
         // dont go below zero
@@ -20,25 +23,44 @@
     {:then user}
         <div class="profile">
             <h1>{user.name}</h1>
-            <h1>Created on {user.createdAt}</h1>
+            <h2>Created on {formatDate_Full(user.createdAt)}</h2>
         </div>
     {:catch error}
         <p class="error">Error while requesting user: {error}</p>
     {/await}
 </div>
+
+<h1 class="header">Levelpacks</h1>
 <div class="levelpacks">
+    {#await userLevelpacksRequest}
+        <p class="loading">Loading...</p>
+    {:then levelpacks}
+        {#each levelpacks as levelpack}
+            <a href="/levelpack/{levelpack.id}">
+                <LevelpackComponent {levelpack}/>
+            </a>
+        {/each}
+    {:catch error}
+        <p class="error">Error while requesting levelpacks: {error}</p>
+    {/await}
+</div>
+
+<h1 class="header">Levels</h1>
+<div class="levels">
     {#await userLevelsRequest}
         <p class="loading">Loading...</p>
     {:then levels}
         {#each levels as level}
             <a href="/level/{level.id}">
-                <LevelpackComponent {level}/>
+                <LevelComponent {level}/>
             </a>
         {/each}
     {:catch error}
         <p class="error">Error while requesting levels: {error}</p>
     {/await}
 </div>
+
+
 <div class="pag"> <!-- pagination -->
     <span class="pag-arrow" on:click={() => changePage(-1)}>{"<"}</span>
     <span class="pag-number">{levels_page}</span>
@@ -51,11 +73,15 @@
         text-decoration: none;
     }
 
-    .profile {
+    h1, h2 {
         color: whitesmoke;
     }
 
-    .levelpacks {
+    .header {
+        text-align: center;
+    }
+
+    .levels, .levelpacks {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
         grid-auto-rows: 1fr;

@@ -20,14 +20,15 @@ model Level {
   creators_starred User[]   @relation(name: "starred")
   creators_voted   User[]   @relation(name: "voted")
 
-  levelpack   Levelpack? @relation(fields: [levelpackId], references: [id])
-  levelpackId Int?
+  levelpack     Levelpack? @relation(fields: [levelpackId], references: [id])
+  levelpackId   Int?
+  levelpackPart Int?
 }
 
 model Levelpack {
-  id        Int  @id @default(autoincrement())
-  creator   User @relation(fields: [creatorId], references: [id])
-  creatorId Int
+  id               Int      @id @default(autoincrement())
+  creator          User     @relation(fields: [creatorId], references: [id])
+  creatorId        Int
   createdAt        DateTime @default(now())
   title            String
   description      String

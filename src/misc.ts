@@ -14,6 +14,16 @@ export const difficultyMap = new Map<number, string>([
     [7, "Impossible"],
 ]);
 
+export const difficultyColorMap = new Map<number, string>([
+    [0, "#808080"],
+    [1, "#00ff00"],
+    [2, "#ffff00"],
+    [3, "#ff7700"],
+    [4, "#ff0000"],
+    [5, "#bc00bc"],
+    [6, "#ff00ff"],
+    [7, "#890000"],
+]);
 
 // TODO: Research temporal https://tc39.es/proposal-temporal/docs/index.html
 export function formatDate_Day(date: string) {
@@ -26,6 +36,10 @@ export function formatDate_Day(date: string) {
 
 export function formatDate_Full(date: string) {
     return new Date(date).toString()
+}
+
+export function to5bLevelFormat(number: number) {
+    return number.toString().padStart(3, "0")
 }
 
 // Only sets if the param isn't undefined

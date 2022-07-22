@@ -7,7 +7,20 @@ export async function getLevels(amount: number, offset: number) {
         take: amount,
         include: {
             creator: true,
+        },
+        where: {
+            levelpackId: null
         }
+    })
+}
+
+export async function getLevelpacks(amount: number, offset: number) {
+    return await prisma.levelpack.findMany({
+        skip: offset,
+        take: amount,
+        include: {
+            creator: true,
+        },
     })
 }
 
@@ -16,13 +29,24 @@ export async function getLevelByProps(props: Prisma.LevelWhereUniqueInput) {
 }
 
 export async function getLevelpackByProps(props: Prisma.LevelpackWhereUniqueInput) {
-    return await prisma.levelpack.findUnique({where: props, include: {creator: true}})
+    return await prisma.levelpack.findUnique({
+        where: props,
+        include: {
+            levels: {
+                include: {
+                    creator: true
+                }
+            },
+            creator: true,
+        }
+    })
 }
 
 export async function getSearch(text: string, amount: number) {
     return await prisma.level.findMany({
         where: {
-            title: {contains: text}
+            title: {contains: text},
+            levelpackId: null
         },
         include: {
             creator: true,
@@ -42,6 +66,17 @@ export async function getUserByProps(props: Prisma.UserWhereUniqueInput) {
 
 export async function getUserLevels(props: Prisma.LevelWhereInput, amount: number, offset: number) {
     return await prisma.level.findMany({
+        where: {...props, levelpackId: null},
+        skip: offset,
+        take: amount,
+        include: {
+            creator: true,
+        },
+    })
+}
+
+export async function getUserLevelpacks(props: Prisma.LevelWhereInput, amount: number, offset: number) {
+    return await prisma.levelpack.findMany({
         where: props,
         skip: offset,
         take: amount,
@@ -50,3 +85,4 @@ export async function getUserLevels(props: Prisma.LevelWhereInput, amount: numbe
         }
     })
 }
+

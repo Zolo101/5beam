@@ -1,9 +1,9 @@
 <script lang="ts">
     import { getLevelPageClient } from "../components/client/ClientSideAPI";
-    import LevelComponent from "../components/browse/LevelComponent.svelte";
+    import LevelpackComponent from "../components/browse/LevelpackComponent.svelte";
 
     $: page = 0
-    $: levelsRequest = getLevelPageClient(page, 8, 0);
+    $: levelpacksRequest = getLevelPageClient(page, 8, 1);
 
     const changePage = (by: number) => {
         // dont go below zero
@@ -11,17 +11,17 @@
     }
 </script>
 
-<div class="levels">
-    {#await levelsRequest}
+<div class="levelpacks">
+    {#await levelpacksRequest}
         <p>Loading...</p>
-    {:then levels}
-        {#each levels as level}
-            <a href="level/{level.id}">
-                <LevelComponent {level}/>
+    {:then levelpacks}
+        {#each levelpacks as levelpack}
+            <a href="levelpack/{levelpack.id}">
+                <LevelpackComponent {levelpack}/>
             </a>
         {/each}
     {:catch error}
-        <p>Error while requesting levels: {error}</p>
+        <p>Error while requesting levelpacks: {error}</p>
     {/await}
 </div>
 <div class="pag"> <!-- pagination -->
@@ -31,7 +31,7 @@
 </div>
 
 <style>
-    .levels {
+    .levelpacks {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
         grid-auto-rows: 1fr;

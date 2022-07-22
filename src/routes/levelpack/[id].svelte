@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Levelpack from "../../components/levelpack/Level.svelte";
+    import Levelpack from "../../components/levelpack/Levelpack.svelte";
     import { getLevelpackClient } from "../../components/client/ClientSideAPI";
     import { page } from "$app/stores";
 
@@ -8,10 +8,10 @@
 
 {#await getLevelpackClient(ID)}
     <p>Loading...</p>
-{:then level}
-    <Levelpack {level}/>
+{:then levelpack}
+    <Levelpack {levelpack}/>
 {:catch error}
-    <p class="error">Error while requesting level: {error}</p>
+    <p class="error">Error while requesting levelpack: {error}</p>
 {/await}
 
 <style>

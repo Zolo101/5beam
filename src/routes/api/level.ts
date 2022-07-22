@@ -6,11 +6,7 @@ export const get: RequestHandler = async ({request}) => {
     const id = Number(url.searchParams.get("id"))
     const includeData = url.searchParams.get("includeData")
 
-    if (id === null) {
-        return {
-            status: 404,
-        }
-    }
+    if (id === null) return {status: 404} // Not Found
 
     // e()
 
