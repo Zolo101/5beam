@@ -1,5 +1,6 @@
 <script lang="ts">
     import Difficulty from "../Difficulty.svelte";
+    import User from "../User.svelte";
 
     export let level: any
 </script>
@@ -10,7 +11,7 @@
         <Difficulty difficulty={level.difficulty}/>
     </div>
     <div class="info">
-        <span class="user">by {level.creator.name}</span>
+        <User prefix="by" user={level.creator}/>
         <span class="plays">{level.plays} plays,</span>
         <span class="stars">{level.stars} stars</span>
         <p class="description">{level.description}</p>

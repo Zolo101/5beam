@@ -1,6 +1,7 @@
 <script lang="ts">
     import Difficulty from "./Difficulty.svelte";
     import { formatDate_Day } from "../misc";
+    import User from "./User.svelte";
 
     export let search
     export let results
@@ -26,7 +27,7 @@
                     <p class="title">{result.title}</p>
                 {/if}
                 <div class="footer">
-                    <p class="creator">By <span class="creator-name">{result.creator.name}</span></p>
+                    <User prefix="By" user={result.creator}/>
                     <p class="date">@ {formatDate_Day(result.createdAt)}</p>
                 </div>
             </div>

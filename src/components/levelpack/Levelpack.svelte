@@ -4,6 +4,7 @@
     import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
     import LevelpackLevelComponent from "../browse/LevelpackLevelComponent.svelte";
+    import User from "../User.svelte";
 
     export let levelpack: any
     let difficulties = levelpack.levels.map(level => level.difficulty)
@@ -16,7 +17,7 @@
         <div class="header-first">
             <span class="title">{levelpack.title}</span>
             <Difficulty difficulty={levelpackDifficulty}/>
-            <span class="user">by {levelpack.creator.name}</span>
+            <User prefix="by" user={levelpack.creator}/>
         </div>
         <span class="levelpack-notice">Levelpack</span>
     </div>

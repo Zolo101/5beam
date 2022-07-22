@@ -1,5 +1,7 @@
 <script lang="ts">
 
+    import User from "../User.svelte";
+
     export let levelpack: any
     console.log(levelpack)
 </script>
@@ -9,7 +11,7 @@
         <span class="title">{levelpack.title}</span>
     </div>
     <div class="info">
-        <span class="user">by {levelpack.creator.name}</span>
+        <User prefix="by" user={levelpack.creator}/>
         <p class="description">{levelpack.description}</p>
     </div>
 </div>

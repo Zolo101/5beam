@@ -2,6 +2,7 @@
     import Table from "../Table.svelte";
     import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
+    import User from "../User.svelte";
 
     export let level: any
     console.log(level)
@@ -11,7 +12,7 @@
     <div class="header">
         <span class="title">{level.title}</span>
         <Difficulty difficulty={level.difficulty}/>
-        <span class="user">by {level.creator.name}</span>
+        <User prefix="by" user={level.creator}/>
     </div>
     <div class="profile">
         <div class="main">

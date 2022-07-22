@@ -9,7 +9,7 @@
     $: userRequest = getUserByIdClient(ID)
     $: levels_page = 0 // known as page
     $: userLevelsRequest = getUserLevelPageClient(ID, levels_page, 16, 0);
-    $: userLevelpacksRequest = getUserLevelPageClient(ID, levels_page, 16, 1);
+    $: userLevelpacksRequest = getUserLevelPageClient(ID, 0, 32, 1);
 
     const changePage = (by: number) => {
         // dont go below zero
