@@ -43,13 +43,13 @@ function validate(file: string) {
         errors: [],
         warnings: []
     }
-    const data = file.trim().split("\r\n")
-    // Remove first line
-    if (data.shift()?.trim() != "loadedLevels=") {
-        result.errors.push("You forgot to add the loadedLevels= at the start of the file. This is required in order to start level validation.")
-        return result
-    }
+    const data = file
+        .trim()
+        .replaceAll("\r\n", "\n")
+        .split("\n")
 
+    // Remove first line if its just "loadedLevels="
+    if (data[0].trim() === "loadedLevels=") data.shift()
 
     const levels = data.join("\n").split("\n\n")
     let i = 0;
