@@ -35,8 +35,8 @@ export const post: RequestHandler = async ({request}) => {
     const fileText: string = await data.file.text()
 
     // remove loadedLevels=
-    let levels = fileText.split("\r\n").splice(1).join("\r\n").split("\r\n\r\n")
-    levels = levels.map(level => "loadedLevels=\r\n" + level)
+    let levels = fileText.split("\n").splice(1).join("\n").split("\n\n")
+    // levels = levels.map(level => "loadedLevels=\r\n" + level)
 
     // console.log(fileText)
 

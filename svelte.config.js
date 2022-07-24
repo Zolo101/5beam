@@ -9,14 +9,6 @@ const config = {
 
 	kit: {
 		adapter: adapter({out: "dist"}),
-		csp: {
-			mode: "auto",
-			directives: {
-				'default-src': undefined
-				// ...
-			}
-		}
-
 	},
 };
 

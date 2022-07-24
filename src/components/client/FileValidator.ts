@@ -107,6 +107,8 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
     const processedDialogues = processDialogue(errors, warnings, dialogues)
     const deathsRequired = Number(lines[2 + height + spriteNumber + 1 + dialogueLength])
 
+    result.errors.push(...errors)
+    result.warnings.push(...warnings)
     return {
         id: id,
         name: name,

@@ -32,7 +32,7 @@
         }
 
         result = validate(await file.text())
-        console.log(result)
+        // console.log(result)
         // @ts-ignore
         if (result.errors.length === 0) {
             valid = true
