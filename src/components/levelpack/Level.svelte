@@ -8,6 +8,12 @@
     console.log(level)
 </script>
 
+<svelte:head>
+    <title>{level.title} - 5beam</title>
+    <meta property="og:title" content={level.title}/>
+    <meta property="og:description" content={level.description}/>
+</svelte:head>
+
 <div class="level">
     <div class="header">
         <span class="title">{level.title}</span>

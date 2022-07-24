@@ -6,6 +6,12 @@
     console.log(levelpack)
 </script>
 
+<svelte:head>
+    <title>{levelpack.title} - 5beam</title>
+    <meta property="og:title" content={levelpack.title}/>
+    <meta property="og:description" content={levelpack.description}/>
+</svelte:head>
+
 <div class="levelpack">
     <div class="header">
         <span class="title">{levelpack.title}</span>
