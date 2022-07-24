@@ -12,6 +12,12 @@
     console.log(difficulties, levelpackDifficulty)
 </script>
 
+<svelte:head>
+    <title>{levelpack.title} - 5beam</title>
+    <meta property="og:title" content={levelpack.title}/>
+    <meta property="og:description" content={levelpack.description}/>
+</svelte:head>
+
 <div class="levelpack">
     <div class="header">
         <div class="header-first">

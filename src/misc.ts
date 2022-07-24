@@ -56,3 +56,4 @@ export function isLoggedIn() {
 
 export const apiURL = dev ? "http://localhost:3000" : "https://5beam.zelo.dev"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
+export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`
