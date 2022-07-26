@@ -17,6 +17,7 @@ model Level {
   data             String
   plays            Int      @default(0)
   difficulty       Int      @default(0)
+  featured         Boolean  @default(false)
   creators_starred User[]   @relation(name: "starred")
   creators_voted   User[]   @relation(name: "voted")
 
@@ -33,6 +34,7 @@ model Levelpack {
   title            String
   description      String
   levels           Level[]
+  featured         Boolean  @default(false)
   creators_starred User[]   @relation(name: "starredLevelpacks")
 }
 

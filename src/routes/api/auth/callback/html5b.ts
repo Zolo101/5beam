@@ -16,7 +16,7 @@ export const get: RequestHandler = async ({request}) => {
     return {
         status: 302,
         headers: {
-            location: `https://coppersalts.github.io/HTML5b?access_token=${accessToken}&refresh_token=${refreshToken}`,
+            location: `https://coppersalts.github.io/HTML5b/authredirect?access_token=${accessToken}&refresh_token=${refreshToken}`,
         }
     }
 }

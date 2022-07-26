@@ -43,6 +43,7 @@
                 ["data", "Level data (can be omitted by API)", ParamType.STRING],
                 ["plays", "Amount of people who've played this", ParamType.INTEGER],
                 ["difficulty", "The difficulty of the level (manually set?)", ParamType.INTEGER],
+                ["featured", "Is this level featured?", ParamType.BOOLEAN],
                 ["creators_starred", "List of creators who've starred this level", "User[]"],
                 ["creators_voted", "List of creators who've voted on this level", "User[]"],
 
@@ -65,6 +66,7 @@
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
                 ["levels", "List of levels this levelpack contains", "Level[]"],
+                ["featured", "Is this level featured?", ParamType.BOOLEAN],
                 ["creators_starred", "List of creators who've starred this levelpack", "User[]"],
             ]}>
         </Table>
