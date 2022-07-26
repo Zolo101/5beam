@@ -11,9 +11,29 @@ export const get: RequestHandler = async ({request}) => {
 
     const offset = page * amount;
     const getFunc = type ? getLevelpacks : getLevels;
+    const featuredOnly = (type === 3) ? { featured: true } : {};
+
+    let sortObj;
+    switch (sort) {
+        case 0:
+        case 3:
+            sortObj = {
+                createdAt: "desc"
+            }
+            break;
+
+        case 1:
+            sortObj = {
+                plays: "desc"
+            }
+            break;
+
+        case 2:
+            break;
+    }
 
     return {
         status: 200,
-        body: await getFunc(amount, offset)
+        body: await getFunc(amount, offset, sortObj, featuredOnly)
     }
 }

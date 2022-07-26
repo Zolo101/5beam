@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma";
 import type { Prisma } from "@prisma/client";
 
-export async function getLevels(amount: number, offset: number) {
+export async function getLevels(amount: number, offset: number, sort: any, props: Prisma.LevelWhereInput) {
     return await prisma.level.findMany({
         skip: offset,
         take: amount,
@@ -9,18 +9,22 @@ export async function getLevels(amount: number, offset: number) {
             creator: true,
         },
         where: {
-            levelpackId: null
-        }
+            levelpackId: null,
+            ...props,
+        },
+        orderBy: sort,
     })
 }
 
-export async function getLevelpacks(amount: number, offset: number) {
+export async function getLevelpacks(amount: number, offset: number, sort: any, props: Prisma.LevelpackWhereInput) {
     return await prisma.levelpack.findMany({
         skip: offset,
         take: amount,
         include: {
             creator: true,
         },
+        where: props,
+        orderBy: sort,
     })
 }
 

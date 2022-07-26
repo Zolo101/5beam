@@ -164,7 +164,7 @@
             params={[
                 ["page", "Page number", ParamType.INTEGER],
                 ["type", "Type of", ParamType.INTEGER, 0],
-                ["sort", "Sort by (WIP)", ParamType.INTEGER, 0],
+                ["sort", "Sort by", ParamType.INTEGER, 0],
                 ["amount", "Amount of levels", ParamType.INTEGER, 8],
             ]}
     >
@@ -179,7 +179,7 @@
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
             ["0", "By Age (new > old)"],
             ["1", "Top (by plays)"],
-            ["2", "Top (by stars)"],
+            ["2", "Top (by stars) (WIP, UNCERTAIN)"],
             ["3", "Featured (new > old)"],
         ]}/>
     </APIEndpoint>
@@ -193,7 +193,7 @@
             ]}
     >
         <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
-        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> who's title contains the search text.</p>
+        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> who's title contains the search text. Levelpacks are not supported in search yet.</p>
     </APIEndpoint>
 
     <APIEndpoint
@@ -217,7 +217,7 @@
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
             ["0", "By Age (new > old)"],
             ["1", "Top (by plays)"],
-            ["2", "Top (by likes?)"],
+            ["2", "Top (by stars?) (WIP, UNCERTAIN)"],
             ["3", "Featured (new > old)"],
         ]}/>
     </APIEndpoint>
