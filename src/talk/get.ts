@@ -45,7 +45,7 @@ export async function getLevelpackByProps(props: Prisma.LevelpackWhereUniqueInpu
 export async function getSearch(text: string, amount: number) {
     return await prisma.level.findMany({
         where: {
-            title: {contains: text},
+            title: {contains: text, mode: "insensitive"},
             levelpackId: null
         },
         include: {
