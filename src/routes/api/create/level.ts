@@ -2,19 +2,18 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { getUserByProps } from "../../../talk/get";
 import { getSession } from "../../../hooks";
 import { createLevel } from "../../../talk/create";
+import { oauth } from "../../../lib/auth";
+
+type PostFormData = {
+    access_token: string;
+    title: string;
+    description: string;
+    data: string;
+}
 
 export const post: RequestHandler = async ({request}) => {
-    // Make sure user is logged in
-    const user = (await getSession({request})).user;
-    if (user === false) {
-        return {
-            status: 401,
-            body: "You must be logged in to create things"
-        }
-    }
-
-    const formData = await request.formData()
     const data: any = {};
+    const formData = await request.formData()
 
     // Turn formData into an object
     // TODO: idk why this gives a typescript error
@@ -22,6 +21,16 @@ export const post: RequestHandler = async ({request}) => {
     for (let field of formData) {
         const [key, value] = field;
         data[key] = value;
+    }
+
+    // Get user from cookie, otherwise access_token
+    const user = await getDiscordUser(request, data.access_token);
+    console.log(user)
+    if (user === false) {
+        return {
+            status: 401,
+            body: "You must be logged in to create things"
+        }
     }
 
     if (!validateData(data)) {
@@ -59,4 +68,8 @@ export function validateData(data: any) {
     if (data.file.size === 0 || data.file.size > 1_000_000) return false; // 1 megabyte
     // console.log(data.title.length, data.description.length, data.file.size)
     return true;
+}
+
+export async function getDiscordUser(request: Request, access_token?: string) {
+    return (access_token) ? await oauth.getUser(access_token) : (await getSession({request})).user;
 }

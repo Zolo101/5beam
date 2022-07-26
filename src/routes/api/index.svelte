@@ -228,12 +228,12 @@
             game_only
             token_required
     >
-        <p>Create a <APIReference type={"STRUCT"} reference={"Level"}/>. You will need to give 5beam the following:</p>
+        <p>Create a <APIReference type={"STRUCT"} reference={"Level"}/>. Make sure access_token is valid before posting! You will need to give 5beam the following using a FormData object:</p>
         <Table heads={["Property", "Meaning", "Type"]} content={[
-                ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
+                ["access_token", "User's discord access token.", ParamType.STRING],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
-                ["data", "Level file", ParamType.STRING],
+                ["data", "Level file", "File"],
             ]}>
         </Table>
     </APIEndpoint>
@@ -244,12 +244,12 @@
             game_only
             token_required
     >
-        <p>Create a <APIReference type={"STRUCT"} reference={"Levelpack"}/>. You will need to give 5beam the following:</p>
+        <p>Create a <APIReference type={"STRUCT"} reference={"Levelpack"}/>. Make sure access_token is valid before posting! You will need to give 5beam the following using a FormData object:</p>
         <Table heads={["Property", "Meaning", "Type"]} content={[
-                ["creatorId", "The user's ID who made this (not discord ID)", ParamType.INTEGER],
+                ["access_token", "User's discord access token.", ParamType.STRING],
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
-                ["data", "Levelpack file", ParamType.STRING],
+                ["data", "Levelpack file", "File"],
             ]}>
         </Table>
     </APIEndpoint>

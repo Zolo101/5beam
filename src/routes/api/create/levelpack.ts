@@ -1,18 +1,9 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserByProps } from "../../../talk/get";
-import { getSession } from "../../../hooks";
 import { createLevelpack } from "../../../talk/create";
-import { validateData } from "./level";
+import { getDiscordUser, validateData } from "./level";
 
 export const post: RequestHandler = async ({request}) => {
-    const user = (await getSession({request})).user;
-    if (user === false) {
-        return {
-            status: 401,
-            body: "You must be logged in to create things"
-        }
-    }
-
     const formData = await request.formData()
     const data: any = {};
 
@@ -21,6 +12,15 @@ export const post: RequestHandler = async ({request}) => {
     for (let field of formData) {
         const [key, value] = field;
         data[key] = value;
+    }
+
+    // Get user from cookie, otherwise access_token
+    const user = await getDiscordUser(request, data.access_token);
+    if (user === false) {
+        return {
+            status: 401,
+            body: "You must be logged in to create things"
+        }
     }
 
     if (!validateData(data)) {
