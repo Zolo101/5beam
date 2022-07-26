@@ -152,11 +152,11 @@
             endpoint={["api", "user"]}
             params={[
                 ["id", "User ID", ParamType.INTEGER],
-                ["discordId", "User's Discord ID", ParamType.INTEGER],
+                ["discordId", "User's Discord ID", ParamType.STRING],
             ]}
     >
         <p>Returns a <APIReference type={"STRUCT"} reference={"User"}/>.</p>
-        <p>You can use either "id" or "discordId", but not both.</p>
+        <p>You can use either "id" or "discordId", but if you use both, only "id" will be used.</p>
     </APIEndpoint>
 
     <APIEndpoint

@@ -3,17 +3,13 @@ import { getUserByProps } from "../../../talk/get";
 
 export const get: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
-    const id = Number(url.searchParams.get("id"))
-    const discordId = url.searchParams.get("discordId") ?? ""
+    let id = Number(url.searchParams.get("id"))
+    const discordId = url.searchParams.get("discordId") ?? undefined
 
-    if (id === null) {
-        return {
-            status: 404,
-        }
-    }
+    if (id === 0 && discordId === undefined) return {status: 404};
+
     return {
         status: 200,
-        // TODO: apparently this will always be false? "=== NaN"
-        body: (id === NaN) ? await getUserByProps({ discordId }) : await getUserByProps({ id })
+        body: (id === 0) ? await getUserByProps({ discordId }) : await getUserByProps({ id })
     }
 }
