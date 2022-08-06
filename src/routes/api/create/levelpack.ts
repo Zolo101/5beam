@@ -23,7 +23,7 @@ export const post: RequestHandler = async ({request}) => {
         }
     }
 
-    if (!validateData(data)) {
+    if (!await validateData(data)) {
         // TODO: This doesnt return well (returns as JSON even though it isn't)
         return {
             status: 400,

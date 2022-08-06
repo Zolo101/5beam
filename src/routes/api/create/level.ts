@@ -3,6 +3,7 @@ import { getUserByProps } from "../../../talk/get";
 import { getSession } from "../../../hooks";
 import { createLevel } from "../../../talk/create";
 import { oauth } from "../../../lib/auth";
+import validate from "../../../components/client/FileValidator";
 
 type PostFormData = {
     access_token: string;
@@ -25,7 +26,7 @@ export const post: RequestHandler = async ({request}) => {
 
     // Get user from cookie, otherwise access_token
     const user = await getDiscordUser(request, data.access_token);
-    console.log(user)
+
     if (user === false) {
         return {
             status: 401,
@@ -33,7 +34,7 @@ export const post: RequestHandler = async ({request}) => {
         }
     }
 
-    if (!validateData(data)) {
+    if (!await validateData(data)) {
         // TODO: This doesnt return well (returns as JSON even though it isn't)
         return {
             status: 400,
@@ -62,10 +63,13 @@ export const post: RequestHandler = async ({request}) => {
     }
 }
 
-export function validateData(data: any) {
+export async function validateData(data: any) {
     if (data.title.length === 0 || data.title.length > 64) return false;
     if (data.description.length === 0 || data.description.length > 1024) return false;
     if (data.file.size === 0 || data.file.size > 1_000_000) return false; // 1 megabyte
+
+    const fileText = await data.file.text()
+    if (validate(fileText).errors.length !== 0) return false;
     // console.log(data.title.length, data.description.length, data.file.size)
     return true;
 }
