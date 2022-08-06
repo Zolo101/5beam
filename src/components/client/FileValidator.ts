@@ -79,9 +79,9 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
     const spriteNumber = Number(props[2])
     const background = Number(props[3])
     const type = props[4]
-    if (width < 32 || width > 99) errors.push(`${name} has a width of ${width} which is not between 32 and 99`)
-    if (height < 18 || height > 99) errors.push(`${name} has a height of ${height} which is not between 18 and 9`)
-    if (spriteNumber < 0 || spriteNumber > 99) errors.push(`${name} has a sprite number of ${spriteNumber} which is not between 0 and 99`)
+    // if (width < 32 || width > 99) errors.push(`${name} has a width of ${width} which is not between 32 and 99`)
+    // if (height < 18 || height > 99) errors.push(`${name} has a height of ${height} which is not between 18 and 99`)
+    if (spriteNumber < 1) errors.push(`${name} needs at least one sprite`)
     if (background < 0 || background > 15) errors.push(`${name} has a background of ${background} which is not between 0 and 15`)
     if (type != "L" && type != "H") errors.push(`${name} has a level type of '${type}' which is not 'L' or 'H'`)
 
@@ -152,8 +152,8 @@ function processSprites(errors: string[], warnings: string[], sprites: string[])
         }
 
         if (entityId < 0 || entityId > 99) errors.push(`Sprite ${i} has an entity id of ${entityId} which is not between 0 and 99`)
-        if (x < 0 || x > 99) errors.push(`Sprite ${i} has an x of ${x} which is not between 0.00 and 99.00`)
-        if (y < 0 || y > 99) errors.push(`Sprite ${i} has an y of ${y} which is not between 0.00 and 99.00`)
+        // if (x < 0 || x > 99) errors.push(`Sprite ${i} has an x of ${x} which is not between 0.00 and 99.00`)
+        // if (y < 0 || y > 99) errors.push(`Sprite ${i} has an y of ${y} which is not between 0.00 and 99.00`)
         if (roleId < 0 || roleId > 99) errors.push(`Sprite ${i} has a role id of ${roleId} which is not between 0 and 99`)
 
         i += 1;
