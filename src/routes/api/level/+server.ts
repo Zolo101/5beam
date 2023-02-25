@@ -1,7 +1,9 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import { getLevelByProps } from "../../talk/get";
+throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
-export const get: RequestHandler = async ({request}) => {
+import type { RequestHandler } from "@sveltejs/kit";
+import { getLevelByProps } from "../../../talk/get";
+
+export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const id = Number(url.searchParams.get("id"))
     const includeData = url.searchParams.get("includeData")
@@ -10,10 +12,7 @@ export const get: RequestHandler = async ({request}) => {
 
     // e()
 
-    return {
-        status: 200,
-        body: await getLevelByProps({ id })
-    }
+    return new Response(await getLevelByProps({ id }), {status: 200})
 }
 
 

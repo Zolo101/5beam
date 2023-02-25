@@ -1,8 +1,10 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import { requestToken } from "../../../../lib/auth";
-import { redirectURL_html5b } from "../../../../misc";
+throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
-export const get: RequestHandler = async ({request}) => {
+import type { RequestHandler } from "@sveltejs/kit";
+import { requestToken } from "../../../../../lib/auth";
+import { redirectURL_html5b } from "../../../../../misc";
+
+export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const code = url.searchParams.get("code") ?? ""
 
@@ -13,10 +15,10 @@ export const get: RequestHandler = async ({request}) => {
     // const access_token_expires_in = new Date(Date.now() + tokenResponse.expires_in); // 10 minutes
     // const refresh_token_expires_in = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)); // 30 days
 
-    return {
+    return new Response("", {
         status: 302,
         headers: {
-            location: `https://coppersalts.github.io/HTML5b/authredirect?access_token=${accessToken}&refresh_token=${refreshToken}`,
+            "location": `https://coppersalts.github.io/HTML5b/authredirect?access_token=${accessToken}&refresh_token=${refreshToken}`
         }
-    }
+    })
 }

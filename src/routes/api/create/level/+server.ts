@@ -1,9 +1,11 @@
+throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
+
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByProps } from "../../../talk/get";
-import { getSession } from "../../../hooks";
-import { createLevel } from "../../../talk/create";
-import { oauth } from "../../../lib/auth";
-import validate from "../../../components/client/FileValidator";
+import { getUserByProps } from "../../../../talk/get";
+import { getSession } from "../../../../hooks";
+import { createLevel } from "../../../../talk/create";
+import { oauth } from "../../../../lib/auth";
+import validate from "../../../../components/client/FileValidator";
 
 type PostFormData = {
     access_token: string;
@@ -28,18 +30,14 @@ export const post: RequestHandler = async ({request}) => {
     const user = await getDiscordUser(request, data.access_token);
 
     if (user === false) {
-        return {
-            status: 401,
-            body: "You must be logged in to create things"
-        }
+        return new Response("You must be logged in to create things", {status: 401})
     }
 
     if (!await validateData(data)) {
+        // is this still true post-migrate?
         // TODO: This doesnt return well (returns as JSON even though it isn't)
-        return {
-            status: 400,
-            body: "Invalid FormData"
-        }
+
+        return new Response("Invalid FormData", {status: 400})
     }
 
     // console.log(data, user)
@@ -57,10 +55,7 @@ export const post: RequestHandler = async ({request}) => {
         data: fileText
     })
 
-    return {
-        status: 200,
-        body: level
-    }
+    return new Response(level, {status: 200})
 }
 
 export async function validateData(data: any) {

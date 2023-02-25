@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { getUserByIdClient, getUserLevelPageClient } from "../../components/client/ClientSideAPI";
-    import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
+    import { getUserByIdClient, getUserLevelPageClient } from "../../../components/client/ClientSideAPI";
+    import LevelpackComponent from "../../../components/browse/LevelpackComponent.svelte";
     import { page } from "$app/stores";
-    import { formatDate_Full } from "../../misc";
-    import LevelComponent from "../../components/browse/LevelComponent.svelte";
+    import { formatDate_Full } from "../../../misc";
+    import LevelComponent from "../../../components/browse/LevelComponent.svelte";
 
     const ID = Number($page.params.id)
     $: userRequest = getUserByIdClient(ID)

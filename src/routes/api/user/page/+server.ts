@@ -1,7 +1,9 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import { getUserLevelpacks, getUserLevels } from "../../../talk/get";
+throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
-export const get: RequestHandler = async ({request}) => {
+import type { RequestHandler } from "@sveltejs/kit";
+import { getUserLevelpacks, getUserLevels } from "../../../../talk/get";
+
+export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const creatorId = Number(url.searchParams.get("creatorId"))
     const page = Number(url.searchParams.get("page"))
@@ -13,8 +15,5 @@ export const get: RequestHandler = async ({request}) => {
     const offset = page * amount;
     const getFunc = type ? getUserLevelpacks : getUserLevels;
 
-    return {
-        status: 200,
-        body: await getFunc({creatorId}, amount, offset)
-    }
+    return new Response(await getFunc({creatorId}, amount, offset), {status: 200})
 }

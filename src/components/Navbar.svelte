@@ -1,12 +1,12 @@
 <script lang="ts">
-    import { session } from '$app/stores';
     import { onMount } from "svelte";
     import SearchResults from "./SearchResults.svelte";
     import { getSearchClient } from "./client/ClientSideAPI";
     import { writable } from "svelte/store";
 
-    let user = $session.user
-    let loggedIn = !!user
+    // let user = $session.user
+    // let loggedIn = !!user
+    let loggedIn = false
     // console.log("userinfo", user)
 
     const searchResults = writable([])
@@ -33,7 +33,7 @@
         <a href="/api">API</a>
         {#if loggedIn}
 <!--            <a href="/profile">Profile</a>-->
-            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
+<!--            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>-->
         {:else}
             <a href="/api/auth/discord">Log In</a>
         {/if}

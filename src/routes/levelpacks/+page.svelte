@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { getLevelPageClient } from "../components/client/ClientSideAPI";
-    import LevelpackComponent from "../components/browse/LevelpackComponent.svelte";
+    import { getLevelPageClient } from "../../components/client/ClientSideAPI";
+    import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
 
     $: page = 0
     $: levelpacksRequest = getLevelPageClient(page, 8, 1);

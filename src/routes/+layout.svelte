@@ -1,4 +1,5 @@
 <script lang="ts">
+    import "../app.css";
     import Navbar from "../components/Navbar.svelte";
     import Line from "../components/Line.svelte";
     import Footer from "../components/Footer.svelte";

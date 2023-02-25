@@ -1,7 +1,4 @@
-import { dev } from "$app/env";
-import { session } from "$app/stores";
-import type { DiscordUser } from "./lib/auth";
-import { get } from "svelte/store";
+import { dev } from "$app/environment";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -50,10 +47,11 @@ export function URLParamSet(url: URL, prop: string, param: number | string | und
 }
 
 export function isLoggedIn() {
-    const user: (DiscordUser | false) = get<any>(session).user
-    return (user !== false)
+    // const user: (DiscordUser | false) = get<any>(page.data.user).user
+    // return (user !== false)
+    return false
 }
 
-export const apiURL = dev ? "http://localhost:3000" : "https://5beam.zelo.dev"
+export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`

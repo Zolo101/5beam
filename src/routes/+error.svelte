@@ -1,25 +1,15 @@
 <script context="module">
-    export function load({ error, status }) {
-        return {
-            props: {
-                message: error.message,
-                status // same as status: status
-            }
-        };
-    }
+    import {page} from "$app/stores";
 </script>
 
 <script>
     // import ErrorScreen from '../components/screens/ErrorScreen.svelte'; // your own Error screen component
     // import NotFoundScreen from '../components/screens/NotFoundScreen.svelte'; // your own 404 screen component
-
-    export let message;
-    export let status;
 </script>
 
 <div class="http-error">
-    <p class="status">{status}</p>
-    <p class="message">{message}</p>
+    <p class="status">{$page.status}</p>
+    <p class="message">{$page.error.message}</p>
 </div>
 
 <style>

@@ -1,7 +1,9 @@
+throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
+
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByProps } from "../../../talk/get";
-import { createLevelpack } from "../../../talk/create";
-import { getDiscordUser, validateData } from "./level";
+import { getUserByProps } from "../../../../talk/get";
+import { createLevelpack } from "../../../../talk/create";
+import { getDiscordUser, validateData } from "../level/+server";
 
 export const post: RequestHandler = async ({request}) => {
     const formData = await request.formData()
@@ -17,18 +19,14 @@ export const post: RequestHandler = async ({request}) => {
     // Get user from cookie, otherwise access_token
     const user = await getDiscordUser(request, data.access_token);
     if (user === false) {
-        return {
-            status: 401,
-            body: "You must be logged in to create things"
-        }
+        return new Response("You must be logged in to create things", {status: 401})
     }
 
     if (!await validateData(data)) {
+        // is this still true post-migrate?
         // TODO: This doesnt return well (returns as JSON even though it isn't)
-        return {
-            status: 400,
-            body: "Invalid FormData"
-        }
+
+        return new Response("Invalid FormData", {status: 400})
     }
 
     // console.log(data, user)
@@ -65,8 +63,5 @@ export const post: RequestHandler = async ({request}) => {
         }
     })
 
-    return {
-        status: 200,
-        body: levelpack
-    }
+    return new Response(levelpack, {status: 200})
 }
