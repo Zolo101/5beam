@@ -11,8 +11,7 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-kit sync && svelte-check --tsconfig tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig tsconfig.json --watch",
-		"lint": "eslint ."
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig tsconfig.json --watch"
 	},
 	"author": "Zelo101",
 	"devDependencies": {
@@ -20,10 +19,6 @@
 		"@sveltejs/kit": "next",
 		"@types/cookie": "^0.5.1",
 		"@types/ramda": "^0.28.15",
-		"@typescript-eslint/eslint-plugin": "^5.27.0",
-		"@typescript-eslint/parser": "^5.27.0",
-		"eslint": "^8.16.0",
-		"eslint-plugin-svelte3": "^4.0.0",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
