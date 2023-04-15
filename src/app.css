@@ -1,13 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    @apply h-full;
+}
+
 /* Globals */
 body {
-    font-family: Arial, serif;
+    font-family: Inter, sans-serif;
     margin: 0;
-    background: darkgrey;
+    background: repeating-linear-gradient(
+            45deg,
+            #721e1e,
+            #721e1e 10px,
+            #4c1414 10px,
+            #4c1414 20px
+    ), linear-gradient(0deg, transparent, black);
+    backdrop-filter: blur(6px);
+    @apply h-full;
+    /*background: darkgrey;*/
     /*background: linear-gradient(gainsboro, ghostwhite 80%, gainsboro) no-repeat, gainsboro;*/
 }
 
 button {
-    padding: 5px;
+    @apply px-7 py-4 text-2xl bg-gradient-to-b rounded-lg shadow-md;
 }
 
 a {
@@ -15,6 +34,12 @@ a {
     color: inherit;
 }
 
+/* TODO: Is this a good idea? */
+svg {
+    @apply inline;
+}
+
 .error {
     color: red;
 }
+
