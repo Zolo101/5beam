@@ -1,18 +1,19 @@
-throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
+// throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
 import type { RequestHandler } from "@sveltejs/kit";
-import { getLevelByProps } from "../../../talk/get";
+import { getLevelById } from "../../../talk/get";
+import { return404 } from "../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
-    const id = Number(url.searchParams.get("id"))
+    const id = url.searchParams.get("id")
     const includeData = url.searchParams.get("includeData")
 
-    if (id === null) return {status: 404} // Not Found
+    if (id === null) return return404() // Not Found
 
     // e()
 
-    return new Response(await getLevelByProps({ id }), {status: 200})
+    return new Response(await getLevelById(id), {status: 200})
 }
 
 

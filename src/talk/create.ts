@@ -1,14 +1,29 @@
-import prisma from "../lib/prisma";
-import type { Prisma } from "@prisma/client";
+import type { CreateLevel, User } from "$lib/types";
+import { mergeObjects } from "../misc";
+import { db } from "$lib/firebase-server";
+import { Timestamp } from "firebase-admin/firestore";
 
-export async function createLevel(obj: Prisma.LevelCreateArgs["data"]) {
-    return await prisma.level.create({ data: obj })
+let user: User;
+
+export async function createLevel(obj: CreateLevel) {
+    const newDocumentRef = db.collection("posts").doc();
+    const finalLevel = mergeObjects(obj, {
+        creator: user,
+        created: Timestamp.now(),
+        plays: 0,
+        difficulty: 0,
+        featured: false
+    })
+
+    return await newDocumentRef.create(finalLevel)
 }
 
-export async function createLevelpack(obj: Prisma.LevelpackCreateArgs["data"]) {
-    return await prisma.levelpack.create({ data: obj })
-}
+// export async function createLevelpack(obj: Prisma.LevelpackCreateArgs["data"]) {
+//     return await prisma.levelpack.create({ data: obj })
+// }
 
-export async function createUser(obj: Prisma.UserCreateArgs["data"]) {
-    return await prisma.user.create({ data: obj })
-}
+
+// TODO: I'll do this via functions
+// export async function createUser(obj: Crewa]) {
+//     return await prisma.user.create({ data: obj })
+// }

@@ -11,7 +11,7 @@
         <Difficulty difficulty={level.difficulty}/>
     </div>
     <div class="info">
-        <User prefix="by" user={level.creator}/>
+        <User prefix="by" id={level.creator}/>
         <span class="plays">{level.plays} plays,</span>
         <span class="stars">{level.stars} stars</span>
         <p class="description">{level.description}</p>

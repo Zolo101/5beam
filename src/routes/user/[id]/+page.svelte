@@ -5,11 +5,11 @@
     import { formatDate_Full } from "../../../misc";
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
 
-    const ID = Number($page.params.id)
-    $: userRequest = getUserByIdClient(ID)
+    const id = $page.params.id
+    $: userRequest = getUserByIdClient(id)
     $: levels_page = 0 // known as page
-    $: userLevelsRequest = getUserLevelPageClient(ID, levels_page, 16, 0);
-    $: userLevelpacksRequest = getUserLevelPageClient(ID, 0, 32, 1);
+    $: userLevelsRequest = getUserLevelPageClient(id, levels_page, 16, 0);
+    $: userLevelpacksRequest = getUserLevelPageClient(id, 0, 32, 1);
 
     const changePage = (by: number) => {
         // dont go below zero
@@ -22,8 +22,8 @@
         <p class="loading">Loading...</p>
     {:then user}
         <div class="profile">
-            <h1>{user.name}</h1>
-            <h2>Created on {formatDate_Full(user.createdAt)}</h2>
+            <h1>{user.username}</h1>
+            <h2>Created on {formatDate_Full(user.created)}</h2>
         </div>
     {:catch error}
         <p class="error">Error while requesting user: {error}</p>
@@ -50,6 +50,7 @@
     {#await userLevelsRequest}
         <p class="loading">Loading...</p>
     {:then levels}
+        <!--{@debug levels}-->
         {#each levels as level}
             <a href="/level/{level.id}">
                 <LevelComponent {level}/>
@@ -61,11 +62,11 @@
 </div>
 
 
-<div class="pag"> <!-- pagination -->
-    <span class="pag-arrow" on:click={() => changePage(-1)}>{"<"}</span>
-    <span class="pag-number">{levels_page}</span>
-    <span class="pag-arrow" on:click={() => changePage(1)}>{">"}</span>
-</div>
+<!--<div class="pag"> &lt;!&ndash; pagination &ndash;&gt;-->
+<!--    <span class="pag-arrow" on:click={() => changePage(-1)}>{"<"}</span>-->
+<!--    <span class="pag-number">{levels_page}</span>-->
+<!--    <span class="pag-arrow" on:click={() => changePage(1)}>{">"}</span>-->
+<!--</div>-->
 
 <style>
     a {

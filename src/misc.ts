@@ -1,4 +1,5 @@
 import { dev } from "$app/environment";
+import type { Timestamp } from "firebase/firestore";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -31,8 +32,8 @@ export function formatDate_Day(date: string) {
     })
 }
 
-export function formatDate_Full(date: string) {
-    return new Date(date).toString()
+export function formatDate_Full(date: Timestamp) {
+    return new Date(date._seconds * 1000).toString()
 }
 
 export function to5bLevelFormat(number: number) {
@@ -51,6 +52,15 @@ export function isLoggedIn() {
     // return (user !== false)
     return false
 }
+
+export function return404() {
+    return new Response(null, {status: 404})
+}
+
+export const mergeObjects = <A, B>(a: A, b: B): A & B => {
+    return {...a, ...b}
+}
+
 
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`

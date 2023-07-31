@@ -23,7 +23,7 @@
         <div class="header-first">
             <span class="title">{levelpack.title}</span>
             <Difficulty difficulty={levelpackDifficulty}/>
-            <User prefix="by" user={levelpack.creator}/>
+            <User prefix="by" id={levelpack.creator}/>
         </div>
         <span class="levelpack-notice">Levelpack</span>
     </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="info">
             <Table content={[
-                ["Created on", formatDate_Full(levelpack.createdAt)],
+                ["Created on", formatDate_Full(levelpack.created)],
                 //["Plays", levelpack.plays],
                 //["Stars", levelpack.stars],
                 ["Difficulty", `${difficultyMap.get(levelpackDifficulty)} (${levelpackDifficulty})`],

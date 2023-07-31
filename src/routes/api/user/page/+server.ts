@@ -1,11 +1,12 @@
-throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
+// throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserLevelpacks, getUserLevels } from "../../../../talk/get";
+import { getUserLevels } from "../../../../talk/get";
+import { return404 } from "../../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
-    const creatorId = Number(url.searchParams.get("creatorId"))
+    const creatorId = url.searchParams.get("creatorId")
     const page = Number(url.searchParams.get("page"))
     const type = Number(url.searchParams.get("type") ?? 0)
     const sort = Number(url.searchParams.get("sort") ?? 0)
@@ -13,7 +14,10 @@ export const GET: RequestHandler = async ({request}) => {
     const includeData = url.searchParams.get("data") ?? false
 
     const offset = page * amount;
-    const getFunc = type ? getUserLevelpacks : getUserLevels;
+    // const getFunc = type ? getUserLevelpacks : getUserLevels;
+    const getFunc = getUserLevels;
 
-    return new Response(await getFunc({creatorId}, amount, offset), {status: 200})
+    if (creatorId === null) return return404() // Not Found
+
+    return new Response(await getFunc(creatorId, amount, offset), {status: 200})
 }

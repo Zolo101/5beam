@@ -1,7 +1,7 @@
-throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
+// throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByProps } from "../../../../talk/get";
+import { getUserById } from "../../../../talk/get";
 import { getSession } from "../../../../hooks";
 import { createLevel } from "../../../../talk/create";
 import { oauth } from "../../../../lib/auth";
@@ -46,7 +46,7 @@ export const post: RequestHandler = async ({request}) => {
 
     // TODO: Remove non-null symbol
     // This is to get the user's ID rather than Discord ID
-    const userDBID = (await getUserByProps({discordId: user.id }))!.id
+    const userDBID = (await getUserById({discordId: user.id }))!.id
 
     const level = await createLevel({
         creatorId: userDBID,

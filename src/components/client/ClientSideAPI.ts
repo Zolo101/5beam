@@ -1,4 +1,5 @@
 import { apiURL, URLParamSet } from "../../misc";
+import type { BaseUser } from "$lib/types";
 
 export async function postCreateLevelClient(formData: FormData) {
     const url = new URL(`${apiURL}/api/create/level`)
@@ -51,7 +52,7 @@ export async function getSearchClient(text: string, amount?: number) {
     return callAPI(url)
 }
 
-export async function getUserByIdClient(id: number) {
+export async function getUserByIdClient(id: string): Promise<BaseUser> {
     const url = new URL(`${apiURL}/api/user`)
     URLParamSet(url, "id", id)
 
@@ -65,7 +66,7 @@ export async function getUserByDiscordIdClient(discordId: number) {
     return callAPI(url)
 }
 
-export async function getUserLevelPageClient(creatorId: number, page: number, amount?: number, type?: number, sort?: number) {
+export async function getUserLevelPageClient(creatorId: string, page: number, amount?: number, type?: number, sort?: number) {
     const url = new URL(`${apiURL}/api/user/page`)
     URLParamSet(url, "creatorId", creatorId)
     URLParamSet(url, "page", page)

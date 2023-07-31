@@ -15,6 +15,7 @@
     {#await levelsRequest}
         <p>Loading...</p>
     {:then levels}
+        <!--{@debug levels}-->
         {#each levels as level}
             <a href="level/{level.id}">
                 <LevelComponent {level}/>

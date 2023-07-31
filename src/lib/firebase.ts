@@ -5,6 +5,7 @@ import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
+import type { User } from "$lib/types";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,7 +23,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
@@ -38,8 +38,8 @@ if (EMULATE) {
     connectFunctionsEmulator(functions, "localhost", 5001);
 }
 
-// export const user = (await signInAnonymously(auth)).user;
-//
+export let user: User;
+
 // // create document if new user
 // if (localStorage.getItem("uid") !== user.uid) {
 //     await setDoc(doc(db, "users", user.uid), {alivePosts: increment(0)})

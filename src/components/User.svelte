@@ -1,12 +1,20 @@
 <script lang="ts">
-    export let user;
-    export let prefix;
+    import { getUserByIdClient } from "./client/ClientSideAPI";
+
+    export let id: string;
+    export let prefix: string;
 </script>
 
 <span>{prefix}</span>
-<a href="/user/{user.id}" target="_self">
-    <span>{user.name}</span>
-</a>
+{#await getUserByIdClient(id)}
+    <span>???</span>
+{:then user}
+    <a href="/user/{user.id}" target="_self">
+        <span>{user.username}</span>
+    </a>
+{:catch error}
+    <span>Unknown user</span>
+{/await}
 
 <style>
     a {

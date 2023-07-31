@@ -1,9 +1,9 @@
-throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
-
+/*
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByProps } from "../../../../talk/get";
-import { createLevelpack } from "../../../../talk/create";
+import { getUserById } from "../../../../talk/get";
+// import { createLevelpack } from "../../../../talk/create";
 import { getDiscordUser, validateData } from "../level/+server";
+
 
 export const post: RequestHandler = async ({request}) => {
     const formData = await request.formData()
@@ -41,7 +41,7 @@ export const post: RequestHandler = async ({request}) => {
     // TODO: Remove non-null symbol
     // This is to get the user's ID rather than Discord ID
     console.log(user)
-    const userDBID = (await getUserByProps({discordId: user.id }))!.id
+    const userDBID = (await getUserById({discordId: user.id }))!.id
 
     const levelsParamArray = levels.map((level, index) => {
         const i = index + 1;
@@ -65,3 +65,4 @@ export const post: RequestHandler = async ({request}) => {
 
     return new Response(levelpack, {status: 200})
 }
+*/

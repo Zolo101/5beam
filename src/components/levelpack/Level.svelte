@@ -18,7 +18,7 @@
     <div class="header">
         <span class="title">{level.title}</span>
         <Difficulty difficulty={level.difficulty}/>
-        <User prefix="by" user={level.creator}/>
+        <User prefix="by" id={level.creator}/>
     </div>
     <div class="profile">
         <div class="main">
@@ -27,9 +27,9 @@
         </div>
         <div class="info">
             <Table content={[
-                ["Created on", formatDate_Full(level.createdAt)],
+                ["Created on", formatDate_Full(level.created)],
                 ["Plays", level.plays],
-                ["Stars", level.stars],
+                //["Stars", level.stars],
                 ["Difficulty", `${difficultyMap.get(level.difficulty)} (${level.difficulty})`],
             ]}></Table>
             <br>

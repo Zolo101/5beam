@@ -1,15 +1,17 @@
-throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
+// throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByProps } from "../../../talk/get";
+import { getUserById } from "../../../talk/get";
+import { return404 } from "../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
-    let id = Number(url.searchParams.get("id"))
-    const discordId = url.searchParams.get("discordId") ?? undefined
+    let id = url.searchParams.get("id")
+    // TODO: To remove
+    // const discordId = url.searchParams.get("discordId") ?? undefined
 
-    if (id === 0 && discordId === undefined) return {status: 404};
+    if (id === null) return return404();
 
-    let body = (id === 0) ? await getUserByProps({ discordId }) : await getUserByProps({ id })
+    let body = await getUserById(id)
     return new Response(body, {status: 200})
 }
