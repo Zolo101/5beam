@@ -1,15 +1,15 @@
 <script lang="ts">
     import "../app.css";
-    import Navbar from "../components/Navbar.svelte";
-    import Line from "../components/Line.svelte";
-    import Footer from "../components/Footer.svelte";
+    import Navbar from "../components/layout/Navbar.svelte";
+    import Line from "../components/layout/Line.svelte";
+    import Footer from "../components/layout/Footer.svelte";
 
     let navbarComponent;
     let backgroundId = `/backgrounds/${Date.now() % 11}.png`;
 </script>
 
 <div class="app">
-    <div class="background" style="background-image: url({backgroundId})"></div>
+<!--    <div class="background" style="background-image: url({backgroundId})"></div>-->
     <Navbar bind:this={navbarComponent}/>
     <Line/>
     <div class="page">

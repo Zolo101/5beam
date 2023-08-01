@@ -15,8 +15,10 @@ const firebaseConfig = {
     measurementId: "G-XR1TLCW8H2"
 };
 
+// process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
+
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig, "server");
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);

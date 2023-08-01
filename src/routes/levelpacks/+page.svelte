@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getLevelPageClient } from "../../components/client/ClientSideAPI";
+    import { getLevelPageClient } from "../../client/ClientSideAPI";
     import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
 
     $: page = 0

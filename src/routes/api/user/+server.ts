@@ -13,5 +13,6 @@ export const GET: RequestHandler = async ({request}) => {
     if (id === null) return return404();
 
     let body = await getUserById(id)
+    // console.log(body)
     return new Response(body, {status: 200})
 }

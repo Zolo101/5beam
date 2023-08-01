@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getUserByIdClient } from "./client/ClientSideAPI";
+    import { getUserByIdClient } from "../client/ClientSideAPI";
 
     export let id: string;
     export let prefix: string;

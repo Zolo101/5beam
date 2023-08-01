@@ -1,6 +1,6 @@
 <script lang="ts">
     import * as R from "ramda";
-    import Table from "../Table.svelte";
+    import Table from "../layout/Table.svelte";
     import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
     import LevelpackLevelComponent from "../browse/LevelpackLevelComponent.svelte";

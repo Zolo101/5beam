@@ -1,8 +1,8 @@
 <script lang="ts">
     import { isLoggedIn } from "../../misc";
-    import { postCreateLevelClient, postCreateLevelpackClient } from "../../components/client/ClientSideAPI";
+    import { postCreateLevelClient, postCreateLevelpackClient } from "../../client/ClientSideAPI";
     import Validator from "../../components/Validator.svelte";
-    import validate from "../../components/client/FileValidator";
+    import validate from "../../client/FileValidator";
 
     const loggedIn = isLoggedIn();
     $: page = "level"

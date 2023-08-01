@@ -1,6 +1,6 @@
 <script lang="ts">
     import APIEndpoint from "../../components/api/APIEndpoint.svelte";
-    import Table from "../../components/Table.svelte";
+    import Table from "../../components/layout/Table.svelte";
     import APIReference from "../../components/api/APIReference.svelte";
     // const ratelimits = [
     //     ["GET", 1000, 10],

@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { getLevelPageClient } from "../components/client/ClientSideAPI";
+    import { getLevelPageClient } from "../client/ClientSideAPI";
     import LevelComponent from "../components/browse/LevelComponent.svelte";
+    import Button from "../components/Button.svelte";
 
     $: page = 0
     $: levelsRequest = getLevelPageClient(page, 8, 0);
@@ -11,7 +12,16 @@
     }
 </script>
 
-<div class="levels">
+<p class="text-3xl text-center p-5">5beam is a website that allows you to upload, share, and play BFDIA 5b levels you've made!</p>
+<div class="flex gap-4 justify-center">
+    <Button text="Play BFDIA 5b!" bg="#4ade80"/>
+    <Button text="Upload a level" bg="#38bdf8"/>
+    <Button text="Join our discord!" bg="#5865f2"/>
+</div>
+
+<br><br>
+<p class="text-4xl text-neutral-400 font-bold">Recent Levels</p>
+<div class="flex flex-wrap gap-4">
     {#await levelsRequest}
         <p>Loading...</p>
     {:then levels}
@@ -32,13 +42,6 @@
 </div>
 
 <style>
-    .levels {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-        grid-auto-rows: 1fr;
-        grid-gap: 30px;
-    }
-
     .pag {
         text-align: center;
         font-size: 3rem;

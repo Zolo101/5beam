@@ -1,5 +1,6 @@
 import { db } from "$lib/firebase-server";
 import type { DocumentSnapshot, QuerySnapshot } from "firebase-admin/firestore";
+import { FieldPath } from "firebase-admin/firestore";
 import { mergeObjects } from "../misc";
 
 export async function getLevels(amount: number, offset: number, sort: any, x: any) {
@@ -88,11 +89,17 @@ export async function getUserLevels(id: string, amount: number, offset: number) 
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
 
-    const levelsSnapshot = await db
+    const userDoc = (
+        await db
         .collection("users")
         .doc(id)
+        .get()
+    )
+        .data()!
+
+    const levelsSnapshot = await db
         .collection("levels")
-        .limit(amount)
+        .where(FieldPath.documentId(), "in", userDoc.levels)
         .get()
 
     return evaluateSnapshot(levelsSnapshot);

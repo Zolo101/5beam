@@ -1,4 +1,4 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,8 +10,7 @@ html {
 
 /* Globals */
 body {
-    /*font-family: Inter, sans-serif;*/
-    font-family: Arial, serif;
+    font-family: Inter, sans-serif;
     margin: 0;
     background: repeating-linear-gradient(
             45deg,
@@ -21,7 +20,7 @@ body {
             #4c1414 20px
     ), linear-gradient(0deg, transparent, black);
     backdrop-filter: blur(6px);
-    @apply h-full;
+    @apply h-full text-neutral-200;
     /*background: darkgrey;*/
     /*background: linear-gradient(gainsboro, ghostwhite 80%, gainsboro) no-repeat, gainsboro;*/
 }

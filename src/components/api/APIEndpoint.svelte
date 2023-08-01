@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Table from "../Table.svelte";
+    import Table from "../layout/Table.svelte";
     import Filepath from "./Filepath.svelte";
 
     export let endpoint: string[]

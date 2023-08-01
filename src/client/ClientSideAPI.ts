@@ -1,4 +1,4 @@
-import { apiURL, URLParamSet } from "../../misc";
+import { apiURL, URLParamSet } from "../misc";
 import type { BaseUser } from "$lib/types";
 
 export async function postCreateLevelClient(formData: FormData) {

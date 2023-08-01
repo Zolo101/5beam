@@ -5,7 +5,7 @@ import { getUserById } from "../../../../talk/get";
 import { getSession } from "../../../../hooks";
 import { createLevel } from "../../../../talk/create";
 import { oauth } from "../../../../lib/auth";
-import validate from "../../../../components/client/FileValidator";
+import validate from "../../../../client/FileValidator";
 
 type PostFormData = {
     access_token: string;

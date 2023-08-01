@@ -39,7 +39,7 @@ export type CreatePlaylist = {
 export type User = BaseUser & (DiscordUser)
 export type DiscordUser = {
     type: "discord"
-    discordId: number
+    discordId: string
 }
 
 export type BaseUser = {

@@ -22,7 +22,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig, "client");
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
