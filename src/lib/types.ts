@@ -1,9 +1,7 @@
-import type { Timestamp } from "firebase/firestore";
-
 export type Level = {
     id: string
     creator: string
-    created: Timestamp
+    created: Date
 
     title: string
     description: string
@@ -12,6 +10,10 @@ export type Level = {
     plays: number
     difficulty: number
     featured: boolean
+
+    expand?: {
+        creator: User
+    }
 }
 
 export type Playlist = {
@@ -19,8 +21,8 @@ export type Playlist = {
     creator: string
     title: string
     description: string // TODO: Maybe?
-    created: Timestamp
-    updated: Timestamp
+    created: Date
+    updated: Date
     levels: string[]
 }
 
@@ -46,7 +48,7 @@ export type BaseUser = {
     id: string
     type: string
     username: string
-    created: Timestamp
+    created: Date
     levels: string[]
     playlists: string[]
     stars: string[]

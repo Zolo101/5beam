@@ -2,7 +2,7 @@
 
 import type { RequestHandler } from "@sveltejs/kit";
 import { getLevelById } from "../../../talk/get";
-import { return404 } from "../../../misc";
+import { OK, return404 } from "../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({request}) => {
 
     // e()
 
-    return new Response(await getLevelById(id), {status: 200})
+    return OK(await getLevelById(id))
 }
 
 

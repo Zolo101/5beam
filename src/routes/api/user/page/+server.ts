@@ -2,7 +2,7 @@
 
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserLevels } from "../../../../talk/get";
-import { return404 } from "../../../../misc";
+import { OK, return404 } from "../../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
@@ -19,5 +19,5 @@ export const GET: RequestHandler = async ({request}) => {
 
     if (creatorId === null) return return404() // Not Found
 
-    return new Response(await getFunc(creatorId, amount, offset), {status: 200})
+    return OK(await getFunc(creatorId, page))
 }

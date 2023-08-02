@@ -1,21 +1,18 @@
 import type { CreateLevel, User } from "$lib/types";
-import { mergeObjects } from "../misc";
-import { db } from "$lib/firebase-server";
-import { Timestamp } from "firebase-admin/firestore";
 
 let user: User;
 
 export async function createLevel(obj: CreateLevel) {
-    const newDocumentRef = db.collection("posts").doc();
-    const finalLevel = mergeObjects(obj, {
-        creator: user,
-        created: Timestamp.now(),
-        plays: 0,
-        difficulty: 0,
-        featured: false
-    })
-
-    return await newDocumentRef.create(finalLevel)
+    // const newDocumentRef = db.collection("posts").doc();
+    // const finalLevel = mergeObjects(obj, {
+    //     creator: user,
+    //     created: Timestamp.now(),
+    //     plays: 0,
+    //     difficulty: 0,
+    //     featured: false
+    // })
+    //
+    // return await newDocumentRef.create(finalLevel)
 }
 
 // export async function createLevelpack(obj: Prisma.LevelpackCreateArgs["data"]) {

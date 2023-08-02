@@ -1,5 +1,4 @@
 import { dev } from "$app/environment";
-import type { Timestamp } from "firebase/firestore";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -32,9 +31,9 @@ export function formatDate_Day(date: string) {
     })
 }
 
-export function formatDate_Full(date: Timestamp) {
-    return new Date(date._seconds * 1000).toString()
-}
+// export function formatDate_Full(date: Timestamp) {
+//     return new Date(date._seconds * 1000).toString()
+// }
 
 export function to5bLevelFormat(number: number) {
     return number.toString().padStart(3, "0")
@@ -60,6 +59,15 @@ export function return404() {
 export const mergeObjects = <A, B>(a: A, b: B): A & B => {
     return {...a, ...b}
 }
+
+// All good
+export const OK = (body: any) => new Response(JSON.stringify(body), {status: 200})
+
+// User error
+export const BAD = (message: string) => new Response(message, {status: 400})
+
+// Denied
+export const DENIED = () => new Response("Authentication Denied. Have you given me a valid access_token?", {status: 401})
 
 
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"

@@ -1,24 +1,16 @@
 <script lang="ts">
-    import { getUserByIdClient } from "../../client/ClientSideAPI";
+    import type { Level } from "$lib/types";
 
-    export let level: any
+    export let level: Level;
 
-    let userFetch = getUserByIdClient(level.creator)
+    let user = level.expand?.creator;
 </script>
 
 <div class="w-[209px] h-[158px] relative bg-zinc-800 rounded-[5px] shadow">
 <!--    Thumbnail -->
     <img class="w-[195px] h-[108px] left-[7px] top-[7px] absolute rounded-sm" src="https://via.placeholder.com/195x108" />
     <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-white text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</div>
-    <div class="w-[133px] h-3 left-[7px] top-[139px] absolute text-zinc-500 text-[13px] font-normal whitespace-nowrap overflow-ellipsis">
-        {#await userFetch}
-            by ???
-        {:then user}
-            by {user.username}
-        {:catch error}
-            {error}
-        {/await}
-    </div>
+    <div class="w-[133px] h-3 left-[7px] top-[139px] absolute text-zinc-500 text-[13px] font-normal whitespace-nowrap overflow-ellipsis">by {user.username}</div>
     <div class="w-[22px] h-[17px] left-[180px] top-[119px] absolute justify-start items-end gap-px inline-flex">
         <div class="w-[39px] h-[17px] text-right text-green-500 text-[13px] font-normal">{level.plays}</div>
     </div>

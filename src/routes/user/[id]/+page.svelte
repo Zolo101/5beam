@@ -6,8 +6,6 @@
     const id = $page.params.id
     const userRequest = getUserByIdClient(id)
     $: levels_page = 0 // known as page
-    $: userLevelsRequest = getUserLevelPageClient(id, levels_page, 16, 0);
-    $: userLevelpacksRequest = getUserLevelPageClient(id, 0, 32, 1);
 
     const changePage = (by: number) => {
         // dont go below zero
@@ -20,7 +18,7 @@
         <p>Loading...</p>
     {:then user}
         {@const e = console.log(user)}
-        {@const date = new Date(user.created._seconds * 1000)}
+        {@const date = new Date(user.created)}
         {@const month = (date.getMonth() + 1).toString().padStart(2, "0")}
         {@const year = date.getFullYear()}
         <div class="w-[952px] h-[307px] justify-center items-center gap-11 inline-flex">
@@ -55,7 +53,6 @@
             {#await getUserLevelPageClient(id, 0)}
                 <p>Loading...</p>
             {:then levels}
-                <!--{@debug levels}-->
                 {#each levels as level}
                     <a href="../level/{level.id}">
                         <LevelComponent {level}/>

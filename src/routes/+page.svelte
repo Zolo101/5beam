@@ -4,7 +4,7 @@
     import Button from "../components/Button.svelte";
 
     $: page = 0
-    $: levelsRequest = getLevelPageClient(page, 8, 0);
+    $: levelsRequest = getLevelPageClient(page, 8);
 
     const changePage = (by: number) => {
         // dont go below zero
@@ -25,7 +25,6 @@
     {#await levelsRequest}
         <p>Loading...</p>
     {:then levels}
-        <!--{@debug levels}-->
         {#each levels as level}
             <a href="level/{level.id}">
                 <LevelComponent {level}/>

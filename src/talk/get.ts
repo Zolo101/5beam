@@ -1,9 +1,8 @@
-import { db } from "$lib/firebase-server";
-import type { DocumentSnapshot, QuerySnapshot } from "firebase-admin/firestore";
-import { FieldPath } from "firebase-admin/firestore";
-import { mergeObjects } from "../misc";
+import { levels, users } from "$lib/pocketbase";
+import type { Level, User } from "$lib/types";
 
-export async function getLevels(amount: number, offset: number, sort: any, x: any) {
+// TODO: What is x
+export async function getLevels(page: number, sort: any, x: any) {
     // return await prisma.level.findMany({
     //     skip: offset,
     //     take: amount,
@@ -16,12 +15,13 @@ export async function getLevels(amount: number, offset: number, sort: any, x: an
     //     },
     //     orderBy: sort,
     // })
-    const levelsSnapshot = await db
-        .collection("levels")
-        .limit(25)
-        .get()
 
-    return evaluateSnapshot(levelsSnapshot);
+    return (await levels
+        .getList<Level>(page, 8, {
+            // TODO: filter
+            expand: "creator",
+        })
+    ).items
 }
 
 // export async function getLevelpacks(amount: number, offset: number, sort: any, props: Prisma.LevelpackWhereInput) {
@@ -37,12 +37,7 @@ export async function getLevels(amount: number, offset: number, sort: any, x: an
 // }
 
 export async function getLevelById(id: string) {
-    return evaluateDocumentSnapshot(
-        await db
-        .collection("levels")
-        .doc(id)
-        .get()
-    )
+    return levels.getOne<Level>(id)
 }
 
 // export async function getLevelpackByProps(props: Prisma.LevelpackWhereUniqueInput) {
@@ -64,55 +59,28 @@ export async function getSearch(text: string, amount: number) {
     // const search = query(collection(db, "levels"), where("title", ">=", text), limit(amount))
     // return await getDocs(search)
 
-    const searchSnapshot = await db
-        .collection("levels")
-        .where("title", ">=", text)
-        .limit(amount)
-        .get()
-
-    return evaluateSnapshot(searchSnapshot);
+    return (await levels
+        .getList<Level>(1, 8, {
+            filter: `title ~ ${text}`, // TODO: Is this unsafe?
+        })
+    ).items
 }
 
 export async function getUserById(id: string) {
     // return await getDoc(doc(collection(db, "users"), id))
 
-    return evaluateDocumentSnapshot(
-        await db
-        .collection("users")
-        .doc(id)
-        .get()
-    )
+    return users.getOne<User>(id);
 }
 
-// TODO: Pagination (offset)
-export async function getUserLevels(id: string, amount: number, offset: number) {
+export async function getUserLevels(id: string, page: number) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
 
-    const userDoc = (
-        await db
-        .collection("users")
-        .doc(id)
-        .get()
-    )
-        .data()!
-
-    const levelsSnapshot = await db
-        .collection("levels")
-        .where(FieldPath.documentId(), "in", userDoc.levels)
-        .get()
-
-    return evaluateSnapshot(levelsSnapshot);
+    // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
+    return (await users
+        .getOne(id, {expand: "levels.creator"})
+    ).expand.levels
 }
-
-function evaluateSnapshot(snapshot: QuerySnapshot) {
-    return JSON.stringify(snapshot.docs.map(doc => mergeObjects(doc.data(), {id: doc.id})));
-}
-
-function evaluateDocumentSnapshot(snapshot: DocumentSnapshot) {
-    return JSON.stringify(mergeObjects(snapshot.data(), {id: snapshot.id}));
-}
-
 
 // export async function getUserLevelpacks(props: Prisma.LevelWhereInput, amount: number, offset: number) {
 //     return await prisma.levelpack.findMany({
@@ -124,4 +92,3 @@ function evaluateDocumentSnapshot(snapshot: DocumentSnapshot) {
 //         }
 //     })
 // }
-

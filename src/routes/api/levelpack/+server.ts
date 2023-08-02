@@ -1,5 +1,6 @@
 // throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
-
+export {}
+/*
 import type { RequestHandler } from "@sveltejs/kit";
 import { getLevelpackByProps } from "../../../talk/get";
 import { return404 } from "../../../misc";
@@ -14,3 +15,4 @@ export const GET: RequestHandler = async ({request}) => {
 
     return new Response(await getLevelpackByProps({ id }), {status: 200})
 }
+ */

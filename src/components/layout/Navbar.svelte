@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
     import Logo from "./Logo.svelte";
+    import { logIn } from "$lib/pocketbase";
 
     // let user = $session.user
     // let loggedIn = !!user
@@ -32,7 +33,7 @@
 <!--            <a href="/profile">Profile</a>-->
 <!--            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>-->
         {:else}
-            <a href="/api/auth/discord">Log In</a>
+            <a class="cursor-pointer" on:click={() => logIn()}>Log In</a>
         {/if}
     </div>
 <!--    <div class="list-right">-->

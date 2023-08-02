@@ -1,11 +1,10 @@
 // throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserById } from "../../../../talk/get";
 import { getSession } from "../../../../hooks";
-import { createLevel } from "../../../../talk/create";
 import { oauth } from "../../../../lib/auth";
 import validate from "../../../../client/FileValidator";
+import { BAD, DENIED } from "../../../../misc";
 
 type PostFormData = {
     access_token: string;
@@ -29,15 +28,13 @@ export const post: RequestHandler = async ({request}) => {
     // Get user from cookie, otherwise access_token
     const user = await getDiscordUser(request, data.access_token);
 
-    if (user === false) {
-        return new Response("You must be logged in to create things", {status: 401})
-    }
+    if (user === false) return DENIED()
 
     if (!await validateData(data)) {
         // is this still true post-migrate?
         // TODO: This doesnt return well (returns as JSON even though it isn't)
 
-        return new Response("Invalid FormData", {status: 400})
+        return BAD("Invalid FormData")
     }
 
     // console.log(data, user)
@@ -46,16 +43,17 @@ export const post: RequestHandler = async ({request}) => {
 
     // TODO: Remove non-null symbol
     // This is to get the user's ID rather than Discord ID
-    const userDBID = (await getUserById({discordId: user.id }))!.id
-
-    const level = await createLevel({
-        creatorId: userDBID,
-        title: data.title,
-        description: data.description,
-        data: fileText
-    })
-
-    return new Response(level, {status: 200})
+    // const userDBID = (await getUserById({discordId: user.id }))!.id
+    //
+    // const level = await createLevel({
+    //     creatorId: userDBID,
+    //     title: data.title,
+    //     description: data.description,
+    //     data: fileText
+    // })
+    //
+    // return OK(level)
+    return BAD("WIP")
 }
 
 export async function validateData(data: any) {

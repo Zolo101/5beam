@@ -2,7 +2,7 @@
 
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserById } from "../../../talk/get";
-import { return404 } from "../../../misc";
+import { OK, return404 } from "../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
@@ -14,5 +14,5 @@ export const GET: RequestHandler = async ({request}) => {
 
     let body = await getUserById(id)
     // console.log(body)
-    return new Response(body, {status: 200})
+    return OK(body)
 }
