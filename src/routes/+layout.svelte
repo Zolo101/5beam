@@ -8,6 +8,18 @@
     let backgroundId = `/backgrounds/${Date.now() % 11}.png`;
 </script>
 
+<svelte:head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QDE04Q52S"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-8QDE04Q52S');
+    </script>
+</svelte:head>
+
 <div class="app">
 <!--    <div class="background" style="background-image: url({backgroundId})"></div>-->
     <Navbar bind:this={navbarComponent}/>
