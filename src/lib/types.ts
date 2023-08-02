@@ -11,7 +11,8 @@ export type Level = {
     difficulty: number
     featured: boolean
 
-    expand?: {
+    // TODO: Make this ALWAYS exist
+    expand: {
         creator: User
     }
 }

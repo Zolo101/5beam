@@ -37,7 +37,9 @@ export async function getLevels(page: number, sort: any, x: any) {
 // }
 
 export async function getLevelById(id: string) {
-    return levels.getOne<Level>(id)
+    return levels.getOne<Level>(id, {
+        expand: "creator",
+    })
 }
 
 // export async function getLevelpackByProps(props: Prisma.LevelpackWhereUniqueInput) {

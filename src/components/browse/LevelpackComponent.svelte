@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import User from "../User.svelte";
+    import User from "../UserComponent.svelte";
 
     export let levelpack: any
     console.log(levelpack)

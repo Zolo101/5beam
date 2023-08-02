@@ -1,7 +1,7 @@
 <script lang="ts">
     import Difficulty from "./Difficulty.svelte";
     import { formatDate_Day } from "../misc";
-    import User from "./User.svelte";
+    import User from "./UserComponent.svelte";
 
     export let search
     export let results

@@ -4,7 +4,7 @@
     import { difficultyMap, formatDate_Full } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
     import LevelpackLevelComponent from "../browse/LevelpackLevelComponent.svelte";
-    import User from "../User.svelte";
+    import User from "../UserComponent.svelte";
 
     export let levelpack: any
     let difficulties = levelpack.levels.map(level => level.difficulty)

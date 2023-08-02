@@ -1,20 +1,14 @@
 <script lang="ts">
-    import { getUserByIdClient } from "../client/ClientSideAPI";
+    import type { User } from "$lib/types";
 
-    export let id: string;
+    export let user: User;
     export let prefix: string;
 </script>
 
 <span>{prefix}</span>
-{#await getUserByIdClient(id)}
-    <span>???</span>
-{:then user}
-    <a href="/user/{user.id}" target="_self">
-        <span>{user.username}</span>
-    </a>
-{:catch error}
-    <span>Unknown user</span>
-{/await}
+<a href="/user/{user.id}" target="_self">
+    <span>{user.username}</span>
+</a>
 
 <style>
     a {

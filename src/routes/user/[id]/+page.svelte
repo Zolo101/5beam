@@ -4,7 +4,6 @@
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
 
     const id = $page.params.id
-    const userRequest = getUserByIdClient(id)
     $: levels_page = 0 // known as page
 
     const changePage = (by: number) => {
