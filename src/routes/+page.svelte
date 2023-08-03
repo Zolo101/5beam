@@ -1,8 +1,8 @@
 <script lang="ts">
-    import {getLevelPageClient} from "../client/ClientSideAPI";
+    import { getLevelPageClient } from "../client/ClientSideAPI";
     import LevelComponent from "../components/browse/LevelComponent.svelte";
     import Button from "../components/Button.svelte";
-    import type {PageData} from "./$types";
+    import type { PageData } from "./$types";
 
     export let data: PageData;
 
@@ -17,7 +17,8 @@
 
 <svelte:head>
     <meta property="og:title" content="5beam"/>
-    <meta property="og:description" content="level database for the web game BFDIA 5b."/>
+    <meta name="description" content="Level Database for the web game BFDIA 5b.">
+    <meta property="og:description" content="Level Database for the web game BFDIA 5b."/>
 </svelte:head>
 
 <p class="text-3xl text-center p-5">5beam is a website that allows you to upload, share, and play BFDIA 5b levels you've made!</p>

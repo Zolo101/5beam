@@ -1,7 +1,8 @@
 <script lang="ts">
-    import type {PageData} from "./$types";
+    import type { PageData } from "./$types";
     import UserComponent from "../../../components/UserComponent.svelte";
     import Button from "../../../components/Button.svelte";
+    import Difficulty from "../../../components/Difficulty.svelte";
 
     export let data: PageData;
 
@@ -40,8 +41,10 @@
 <!--</div>-->
 
 <div class="flex flex justify-center pt-20 pb-5">
+    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
-    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>
+<!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
+
     <!--<div class="w-[952px] h-[924px] relative bg-white bg-opacity-20 flex-col justify-start items-start inline-flex">-->
     <!--    <div class="justify-center items-center gap-3 inline-flex">-->
     <!--        <div class="w-[45px] h-[0px] relative origin-top-left rotate-180"></div>-->
@@ -50,10 +53,10 @@
     <!--        </div>-->
     <!--        <div class="w-[45px] h-[0px] relative"></div>-->
     <!--    </div>-->
-    <div class="m-10 flex-col items-center gap-2.5 inline-flex">
+    <div class="my-10 flex-col items-center gap-2.5 inline-flex">
         <!--        <div class="w-[707px] h-[69px]"><span class="text-white text-[64px] font-black">Lo</span><span class="text-white text-[64px]">rem Ipsum</span></div>-->
         <div class="text-center">
-            <p class="w-[400px] text-white text-5xl m-4">{level.title}</p>
+            <p class="w-[350px] text-white text-5xl m-4">{level.title}</p>
             <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>
         </div>
         <div class="flex flex-col gap-5 p-5">
@@ -63,38 +66,71 @@
     </div>
     <!--</div>-->
 </div>
-<div class="w-full px-2 pt-4 bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
-    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">
-        <div class="w-32 h-[98.01px] relative">
-            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">
-                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl">0</div>
-            </div>
-            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total views</div>
-        </div>
-        <div class="w-[120px] h-[98.73px] relative">
-            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">
-                <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl">0</div>
-            </div>
-            <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total stars</div>
-        </div>
+<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
+    <table>
+        <thead>
+            <tr>
+                <th>Difficulty</th>
+                <th>Total views</th>
+                <th>Total stars</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-neutral-500"><Difficulty includeText difficulty={level.difficulty}/></td>
+                <td class="text-green-500">{level.plays}</td>
+                <td class="text-yellow-400">0</td>
+                <td class="text-amber-500">02-2023</td>
+            </tr>
+        </tbody>
+    </table>
+<!--    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">-->
+<!--        <div class="w-32 h-[98.01px] relative">-->
+<!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
+<!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-neutral-500 text-5xl">Unknown</div>-->
+<!--            </div>-->
+<!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Difficulty</div>-->
+<!--        </div>-->
+<!--        <div class="w-32 h-[98.01px] relative">-->
+<!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
+<!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl">0</div>-->
+<!--            </div>-->
+<!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total views</div>-->
+<!--        </div>-->
+<!--        <div class="w-[120px] h-[98.73px] relative">-->
+<!--            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">-->
+<!--                <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl">0</div>-->
+<!--            </div>-->
+<!--            <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total stars</div>-->
+<!--        </div>-->
         <!--        <div class="w-[129.50px] h-[98.07px] relative">-->
         <!--            <div class="w-[90px] h-[65px] left-[39.50px] top-[33.07px] absolute">-->
         <!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-fuchsia-500 text-5xl">0</div>-->
         <!--            </div>-->
         <!--            <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total levels</div>-->
         <!--        </div>-->
-        <div class="w-[150.50px] h-[94px] relative">
-            <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl">02-2023</div>
-            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-2xl">Created</div>
-        </div>
-    </div>
+<!--        <div class="w-[150.50px] h-[94px] relative">-->
+<!--            <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl">02-2023</div>-->
+<!--            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-2xl">Created</div>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
+<p class="text-4xl text-neutral-300 font-bold pl-2.5 pt-5">Description</p>
 <p class="text-2xl p-5">{level.description}</p>
 
 <!--<br>-->
 <!--<button>Download as 5b Level</button><Help text="In beta: Not all levelpacks can be converted!"/>-->
 
 <style>
+    th {
+        @apply w-64 h-[49px] text-center text-2xl;
+    }
+
+    td {
+        @apply w-[117.78px] h-[61.29px] text-center text-5xl p-0;
+    }
+
     .level {
         width: 70%;
         margin: 100px auto 80px auto;

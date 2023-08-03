@@ -33,7 +33,7 @@
 <!--            <a href="/profile">Profile</a>-->
 <!--            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>-->
         {:else}
-            <a class="cursor-pointer" on:click={() => logIn()}>Log In</a>
+            <a class="cursor-pointer" on:click={() => logIn()} href="/">Log In</a>
         {/if}
     </div>
 <!--    <div class="list-right">-->
