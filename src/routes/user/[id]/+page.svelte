@@ -19,6 +19,11 @@
     }
 </script>
 
+<svelte:head>
+    <meta property="og:title" content={user.username}/>
+    <meta property="og:description" content="Check out {user.username}'s levels at 5beam!"/>
+</svelte:head>
+
 <div class="flex flex-col items-center">
     <div class="w-[952px] h-[307px] justify-center items-center gap-11 inline-flex">
         <img class="w-[213px] h-[213px] rounded-[5px] shadow" src="https://via.placeholder.com/213x213" />
