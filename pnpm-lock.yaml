@@ -8,9 +8,6 @@ dependencies:
   cookie:
     specifier: ^0.5.0
     version: 0.5.0
-  discord-oauth2:
-    specifier: ^2.11.0
-    version: 2.11.0
   pocketbase:
     specifier: ^0.16.0
     version: 0.16.0
@@ -22,9 +19,6 @@ devDependencies:
   '@sveltejs/kit':
     specifier: ^1.22.4
     version: 1.22.4(svelte@4.1.2)(vite@4.4.8)
-  '@types/cookie':
-    specifier: ^0.5.1
-    version: 0.5.1
   '@types/node':
     specifier: ^20.4.6
     version: 20.4.6
@@ -617,10 +611,6 @@ packages:
   /didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
     dev: true
-
-  /discord-oauth2@2.11.0:
-    resolution: {integrity: sha512-pIbgXm498f7vqNd8/7JwoLd36YMFOFASSJdqyCGdwQpaG7ULHu9nLyifpVXI1b88xvNLqQwqugS8jxkn8Ypd1Q==}
-    dev: false
 
   /dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}

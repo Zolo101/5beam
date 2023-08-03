@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-/dist
+/build
 /.svelte-kit
 /package
 /.idea
@@ -12,4 +12,4 @@ node_modules
 yarn-error.log
 ./Caddyfile
 
-/.firebase
+/.netlify
