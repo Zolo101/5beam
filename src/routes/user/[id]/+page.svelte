@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type {PageData} from "./$types";
+    import type { PageData } from "./$types";
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
 
     export let data: PageData;
@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <p class="text-4xl text-neutral-400 font-bold">Recent Levels</p>
+    <p class="text-4xl text-neutral-300 font-bold">Recent Levels</p>
     <div class="flex gap-4 flex-wrap">
         {#each levels as level}
             <a href="../level/{level.id}">

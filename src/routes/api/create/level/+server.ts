@@ -1,8 +1,6 @@
-// throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
-
 import type { RequestHandler } from "@sveltejs/kit";
 import { getSession } from "../../../../hooks";
-import { oauth } from "../../../../lib/auth";
+import { oauth } from "$lib/auth";
 import validate from "../../../../client/FileValidator";
 import { BAD, DENIED } from "../../../../misc";
 

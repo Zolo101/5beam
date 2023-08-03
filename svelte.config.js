@@ -9,9 +9,8 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			// edge: true,
-			// split: false
-			out: "dist"
+			edge: true,
+			split: false
 		}),
 	},
 };

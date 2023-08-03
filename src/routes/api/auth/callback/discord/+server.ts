@@ -1,9 +1,8 @@
-import { Headers } from "node-fetch";
 import type { RequestHandler } from "@sveltejs/kit";
-import { requestToken } from "../../../../../lib/auth";
+import { requestToken } from "$lib/auth";
 import { redirectURL } from "../../../../../misc";
 
-export const GET: RequestHandler = async ({request}) => {
+export const GET: RequestHandler = async ({request, setHeaders, cookies}) => {
     const url = new URL(request.url)
     const code = url.searchParams.get("code") ?? ""
 
@@ -15,10 +14,23 @@ export const GET: RequestHandler = async ({request}) => {
     const refresh_token_expires_in = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)); // 30 days
 
     const headers = new Headers()
-    headers.append("set-cookie", `access_token=${accessToken}; Path=/; Max-Age=${access_token_expires_in}; HttpOnly`)
-    headers.append("set-cookie", `refresh_token=${refreshToken}; Path=/; Max-Age=${refresh_token_expires_in}; HttpOnly`)
-    headers.set("status", "302")
-    headers.set("location", "/api/auth/callback/check")
+
+    cookies.set("access_token", accessToken, {
+        path: "/",
+        expires: access_token_expires_in,
+        httpOnly: true,
+    })
+
+    cookies.set("refresh_token", refreshToken, {
+        path: "/",
+        expires: refresh_token_expires_in,
+        httpOnly: true,
+    })
+
+    setHeaders({
+        status: "302",
+        location: "/api/auth/callback/check"
+    })
 
     return new Response("", { headers })
 }

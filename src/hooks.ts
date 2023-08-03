@@ -1,4 +1,4 @@
-import { oauth } from "./lib/auth";
+import { oauth } from "$lib/auth";
 import cookie from "cookie";
 import type { User } from "discord-oauth2";
 

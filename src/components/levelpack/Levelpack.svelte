@@ -1,14 +1,14 @@
 <script lang="ts">
-    import * as R from "ramda";
     import Table from "../layout/Table.svelte";
-    import {difficultyMap} from "../../misc";
+    import { difficultyMap } from "../../misc";
     import Difficulty from "../Difficulty.svelte";
     import LevelpackLevelComponent from "../browse/LevelpackLevelComponent.svelte";
     import User from "../UserComponent.svelte";
 
     export let levelpack: any
     let difficulties = levelpack.levels.map(level => level.difficulty)
-    let levelpackDifficulty = R.sum(difficulties) / difficulties.length; // get average
+    // let levelpackDifficulty = R.sum(difficulties) / difficulties.length; // get average
+    let levelpackDifficulty = 0; // get average
     console.log(difficulties, levelpackDifficulty)
 </script>
 

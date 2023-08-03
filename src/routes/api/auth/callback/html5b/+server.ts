@@ -1,7 +1,5 @@
-// throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
-
 import type { RequestHandler } from "@sveltejs/kit";
-import { requestToken } from "../../../../../lib/auth";
+import { requestToken } from "$lib/auth";
 import { redirectURL_html5b } from "../../../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {

@@ -29,7 +29,7 @@
 </div>
 
 <br><br>
-<p class="text-4xl text-neutral-400 font-bold">Recent Levels</p>
+<p class="text-4xl text-neutral-300 font-bold">Recent Levels</p>
 <div class="flex flex-wrap gap-4">
     {#each levels as level}
         <a href="level/{level.id}">
