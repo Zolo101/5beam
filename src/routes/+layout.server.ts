@@ -1,6 +1,6 @@
-import { oauth } from "../lib/auth";
+import {oauth} from "$lib/auth";
 import cookie from "cookie";
-import type { User } from "discord-oauth2";
+import type {User} from "discord-oauth2";
 
 // TODO: Figure out the type for event
 /** @type {import('./$types').LayoutServerLoad} */

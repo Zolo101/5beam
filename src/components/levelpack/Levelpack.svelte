@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as R from "ramda";
     import Table from "../layout/Table.svelte";
-    import { difficultyMap, formatDate_Full } from "../../misc";
+    import {difficultyMap} from "../../misc";
     import Difficulty from "../Difficulty.svelte";
     import LevelpackLevelComponent from "../browse/LevelpackLevelComponent.svelte";
     import User from "../UserComponent.svelte";
@@ -34,7 +34,7 @@
         </div>
         <div class="info">
             <Table content={[
-                ["Created on", formatDate_Full(levelpack.created)],
+                ["Created on", levelpack.created],
                 //["Plays", levelpack.plays],
                 //["Stars", levelpack.stars],
                 ["Difficulty", `${difficultyMap.get(levelpackDifficulty)} (${levelpackDifficulty})`],

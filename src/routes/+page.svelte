@@ -1,14 +1,17 @@
 <script lang="ts">
-    import { getLevelPageClient } from "../client/ClientSideAPI";
+    import {getLevelPageClient} from "../client/ClientSideAPI";
     import LevelComponent from "../components/browse/LevelComponent.svelte";
     import Button from "../components/Button.svelte";
+    import type {PageData} from "./$types";
+
+    export let data: PageData;
 
     $: page = 0
-    $: levelsRequest = getLevelPageClient(page, 8);
-
-    const changePage = (by: number) => {
+    $: levels = data.levels
+    const changePage = async (by: number) => {
         // dont go below zero
         page = (page + by < 0 ? 0 : page + by);
+        levels = await getLevelPageClient(page, 8)
     }
 </script>
 
@@ -22,17 +25,11 @@
 <br><br>
 <p class="text-4xl text-neutral-400 font-bold">Recent Levels</p>
 <div class="flex flex-wrap gap-4">
-    {#await levelsRequest}
-        <p>Loading...</p>
-    {:then levels}
-        {#each levels as level}
-            <a href="level/{level.id}">
-                <LevelComponent {level}/>
-            </a>
-        {/each}
-    {:catch error}
-        <p>Error while requesting levels: {error}</p>
-    {/await}
+    {#each levels as level}
+        <a href="level/{level.id}">
+            <LevelComponent {level}/>
+        </a>
+    {/each}
 </div>
 <div class="pag"> <!-- pagination -->
     <span class="pag-arrow" on:click={() => changePage(-1)}>{"<"}</span>

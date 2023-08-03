@@ -53,4 +53,6 @@ export type BaseUser = {
     levels: string[]
     playlists: string[]
     stars: string[]
+
+    // TODO: what about "expand"?
 }

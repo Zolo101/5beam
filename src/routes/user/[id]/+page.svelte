@@ -1,9 +1,16 @@
 <script lang="ts">
-    import { getUserByIdClient, getUserLevelPageClient } from "../../../client/ClientSideAPI";
-    import { page } from "$app/stores";
+    import type {PageData} from "./$types";
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
 
-    const id = $page.params.id
+    export let data: PageData;
+
+    let levels = data.levels;
+    let user = data.creator;
+
+    let date = new Date(user.created)
+    let month = (date.getMonth() + 1).toString().padStart(2, "0")
+    let year = date.getFullYear()
+
     $: levels_page = 0 // known as page
 
     const changePage = (by: number) => {
@@ -13,57 +20,41 @@
 </script>
 
 <div class="flex flex-col items-center">
-    {#await getUserByIdClient(id)}
-        <p>Loading...</p>
-    {:then user}
-        {@const e = console.log(user)}
-        {@const date = new Date(user.created)}
-        {@const month = (date.getMonth() + 1).toString().padStart(2, "0")}
-        {@const year = date.getFullYear()}
-        <div class="w-[952px] h-[307px] justify-center items-center gap-11 inline-flex">
-            <img class="w-[213px] h-[213px] rounded-[5px] shadow" src="https://via.placeholder.com/213x213" />
-            <div class="flex-col justify-start items-center gap-2.5 inline-flex">
-                <div><span class="text-white text-[64px] font-normal">{user.username}</span></div>
-                <div class="px-[29.50px] py-[12.13px] bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
-                    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">
-                        <div class="w-[129.50px] h-[97px] relative">
-                            <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total views</div>
-                            <div class="w-[90px] h-[65px] left-[39.50px] top-[32px] absolute">
-                                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl font-normal">...</div>
-                            </div>
+    <div class="w-[952px] h-[307px] justify-center items-center gap-11 inline-flex">
+        <img class="w-[213px] h-[213px] rounded-[5px] shadow" src="https://via.placeholder.com/213x213" />
+        <div class="flex-col justify-start items-center gap-2.5 inline-flex">
+            <div><span class="text-white text-[64px] font-normal">{user.username}</span></div>
+            <div class="px-[29.50px] py-[12.13px] bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
+                <div class="self-stretch justify-center items-center gap-[55px] inline-flex">
+                    <div class="w-[129.50px] h-[97px] relative">
+                        <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total views</div>
+                        <div class="w-[90px] h-[65px] left-[39.50px] top-[32px] absolute">
+                            <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl font-normal">...</div>
                         </div>
-                        <div class="w-[120px] h-[98.73px] relative">
-                            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">
-                                <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl font-normal">...</div>
-                            </div>
-                            <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total stars</div>
+                    </div>
+                    <div class="w-[120px] h-[98.73px] relative">
+                        <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">
+                            <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl font-normal">...</div>
                         </div>
-                        <div class="w-[150.50px] h-[94px] relative">
-                            <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl font-normal">{month}-{year}</div>
-                            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-white text-2xl font-normal">Joined</div>
-                        </div>
+                        <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total stars</div>
+                    </div>
+                    <div class="w-[150.50px] h-[94px] relative">
+                        <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl font-normal">{month}-{year}</div>
+                        <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-white text-2xl font-normal">Joined</div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <p class="text-4xl text-neutral-400 font-bold">Recent Levels</p>
-        <div class="flex gap-4 flex-wrap">
-            {#await getUserLevelPageClient(id, 0)}
-                <p>Loading...</p>
-            {:then levels}
-                {#each levels as level}
-                    <a href="../level/{level.id}">
-                        <LevelComponent {level}/>
-                    </a>
-                {/each}
-            {:catch error}
-                <p>Error while requesting levels: {error}</p>
-            {/await}
-        </div>
-    {:catch error}
-        <p class="error">Error while requesting level: {error}</p>
-    {/await}
+    <p class="text-4xl text-neutral-400 font-bold">Recent Levels</p>
+    <div class="flex gap-4 flex-wrap">
+        {#each levels as level}
+            <a href="../level/{level.id}">
+                <LevelComponent {level}/>
+            </a>
+        {/each}
+    </div>
 </div>
 
 <!--<div>-->
