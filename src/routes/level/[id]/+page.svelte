@@ -8,6 +8,17 @@
 
     let level = data.level;
     let user = data.level.expand.creator;
+
+    const downloadLevel = () => {
+        const a = document.createElement("a");
+        const blob = new Blob([level.data], {type: "text/plain"});
+        const url = URL.createObjectURL(blob);
+
+        a.setAttribute("href", url);
+        a.setAttribute("download", `levels.txt`);
+
+        a.click()
+    }
 </script>
 
 <svelte:head>
@@ -61,7 +72,7 @@
         </div>
         <div class="flex flex-col gap-5 p-5">
             <Button text="Play" bg="#4bff5d"/>
-            <Button text="Download" bg="#4bffff"/>
+            <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
         </div>
     </div>
     <!--</div>-->
