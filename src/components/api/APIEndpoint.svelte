@@ -7,23 +7,30 @@
     export let wip = false
     export let game_only = false
     export let token_required = false
-    export let type: "GET" | "POST" | "STRUCT" = "GET"
-    export let params: [[string, string, string, string?]]
-    export let example: string
+    export let type: "INFO" | "GET" | "POST" | "STRUCT" = "GET"
+    export let params: [[unknown, unknown, unknown, unknown?]];
+    export let code: string
+
+    let colors = new Map<string, string>([
+        ["INFO", "grey"],
+        ["GET", "lawngreen"],
+        ["POST", "hotpink"],
+        ["STRUCT", "deepskyblue"]
+    ])
 </script>
 
-<div class="endpoint"
+<div class="bg-neutral-600 w-[min(60vw, 1000px)] m-5 outline outline-black shadow-xl rounded"
      class:deprecated={deprecated | wip}
      class:game_only={game_only}
 >
-    <div class="title">
-        <span class="type-{type}">{type}</span>
+    <div class="inline bg-black text-3xl font-bold p-2">
+        <span style:color={colors.get(type)}>{type}</span>
         <span class="name"><Filepath directory={endpoint}/></span>
         {#if token_required}
-            <span class="token-required">user token required</span>
+            <span class="text-lg bg-black float-right text-amber-600 p-2">user token required</span>
         {/if}
     </div>
-    <div class="header">
+    <div class="p-5">
         {#if deprecated}
             <p class="warning">Warning, this endpoint is deprecated! Do not use!</p>
         {/if}
@@ -32,74 +39,27 @@
             <p class="warning">Warning, this endpoint is in progress! Do not use!</p>
         {/if}
 
-        {#if game_only}
-            <p class="warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>
-        {/if}
+        <!--{#if game_only}-->
+        <!--    <p class="warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>-->
+        <!--{/if}-->
 
         {#if params}
             <Table title="Parameters" heads={["Name", "Description", "Type", "Defaults"]} content={params} dynamicWidth={true}/>
         {/if}
 
-        {#if example}
-            <p class="endpoint-example">{example}</p>
+        {#if code}
+            <pre class="bg-neutral-800 font-mono outline outline-neutral-500 rounded p-5">{code}</pre>
         {/if}
 
-        <div class="description">
+        <div class="text-neutral-300 p-5">
             <slot></slot>
         </div>
     </div>
 </div>
 
 <style>
-    .endpoint {
-        background: grey;
-        width: min(60vw, 1000px);
-        margin: 20px;
-        box-shadow: 0 0 5px 2px black;
-        border-radius: 2px;
-    }
-
-    .title {
-        display: inline;
-        background-color: black;
-        color: whitesmoke;
-        font-size: 2rem;
-        font-weight: bold;
-        padding: 10px;
-    }
-
-    .type-GET {
-        color: lawngreen;
-    }
-
-    .type-POST {
-        color: hotpink;
-    }
-
-    .type-STRUCT {
-        color: deepskyblue;
-    }
-
-    .header {
-        padding: 20px;
-    }
-
     .warning {
-        display: inline-block;
-        background-color: black;
-        color: whitesmoke;
-        font-size: 1.25em;
-        font-weight: bold;
-        padding: 10px;
-        margin: 0 0 30px 0;
-    }
-
-    .token-required {
-        font-size: 0.5em;
-        float: right;
-        color: orangered;
-        background-color: black;
-        padding: 5px;
+        @apply inline-block bg-black text-xl font-bold p-2 mb-7;
     }
 
     .endpoint.deprecated {
@@ -116,9 +76,5 @@
 
     .endpoint.game_only .name, .endpoint-game_only {
         color: palevioletred;
-    }
-
-    .description {
-        color: whitesmoke;
     }
 </style>

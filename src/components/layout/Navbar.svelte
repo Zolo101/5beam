@@ -27,8 +27,8 @@
     <div class="list">
 <!--        <a href="/">Levels</a>-->
 <!--        <a href="/levelpacks">Levelpacks</a>-->
-<!--        <a href="/upload">Upload</a>-->
-<!--        <a href="/api">API</a>-->
+        <a href="/upload">Upload</a>
+        <a href="/api">API</a>
         {#if loggedIn}
 <!--            <a href="/profile">Profile</a>-->
 <!--            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>-->

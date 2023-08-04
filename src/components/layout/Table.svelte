@@ -1,7 +1,7 @@
 <script lang="ts">
     export let title: string = "";
     export let heads: string[] = [];
-    export let content: [string, any][]
+    export let content: [string, ...any][]
     export let dynamicWidth: boolean = true
 </script>
 
@@ -38,8 +38,9 @@
     }
 
     caption {
-        background-color: black;
-        padding: 5px;
+        @apply text-sm bg-black p-1;
+        /*background-color: black;*/
+        /*padding: 5px;*/
     }
 
     th, td {
@@ -47,7 +48,8 @@
     }
 
     th {
-        background-color: #5a5a5a;
+        @apply bg-neutral-700;
+        /*background-color: #5a5a5a;*/
         border: 1px solid black;
     }
 
