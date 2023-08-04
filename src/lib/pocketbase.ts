@@ -4,7 +4,7 @@ import Pocketbase from "pocketbase";
 export const pb = new Pocketbase("https://cdn.zelo.dev")
 export const users = pb.collection("5beam_users_discord")
 export const levels = pb.collection("5beam_levels")
-export const playlists = pb.collection("5beam_playlists")
+export const levelpacks = pb.collection("5beam_levelpacks")
 
 export async function logIn() {
     // importDatabase()

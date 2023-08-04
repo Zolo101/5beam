@@ -2,7 +2,7 @@
     import { getLevelPageClient } from "../../client/ClientSideAPI";
     import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
 
-    $: page = 0
+    $: levelPage = 0
     $: levelpacksRequest = getLevelPageClient(page, 8, 1);
 
     const changePage = (by: number) => {

@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserLevels } from "../../../../talk/get";
+import { getUserLevelpacks, getUserLevels } from "../../../../talk/get";
 import { OK, return404 } from "../../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
@@ -12,8 +12,7 @@ export const GET: RequestHandler = async ({request}) => {
     const includeData = url.searchParams.get("data") ?? false
 
     const offset = page * amount;
-    // const getFunc = type ? getUserLevelpacks : getUserLevels;
-    const getFunc = getUserLevels;
+    const getFunc = type ? getUserLevelpacks : getUserLevels;
 
     if (creatorId === null) return return404() // Not Found
 

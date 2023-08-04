@@ -5,10 +5,8 @@ import { OK, return404 } from "../../../misc";
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const id = url.searchParams.get("id")
-    const includeData = url.searchParams.get("includeData")
 
     if (id === null) return return404() // Not Found
-
     // e()
 
     return OK(await getLevelById(id))

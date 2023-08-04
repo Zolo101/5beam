@@ -19,7 +19,6 @@ export async function postCreateLevelpackClient(formData: FormData) {
     return call.json()
 }
 
-
 export async function getLevelPageClient(page: number, amount?: number, type?: number, sort?: number) {
     const url = new URL(`${apiURL}/api/page`)
     URLParamSet(url, "page", page)
@@ -37,9 +36,10 @@ export async function getLevelClient(id: string) {
     return callAPI(url)
 }
 
-export async function getLevelpackClient(id: string) {
+export async function getLevelpackClient(id: string, levels: number) {
     const url = new URL(`${apiURL}/api/levelpack`)
     URLParamSet(url, "id", id)
+    URLParamSet(url, "levels", levels)
 
     return callAPI(url)
 }

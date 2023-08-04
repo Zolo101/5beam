@@ -52,6 +52,7 @@ export function isLoggedIn() {
     return false
 }
 
+// Cant find
 export function return404() {
     return new Response(null, {status: 404})
 }

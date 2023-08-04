@@ -1,18 +1,18 @@
 <script lang="ts">
-    import { getLevelPageClient } from "../client/ClientSideAPI";
     import LevelComponent from "../components/browse/LevelComponent.svelte";
+    import LevelpackComponent from "../components/browse/LevelpackComponent.svelte";
     import Button from "../components/Button.svelte";
+    import Pagination from "../components/Pagination.svelte";
     import type { PageData } from "./$types";
+    import { getLevelPageClient } from "../client/ClientSideAPI";
+    import { writable } from "svelte/store";
 
     export let data: PageData;
 
-    $: page = 0
-    $: levels = data.levels
-    const changePage = async (by: number) => {
-        // dont go below zero
-        page = (page + by < 0 ? 0 : page + by);
-        levels = await getLevelPageClient(page, 8)
-    }
+    $: levelPage = 1
+    $: levelpackPage = 1
+    const levels = writable(data.levels)
+    const levelpacks = writable(data.levelpacks)
 </script>
 
 <svelte:head>
@@ -29,33 +29,28 @@
 </div>
 
 <br><br>
-<p class="text-4xl text-neutral-300 font-bold">Recent Levels</p>
-<div class="flex flex-wrap gap-4">
-    {#each levels as level}
-        <a href="level/{level.id}">
-            <LevelComponent {level}/>
-        </a>
-    {/each}
-</div>
-<div class="pag"> <!-- pagination -->
-    <span class="pag-arrow" on:click={() => changePage(-1)}>{"<"}</span>
-    <span class="pag-number">{page}</span>
-    <span class="pag-arrow" on:click={() => changePage(1)}>{">"}</span>
-</div>
-
-<style>
-    .pag {
-        text-align: center;
-        font-size: 3rem;
-        margin-bottom: 30px;
-        color: lightgrey;
-    }
-
-    .pag-arrow {
-        font-weight: bold;
-    }
-
-    .pag-arrow:hover {
-        cursor: pointer;
-    }
-</style>
+<p class="text-4xl text-neutral-300 font-bold p-2">Recent Levels</p>
+    <Pagination
+            bind:page={levelPage}
+            bind:output={$levels}
+            callback={(page) => getLevelPageClient(page, 8, 0)}
+    >
+        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+            {#each $levels as level}
+                <LevelComponent {level}/>
+            {/each}
+        </div>
+    </Pagination>
+<br>
+<p class="text-4xl text-neutral-300 font-bold p-2">Recent Levelpacks</p>
+<Pagination
+        bind:page={levelpackPage}
+        bind:output={$levelpacks}
+        callback={(page) => getLevelPageClient(page, 8, 1)}
+>
+    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+        {#each $levelpacks as levelpack}
+            <LevelpackComponent {levelpack}/>
+        {/each}
+    </div>
+</Pagination>

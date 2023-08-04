@@ -7,7 +7,7 @@
     export let data: PageData;
 
     let level = data.level;
-    let user = data.level.expand.creator;
+    let user = data.level.creator;
 
     const downloadLevel = () => {
         const a = document.createElement("a");
@@ -51,7 +51,7 @@
 <!--    </div>-->
 <!--</div>-->
 
-<div class="flex flex justify-center pt-20 pb-5">
+<div class="flex justify-center pt-20 pb-5">
     <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
@@ -90,7 +90,7 @@
         <tbody>
             <tr>
                 <td class="text-neutral-500"><Difficulty includeText difficulty={level.difficulty}/></td>
-                <td class="text-green-500">{level.plays}</td>
+                <td class="text-green-500">{level.views}</td>
                 <td class="text-yellow-400">0</td>
                 <td class="text-amber-500">02-2023</td>
             </tr>

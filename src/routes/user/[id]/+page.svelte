@@ -1,22 +1,23 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
+    import { writable } from "svelte/store";
+    import { getUserLevelPageClient } from "../../../client/ClientSideAPI";
+    import Pagination from "../../../components/Pagination.svelte";
+    import LevelpackComponent from "../../../components/browse/LevelpackComponent.svelte";
 
     export let data: PageData;
 
-    let levels = data.levels;
     let user = data.creator;
+    const levels = writable(data.levels)
+    const levelpacks = writable(data.levelpacks)
 
     let date = new Date(user.created)
     let month = (date.getMonth() + 1).toString().padStart(2, "0")
     let year = date.getFullYear()
 
-    $: levels_page = 0 // known as page
-
-    const changePage = (by: number) => {
-        // dont go below zero
-        levels_page = (levels_page + by < 0 ? 0 : levels_page + by);
-    }
+    $: levelPage = 1
+    $: levelpackPage = 1
 </script>
 
 <svelte:head>
@@ -52,14 +53,32 @@
         </div>
     </div>
 
-    <p class="text-4xl text-neutral-300 font-bold">Recent Levels</p>
-    <div class="flex gap-4 flex-wrap">
-        {#each levels as level}
-            <a href="../level/{level.id}">
+    <p class="text-4xl text-neutral-300 font-bold p-2">Recent Levels</p>
+    <Pagination
+            bind:page={levelPage}
+            bind:output={$levels}
+            callback={(page) => getUserLevelPageClient(user.id, page, 8, 0)}
+    >
+        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+            {#each $levels as level}
                 <LevelComponent {level}/>
-            </a>
-        {/each}
-    </div>
+            {/each}
+        </div>
+    </Pagination>
+    <br>
+    <p class="text-4xl text-neutral-300 font-bold p-2">Recent Levelpacks</p>
+    <Pagination
+            bind:page={levelpackPage}
+            bind:output={$levelpacks}
+            callback={(page) => getUserLevelPageClient(user.id, page, 8, 1)}
+    >
+        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+            {#each $levelpacks as levelpack}
+                <LevelpackComponent {levelpack}/>
+            {/each}
+        </div>
+    </Pagination>
+
 </div>
 
 <!--<div>-->

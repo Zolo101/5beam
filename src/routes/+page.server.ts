@@ -1,7 +1,8 @@
-import {getLevels} from "../talk/get";
-import type {PageServerLoad} from "./$types";
+import { getLevelpacks, getLevels } from "../talk/get";
+import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ params }) => {
+export const load = (async () => {
     const levels = await getLevels(0, null, null);
-    return {levels}
+    const levelpacks = await getLevelpacks(0, null, null);
+    return {levels, levelpacks}
 }) satisfies PageServerLoad;

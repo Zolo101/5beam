@@ -1,30 +1,32 @@
 export type Level = {
     id: string
-    creator: string
+    creator: User
     created: Date
+    updated: Date
 
     title: string
     description: string
     data: string
 
-    plays: number
+    views: number
+    stars: number
     difficulty: number
     featured: boolean
-
-    // TODO: Make this ALWAYS exist
-    expand: {
-        creator: User
-    }
 }
 
-export type Playlist = {
+export type Levelpack = {
     id: string
-    creator: string
-    title: string
-    description: string // TODO: Maybe?
+    creator: User
     created: Date
     updated: Date
+
+    title: string
+    description: string
     levels: string[]
+
+    views: number
+    stars: number
+    featured: boolean
 }
 
 export type CreateLevel = {
@@ -33,7 +35,7 @@ export type CreateLevel = {
     data: string
 }
 
-export type CreatePlaylist = {
+export type CreateLevelpack = {
     title: string
     description: string
     levels: string[]
@@ -51,7 +53,7 @@ export type BaseUser = {
     username: string
     created: Date
     levels: string[]
-    playlists: string[]
+    levelpacks: string[]
     stars: string[]
 
     // TODO: what about "expand"?

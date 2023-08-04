@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getLevels } from "../../../talk/get";
+import { getLevelpacks, getLevels } from "../../../talk/get";
 import { OK } from "../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({request}) => {
     const includeData = url.searchParams.get("data") ?? false
 
     const offset = page * amount;
-    // const getFunc = type ? getLevelpacks : getLevels;
+    const getFunc = type ? getLevelpacks : getLevels;
     const featuredOnly = (type === 3) ? { featured: true } : {};
 
     let sortObj;
@@ -34,6 +34,6 @@ export const GET: RequestHandler = async ({request}) => {
     }
 
     // const result = await getFunc(page, amount, sortObj, featuredOnly);
-    const result = await getLevels(page, amount, sortObj);
+    const result = await getFunc(page, amount, sortObj);
     return OK(result);
 }

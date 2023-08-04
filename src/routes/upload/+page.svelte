@@ -5,7 +5,7 @@
     import validate from "../../client/FileValidator";
 
     const loggedIn = isLoggedIn();
-    $: page = "level"
+    $: levelPage = "level"
     let file: File;
     $: result = undefined;
     $: valid = false
