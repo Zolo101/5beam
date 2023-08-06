@@ -1,6 +1,6 @@
 export type Level = {
     id: string
-    creator: User
+    creator: PocketbaseUser
     created: Date
     updated: Date
 
@@ -16,7 +16,7 @@ export type Level = {
 
 export type Levelpack = {
     id: string
-    creator: User
+    creator: PocketbaseUser
     created: Date
     updated: Date
 
@@ -41,7 +41,7 @@ export type CreateLevelpack = {
     levels: string[]
 }
 
-export type User = BaseUser & (DiscordUser)
+export type PocketbaseUser = BaseUser & (DiscordUser)
 export type DiscordUser = {
     type: "discord"
     discordId: string
@@ -55,6 +55,4 @@ export type BaseUser = {
     levels: string[]
     levelpacks: string[]
     stars: string[]
-
-    // TODO: what about "expand"?
 }

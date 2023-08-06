@@ -2,12 +2,11 @@
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
     import Logo from "./Logo.svelte";
-    import { logIn } from "$lib/pocketbase";
+    import type { User } from "discord-oauth2";
 
-    // let user = $session.user
-    // let loggedIn = !!user
-    let loggedIn = false
-    // console.log("userinfo", user)
+    export let user: User;
+
+    let loggedIn = !!user;
 
     const searchResults = writable([])
     const searchText = writable("")
@@ -27,13 +26,14 @@
     <div class="list">
 <!--        <a href="/">Levels</a>-->
 <!--        <a href="/levelpacks">Levelpacks</a>-->
-        <a href="/upload">Upload</a>
-        <a href="/api">API</a>
         {#if loggedIn}
-<!--            <a href="/profile">Profile</a>-->
-<!--            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>-->
+            <a href="/upload">Upload</a>
+            <a href="/api">API</a>
+<!--            <a href="/user">Profile</a>-->
+            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
         {:else}
-            <a class="cursor-pointer" on:click={() => logIn()} href="/">Log In</a>
+            <a href="/api">API</a>
+            <a href="/api/auth/discord">Log In</a>
         {/if}
     </div>
 <!--    <div class="list-right">-->

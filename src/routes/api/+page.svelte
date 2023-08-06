@@ -25,7 +25,7 @@
 
 <div class="flex flex-col items-center">
     <APIEndpoint endpoint={["5beam 2023 summer update"]} type="INFO">
-        <p class="text-xl text-center">There has been some major changes:</p>
+        <p class="text-xl text-center">There has been some major changes (this changelog is outdated):</p>
         <br>
         <p>Levelpacks have changed, now users can add levels that aren't theirs.</p>
         <br><br>
@@ -301,6 +301,26 @@
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
                 ["data", "Levelpack file", "File"],
+            ]}>
+        </Table>
+    </APIEndpoint>
+
+    <APIEndpoint
+            endpoint={["api", "auth", "discord"]}
+            type="GET"
+            game_only
+    >
+        <p>Endpoint for logging into 5beam discord oauth, returns an access & refresh token.</p>
+    </APIEndpoint>
+
+    <APIEndpoint
+            endpoint={["api", "auth", "refresh"]}
+            type="GET"
+            game_only
+    >
+        <p>Gives you a new access_token. If this returns 400, it means your refresh_token is bad and you'll have to login again.</p>
+        <Table heads={["Property", "Meaning", "Type"]} content={[
+                ["refresh_token", "User's discord refresh token.", ParamType.STRING],
             ]}>
         </Table>
     </APIEndpoint>

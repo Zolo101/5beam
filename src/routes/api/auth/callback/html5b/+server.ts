@@ -1,12 +1,12 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { requestToken } from "$lib/auth";
+import { requestTokenLogIn } from "$lib/auth";
 import { redirectURL_html5b } from "../../../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const code = url.searchParams.get("code") ?? ""
 
-    const tokenResponse = await requestToken(code, redirectURL_html5b)
+    const tokenResponse = await requestTokenLogIn(code, redirectURL_html5b)
     const accessToken = tokenResponse.access_token
     const refreshToken = tokenResponse.refresh_token
 

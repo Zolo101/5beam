@@ -1,6 +1,6 @@
-import type { CreateLevel, User } from "$lib/types";
+import type { CreateLevel, PocketbaseUser } from "$lib/types";
 
-let user: User;
+let user: PocketbaseUser;
 
 export async function createLevel(obj: CreateLevel) {
     // const newDocumentRef = db.collection("posts").doc();

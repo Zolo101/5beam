@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { PageData } from "./$types";
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
     import { writable } from "svelte/store";
     import { getUserLevelPageClient } from "../../../client/ClientSideAPI";
     import Pagination from "../../../components/Pagination.svelte";
     import LevelpackComponent from "../../../components/browse/LevelpackComponent.svelte";
+    import type { PageData } from "./$types";
 
     export let data: PageData;
 

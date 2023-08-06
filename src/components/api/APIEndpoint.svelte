@@ -20,7 +20,7 @@
 </script>
 
 <div class="bg-neutral-600 w-[min(60vw, 1000px)] m-5 outline outline-black shadow-xl rounded"
-     class:deprecated={deprecated | wip}
+     class:deprecated={deprecated || wip}
      class:game_only={game_only}
 >
     <div class="inline bg-black text-3xl font-bold p-2">
@@ -39,9 +39,9 @@
             <p class="warning">Warning, this endpoint is in progress! Do not use!</p>
         {/if}
 
-        <!--{#if game_only}-->
-        <!--    <p class="warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>-->
-        <!--{/if}-->
+        {#if game_only}
+            <p class="warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>
+        {/if}
 
         {#if params}
             <Table title="Parameters" heads={["Name", "Description", "Type", "Defaults"]} content={params} dynamicWidth={true}/>

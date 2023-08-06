@@ -1,19 +1,24 @@
-import { oauth } from "$lib/auth";
-import cookie from "cookie";
-// import type {User} from "discord-oauth2";
+import type { PageServerLoad } from "./$types";
+import type { User } from "discord-oauth2";
+import { oauth, refreshTokenRequest, setAccessToken, setRefreshToken } from "$lib/auth";
 
-// TODO: Figure out the type for event
-/** @type {import('./$types').LayoutServerLoad} */
-export async function load({request, setHeaders}): Promise<{user} | {user: false}> {
-    const cookies = cookie.parse(request.headers.get("cookie") || '');
+export const load = (async ({ locals, cookies }) => {
+    let user: User | undefined = locals.user;
 
-    if (cookies.access_token) {
-        const user = await oauth.getUser(cookies.access_token);
-        // console.log(user)
-        return {user}
+
+    if (!user) {
+        // access_token is invalid, refresh it
+        const refreshToken = cookies.get("refresh_token");
+        const result = await refreshTokenRequest(cookies, refreshToken)
+
+        if (result) {
+            setAccessToken(cookies, result.access_token, result.expires_in)
+            setRefreshToken(cookies, result.refresh_token)
+            user = await oauth.getUser(result.access_token);
+        }
     }
 
-    return {
-        user: false
-    }
-}
+    // let dbUser: PocketbaseUser | undefined = getUserById(u);
+
+    return {user, loggedIn: !!user}
+}) satisfies PageServerLoad;

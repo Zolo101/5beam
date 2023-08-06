@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { User } from "$lib/types";
+    import type { PocketbaseUser } from "$lib/types";
 
-    export let user: User;
+    export let user: PocketbaseUser;
     export let prefix: string;
 </script>
 

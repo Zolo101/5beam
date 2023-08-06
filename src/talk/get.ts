@@ -1,5 +1,5 @@
 import { levelpacks, levels, users } from "$lib/pocketbase";
-import type { Level, Levelpack, User } from "$lib/types";
+import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 // TODO: Implement sort, also what is x?
@@ -67,8 +67,15 @@ export async function getSearch(text: string, amount: number) {
 export async function getUserById(id: string) {
     // return await getDoc(doc(collection(db, "users"), id))
 
-    return toPOJO(await users.getOne<User>(id));
+    return toPOJO(await users.getOne<PocketbaseUser>(id));
 }
+
+// deprecate maybe
+// export async function getUserByDiscordId(discordId: string) {
+//     // return await getDoc(doc(collection(db, "users"), id))
+//
+//     return toPOJO(await users.g<PocketbaseUser>(discordId));
+// }
 
 export async function getUserLevels(id: string, page: number) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
@@ -76,13 +83,13 @@ export async function getUserLevels(id: string, page: number) {
 
     // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
     return toPOJO((await users
-        .getOne<User>(id, {expand: "levels.creator"})
+        .getOne<PocketbaseUser>(id, {expand: "levels.creator"})
     ).expand.levels as Level[])
 }
 
 export async function getUserLevelpacks(id: string, page: number) {
     return toPOJO((await users
-            .getOne<User>(id, {expand: "levelpacks.creator"})
+            .getOne<PocketbaseUser>(id, {expand: "levelpacks.creator"})
     ).expand.levelpacks as Levelpack[])
 }
 
@@ -90,6 +97,7 @@ export async function getUserLevelpacks(id: string, page: number) {
 // so we need to convert it to a POJO (plain old javascript object)
 // so sveltekit won't complain
 // TODO: ...also, this does more than just "toPOJO"
+// TODO: import { moveExpandsInline } from "pocketbase-expandless";
 function toPOJO<T extends Record<string, any> | Record<string, any>[]>(obj: T): T {
     const result = Array.isArray(obj)
         ? structuredClone(obj.map(cleanObject))

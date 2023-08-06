@@ -3,7 +3,11 @@
     import Navbar from "../components/layout/Navbar.svelte";
     import Line from "../components/layout/Line.svelte";
     import Footer from "../components/layout/Footer.svelte";
+    import type { PageData } from "./$types";
 
+    export let data: PageData;
+
+    let user = data.user;
     let navbarComponent;
     let backgroundId = `/backgrounds/${Date.now() % 11}.png`;
 </script>
@@ -22,7 +26,7 @@
 
 <div class="app">
 <!--    <div class="background" style="background-image: url({backgroundId})"></div>-->
-    <Navbar bind:this={navbarComponent}/>
+    <Navbar {user} bind:this={navbarComponent}/>
     <Line/>
     <div class="page">
         <slot></slot>

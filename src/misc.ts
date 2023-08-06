@@ -57,10 +57,6 @@ export function return404() {
     return new Response(null, {status: 404})
 }
 
-export const mergeObjects = <A, B>(a: A, b: B): A & B => {
-    return {...a, ...b}
-}
-
 // All good
 export const OK = (body: any) => new Response(JSON.stringify(body), {status: 200})
 
@@ -71,6 +67,7 @@ export const BAD = (message: string) => new Response(message, {status: 400})
 export const DENIED = () => new Response("Authentication Denied. Have you given me a valid access_token?", {status: 401})
 
 
-export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
+// export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
+export const apiURL = dev ? "http://localhost:5173" : "https://clever-golick-4be132.netlify.app"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`
