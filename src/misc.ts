@@ -52,6 +52,10 @@ export function isLoggedIn() {
     return false
 }
 
+export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
+    return `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}`
+}
+
 // if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
 export function readBlobInANSI(blob: Blob) {
     return new Promise((resolve, reject) => {

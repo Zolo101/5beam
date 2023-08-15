@@ -3,11 +3,14 @@
     import UserComponent from "../../../components/UserComponent.svelte";
     import Button from "../../../components/Button.svelte";
     import Difficulty from "../../../components/Difficulty.svelte";
+    import { getLevelThumbnailURL } from "../../../misc";
 
     export let data: PageData;
 
     let level = data.level;
     let user = data.level.creator;
+
+    const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail)
 
     const downloadLevel = () => {
         const a = document.createElement("a");
@@ -19,12 +22,16 @@
 
         a.click()
     }
+
+    console.log(level)
 </script>
 
 <svelte:head>
     <title>{level.title} - 5beam</title>
     <meta property="og:title" content={level.title}/>
     <meta property="og:description" content={level.description}/>
+    <meta property="og:image" content={thumbnailUrl}/>
+    <meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 
 <!--<div class="level">-->
@@ -52,7 +59,8 @@
 <!--</div>-->
 
 <div class="flex justify-center pt-20 pb-5">
-    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>
+<!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
+    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 

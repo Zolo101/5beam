@@ -11,6 +11,8 @@
     let user = data.levelpack.creator;
     let expanded = false;
 
+    // const thumbnailUrl = getLevelThumbnailURL(levelpack.id, levelpack.thumbnail)
+
     const downloadLevel = () => {
         alert("WIP")
         // const a = document.createElement("a");
@@ -36,6 +38,8 @@
     <title>{levelpack.title} - 5beam</title>
     <meta property="og:title" content={levelpack.title}/>
     <meta property="og:description" content={levelpack.description}/>
+    <meta property="og:image" content={thumbnailUrl}/>
+    <meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 
 <!--<div class="level">-->
@@ -64,6 +68,7 @@
 
 <div class="flex justify-center pt-20 pb-5">
     <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>
+<!--    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>-->
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
     <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 
