@@ -1,16 +1,17 @@
 <script lang="ts">
     import ValidatedLevel from "./ValidatedLevel.svelte";
+    import type { ValidateResult } from "../client/FileValidator";
+    import Log from "./Log.svelte";
 
-    export let result;
+    export let result: ValidateResult | undefined
 </script>
 
-<div class="validator">
+<div class="flex flex-wrap justify-center gap-3">
     {#if result}
-        {#if result.errors.length > 0}
-            <div class="info">
-                <h2>Validation Errors:</h2>
-                {#each result.errors as error}
-                    <p class="error">{error}</p>
+        {#if result.globalLogs.length > 0}
+            <div class="text-neutral-200 p-2.5">
+                {#each result.globalLogs as log}
+                    <Log {log}/>
                 {/each}
             </div>
         {/if}
@@ -19,16 +20,3 @@
         {/each}
     {/if}
 </div>
-
-<style>
-    .info {
-        background-color: #3a3a3a;
-        color: whitesmoke;
-        padding: 10px;
-    }
-
-    .error {
-        color: orangered;
-        font-weight: bold;
-    }
-</style>

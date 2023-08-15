@@ -1,20 +1,20 @@
 import { apiURL, URLParamSet } from "../misc";
 import type { BaseUser } from "$lib/types";
 
-export async function postCreateLevelClient(formData: FormData) {
+export async function postCreateLevelClient(payload: Record<string, any>) {
     const url = new URL(`${apiURL}/api/create/level`)
     const call = await fetch(url.toString(), {
         method: "POST",
-        body: formData
+        body: JSON.stringify(payload)
     })
     return call.json()
 }
 
-export async function postCreateLevelpackClient(formData: FormData) {
+export async function postCreateLevelpackClient(payload: Record<string, any>) {
     const url = new URL(`${apiURL}/api/create/levelpack`)
     const call = await fetch(url.toString(), {
         method: "POST",
-        body: formData
+        body: JSON.stringify(payload)
     })
     return call.json()
 }

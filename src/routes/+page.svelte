@@ -18,8 +18,9 @@
 
 <svelte:head>
     <meta property="og:title" content="5beam"/>
-    <meta name="description" content="Level Database for the web game BFDIA 5b.">
     <meta property="og:description" content="Level Database for the web game BFDIA 5b."/>
+    <meta property="og:image" content="https://5beam.zelo.dev/box.png"/>
+    <meta name="theme-color" content="#d10000">
 </svelte:head>
 
 {#if data.loggedIn}

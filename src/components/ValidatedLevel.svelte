@@ -1,81 +1,95 @@
 <script lang="ts">
+    import { fade } from "svelte/transition";
     import Table from "./layout/Table.svelte";
+    import type { DetectedLevel } from "../client/FileValidator";
+    import { to5bLevelFormat } from "../misc";
+    import Log from "./Log.svelte";
 
-    export let level;
+    export let level: DetectedLevel
     export let i;
-    let opened = false;
-    let status = "valid"
-    // console.log(level.errors)
-    if (level.warnings.length > 0) status = "warning"
-    if (level.errors.length > 0) status = "error"
+    $: opened = false
+
+    const tableSprites = level.sprites
+        .map((s) => Object.values(s).filter((v) => v !== undefined))
+
+    const tableDialogues = level.dialogues
+        .map((d) => Object.values(d))
+
+    // TODO: Find a better way to get the log level of a validation
+    const warningLog = level.logs.find((l) => l.level === "warning") !== undefined
+    const errorLog = level.logs.find((l) => l.level === "error") !== undefined
 </script>
 
-<div class="validated-level" class:opened>
-    <div class="header" on:click={() => opened = !opened}>
-        <div class="header-status">
-            <h1 class="name">{(level.id).toString().padStart(3, "0")}. {level.name}</h1>
-            <img class="status" src="/{status}.png"/>
-        </div>
-        <img class="background" src="/backgrounds/{level.background}.png"/>
+<!--<div class="flex justify-around">-->
+<div>
+    <div class="w-[128px] h-[128px] rounded-[10px] shadow-xl cursor-pointer bg-cover select-none" class:warningLog class:errorLog style="background-image: url('/backgrounds/{level.background}.png'); " on:click={() => opened = !opened}>
+<!--        <img class="w-[128px] h-[128px] rounded-[10px]" src="/backgrounds/{level.background}.png"/>-->
+<!--        <span class="w-[128px] h-[128px] -top-9 left-2 relative text-white text-2xl font-bold select-none whitespace-nowrap overflow-hidden overflow-ellipsis">{to5bLevelFormat(level.id)}. {level.name}</span>-->
+        <span class="px-1.5 text-white text-4xl font-bold z-0 mix-blend-overlay select-none">{to5bLevelFormat(level.id)}</span>
+<!--        <span class="bg-black text-sm text-blue-300 relative -top-[134px] -left-[30px]">{level.width} x {level.height}</span>-->
     </div>
+<!--    <div class="header" on:click={() => opened = !opened}>-->
+<!--        <div class="header-status">-->
+<!--            <h1 class="name">{(level.id).toString().padStart(3, "0")}. {level.name}</h1>-->
+<!--            <img class="status" src="/{status}.png"/>-->
+<!--        </div>-->
+<!--        <img class="background" src="/backgrounds/{level.background}.png"/>-->
+<!--    </div>-->
     {#if opened}
-        <div class="level-props">
-            <span class="width">{level.width},</span>
-            <span class="height">{level.height},</span>
-            <span class="spriteNumber">{level.spriteNumber},</span>
-            <span class="background">{level.background},</span>
-            <span class="type">{level.levelType}</span>
-        </div>
-        <div class="sprites">
-            <!--                        <h2>Sprites</h2>-->
-            <Table
-                    title="Sprites"
-                    heads={["Sprite ID", "X", "Y", "Role ID", "Motion Speed", "Motion Path"]}
-                    content={level.sprites.map((d) => Object.values(d))}
-            />
-        </div>
-        <div class="dialogues">
-            <!--                        <h2>Dialogues</h2>-->
-            <Table
-                    title="Dialogues"
-                    heads={["Sprite ID", "Emotion", "Text"]}
-                    content={level.dialogues.map((d) => Object.values(d))}
-            />
-        </div>
-        <div class="info">
-            {#if level.warnings.length > 0}
-                <div class="warnings">
-                    <h2>Warning(s):</h2>
-                    {#each level.warnings as warning}
-                        <p>{warning}</p>
-                    {/each}
+        <div transition:fade={{duration: 100}} class="w-[700px] absolute bg-green-950 bg-opacity-95 z-10 rounded-lg shadow-xl">
+            <p class="text-2xl font-bold p-2">{to5bLevelFormat(level.id)} - {level.name}</p>
+            <div class="text-3xl level-props">
+                <span class="width">{level.width} x {level.height}</span>
+                <span class="type">({level.levelType} mode)</span>
+            </div>
+            <div class="sprites">
+                <!--                        <h2>Sprites</h2>-->
+                <Table
+                        title="Sprites"
+                        heads={["Sprite ID", "X", "Y", "Role ID", "Motion Speed", "Motion Path"]}
+                        content={tableSprites}
+                />
+            </div>
+            {#if level.dialogues.length > 0}
+                <div class="dialogues">
+                    <!--                        <h2>Dialogues</h2>-->
+                    <Table
+                            title="Dialogues"
+                            heads={["Sprite ID", "Emotion", "Text"]}
+                            content={tableDialogues}
+                    />
                 </div>
             {/if}
-            {#if level.errors.length > 0}
-                <div class="errors">
-                    <h2>Error(s):</h2>
-                    {#each level.errors as error}
-                        <p>{error}</p>
-                    {/each}
-                </div>
-            {/if}
+            <div class="info">
+                {#if level.logs.length > 0}
+                    <div class="bg-neutral-700 bg-opacity-50 text-neutral-200 rounded p-2.5">
+                        {#each level.logs as log}
+                            <Log {log}/>
+                        {/each}
+                    </div>
+                {/if}
+            </div>
         </div>
     {/if}
 </div>
 
 <style>
-    .validated-level {
-        /*padding: 0 10px;*/
-        margin: 20px 0;
-        color: whitesmoke;
-        background-color: rgba(180, 180, 180, 0.5);
-        outline: 1px solid whitesmoke;
-        box-shadow: 1px 1px 0px 0px black;
+    .warningLog {
+        @apply outline outline-4 outline-amber-500 shadow-amber-900;
     }
 
-    .opened {
-        background-color: rgba(106, 106, 106, 0.8);
-        backdrop-filter: blur(4px);
+    .errorLog {
+        @apply outline outline-4 outline-red-500 shadow-red-900;
+    }
+
+    .validated-level {
+        @apply my-4;
+        /*padding: 0 10px;*/
+        /*margin: 20px 0;*/
+        /*color: whitesmoke;*/
+        /*background-color: rgba(180, 180, 180, 0.5);*/
+        /*outline: 1px solid whitesmoke;*/
+        /*box-shadow: 1px 1px 0px 0px black;*/
     }
 
     .header {
@@ -119,19 +133,14 @@
         padding: 10px;
     }
 
-    span {
-        font-size: 2em;
-    }
+    /*.errors, .warnings {*/
+    /*    !*font-family: monospace;*!*/
+    /*    font-weight: bold;*/
+    /*    font-size: 1.5em;*/
+    /*    padding: 4px 20px;*/
+    /*    margin: 10px 0;*/
+    /*    background-color: #3a3a3a;*/
+    /*}*/
 
-    .errors, .warnings {
-        /*font-family: monospace;*/
-        font-weight: bold;
-        font-size: 1.5em;
-        padding: 4px 20px;
-        margin: 10px 0;
-        background-color: #3a3a3a;
-    }
-
-    .errors {color: orangered;}
-    .warnings {color: orange;}
+    /*.errors {color: orangered;}*/
 </style>

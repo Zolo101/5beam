@@ -52,6 +52,23 @@ export function isLoggedIn() {
     return false
 }
 
+// if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
+export function readBlobInANSI(blob: Blob) {
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = (event) => {
+            const arrayBuffer = event.target!.result as ArrayBuffer;
+            const textDecoder = new TextDecoder('windows-1252'); // ANSI
+            const decodedString = textDecoder.decode(new Uint8Array(arrayBuffer));
+            resolve(decodedString);
+        };
+        reader.onerror = (event) => {
+            reject("Error reading blob: " + event.target!.error);
+        };
+        reader.readAsArrayBuffer(blob);
+    });
+}
+
 // Cant find
 export function return404() {
     return new Response(null, {status: 404})

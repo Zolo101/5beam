@@ -1,3 +1,5 @@
+import type { User } from "discord-oauth2";
+
 export type Level = {
     id: string
     creator: PocketbaseUser
@@ -12,6 +14,8 @@ export type Level = {
     stars: number
     difficulty: number
     featured: boolean
+
+    thumbnail: string
 }
 
 export type Levelpack = {
@@ -27,18 +31,24 @@ export type Levelpack = {
     views: number
     stars: number
     featured: boolean
+
+    // TODO: thumbnail property?
 }
 
 export type CreateLevel = {
+    // discord id (ALWAYS get this server-side)
+    creator: User
     title: string
     description: string
-    data: string
+    level: string
 }
 
 export type CreateLevelpack = {
+    // discord id (ALWAYS get this server-side)
+    creator: User
     title: string
     description: string
-    levels: string[]
+    level: string
 }
 
 export type PocketbaseUser = BaseUser & (DiscordUser)

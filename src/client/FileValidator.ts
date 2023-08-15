@@ -1,73 +1,113 @@
-export type ValidateResult = {
-    levels: DetectedLevel[],
-    errors: string[],
-    warnings: string[],
-}
+import { z } from "zod";
 
-type DetectedLevel = {
-    id: number
-    name: string
-    width: number
-    height: number
-    spriteNumber: number
-    background: number
-    levelType: "L" | "H"
-    data: string
+export type ValidateLog = z.infer<typeof validateLogSchema>
 
-    sprites: Sprite[]
-    dialogues: Dialogue[]
-    deathsRequired: number
+export type ValidateResult = z.infer<typeof validateResultSchema>
 
-    errors: string[]
-    warnings: string[]
-}
+export type DetectedLevel = z.infer<typeof detectedLevelSchema>
 
-type Sprite = {
-    entityId: number
-    x: number
-    y: number
-    roleId: number
-    motionSpeed?: number
-    motionPath?: string
-}
+type Sprite = z.infer<typeof spriteSchema>
 
-type Dialogue = {
-    entityOrder: number
-    emotion: "H" | "S"
-    text: string
-}
+type Dialogue = z.infer<typeof dialogueSchema>
+
+export const validateLogSchema = z.object({
+    at: z.number(),
+    message: z.string(),
+    level: z.union([z.literal("info"), z.literal("warning"), z.literal("error")])
+})
+
+const spriteSchema = z.object({
+    entityId: z.number(),
+    x: z.number(),
+    y: z.number(),
+    roleId: z.number(),
+    motionSpeed: z.number().optional(),
+    motionPath: z.string().optional()
+})
+
+const dialogueSchema = z.object({
+    entityOrder: z.number(),
+    emotion: z.union([z.literal("H"), z.literal("S")]),
+    text: z.string()
+})
+
+export const detectedLevelSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    width: z.number(),
+    height: z.number(),
+    spriteNumber: z.number(),
+    background: z.number(),
+    levelType: z.union([z.literal("L"), z.literal("H")]),
+    data: z.string(),
+    sprites: z.array(spriteSchema),
+    dialogues: z.array(dialogueSchema),
+    deathsRequired: z.number(),
+    logs: z.array(validateLogSchema),
+    raw: z.string()
+})
+
+export const validateResultSchema = z.object({
+    levels: z.array(detectedLevelSchema),
+    globalLogs: z.array(validateLogSchema),
+    valid: z.boolean()
+})
+
 
 function validate(file: string) {
     const result: ValidateResult = {
         levels: [],
-        errors: [],
-        warnings: []
+        globalLogs: [],
+        valid: false
     }
     const data = file
         .trim()
         .replaceAll("\r\n", "\n")
         .split("\n")
 
-    // Remove first line if its just "loadedLevels="
-    if (data[0].trim() === "loadedLevels=") data.shift()
+    try {
+        // Remove first line if its just "loadedLevels="
+        if (data[0].trim() === "loadedLevels=") data.shift()
 
-    const levels = data.join("\n").split("\n\n")
-    let i = 0;
-    for (const level of levels) {
-        try {
-            i += 1;
-            result.levels.push(processLevel(result, level, i))
-        } catch (e) {
-            result.errors.push(`ERROR PROCESSING LEVEL ${i}, Make sure the level properties are correct!`)
-            console.error(e)
+        const levels = data.join("\n").split("\n\n")
+        let i = 0;
+        for (const level of levels) {
+            try {
+                i += 1;
+                result.levels.push(processLevel(result, level, i))
+            } catch (e) {
+                result.globalLogs.push(createError(0, "Malformed level / levelpack. Are you sure this is a BFDIA 5b level file?"))
+                console.error(e)
+            }
         }
+        result.valid = true;
+    } catch (e) {
+        result.globalLogs.push(createError(0, "Malformed level / levelpack. Are you sure this is a BFDIA 5b level file?"))
+        // TODO: Alert user? But I dont think this will ever happen
+        console.error(e)
     }
+
     return result
 }
 
+function createLog(at: number, message: string, level: ValidateLog["level"]): ValidateLog {
+    return {
+        at,
+        message,
+        level
+    }
+}
+
+function createError(at: number, message: string): ValidateLog {
+    return {
+        at,
+        message,
+        level: "error"
+    }
+}
+
 function processLevel(result: ValidateResult, level: string, id: number): DetectedLevel {
-    const errors: string[] = []
-    const warnings: string[] = []
+    const logs: ValidateLog[] = []
 
     const lines = level.split("\n")
     const name = lines[0]
@@ -79,36 +119,34 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
     const spriteNumber = Number(props[2])
     const background = Number(props[3])
     const type = props[4]
-    // if (width < 32 || width > 99) errors.push(`${name} has a width of ${width} which is not between 32 and 99`)
-    // if (height < 18 || height > 99) errors.push(`${name} has a height of ${height} which is not between 18 and 99`)
-    if (spriteNumber < 1) errors.push(`${name} needs at least one sprite`)
-    if (background < 0 || background > 15) errors.push(`${name} has a background of ${background} which is not between 0 and 15`)
-    if (type != "L" && type != "H") errors.push(`${name} has a level type of '${type}' which is not 'L' or 'H'`)
+    // if (width < 32 || width > 99) logs.push(createError((`${name} has a width of ${width} which is not between 32 and 99`)
+    // if (height < 18 || height > 99) logs.push(createError((`${name} has a height of ${height} which is not between 18 and 99`)
+    if (spriteNumber < 1) logs.push(createError(id, `Each level needs at least one sprite!`))
+    if (background < 0 || background > 15) logs.push(createError(id, `The background index given: '${background}' is not between 0 and 15`))
+    if (type != "L" && type != "H") logs.push(createError(id, `The level type is '${type}' which is not 'L' or 'H'`))
 
     // level data
     const levelData = lines.slice(2, 2 + height).join("")
     switch (type) {
         case "L":
-            if (levelData.length !== (width * height)) errors.push(`'${name}' level data size is not the same as the specified size (width, height) in the level properties`)
+            if (levelData.length !== (width * height)) logs.push(createError(id, `'${name}' level data size is not the same as the specified size (width, height) in the level properties`))
             break
 
         case "H":
-            if (levelData.length !== (width * height * 2)) errors.push(`'${name}' level data size is not the same as the specified size (width, height) in the level properties`)
+            if (levelData.length !== (width * height * 2)) logs.push(createError(id, `'${name}' level data size is not the same as the specified size (width, height) in the level properties`))
             break
     }
-    if (levelData.indexOf("4") === -1) errors.push(`${name} has no '4' (finish block) in the level data`)
-    if (levelData.indexOf(":") === -1) warnings.push(`${name} has no ':' (win-token block) in the level data`)
+    if (levelData.indexOf("4") === -1) logs.push(createError(id, `A finish block is required!`))
+    if (levelData.indexOf(":") === -1) logs.push(createLog(id, `A win-token is optional but recommended`, "warning"))
 
     // sprite data
-    const sprites = processSprites(errors, warnings, lines.slice(2 + height, 2 + height + spriteNumber))
+    const sprites = processSprites(logs, lines.slice(2 + height, 2 + height + spriteNumber), id)
 
     const dialogueLength = Number(lines[2 + height + spriteNumber])
     const dialogues = lines.slice(2 + height + spriteNumber + 1, 2 + height + spriteNumber + 1 + dialogueLength)
-    const processedDialogues = processDialogue(errors, warnings, dialogues)
+    const processedDialogues = processDialogue(logs, dialogues, id)
     const deathsRequired = Number(lines[2 + height + spriteNumber + 1 + dialogueLength])
 
-    result.errors.push(...errors)
-    result.warnings.push(...warnings)
     return {
         id: id,
         name: name,
@@ -121,14 +159,14 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
         sprites: sprites,
         dialogues: processedDialogues,
         deathsRequired: deathsRequired,
-        errors: errors,
-        warnings: warnings,
+        logs: logs,
+        raw: level
     }
 }
 
-function processSprites(errors: string[], warnings: string[], sprites: string[]): Sprite[] {
+function processSprites(logs: ValidateLog[], sprites: string[], id: number): Sprite[] {
     const spriteArr = []
-    if (sprites.length === 0) warnings.push("No sprites found")
+    if (sprites.length === 0) logs.push(createLog(id,"No sprites found", "warning"))
 
     // entity_id, x, y, role_id, m_speed + m_string
     let i = 1;
@@ -148,13 +186,13 @@ function processSprites(errors: string[], warnings: string[], sprites: string[])
         if (motionSpeedAndString) {
             motionSpeed = Number(motionSpeedAndString.slice(0, 1))
             motionPath = motionSpeedAndString.slice(2)
-            if (motionSpeed < 0 || motionSpeed > 99) errors.push(`Sprite ${i} has a motion speed of ${motionSpeed} which is not between 0 and 99`)
+            if (motionSpeed < 0 || motionSpeed > 99) logs.push(createError(id, `Sprite ${i} has a motion speed of ${motionSpeed} which is not between 0 and 99`))
         }
 
-        if (entityId < 0 || entityId > 99) errors.push(`Sprite ${i} has an entity id of ${entityId} which is not between 0 and 99`)
-        // if (x < 0 || x > 99) errors.push(`Sprite ${i} has an x of ${x} which is not between 0.00 and 99.00`)
-        // if (y < 0 || y > 99) errors.push(`Sprite ${i} has an y of ${y} which is not between 0.00 and 99.00`)
-        if (roleId < 0 || roleId > 99) errors.push(`Sprite ${i} has a role id of ${roleId} which is not between 0 and 99`)
+        if (entityId < 0 || entityId > 99) logs.push(createError(id, `Sprite ${i} has an entity id of ${entityId} which is not between 0 and 99`))
+        // if (x < 0 || x > 99) logs.push(createError((`Sprite ${i} has an x of ${x} which is not between 0.00 and 99.00`)
+        // if (y < 0 || y > 99) logs.push(createError((`Sprite ${i} has an y of ${y} which is not between 0.00 and 99.00`)
+        if (roleId < 0 || roleId > 99) logs.push(createError(id, `Sprite ${i} has a role id of ${roleId} which is not between 0 and 99`))
 
         i += 1;
 
@@ -171,7 +209,7 @@ function processSprites(errors: string[], warnings: string[], sprites: string[])
     return spriteArr
 }
 
-function processDialogue(errors: string[], warnings: string[], dialogue: string[]) {
+function processDialogue(logs: ValidateLog[], dialogue: string[], id: number) {
     const dialogueArr = []
     // entity_id, emotion, text
     let i = 1;
@@ -183,8 +221,8 @@ function processDialogue(errors: string[], warnings: string[], dialogue: string[
 
         // console.log(entityId, emotion, text)
 
-        if (entityId < 0 || entityId > 99) errors.push(`Dialogue ${i} has an entity id of ${entityId} which is not between 0 and 99`)
-        if (emotion != "H" && emotion != "S") errors.push(`Dialogue ${i} has an emotion of '${emotion}' which is not 'H' or 'S'`)
+        if (entityId < 0 || entityId > 99) logs.push(createError(id, `Dialogue ${i} has an entity id of ${entityId} which is not between 0 and 99`))
+        if (emotion != "H" && emotion != "S") logs.push(createError(id, `Dialogue ${i} has an emotion of '${emotion}' which is not 'H' or 'S'`))
 
         i += 1;
 

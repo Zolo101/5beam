@@ -98,7 +98,7 @@ export async function getUserLevelpacks(id: string, page: number) {
 // so sveltekit won't complain
 // TODO: ...also, this does more than just "toPOJO"
 // TODO: import { moveExpandsInline } from "pocketbase-expandless";
-function toPOJO<T extends Record<string, any> | Record<string, any>[]>(obj: T): T {
+export function toPOJO<T extends Record<string, any> | Record<string, any>[]>(obj: T): T {
     const result = Array.isArray(obj)
         ? structuredClone(obj.map(cleanObject))
         : structuredClone(cleanObject(obj));

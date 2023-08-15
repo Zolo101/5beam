@@ -1,70 +1,51 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getSession } from "../../../../hooks";
 import { oauth } from "$lib/auth";
-import validate from "../../../../client/FileValidator";
-import { BAD, DENIED } from "../../../../misc";
+import { BAD, DENIED, OK } from "../../../../misc";
+import { z } from "zod";
+import { createLevel } from "../../../../talk/create";
+import type { User } from "discord-oauth2";
+import { toPOJO } from "../../../../talk/get";
 
-type PostFormData = {
-    access_token: string;
-    title: string;
-    description: string;
-    data: string;
-}
+const PostLevelSchema = z.object({
+    title: z
+        .string()
+        .min(1)
+        .max(64),
+    description: z
+        .string()
+        .max(1024),
+    modded: z
+        .boolean(),
+    file: z
+        .string()
+})
 
-export const post: RequestHandler = async ({request}) => {
-    const data: any = {};
-    const formData = await request.formData()
+export const POST: RequestHandler = async ({cookies, request}) => {
+    const json = await request.json()
+    const payload = PostLevelSchema.parse(json)
 
-    // Turn formData into an object
-    // TODO: idk why this gives a typescript error
-    // @ts-ignore
-    for (let field of formData) {
-        const [key, value] = field;
-        data[key] = value;
+    const access_token = cookies.get("access_token")
+    if (access_token === undefined) return DENIED()
+
+
+    // Get user from access token
+    let user: User;
+    try {
+        user = await oauth.getUser(access_token)
+    } catch (e) {
+        return DENIED()
     }
 
-    // Get user from cookie, otherwise access_token
-    const user = await getDiscordUser(request, data.access_token);
+    try {
+        const level = await createLevel({
+            creator: user,
+            title: payload.title,
+            description: payload.description,
+            level: payload.file,
+        })
 
-    if (user === false) return DENIED()
-
-    if (!await validateData(data)) {
-        // is this still true post-migrate?
-        // TODO: This doesnt return well (returns as JSON even though it isn't)
-
-        return BAD("Invalid FormData")
+        return OK(toPOJO(level))
+    } catch (e) {
+        return BAD("Invalid Payload")
     }
-
-    // console.log(data, user)
-    const fileText = await data.file.text()
-    // console.log(fileText)
-
-    // TODO: Remove non-null symbol
-    // This is to get the user's ID rather than Discord ID
-    // const userDBID = (await getUserById({discordId: user.id }))!.id
-    //
-    // const level = await createLevel({
-    //     creatorId: userDBID,
-    //     title: data.title,
-    //     description: data.description,
-    //     data: fileText
-    // })
-    //
-    // return OK(level)
-    return BAD("WIP")
-}
-
-export async function validateData(data: any) {
-    if (data.title.length === 0 || data.title.length > 64) return false;
-    if (data.description.length === 0 || data.description.length > 1024) return false;
-    if (data.file.size === 0 || data.file.size > 1_000_000) return false; // 1 megabyte
-
-    const fileText = await data.file.text()
-    if (validate(fileText).errors.length !== 0) return false;
-    // console.log(data.title.length, data.description.length, data.file.size)
-    return true;
-}
-
-export async function getDiscordUser(request: Request, access_token?: string) {
-    return (access_token) ? await oauth.getUser(access_token) : (await getSession({request})).user;
 }
