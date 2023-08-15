@@ -3,6 +3,7 @@
     import Table from "./layout/Table.svelte";
     import type { DetectedLevel } from "../client/FileValidator";
     import { to5bLevelFormat } from "../misc";
+    import background from "$lib/assets/backgrounds/0.png"
     import Log from "./Log.svelte";
 
     export let level: DetectedLevel
@@ -22,7 +23,7 @@
 
 <!--<div class="flex justify-around">-->
 <div>
-    <div class="w-[128px] h-[128px] rounded-[10px] shadow-xl cursor-pointer bg-cover select-none" class:warningLog class:errorLog style="background-image: url('/backgrounds/{level.background}.png'); " on:click={() => opened = !opened}>
+    <div class="w-[128px] h-[128px] rounded-[10px] shadow-xl cursor-pointer bg-cover select-none" class:warningLog class:errorLog style="background-image: url({background});" on:click={() => opened = !opened}>
 <!--        <img class="w-[128px] h-[128px] rounded-[10px]" src="/backgrounds/{level.background}.png"/>-->
 <!--        <span class="w-[128px] h-[128px] -top-9 left-2 relative text-white text-2xl font-bold select-none whitespace-nowrap overflow-hidden overflow-ellipsis">{to5bLevelFormat(level.id)}. {level.name}</span>-->
         <span class="px-1.5 text-white text-4xl font-bold z-0 mix-blend-overlay select-none">{to5bLevelFormat(level.id)}</span>

@@ -22,6 +22,8 @@ export const difficultyColorMap = new Map<number, string>([
     [7, "#890000"],
 ]);
 
+export const difficultyImages = import.meta.glob("$lib/assets/difficulty/*.png", {eager: true, as: "url"})
+
 // TODO: Research temporal https://tc39.es/proposal-temporal/docs/index.html
 export function formatDate_Day(date: string) {
     return new Date(date).toLocaleDateString("en-gb", {
