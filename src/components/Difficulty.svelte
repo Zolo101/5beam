@@ -4,7 +4,7 @@
 
     export let difficulty: number = 0;
     export let includeText: boolean = false;
-    const name = difficultyMap.get(difficulty)!
+    const name = difficultyMap.get(difficulty) ?? "unknown"
     const filename = name.toLowerCase()
     const image = difficultyImages[`/src/lib/assets/difficulty/${filename}.png`]
 </script>

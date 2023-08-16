@@ -5,7 +5,7 @@ import { OK } from "../../../misc";
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const text = url.searchParams.get("text") ?? ""
-    const amount = Number(url.searchParams.get("amount") ?? 8)
+    const page = Number(url.searchParams.get("page") ?? 0)
 
-    return OK(await getSearch(text, amount))
+    return OK(await getSearch(text, page))
 }

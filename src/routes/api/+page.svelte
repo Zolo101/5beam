@@ -25,11 +25,93 @@
 
 <div class="flex flex-col items-center">
     <APIEndpoint endpoint={["5beam 2023 summer update"]} type="INFO">
-        <p class="text-xl text-center">There has been some major changes (this changelog is outdated):</p>
+        <p class="text-xl text-center">There has been some major changes:</p>
         <br>
-        <p>Levelpacks have changed, now users can add levels that aren't theirs.</p>
-        <br><br>
-        - <APIReference type={"STRUCT"} reference={"Level"}/> now has a "difficulty" property.
+        <div class="flex flex-col gap-5">
+<!--            <p>-->
+<!--                - <APIReference type={"STRUCT"} reference={"Level"}/> now has a "creator" property of <APIReference type={"STRUCT"} reference={"User"}/>.-->
+<!--            </p>-->
+            <p class="text-center">
+                <APIReference type={"GLOBAL"} reference={"Everything"}/>
+            </p>
+            <ul>
+                <li>The <code>amount</code> parameter has been removed from all endpoints</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"STRUCT"} reference={"Level"}/>
+            </p>
+            <ul>
+                <li><code>createdAt</code> is now <code>created</code></li>
+                <li><code>plays</code> is now <code>views</code></li>
+                <li><code>updated</code> has been added (although users cannot edit levels yet)</li>
+                <li><code>creatorId</code> has been removed</li>
+                <li><code>levelpackId</code> has been removed</li>
+                <li><code>levelpackPart</code> has been removed</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"STRUCT"} reference={"Levelpack"}/>
+            </p>
+            <ul>
+                <li>The maximum amount of levels in a levelpack is 100</li>
+                <li><code>views</code> has been added</li>
+                <li><code>stars</code> has been added</li>
+                <li><code>updated</code> has been added (although users cannot edit levelpacks yet)</li>
+                <li>By default, <code>levels</code> will now have a list of level ID's. But you can use the <code>levels</code> parameter to change it back to how it was before.</li>
+                <li><code>creatorId</code> has been removed</li>
+                <li><code>createdAt</code> is now <code>created</code></li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"STRUCT"} reference={"User"}/>
+            </p>
+            <ul>
+                <li><code>createdAt</code> is now <code>created</code></li>
+                <li><code>name</code> is now <code>username</code></li>
+                <li><code>updated</code> has been added</li>
+                <li><code>levelpacks</code> has been added. It's an array of levelpacks ID's the user has made.</li>
+                <li><code>levels</code> has been added. It's an array of level ID's the user has made.</li>
+                <li><code>stars</code> has been added. It's an array of level ID's the user has starred. (although for now this feature is WIP)</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"GET"} reference={["api", "page"]}/>
+            </p>
+            <ul>
+                <li>Type and sort codes have changed.</li>
+                <li>New <code>featured</code> property.</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"GET"} reference={["api", "user", "page"]}/>
+            </p>
+            <ul>
+                <li>Type and sort codes have changed.</li>
+                <li>New <code>featured</code> property.</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"GET"} reference={["api", "search"]}/>
+            </p>
+            <ul>
+                <li>Search results may be different because of the move to another database.</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"GET"} reference={["api", "auth", "discord"]}/>
+            </p>
+            <ul>
+                <li>No changes, but it's now in the API docs</li>
+            </ul>
+
+            <p class="text-center">
+                <APIReference type={"GET"} reference={["api", "auth", "refresh"]}/>
+            </p>
+            <ul>
+                <li>New!</li>
+            </ul>
+        </div>
     </APIEndpoint>
 <!--    <div class="ratelimit-container">-->
 <!--        {#each ratelimits as ratelimit}-->
@@ -180,7 +262,7 @@
         <p>Level codes:</p>
         <Table title="Level Codes" heads={["Code", "Meaning"]} content={[
             ["0", "Return Level ID's"],
-            ["1", "Return STRUCT Levels (Not Recommended for now)"],
+            ["1", "Return STRUCT Levels (can be slow)"],
         ]}/>
         <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a <APIReference type={"STRUCT"} reference={"Levelpack"}/></p>
@@ -216,22 +298,21 @@
                 ["page", "Page number", ParamType.INTEGER],
                 ["type", "Type of", ParamType.INTEGER, 0],
                 ["sort", "Sort by", ParamType.INTEGER, 0],
-                //["amount", "Amount of levels", ParamType.INTEGER, 8],
+                ["featured", "Only featured levels / levelpacks", ParamType.BOOLEAN, false],
             ]}
     >
                 <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/>.</p>
         <p>Type codes:</p>
-        <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
+        <Table title="Type Codes" heads={["Code", "Meaning"]} content={[
             ["0", "Levels"],
             ["1", "Levelpacks"],
         ]}/>
         <p>Sort codes:</p>
-        <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "By Age (new > old)"],
-            ["1", "Top (by plays)"],
-            ["2", "Top (by stars)"],
-            ["3", "Featured (new > old)"],
+        <Table title="Sort Codes" heads={["Code", "Meaning"]} content={[
+            ["0", "Age (newest)"],
+            ["1", "Age (oldest)"],
+            ["2", "Views (descending)"],
         ]}/>
     </APIEndpoint>
 
@@ -239,8 +320,7 @@
             endpoint={["api", "search"]}
             params={[
                 ["text", "Search text", ParamType.STRING],
-                ["page", "Page number (WIP, NOT IMPLEMENTED YET)", ParamType.INTEGER],
-                //["amount", "Amount of levels", ParamType.INTEGER, 8],
+                ["page", "Page number", ParamType.INTEGER],
             ]}
     >
         <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
@@ -254,22 +334,20 @@
                 ["page", "Page number", ParamType.INTEGER],
                 ["type", "Type of", ParamType.INTEGER, 0],
                 ["sort", "Sort by", ParamType.INTEGER, 0],
-                //["amount", "Amount of levels", ParamType.INTEGER, 8],
             ]}
     >
                 <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> created by the user.</p>
         <p>Type codes:</p>
-        <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
+        <Table title="Type Codes" heads={["Code", "Meaning"]} content={[
             ["0", "Levels"],
             ["1", "Levelpacks"],
         ]}/>
         <p>Sort codes:</p>
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "By Age (new > old)"],
-            ["1", "Top (by plays)"],
-            ["2", "Top (by stars)"],
-            ["3", "Featured (new > old)"],
+            ["0", "Age (newest)"],
+            ["1", "Age (oldest)"],
+            ["2", "Views (descending)"],
         ]}/>
     </APIEndpoint>
 
@@ -327,24 +405,11 @@
 </div>
 
 <style>
-    /*.ratelimit-container {*/
+    code {
+        @apply bg-neutral-700 rounded p-1 mx-0.5;
+    }
 
-    /*}*/
-
-    /*.ratelimit {*/
-    /*    background-color: black;*/
-    /*    color: whitesmoke;*/
-    /*    font-size: 1.5em;*/
-    /*    font-weight: bold;*/
-    /*    padding: 0.5em;*/
-    /*    margin: 10px;*/
-    /*}*/
-
-    /*.endpoint-type-GET {*/
-    /*    color: lawngreen;*/
-    /*}*/
-
-    /*.endpoint-type-POST {*/
-    /*    color: hotpink;*/
-    /*}*/
+    ul {
+        @apply flex flex-col gap-2 list-disc;
+    }
 </style>

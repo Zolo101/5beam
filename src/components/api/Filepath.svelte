@@ -21,7 +21,7 @@
     }
 
     .filepath-slash {
-        height: 55px;
+        height: 37px;
         padding: 0 7px 0 9px;
         font-size: 1.5em;
         font-weight: normal;
