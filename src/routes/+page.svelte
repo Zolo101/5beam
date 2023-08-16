@@ -10,9 +10,13 @@
     export let data: PageData;
     let user = data.user;
 
-    $: levelPage = 1
+    $: recentLevelPage = 1
+    $: featuredLevelPage = 1
+    $: mostPopularLevelPage = 1
     $: levelpackPage = 1
-    const levels = writable(data.levels)
+    const recentLevels = writable(data.recentLevels)
+    const featuredLevels = writable(data.featuredLevels)
+    const mostPopularLevels = writable(data.mostPopularLevels)
     const levelpacks = writable(data.levelpacks)
 </script>
 
@@ -39,24 +43,55 @@
 {/if}
 
 <br><br>
+<p class="text-4xl text-neutral-300 font-bold p-2">Featured Levels</p>
+<Pagination
+        bind:page={featuredLevelPage}
+        bind:output={$featuredLevels}
+        callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+        removeOptions
+>
+    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+        {#each $featuredLevels as featuredLevel}
+            <LevelComponent level={featuredLevel}/>
+        {/each}
+    </div>
+</Pagination>
+
+<p class="text-4xl text-neutral-300 font-bold p-2">Most Popular Levels</p>
+<Pagination
+        bind:page={mostPopularLevelPage}
+        bind:output={$mostPopularLevels}
+        callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+        removeOptions
+>
+    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+        {#each $mostPopularLevels as mostPopularLevel}
+            <LevelComponent level={mostPopularLevel}/>
+        {/each}
+    </div>
+</Pagination>
+
 <p class="text-4xl text-neutral-300 font-bold p-2">Recent Levels</p>
-    <Pagination
-            bind:page={levelPage}
-            bind:output={$levels}
-            callback={(page) => getLevelPageClient(page, 8, 0)}
-    >
-        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
-            {#each $levels as level}
-                <LevelComponent {level}/>
-            {/each}
-        </div>
-    </Pagination>
-<br>
+<Pagination
+        bind:page={recentLevelPage}
+        bind:output={$recentLevels}
+        callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+        featured={1}
+        removeOptions
+>
+    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+        {#each $recentLevels as level}
+            <LevelComponent {level}/>
+        {/each}
+    </div>
+</Pagination>
+
 <p class="text-4xl text-neutral-300 font-bold p-2">Recent Levelpacks</p>
 <Pagination
         bind:page={levelpackPage}
         bind:output={$levelpacks}
-        callback={(page) => getLevelPageClient(page, 8, 1)}
+        callback={(page, sort, featured) => getLevelPageClient(page, 1, sort, featured)}
+        removeOptions
 >
     <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
         {#each $levelpacks as levelpack}

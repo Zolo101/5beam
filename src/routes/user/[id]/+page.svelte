@@ -57,7 +57,7 @@
     <Pagination
             bind:page={levelPage}
             bind:output={$levels}
-            callback={(page) => getUserLevelPageClient(user.id, page, 8, 0)}
+            callback={(page, sort, featured) => getUserLevelPageClient(user.id, page, 0, sort, featured)}
     >
         <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
             {#each $levels as level}
@@ -70,7 +70,7 @@
     <Pagination
             bind:page={levelpackPage}
             bind:output={$levelpacks}
-            callback={(page) => getUserLevelPageClient(user.id, page, 8, 1)}
+            callback={(page, sort, featured) => getUserLevelPageClient(user.id, page, 1, sort, featured)}
     >
         <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
             {#each $levelpacks as levelpack}
@@ -80,57 +80,6 @@
     </Pagination>
 
 </div>
-
-<!--<div>-->
-<!--    {#await userRequest}-->
-<!--        <p class="loading">Loading...</p>-->
-<!--    {:then user}-->
-<!--        <div class="profile">-->
-<!--            <h1>{user.username}</h1>-->
-<!--            <h2>Created on {formatDate_Full(user.created)}</h2>-->
-<!--        </div>-->
-<!--    {:catch error}-->
-<!--        <p class="error">Error while requesting user: {error}</p>-->
-<!--    {/await}-->
-<!--</div>-->
-
-<!--<h1 class="header">Levelpacks</h1>-->
-<!--<div class="levelpacks">-->
-<!--    {#await userLevelpacksRequest}-->
-<!--        <p class="loading">Loading...</p>-->
-<!--    {:then levelpacks}-->
-<!--        {#each levelpacks as levelpack}-->
-<!--            <a href="/levelpack/{levelpack.id}">-->
-<!--                <LevelpackComponent {levelpack}/>-->
-<!--            </a>-->
-<!--        {/each}-->
-<!--    {:catch error}-->
-<!--        <p class="error">Error while requesting levelpacks: {error}</p>-->
-<!--    {/await}-->
-<!--</div>-->
-
-<!--<h1 class="header">Levels</h1>-->
-<!--<div class="levels">-->
-<!--    {#await userLevelsRequest}-->
-<!--        <p class="loading">Loading...</p>-->
-<!--    {:then levels}-->
-<!--        &lt;!&ndash;{@debug levels}&ndash;&gt;-->
-<!--        {#each levels as level}-->
-<!--            <a href="/level/{level.id}">-->
-<!--                <LevelComponent {level}/>-->
-<!--            </a>-->
-<!--        {/each}-->
-<!--    {:catch error}-->
-<!--        <p class="error">Error while requesting levels: {error}</p>-->
-<!--    {/await}-->
-<!--</div>-->
-
-
-<!--<div class="pag"> &lt;!&ndash; pagination &ndash;&gt;-->
-<!--    <span class="pag-arrow" on:click={() => changePage(-1)}>{"<"}</span>-->
-<!--    <span class="pag-number">{levels_page}</span>-->
-<!--    <span class="pag-arrow" on:click={() => changePage(1)}>{">"}</span>-->
-<!--</div>-->
 
 <style>
     a {

@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Levelpack } from "$lib/types";
+    import Box from "$lib/assets/box.png"
     import Icon from "../Icon.svelte";
 
     export let levelpack: Levelpack;
@@ -10,7 +11,7 @@
 <a href="/levelpack/{levelpack.id}">
     <div class="w-[209px] h-[158px] relative bg-zinc-800 rounded-[5px] shadow">
         <!--    Thumbnail -->
-        <img class="w-[195px] h-[108px] left-[7px] top-[7px] absolute rounded-sm" src="https://via.placeholder.com/195x108" alt="Placeholder Thumbnail"/>
+        <img class="w-[120px] h-[108px] left-[46px] top-[7px] absolute rounded-sm bg-contain" src={Box} alt="Placeholder Thumbnail"/>
         <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-white text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{levelpack.title}</div>
         <div class="w-[133px] h-3 left-[7px] top-[137px] absolute text-neutral-400 text-[13px] font-normal whitespace-nowrap overflow-ellipsis">by {user.username}</div>
         <div class="w-[22px] h-[17px] left-[180px] top-[119px] absolute justify-start items-end gap-px inline-flex">

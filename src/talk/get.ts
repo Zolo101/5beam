@@ -3,39 +3,29 @@ import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 // TODO: Implement sort, also what is x?
-export async function getLevels(page: number, sort: any, x: any) {
-    // return await prisma.level.findMany({
-    //     skip: offset,
-    //     take: amount,
-    //     include: {
-    //         creator: true,
-    //     },
-    //     where: {
-    //         levelpackId: null,
-    //         ...props,
-    //     },
-    //     orderBy: sort,
-    // })
+export async function getLevels(page: number, sortCode: number, featured: boolean) {
+    let sort = getSort(sortCode)
+    const filter = featured ? "featured = true" : ""
 
-    // TODO: filter
     return toPOJO((await levels
-        .getList<Level>(page, 8, {expand: "creator"})
+        .getList<Level>(page, 8, {
+            expand: "creator",
+            sort,
+            filter
+        })
     ).items)
 }
 
-export async function getLevelpacks(page: number, sort: any, x: any) {
-    // return await prisma.levelpack.findMany({
-    //     skip: offset,
-    //     take: amount,
-    //     include: {
-    //         creator: true,
-    //     },
-    //     where: props,
-    //     orderBy: sort,
-    // })
+export async function getLevelpacks(page: number, sortCode: number, featured: boolean) {
+    let sort = getSort(sortCode)
+    const filter = featured ? "featured = true" : ""
 
     return toPOJO((await levelpacks
-        .getList<Levelpack>(page, 8, {expand: "creator"})
+        .getList<Levelpack>(page, 8, {
+            expand: "creator",
+            sort,
+            filter
+        })
     ).items)
 }
 
@@ -59,13 +49,10 @@ export async function getLevelpackById(id: string) {
 }
 
 // TODO: Fulltext search?
-export async function getSearch(text: string, amount: number) {
-    // const search = query(collection(db, "levels"), where("title", ">=", text), limit(amount))
-    // return await getDocs(search)
-
+export async function getSearch(text: string, page: number) {
     return toPOJO((await levels
-        .getList<Level>(1, 8, {
-            filter: `title ~ ${text}`, // TODO: Is this unsafe?
+        .getList<Level>(page, 8, {
+            filter: `title ~ "${text}"`, // TODO: Is this unsafe / escapable?
         })
     ).items)
 }
@@ -83,19 +70,32 @@ export async function getUserById(id: string) {
 //     return toPOJO(await users.g<PocketbaseUser>(discordId));
 // }
 
-export async function getUserLevels(id: string, page: number) {
+export async function getUserLevels(id: string, page: number, sortCode: number, featured: boolean) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
+    let sort = getSort(sortCode)
+    const filter = featured ? "featured = true" : ""
 
     // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
     return toPOJO((await users
-        .getOne<PocketbaseUser>(id, {expand: "levels.creator"})
+        .getOne<PocketbaseUser>(id, {
+            expand: "levels.creator",
+            sort,
+            filter
+        })
     ).expand.levels as Level[])
 }
 
-export async function getUserLevelpacks(id: string, page: number) {
+export async function getUserLevelpacks(id: string, page: number, sortCode: number, featured: boolean) {
+    let sort = getSort(sortCode)
+    const filter = featured ? "featured = true" : ""
+
     return toPOJO((await users
-            .getOne<PocketbaseUser>(id, {expand: "levelpacks.creator"})
+            .getOne<PocketbaseUser>(id, {
+                expand: "levelpacks.creator",
+                sort,
+                filter
+            })
     ).expand.levelpacks as Levelpack[])
 }
 
@@ -139,4 +139,19 @@ function cleanObject(obj: Record<string, any>) {
     }
 
     return obj;
+}
+
+function getSort(sortCode: number) {
+    switch (sortCode) {
+        case 0:
+            return "-created"
+        case 1:
+            return "created"
+        case 2:
+            return "-views"
+        // case 3:
+        //  return "stars"
+        default:
+            return ""
+    }
 }

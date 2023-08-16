@@ -1,39 +1,18 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getLevelpacks, getLevels } from "../../../talk/get";
-import { OK } from "../../../misc";
+import { BAD, OK } from "../../../misc";
 
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const page = Number(url.searchParams.get("page"))
     const type = Number(url.searchParams.get("type") ?? 0)
     const sort = Number(url.searchParams.get("sort") ?? 0)
-    const amount = Number(url.searchParams.get("amount") ?? 8)
-    const includeData = url.searchParams.get("data") ?? false
+    const featured = Boolean(url.searchParams.get("data")) ?? false
 
-    const offset = page * amount;
-    const getFunc = type ? getLevelpacks : getLevels;
-    const featuredOnly = (type === 3) ? { featured: true } : {};
+    if (type < 0 || type >= 2) return BAD("Invalid type")
+    let getFunc = type === 0 ? getLevels : getLevelpacks;
 
-    let sortObj;
-    switch (sort) {
-        case 0:
-        case 3:
-            sortObj = {
-                createdAt: "desc"
-            }
-            break;
+    if (sort < 0 || sort >= 2) return BAD("Invalid sort")
 
-        case 1:
-            sortObj = {
-                plays: "desc"
-            }
-            break;
-
-        case 2:
-            break;
-    }
-
-    // const result = await getFunc(page, amount, sortObj, featuredOnly);
-    const result = await getFunc(page, amount, sortObj);
-    return OK(result);
+    return OK(await getFunc(page, sort, featured));
 }

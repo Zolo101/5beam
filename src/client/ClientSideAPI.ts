@@ -19,12 +19,12 @@ export async function postCreateLevelpackClient(payload: Record<string, any>) {
     return call.json()
 }
 
-export async function getLevelPageClient(page: number, amount?: number, type?: number, sort?: number) {
+export async function getLevelPageClient(page: number, type?: number, sort?: number, featured?: number) {
     const url = new URL(`${apiURL}/api/page`)
     URLParamSet(url, "page", page)
-    URLParamSet(url, "amount", amount)
     URLParamSet(url, "type", type)
     URLParamSet(url, "sort", sort)
+    URLParamSet(url, "featured", featured)
 
     return callAPI(url)
 }
@@ -66,13 +66,13 @@ export async function getUserByDiscordIdClient(discordId: number) {
     return callAPI(url)
 }
 
-export async function getUserLevelPageClient(creatorId: string, page: number, amount?: number, type?: number, sort?: number) {
+export async function getUserLevelPageClient(id: string, page: number, type?: number, sort?: number, featured?: number) {
     const url = new URL(`${apiURL}/api/user/page`)
-    URLParamSet(url, "creatorId", creatorId)
+    URLParamSet(url, "id", id)
     URLParamSet(url, "page", page)
-    URLParamSet(url, "amount", amount)
     URLParamSet(url, "type", type)
     URLParamSet(url, "sort", sort)
+    URLParamSet(url, "featured", featured)
 
     return callAPI(url)
 }

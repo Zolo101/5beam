@@ -1,5 +1,5 @@
 import type { CreateLevel, CreateLevelpack, Level } from "$lib/types";
-import { levelpacks, levels } from "$lib/pocketbase";
+import { levelpacks, levels, pb } from "$lib/pocketbase";
 import { apiURL, getLevelThumbnailURL, to5bLevelFormat } from "../misc";
 import validate from "../client/FileValidator";
 
@@ -31,8 +31,7 @@ export async function createLevel(cl: CreateLevel) {
     const thumbnail = await generateThumbnail(trimmedLevel)
 
     const levelFormData = new FormData()
-    // levelFormData.append("creator", cl.creator.id)
-    levelFormData.append("creator", "3hfbpvnkpywte1k")
+    levelFormData.append("creator", cl.creator.id)
     levelFormData.append("title", cl.title)
     levelFormData.append("description", cl.description)
     levelFormData.append("data", trimmedLevel)
@@ -66,6 +65,8 @@ export async function createLevel(cl: CreateLevel) {
         })
     })
 
+    await addToUsersLevels(cl.creator.id, levelReference.id)
+
     return levelReference;
 }
 
@@ -84,8 +85,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
         const thumbnail = await generateThumbnail(level)
 
         const levelFormData = new FormData()
-        // levelFormData.append("creator", cl.creator.id)
-        levelFormData.append("creator", "3hfbpvnkpywte1k")
+        levelFormData.append("creator", cl.creator.id)
         levelFormData.append("title", `Level ${to5bLevelFormat(i)} of ${cl.title}`)
         levelFormData.append("description", "This level was automatically created for a levelpack.")
         levelFormData.append("data", level)
@@ -102,7 +102,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
 
     const levelpackReference = await levelpacks.create({
         // creator: cl.creator.id,
-        creator: "3hfbpvnkpywte1k",
+        creator: cl.creator.id,
         title: cl.title,
         description: cl.description,
         levels: levelReferences.map(l => l.id)
@@ -134,6 +134,8 @@ export async function createLevelpack(cl: CreateLevelpack) {
         })
     })
 
+    await addToUsersLevelpacks(cl.creator.id, levelpackReference.id)
+
     return levelpackReference;
 }
 
@@ -142,6 +144,29 @@ function newlineSplitter(file: string) {
     return file
         .replaceAll(/\\r?\\n/g, "\r\n") // convert to windows linebreaks (HTML5b requires this)
         .split("\r\n\r\n")
+}
+
+async function addToUsersLevels(userId: string, levelId: string) {
+    let userLevelsArray = (await pb.collection("5beam_users_discord").getOne(userId)).levels;
+    if (userLevelsArray === undefined) {
+        userLevelsArray = [levelId]
+    } else {
+        userLevelsArray.push(levelId)
+    }
+
+    return await pb.collection("5beam_users_discord").update(userId, {levels: userLevelsArray})
+}
+
+// TODO: Merge with addToUsersLevels?
+async function addToUsersLevelpacks(userId: string, levelpackId: string) {
+    let userLevelpacksArray = (await pb.collection("5beam_users_discord").getOne(userId)).levelpacks;
+    if (userLevelpacksArray === undefined) {
+        userLevelpacksArray = [levelpackId]
+    } else {
+        userLevelpacksArray.push(levelpackId)
+    }
+
+    return await pb.collection("5beam_users_discord").update(userId, {levelpacks: userLevelpacksArray})
 }
 
 // TODO: I'll do this via functions
