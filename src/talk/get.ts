@@ -45,11 +45,17 @@ export async function getLevelpackByIdWithLevels(id: string) {
 }
 
 export async function getLevelById(id: string) {
-    return toPOJO((await levels.getOne<Level>(id, {expand: "creator"})))
+    const result = toPOJO((await levels.getOne<Level>(id, {expand: "creator"})))
+    await levels.update<Level>(id, {views: result.views + 1})
+
+    return result
 }
 
 export async function getLevelpackById(id: string) {
-    return toPOJO((await levelpacks.getOne<Levelpack>(id, {expand: "creator"})))
+    const result = toPOJO((await levelpacks.getOne<Levelpack>(id, {expand: "creator"})))
+    await levelpacks.update<Levelpack>(id, {views: result.views + 1})
+
+    return result
 }
 
 // TODO: Fulltext search?
