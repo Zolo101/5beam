@@ -99,7 +99,7 @@
         <tr>
             <th>Total levels</th>
             <th>Total views</th>
-            <th>Total stars</th>
+<!--            <th>Total stars</th>-->
             <th>Created</th>
         </tr>
         </thead>
@@ -108,7 +108,7 @@
 <!--            <td class="text-neutral-500"><Difficulty includeText difficulty={levelpack.difficulty}/></td>-->
             <td class="text-fuchsia-500">{levelpack.levels.length}</td>
             <td class="text-green-500">{levelpack.views}</td>
-            <td class="text-yellow-400">0</td>
+<!--            <td class="text-yellow-400">0</td>-->
             <td class="text-amber-500">02-2023</td>
         </tr>
         </tbody>

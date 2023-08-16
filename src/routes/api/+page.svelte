@@ -158,17 +158,17 @@
 <!--        <p>Lets a user give a difficulty for a level. This will be used to calculate the final difficulty of the level.</p>-->
 <!--    </APIEndpoint>-->
 
-    <APIEndpoint
-            endpoint={["api", "level", "star"]}
-            params={[
-                ["id", "Level ID", ParamType.INTEGER],
-                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],
-            ]}
-            wip
-            token_required
-    >
-        <p>Stars a level.</p>
-    </APIEndpoint>
+<!--    <APIEndpoint-->
+<!--            endpoint={["api", "level", "star"]}-->
+<!--            params={[-->
+<!--                ["id", "Level ID", ParamType.INTEGER],-->
+<!--                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],-->
+<!--            ]}-->
+<!--            wip-->
+<!--            token_required-->
+<!--    >-->
+<!--        <p>Stars a level.</p>-->
+<!--    </APIEndpoint>-->
 
     <APIEndpoint
             endpoint={["api", "levelpack"]}
@@ -186,17 +186,17 @@
         <p>Returns a <APIReference type={"STRUCT"} reference={"Levelpack"}/></p>
     </APIEndpoint>
 
-    <APIEndpoint
-            endpoint={["api", "levelpack", "star"]}
-            params={[
-                ["id", "Levelpack ID", ParamType.INTEGER],
-                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],
-            ]}
-            wip
-            token_required
-    >
-        <p>Stars a levelpack.</p>
-    </APIEndpoint>
+<!--    <APIEndpoint-->
+<!--            endpoint={["api", "levelpack", "star"]}-->
+<!--            params={[-->
+<!--                ["id", "Levelpack ID", ParamType.INTEGER],-->
+<!--                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],-->
+<!--            ]}-->
+<!--            wip-->
+<!--            token_required-->
+<!--    >-->
+<!--        <p>Stars a levelpack.</p>-->
+<!--    </APIEndpoint>-->
 
 
     <APIEndpoint

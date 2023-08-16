@@ -38,12 +38,12 @@
                             <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl font-normal">...</div>
                         </div>
                     </div>
-                    <div class="w-[120px] h-[98.73px] relative">
-                        <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">
-                            <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl font-normal">...</div>
-                        </div>
-                        <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total stars</div>
-                    </div>
+<!--                    <div class="w-[120px] h-[98.73px] relative">-->
+<!--                        <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">-->
+<!--                            <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl font-normal">...</div>-->
+<!--                        </div>-->
+<!--                        <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total stars</div>-->
+<!--                    </div>-->
                     <div class="w-[150.50px] h-[94px] relative">
                         <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl font-normal">{month}-{year}</div>
                         <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-white text-2xl font-normal">Joined</div>

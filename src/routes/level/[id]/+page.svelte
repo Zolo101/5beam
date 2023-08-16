@@ -3,7 +3,8 @@
     import UserComponent from "../../../components/UserComponent.svelte";
     import Button from "../../../components/Button.svelte";
     import Difficulty from "../../../components/Difficulty.svelte";
-    import { getLevelThumbnailURL } from "../../../misc";
+    import { difficultyColorMap, getLevelThumbnailURL } from "../../../misc";
+
 
     export let data: PageData;
 
@@ -91,15 +92,15 @@
             <tr>
                 <th>Difficulty</th>
                 <th>Total views</th>
-                <th>Total stars</th>
+<!--                <th>Total stars</th>-->
                 <th>Created</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="text-neutral-500"><Difficulty includeText difficulty={level.difficulty}/></td>
+                <td style:color={difficultyColorMap.get(level.difficulty)}><Difficulty includeText difficulty={level.difficulty}/></td>
                 <td class="text-green-500">{level.views}</td>
-                <td class="text-yellow-400">0</td>
+<!--                <td class="text-yellow-400">0</td>-->
                 <td class="text-amber-500">02-2023</td>
             </tr>
         </tbody>

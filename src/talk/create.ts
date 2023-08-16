@@ -46,7 +46,7 @@ export async function createLevel(cl: CreateLevel) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            username: "New Level!",
+            username: "New Level",
             embeds: [
                 {
                     title: cl.title,
@@ -114,7 +114,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            username: "New Levelpack!",
+            username: "New Levelpack",
             embeds: [
                 {
                     title: cl.title,
