@@ -1,6 +1,6 @@
 import type { CreateLevel, CreateLevelpack, Level } from "$lib/types";
 import { levelpacks, levels } from "$lib/pocketbase";
-import { getLevelThumbnailURL, to5bLevelFormat } from "../misc";
+import { apiURL, getLevelThumbnailURL, to5bLevelFormat } from "../misc";
 import validate from "../client/FileValidator";
 
 // TODO: Make this function work for levelpacks aswell
@@ -14,7 +14,7 @@ async function validateLevelpack(levels: string[]) {
 
 async function generateThumbnail(level: string) {
     // TODO: Make sure to change the URL
-    return fetch(`http://localhost:9999/.netlify/functions/createThumbnail`, {
+    return fetch(`${apiURL}/functions/createThumbnail`, {
         method: "POST",
         headers: {
             "Content-Type": "text/plain"
