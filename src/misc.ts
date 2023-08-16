@@ -22,6 +22,7 @@ export const difficultyColorMap = new Map<number, string>([
     [7, "#890000"],
 ]);
 
+export const Icons = import.meta.glob("$lib/assets/icons/*.svg", { eager: true, as: "raw" });
 export const difficultyImages = import.meta.glob("$lib/assets/difficulty/*.png", {eager: true, as: "url"})
 
 // TODO: Research temporal https://tc39.es/proposal-temporal/docs/index.html
