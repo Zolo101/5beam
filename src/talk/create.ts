@@ -1,18 +1,19 @@
-import type { CreateLevel, CreateLevelpack, Level } from "$lib/types";
-import { levelpacks, levels, pb } from "$lib/pocketbase";
+import type { CreateLevel, CreateLevelpack, CreateUser, Level, Levelpack } from "$lib/types";
+import { levelpacks, levels, users } from "$lib/pocketbase";
 import { apiURL, getLevelThumbnailURL, to5bLevelFormat } from "../misc";
 import validate from "../client/FileValidator";
+import type { User } from "discord-oauth2";
 
 // TODO: Make this function work for levelpacks aswell
-async function validateLevel(level: string) {
+export async function validateLevel(level: string) {
     return validate(level).valid
 }
 
-async function validateLevelpack(levels: string[]) {
+export async function validateLevelpack(levels: string[]) {
     return levels.every((level) => validate(level).valid)
 }
 
-async function generateThumbnail(level: string) {
+export async function generateThumbnail(level: string) {
     // TODO: Make sure to change the URL
     return fetch(`${apiURL}/functions/createThumbnail`, {
         method: "POST",
@@ -20,6 +21,13 @@ async function generateThumbnail(level: string) {
             "Content-Type": "text/plain"
         },
         body: level
+    })
+}
+
+export async function createUser(cl: CreateUser) {
+    return await users.create<User>({
+        discordId: cl.discordId,
+        username: cl.username,
     })
 }
 
@@ -36,8 +44,9 @@ export async function createLevel(cl: CreateLevel) {
     levelFormData.append("description", cl.description)
     levelFormData.append("data", trimmedLevel)
     levelFormData.append("thumbnail", await thumbnail.blob())
+    levelFormData.append("modded", cl.modded)
 
-    const levelReference = await levels.create(levelFormData)
+    const levelReference = await levels.create<Level>(levelFormData)
 
     await fetch(`https://canary.discord.com/api/webhooks/${import.meta.env.VITE_WEBHOOK_ID}/${import.meta.env.VITE_WEBHOOK_SECRET}`, {
         method: "POST",
@@ -90,6 +99,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
         levelFormData.append("description", "This level was automatically created for a levelpack.")
         levelFormData.append("data", level)
         levelFormData.append("thumbnail", await thumbnail.blob())
+        levelFormData.append("modded", cl.modded)
 
         levelsFormData.push(levelFormData)
 
@@ -100,12 +110,13 @@ export async function createLevelpack(cl: CreateLevelpack) {
         levelReferences.push(await levels.create(levelFormData))
     }
 
-    const levelpackReference = await levelpacks.create({
+    const levelpackReference = await levelpacks.create<Levelpack>({
         // creator: cl.creator.id,
         creator: cl.creator.id,
         title: cl.title,
         description: cl.description,
-        levels: levelReferences.map(l => l.id)
+        levels: levelReferences.map(l => l.id),
+        modded: cl.modded
     })
 
     await fetch(`https://canary.discord.com/api/webhooks/${import.meta.env.VITE_WEBHOOK_ID}/${import.meta.env.VITE_WEBHOOK_SECRET}`, {
@@ -147,26 +158,26 @@ function newlineSplitter(file: string) {
 }
 
 async function addToUsersLevels(userId: string, levelId: string) {
-    let userLevelsArray = (await pb.collection("5beam_users_discord").getOne(userId)).levels;
+    let userLevelsArray = (await users.getOne(userId)).levels;
     if (userLevelsArray === undefined) {
         userLevelsArray = [levelId]
     } else {
         userLevelsArray.push(levelId)
     }
 
-    return await pb.collection("5beam_users_discord").update(userId, {levels: userLevelsArray})
+    return await users.update<User>(userId, {levels: userLevelsArray})
 }
 
 // TODO: Merge with addToUsersLevels?
 async function addToUsersLevelpacks(userId: string, levelpackId: string) {
-    let userLevelpacksArray = (await pb.collection("5beam_users_discord").getOne(userId)).levelpacks;
+    let userLevelpacksArray = (await users.getOne(userId)).levelpacks;
     if (userLevelpacksArray === undefined) {
         userLevelpacksArray = [levelpackId]
     } else {
         userLevelpacksArray.push(levelpackId)
     }
 
-    return await pb.collection("5beam_users_discord").update(userId, {levelpacks: userLevelpacksArray})
+    return await users.update<User>(userId, {levelpacks: userLevelpacksArray})
 }
 
 // TODO: I'll do this via functions

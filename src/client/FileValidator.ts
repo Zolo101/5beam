@@ -58,7 +58,7 @@ function validate(file: string) {
     const result: ValidateResult = {
         levels: [],
         globalLogs: [],
-        valid: false
+        valid: true
     }
     const data = file
         .trim()
@@ -77,13 +77,19 @@ function validate(file: string) {
                 result.levels.push(processLevel(result, level, i))
             } catch (e) {
                 result.globalLogs.push(createError(0, "Malformed level / levelpack. Are you sure this is a BFDIA 5b level file?"))
+                result.valid = false;
                 console.error(e)
             }
         }
-        result.valid = true;
+
+        // Invalidate if any level has an error log
+        result.valid = !result.levels
+            .some(l => l.logs
+                .some(l => l.level === "error"))
+
     } catch (e) {
         result.globalLogs.push(createError(0, "Malformed level / levelpack. Are you sure this is a BFDIA 5b level file?"))
-        // TODO: Alert user? But I dont think this will ever happen
+        result.valid = false;
         console.error(e)
     }
 

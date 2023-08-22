@@ -20,26 +20,30 @@
     let file = derived(eventStore, e => (e?.target as HTMLInputElement)?.files?.[0])
     let title = writable("");
     let description = writable("");
-    let modded: boolean = false;
+    let modded = writable("");
 
-    // goto stage 2 upon valid file upload
+    // TODO: Remove?
     valid.subscribe(v => {
-        console.log(v)
-        if (v && page === 1) page = 2
+        if (page === 1) page = 2
+    })
+
+    // TODO: Necessary?
+    modded.subscribe(m => {
+        if (m && page === 2) page = 3
     })
 
     async function onSubmit(event: any) {
         if ($result === undefined) return;
 
-        if ($valid) {
+        if ($valid || $modded) {
             // We need to read the file as ANSI to preserve the wood blocks (€)
             let text = await readBlobInANSI($file!)
 
             const payload = {
-                // access_token: cookies.delete("access_token")
+                access_token: data.access_token,
                 title: $title,
                 description: $description,
-                modded: modded,
+                modded: $modded,
                 file: text
             }
 
@@ -63,7 +67,7 @@
     // }
 
     function onTitleChange(event: any) {
-        page = $title.length > 0 ? 3 : 2
+        page = ($title.length > 0 && ($valid || $modded)) ? 3 : 2
     }
 
     file.subscribe(validateFile)
@@ -97,10 +101,6 @@
                     <p class="text-sm text-center mb-10">Levelpacks with more than 100 levels will not be accepted</p>
                         <div class="flex flex-col text-xl bg-neutral-100 bg-opacity-5 p-5">
                             <input on:change={(e) => $eventStore = e} type="file" name="file" class="rounded m-auto" accept="text/plain" required>
-<!--                            <label>-->
-<!--                                <span>Modded?</span>-->
-<!--                                <input type="checkbox" name="modded" on:change={validateFile}>-->
-<!--                            </label>-->
                         </div>
 <!--                    <a class="text-xs float-right my-4" href="http://battlefordreamisland.com/5b/levels.txt" target="_blank">Click here to see an example of a level / levelpack</a>-->
                 </div>
@@ -114,6 +114,15 @@
                         <br>
                         <p class="text-neutral-50">Description:</p>
                         <textarea bind:value={$description} class="p-2.5 rounded" name="description" rows="5" cols="33" maxlength="1024" placeholder="Level description (max 1024 chars)" required></textarea>
+                        <br>
+                        <p class="text-neutral-50">Is this for a 5b mod?</p>
+                        {#if $modded}
+                            <p class="text-sm text-neutral-50">Be aware, levels for 5b mods cannot be played on HTML5b, and do not show up by default on the homepage and searches</p>
+                        {/if}
+                        <select bind:value={$modded} name="modded" class="rounded p-2.5">
+                            <option value={""}>No</option>
+                            <option value={"5*"}>5*</option>
+                        </select>
                     </div>
                 </div>
             {/if}
@@ -121,7 +130,7 @@
                 <div transition:fly={{x: -200}}>
                     <p class="text-6xl text-neutral-500 text-right relative w-full h-0 right-[10px] -z-10 text-opacity-50 italic font-extrabold">3</p>
                     <form class="flex flex-col m-auto w-2/5" on:submit|preventDefault={onSubmit}>
-                        <input type="submit" value="Upload!" class="text-xl text-green-800 bg-green-400 rounded p-2 cursor-pointer disabled:bg-green-500 disabled:opacity-25 disabled:cursor-not-allowed transition-colors" disabled={!$valid}>
+                        <input type="submit" value="Upload!" class="text-xl text-green-800 bg-green-400 rounded p-2 cursor-pointer disabled:bg-green-500 disabled:opacity-25 disabled:cursor-not-allowed transition-colors">
                     </form>
                 </div>
             {/if}
@@ -135,8 +144,10 @@
         </div>
         {#if page !== 4}
             <div transition:fly={{x: -200}} class="w-1/2 bg-neutral-500 bg-opacity-25 rounded p-5">
-                {#if $result}
-                    <p class="text-center opacity-50">Check each level to make sure everything is correct!</p>
+                {#if $modded}
+                    <p class="text-center opacity-50">Levels for mods cannot be automatically validated yet. For now, check that your level file works in the 5b mod before uploading!</p>
+                {:else if $result}
+                    <p class="text-center opacity-50 pb-5">Check each level to make sure everything is correct!</p>
                     <Validator result={$result}/>
                 {:else}
                     <p class="text-center opacity-50">Awaiting file...</p>

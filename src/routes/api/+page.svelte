@@ -32,7 +32,7 @@
 <!--                - <APIReference type={"STRUCT"} reference={"Level"}/> now has a "creator" property of <APIReference type={"STRUCT"} reference={"User"}/>.-->
 <!--            </p>-->
             <p class="text-center">
-                <APIReference type={"GLOBAL"} reference={"Everything"}/>
+                <APIReference type={"INFO"} reference={"Everything"}/>
             </p>
             <ul>
                 <li>The <code>amount</code> parameter has been removed from all endpoints</li>
@@ -44,6 +44,7 @@
             <ul>
                 <li><code>createdAt</code> is now <code>created</code></li>
                 <li><code>plays</code> is now <code>views</code></li>
+                <li><code>modded</code> has been added</li>
                 <li><code>updated</code> has been added (although users cannot edit levels yet)</li>
                 <li><code>creatorId</code> has been removed</li>
                 <li><code>levelpackId</code> has been removed</li>
@@ -57,6 +58,7 @@
                 <li>The maximum amount of levels in a levelpack is 100</li>
                 <li><code>views</code> has been added</li>
                 <li><code>stars</code> has been added</li>
+                <li><code>modded</code> has been added</li>
                 <li><code>updated</code> has been added (although users cannot edit levelpacks yet)</li>
                 <li>By default, <code>levels</code> will now have a list of level ID's. But you can use the <code>levels</code> parameter to change it back to how it was before.</li>
                 <li><code>creatorId</code> has been removed</li>
@@ -112,6 +114,14 @@
                 <li>New!</li>
             </ul>
         </div>
+    </APIEndpoint>
+    <APIEndpoint endpoint={["Supported Mods"]} type="INFO">
+        <div class="text-3xl">
+            <ul>
+                <li>Mawilite's 5*</li>
+            </ul>
+        </div>
+        <p>Contact <APIReference type={"DISCORD"} reference={["zelo101"]}/> if you'd like to have your 5b mod supported!</p>
     </APIEndpoint>
 <!--    <div class="ratelimit-container">-->
 <!--        {#each ratelimits as ratelimit}-->
@@ -299,6 +309,7 @@
                 ["type", "Type of", ParamType.INTEGER, 0],
                 ["sort", "Sort by", ParamType.INTEGER, 0],
                 ["featured", "Only featured levels / levelpacks", ParamType.BOOLEAN, false],
+                ["mod", "Only show levels / levelpacks that are for a specific 5b mod", ParamType.STRING],
             ]}
     >
                 <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
@@ -321,6 +332,7 @@
             params={[
                 ["text", "Search text", ParamType.STRING],
                 ["page", "Page number", ParamType.INTEGER],
+                ["mod", "Only show levels that are for a specific 5b mod", ParamType.STRING],
             ]}
     >
         <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
@@ -334,6 +346,7 @@
                 ["page", "Page number", ParamType.INTEGER],
                 ["type", "Type of", ParamType.INTEGER, 0],
                 ["sort", "Sort by", ParamType.INTEGER, 0],
+                ["mod", "Only show levels / levelpacks that are for a specific 5b mod", ParamType.STRING],
             ]}
     >
                 <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
@@ -363,6 +376,7 @@
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
                 ["data", "Level file", "File"],
+                ["modded", "What mod this level is for (Leave blank for HTML5b / Flash 5b)", ParamType.STRING]
             ]}>
         </Table>
     </APIEndpoint>
@@ -379,6 +393,7 @@
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
                 ["data", "Levelpack file", "File"],
+                ["modded", "What mod this levelpack is for (Leave blank for HTML5b / Flash 5b)", ParamType.STRING]
             ]}>
         </Table>
     </APIEndpoint>

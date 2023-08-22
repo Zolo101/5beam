@@ -40,6 +40,10 @@
         color: deepskyblue;
     }
 
+    .colour-DISCORD {
+        color: #5865f2;
+    }
+
     .colour-OTHER {
         color: lightslategrey;
     }

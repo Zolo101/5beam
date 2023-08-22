@@ -3,28 +3,30 @@ import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 // TODO: Implement sort, also what is x?
-export async function getLevels(page: number, sortCode: number, featured: boolean) {
+export async function getLevels(page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
-    const filter = featured ? "featured = true" : ""
+    const featuredFilter = featured ? "featured = true" : ""
+    const modFilter = mod ? `mod = "${mod}"` : ""
 
     return toPOJO((await levels
         .getList<Level>(page, 8, {
             expand: "creator",
             sort,
-            filter
+            filter: featuredFilter + modFilter
         })
     ).items)
 }
 
-export async function getLevelpacks(page: number, sortCode: number, featured: boolean) {
+export async function getLevelpacks(page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
-    const filter = featured ? "featured = true" : ""
+    const featuredFilter = featured ? "featured = true" : ""
+    const modFilter = mod ? `mod = "${mod}"` : ""
 
     return toPOJO((await levelpacks
         .getList<Levelpack>(page, 8, {
             expand: "creator",
             sort,
-            filter
+            filter: featuredFilter + modFilter
         })
     ).items)
 }
@@ -49,11 +51,11 @@ export async function getLevelpackById(id: string) {
 }
 
 // TODO: Fulltext search?
-export async function getSearch(text: string, page: number) {
+export async function getSearch(text: string, page: number, mod: string) {
+    const filter = mod ? `title ~ "${text}" && mod = "${mod}"` : `title ~ "${text}"` // TODO: Is this unsafe / escapable?
+
     return toPOJO((await levels
-        .getList<Level>(page, 8, {
-            filter: `title ~ "${text}"`, // TODO: Is this unsafe / escapable?
-        })
+        .getList<Level>(page, 8, {filter})
     ).items)
 }
 
@@ -63,38 +65,39 @@ export async function getUserById(id: string) {
     return toPOJO(await users.getOne<PocketbaseUser>(id));
 }
 
-// deprecate maybe
-// export async function getUserByDiscordId(discordId: string) {
-//     // return await getDoc(doc(collection(db, "users"), id))
-//
-//     return toPOJO(await users.g<PocketbaseUser>(discordId));
-// }
+export async function getUserByDiscordId(discordId: string) {
+    // return await getDoc(doc(collection(db, "users"), id))
 
-export async function getUserLevels(id: string, page: number, sortCode: number, featured: boolean) {
+    return toPOJO(await users.getFirstListItem<PocketbaseUser>(`discord_id = ${discordId}`));
+}
+
+export async function getUserLevels(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
     let sort = getSort(sortCode)
-    const filter = featured ? "featured = true" : ""
+    const featuredFilter = featured ? "featured = true" : ""
+    const modFilter = mod ? `mod = "${mod}"` : ""
 
     // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
     return toPOJO((await users
         .getOne<PocketbaseUser>(id, {
             expand: "levels.creator",
             sort,
-            filter
+            filter: featuredFilter + modFilter
         })
     ).expand.levels as Level[])
 }
 
-export async function getUserLevelpacks(id: string, page: number, sortCode: number, featured: boolean) {
+export async function getUserLevelpacks(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
-    const filter = featured ? "featured = true" : ""
+    const featuredFilter = featured ? "featured = true" : ""
+    const modFilter = mod ? `mod = "${mod}"` : ""
 
     return toPOJO((await users
             .getOne<PocketbaseUser>(id, {
                 expand: "levelpacks.creator",
                 sort,
-                filter
+                filter: featuredFilter + modFilter
             })
     ).expand.levelpacks as Levelpack[])
 }

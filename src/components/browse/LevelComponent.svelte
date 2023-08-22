@@ -11,11 +11,11 @@
 </script>
 
 <a href="/level/{level.id}">
-    <div class="w-[209px] h-[158px] relative bg-zinc-800 rounded-[5px] shadow">
+    <div class:modded={level.modded} class="w-[209px] h-[158px] relative bg-zinc-800 text-neutral-50 rounded-[5px] shadow">
     <!--    Thumbnail -->
 <!--        <img class="w-[195px] h-[108px] left-[7px] top-[7px] absolute rounded-sm" src="https://via.placeholder.com/195x108" alt="Placeholder Thumbnail"/>-->
         <img class="w-[195px] h-[108px] left-[7px] top-[7px] absolute rounded-sm" src={thumbnailUrl} alt="Level Thumbnail"/>
-        <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-white text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</div>
+        <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</div>
         <div class="w-[133px] h-3 left-[7px] top-[137px] absolute text-neutral-400 text-[13px] font-normal whitespace-nowrap overflow-ellipsis">by {user.username}</div>
         <div class="w-[22px] h-[17px] left-[180px] top-[119px] absolute justify-start items-end gap-px inline-flex">
             <div class="relative right-[8px] top-[2.5px]">
@@ -35,15 +35,9 @@
     </div>
 </a>
 
-<!--<div class="level">-->
-<!--    <div class="header">-->
-<!--        <span class="title">{level.title}</span>-->
-<!--        <Difficulty difficulty={level.difficulty}/>-->
-<!--    </div>-->
-<!--    <div class="info">-->
-<!--        <User prefix="by" id={level.creator}/>-->
-<!--        <span class="plays">{level.plays} plays,</span>-->
-<!--        <span class="stars">{level.stars} stars</span>-->
-<!--        <p class="description">{level.description}</p>-->
-<!--    </div>-->
-<!--</div>-->
+<style>
+    .modded {
+        /* TODO: Too much? */
+        @apply bg-purple-950 text-purple-500;
+    }
+</style>

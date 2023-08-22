@@ -4,6 +4,7 @@
     import Button from "../../../components/Button.svelte";
     import { getLevelpackClient } from "../../../client/ClientSideAPI";
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
+    import Box from "$lib/assets/box.png";
     // import Difficulty from "../../../components/Difficulty.svelte";
     export let data: PageData;
 
@@ -38,7 +39,7 @@
     <title>{levelpack.title} - 5beam</title>
     <meta property="og:title" content={levelpack.title}/>
     <meta property="og:description" content={levelpack.description}/>
-    <meta property="og:image" content={thumbnailUrl}/>
+    <meta property="og:image" content={Box}/>
     <meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 

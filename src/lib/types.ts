@@ -16,6 +16,8 @@ export type Level = {
     featured: boolean
 
     thumbnail: string
+
+    modded: string
 }
 
 export type Levelpack = {
@@ -32,7 +34,14 @@ export type Levelpack = {
     stars: number
     featured: boolean
 
+    modded: string
+
     // TODO: thumbnail property?
+}
+
+export type CreateUser = {
+    discordId: string
+    username: string
 }
 
 export type CreateLevel = {
@@ -41,6 +50,8 @@ export type CreateLevel = {
     title: string
     description: string
     level: string
+
+    modded: string
 }
 
 export type CreateLevelpack = {
@@ -49,6 +60,8 @@ export type CreateLevelpack = {
     title: string
     description: string
     level: string
+
+    modded: string
 }
 
 export type PocketbaseUser = BaseUser & (DiscordUser)

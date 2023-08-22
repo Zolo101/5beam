@@ -15,9 +15,11 @@ const PostLevelSchema = z.object({
         .string()
         .max(1024),
     modded: z
-        .boolean(),
+        .string()
+        .max(64),
     file: z
         .string()
+        .max(1024 * 1024 * 5) // 5 MB Limit
 })
 
 export const POST: RequestHandler = async ({cookies, request}) => {
@@ -42,10 +44,11 @@ export const POST: RequestHandler = async ({cookies, request}) => {
             title: payload.title,
             description: payload.description,
             level: payload.file,
+            modded: payload.modded
         })
 
         return OK(toPOJO(level))
     } catch (e) {
-        return BAD("Invalid Payload")
+        return BAD("Invalid Payload:", e.response.message)
     }
 }

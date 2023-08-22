@@ -15,7 +15,8 @@ const PostLevelSchema = z.object({
         .string()
         .max(1024),
     modded: z
-        .boolean(),
+        .string()
+        .max(64),
     file: z
         .string()
 })
@@ -43,6 +44,7 @@ export const POST: RequestHandler = async ({cookies, request}) => {
             title: payload.title,
             description: payload.description,
             level: payload.file,
+            modded: payload.modded
         })
 
         return OK(toPOJO(levelpack))
