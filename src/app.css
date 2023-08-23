@@ -10,19 +10,15 @@ html {
 
 /* Globals */
 body {
+    @apply m-0 h-full text-neutral-200;
     font-family: Inter, sans-serif;
-    margin: 0;
     background: repeating-linear-gradient(
-            45deg,
+            46.2deg,
             #721e1e,
             #721e1e 10px,
             #4c1414 10px,
             #4c1414 20px
-    ), linear-gradient(0deg, transparent, black);
-    backdrop-filter: blur(6px);
-    @apply h-full text-neutral-200;
-    /*background: darkgrey;*/
-    /*background: linear-gradient(gainsboro, ghostwhite 80%, gainsboro) no-repeat, gainsboro;*/
+    );
 }
 
 button {

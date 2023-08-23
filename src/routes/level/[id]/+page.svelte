@@ -61,7 +61,7 @@
 
 <div class="flex justify-center pt-20 pb-5">
 <!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
-    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
+    <img class="shadow-xl rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 
