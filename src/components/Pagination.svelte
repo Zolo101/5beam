@@ -36,9 +36,9 @@
 {/if}
 <slot></slot>
 <div class="text-center text-6xl p-5 text-neutral-300 select-none">
-    <span class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(-1)}>{"⟵"}</span>
+    <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(-1)}>{"⟵"}</span>
     <span class="font-bold font-mono">{page}</span>
-    <span class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(1)}>{"⟶"}</span>
+    <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(1)}>{"⟶"}</span>
 </div>
 
 <style>

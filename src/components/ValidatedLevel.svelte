@@ -7,7 +7,7 @@
     import Log from "./Log.svelte";
 
     export let level: DetectedLevel
-    export let i;
+    export let i: number;
     $: opened = false
 
     const tableSprites = level.sprites
@@ -23,7 +23,8 @@
 
 <!--<div class="flex justify-around">-->
 <div>
-    <div class="w-[128px] h-[128px] rounded-[10px] shadow-xl cursor-pointer bg-cover select-none" class:warningLog class:errorLog style="background-image: url({background});" on:click={() => opened = !opened}>
+<!--    TODO: Is the "button" role appropriate for this? -->
+    <div role="button" class="w-[128px] h-[128px] rounded-[10px] shadow-xl cursor-pointer bg-cover select-none" class:warningLog class:errorLog style="background-image: url({background});" on:click={() => opened = !opened}>
 <!--        <img class="w-[128px] h-[128px] rounded-[10px]" src="/backgrounds/{level.background}.png"/>-->
 <!--        <span class="w-[128px] h-[128px] -top-9 left-2 relative text-white text-2xl font-bold select-none whitespace-nowrap overflow-hidden overflow-ellipsis">{to5bLevelFormat(level.id)}. {level.name}</span>-->
         <span class="px-1.5 text-white text-4xl font-bold z-0 mix-blend-overlay select-none">{to5bLevelFormat(level.id)}</span>
@@ -83,65 +84,11 @@
         @apply outline outline-4 outline-red-500 shadow-red-900;
     }
 
-    .validated-level {
-        @apply my-4;
-        /*padding: 0 10px;*/
-        /*margin: 20px 0;*/
-        /*color: whitesmoke;*/
-        /*background-color: rgba(180, 180, 180, 0.5);*/
-        /*outline: 1px solid whitesmoke;*/
-        /*box-shadow: 1px 1px 0px 0px black;*/
-    }
-
-    .header {
-        display: flex;
-
-        padding: 0 10px;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .header:hover {
-        background-color: rgba(180, 180, 180, 0.65);
-        cursor: pointer;
-    }
-
-    /*.opened > .header {*/
-    /*    background-color: rgba(180, 180, 180, 0.85);*/
-    /*}*/
-
-    .header-status {
-        display: flex;
-        align-items: center;
-    }
-
-    .status {
-        width: 32px;
-        height: 32px;
-        padding: 25px;
-    }
-
-    .background {
-        height: 64px;
-    }
-
     .level-props {
         text-align: center;
     }
 
-
     .sprites, .dialogues {
         padding: 10px;
     }
-
-    /*.errors, .warnings {*/
-    /*    !*font-family: monospace;*!*/
-    /*    font-weight: bold;*/
-    /*    font-size: 1.5em;*/
-    /*    padding: 4px 20px;*/
-    /*    margin: 10px 0;*/
-    /*    background-color: #3a3a3a;*/
-    /*}*/
-
-    /*.errors {color: orangered;}*/
 </style>

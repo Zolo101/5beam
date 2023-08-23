@@ -80,7 +80,6 @@ export function readBlobInANSI(blob: Blob) {
 export function return404() {
     return new Response(null, {status: 404})
 }
-
 // All good
 export const OK = (body: any) => new Response(JSON.stringify(body), {status: 200})
 
@@ -93,5 +92,6 @@ export const DENIED = () => new Response("Authentication Denied. Have you given 
 
 // export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const apiURL = dev ? "http://localhost:5173" : "https://clever-golick-4be132.netlify.app"
+export const functionsApiURL = dev ? "http://localhost:9999" : "https://clever-golick-4be132.netlify.app"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`

@@ -3,8 +3,8 @@ import type { User } from "discord-oauth2";
 export type Level = {
     id: string
     creator: PocketbaseUser
-    created: Date
-    updated: Date
+    created: string
+    updated: string
 
     title: string
     description: string
@@ -23,8 +23,8 @@ export type Level = {
 export type Levelpack = {
     id: string
     creator: PocketbaseUser
-    created: Date
-    updated: Date
+    created: string
+    updated: string
 
     title: string
     description: string

@@ -25,7 +25,7 @@
 <div class="h-fit backdrop-blur-[6px]">
     <Navbar {user}/>
     <Line/>
-    <div class="w-4/5 m-auto">
+    <div class="w-4/5 m-auto py-2">
         <slot></slot>
     </div>
 </div>

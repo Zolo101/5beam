@@ -1,5 +1,6 @@
 import { levelpacks, levels, users } from "$lib/pocketbase";
 import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
+import type { RecordService } from "pocketbase";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 // TODO: Implement sort, also what is x?
@@ -38,14 +39,16 @@ export async function getLevelpackByIdWithLevels(id: string) {
 
 export async function getLevelById(id: string) {
     const result = toPOJO((await levels.getOne<Level>(id, {expand: "creator"})))
-    await levels.update<Level>(id, {views: result.views + 1})
+    // await levels.update<Level>(id, {views: result.views + 1})
+    await updateFetch<Level>(levels, id, {views: result.views + 1})
 
     return result
 }
 
 export async function getLevelpackById(id: string) {
     const result = toPOJO((await levelpacks.getOne<Levelpack>(id, {expand: "creator"})))
-    await levelpacks.update<Levelpack>(id, {views: result.views + 1})
+    // await levelpacks.update<Levelpack>(id, {views: result.views + 1})
+    await updateFetch<Levelpack>(levelpacks, id, {views: result.views + 1})
 
     return result
 }
@@ -85,6 +88,7 @@ export async function getUserLevels(id: string, page: number, sortCode: number, 
             sort,
             filter: featuredFilter + modFilter
         })
+    // @ts-ignore
     ).expand.levels as Level[])
 }
 
@@ -99,6 +103,7 @@ export async function getUserLevelpacks(id: string, page: number, sortCode: numb
                 sort,
                 filter: featuredFilter + modFilter
             })
+    // @ts-ignore
     ).expand.levelpacks as Levelpack[])
 }
 
@@ -142,6 +147,17 @@ function cleanObject(obj: Record<string, any>) {
     }
 
     return obj;
+}
+
+export function updateFetch<T>(collection: RecordService, id: string, body: Record<string, unknown>) {
+    return fetch(`https://cdn.zelo.dev/api/collections/${collection.collectionIdOrName}/records/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "secret": import.meta.env.VITE_POCKETBASE_USER_SECRET
+        },
+        body: JSON.stringify(body)
+    }) as Promise<T>
 }
 
 function getSort(sortCode: number) {

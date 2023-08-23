@@ -3,7 +3,7 @@
     import UserComponent from "../../../components/UserComponent.svelte";
     import Button from "../../../components/Button.svelte";
     import Difficulty from "../../../components/Difficulty.svelte";
-    import { difficultyColorMap, getLevelThumbnailURL } from "../../../misc";
+    import { difficultyColorMap, formatDate_Day, getLevelThumbnailURL } from "../../../misc";
 
 
     export let data: PageData;
@@ -23,8 +23,6 @@
 
         a.click()
     }
-
-    console.log(level)
 </script>
 
 <svelte:head>
@@ -86,7 +84,7 @@
     </div>
     <!--</div>-->
 </div>
-<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
+<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">
     <table>
         <thead>
             <tr>
@@ -97,11 +95,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr class="text-5xl">
                 <td style:color={difficultyColorMap.get(level.difficulty)}><Difficulty includeText difficulty={level.difficulty}/></td>
                 <td class="text-green-500">{level.views}</td>
 <!--                <td class="text-yellow-400">0</td>-->
-                <td class="text-amber-500">02-2023</td>
+                <td class="text-amber-500 text-3xl">{formatDate_Day(level.created)}</td>
             </tr>
         </tbody>
     </table>
@@ -148,40 +146,6 @@
     }
 
     td {
-        @apply w-[117.78px] h-[61.29px] text-center text-5xl p-0;
-    }
-
-    .level {
-        width: 70%;
-        margin: 100px auto 80px auto;
-        box-shadow: 0px 0px 4px 1px black;
-        background-color: rgba(245, 245, 245, 0.5);
-        backdrop-filter: blur(10px);
-        border-radius: 2px;
-        padding: 20px;
-    }
-
-    .header {
-        display: flex;
-        align-items: center;
-    }
-
-    .profile {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .title {
-        font-size: 2.5em;
-        font-weight: bold;
-    }
-
-    .user {
-        font-size: 1.4em;
-        font-weight: bold;
-    }
-
-    .stars {
-        text-align: right;
+        @apply w-[117.78px] h-[61.29px] text-center p-0;
     }
 </style>

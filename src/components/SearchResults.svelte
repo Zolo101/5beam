@@ -2,9 +2,10 @@
     import Difficulty from "./Difficulty.svelte";
     import { formatDate_Day } from "../misc";
     import User from "./UserComponent.svelte";
+    import type { Level } from "$lib/types";
 
-    export let search
-    export let results
+    export let search: string;
+    export let results: Level[];
     // console.log(results)
 </script>
 
@@ -28,7 +29,7 @@
                 {/if}
                 <div class="footer">
                     <User prefix="By" user={result.creator}/>
-                    <p class="date">@ {formatDate_Day(result.createdAt)}</p>
+                    <p>@ {formatDate_Day(result.createdAt)}</p>
                 </div>
             </div>
         </a>
@@ -70,16 +71,8 @@
         margin: 0;
     }
 
-    .creator-name {
-        font-weight: bold;
-    }
-
     .exact {
         font-size: 1.8em;
-    }
-
-    .date {
-        /*text-align: right;*/
     }
 
     .plays { color:  whitesmoke; }

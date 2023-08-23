@@ -2,7 +2,7 @@
     import type { ValidateLog } from "../client/FileValidator";
 
     export let log: ValidateLog;
-    console.log(log)
+    // console.log(log)
     // ℹ️, ⚠️, 🛑
 </script>
 
@@ -12,7 +12,6 @@
             <span class="icon">ℹ️</span>
             <span>{log.message}</span>
         </div>
-<!--        <p class="level-number">Level {to5bLevelFormat(log.at)}</p>-->
     </div>
 {:else if log.level === "warning"}
     <div class="bg-amber-700 text-amber-500 log">
@@ -20,7 +19,6 @@
             <span class="icon">⚠️</span>
             <span>{log.message}</span>
         </div>
-<!--        <p class="level-number">Level {to5bLevelFormat(log.at)}</p>-->
     </div>
 {:else if log.level === "error"}
     <div class="bg-red-700 text-red-500 log">
@@ -28,7 +26,6 @@
             <span class="icon">🛑</span>
             <span>{log.message}</span>
         </div>
-<!--        <p class="level-number">Level {to5bLevelFormat(log.at)}</p>-->
     </div>
 {/if}
 
@@ -39,9 +36,5 @@
 
     .icon {
         @apply text-2xl;
-    }
-
-    .level-number {
-        @apply text-xs text-neutral-200 text-right font-normal;
     }
 </style>

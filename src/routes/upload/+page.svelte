@@ -138,7 +138,7 @@
                 <div transition:fly={{x: -200}}>
                     <p class="text-6xl text-neutral-500 text-right relative w-full h-0 right-[10px] -z-10 text-opacity-50 italic font-extrabold">:)</p>
                     <p class="text-2xl">Thank you for uploading to 5beam!</p>
-                    <p class="w-4/5">You will be redirected to the level in ~5 seconds while we generate the thumbnail.</p>
+                    <p class="w-4/5">You will be redirected to the level shortly while we generate the thumbnail.</p>
                 </div>
             {/if}
         </div>
