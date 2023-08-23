@@ -68,7 +68,7 @@ export async function getUserById(id: string) {
 export async function getUserByDiscordId(discordId: string) {
     // return await getDoc(doc(collection(db, "users"), id))
 
-    return toPOJO(await users.getFirstListItem<PocketbaseUser>(`discord_id = ${discordId}`));
+    return toPOJO(await users.getFirstListItem<PocketbaseUser>(`discordId = "${discordId}"`));
 }
 
 export async function getUserLevels(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
@@ -116,11 +116,11 @@ export function toPOJO<T extends Record<string, any> | Record<string, any>[]>(ob
 
 // removes the weird "expand" properties
 function cleanObject(obj: Record<string, any>) {
-    // TODO: Figure out why getUserLevelpacks gives undefined objects
+    // TODO: Figure out why getUserLevelpacks & getUserByDiscordId gives undefined objects
     if (obj === undefined) {
-        console.trace("undefined in cleanObject()")
+        console.trace("WARNING: undefined in cleanObject()")
         return {}
-    };
+    }
 
     delete obj.collectionId;
     delete obj.collectionName;

@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { redirectURL } from "../../../../misc";
 
-export const GET: RequestHandler = async ({request}) => {
+export const GET: RequestHandler = async () => {
     return new Response("", {
         status: 302,
         headers: {

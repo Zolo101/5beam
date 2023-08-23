@@ -27,7 +27,7 @@
 
 <div class="flex flex-col items-center">
     <div class="w-[952px] h-[307px] justify-center items-center gap-11 inline-flex">
-        <img class="w-[213px] h-[213px] rounded-[5px] shadow" src="https://via.placeholder.com/213x213" />
+<!--        <img class="w-[213px] h-[213px] rounded-[5px] shadow" src="https://via.placeholder.com/213x213" />-->
         <div class="flex-col justify-start items-center gap-2.5 inline-flex">
             <div><span class="text-white text-[64px] font-normal">{user.username}</span></div>
             <div class="px-[29.50px] py-[12.13px] bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <p class="text-4xl text-neutral-300 font-bold p-2">Recent Levels</p>
+    <p class="text-4xl text-neutral-300 font-bold p-2">Levels</p>
     <Pagination
             bind:page={levelPage}
             bind:output={$levels}
@@ -66,7 +66,7 @@
         </div>
     </Pagination>
     <br>
-    <p class="text-4xl text-neutral-300 font-bold p-2">Recent Levelpacks</p>
+    <p class="text-4xl text-neutral-300 font-bold p-2">Levelpacks</p>
     <Pagination
             bind:page={levelpackPage}
             bind:output={$levelpacks}
