@@ -58,7 +58,10 @@ export async function getSearch(text: string, page: number, mod: string) {
     const filter = mod ? `title ~ "${text}" && mod = "${mod}"` : `title ~ "${text}"` // TODO: Is this unsafe / escapable?
 
     return toPOJO((await levels
-        .getList<Level>(page, 8, {filter})
+        .getList<Level>(page, 8, {
+            expand: "creator",
+            filter
+        })
     ).items)
 }
 

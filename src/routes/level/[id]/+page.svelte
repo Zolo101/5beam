@@ -57,9 +57,9 @@
 <!--    </div>-->
 <!--</div>-->
 
-<div class="flex justify-center pt-20 pb-5">
+<div class="flex justify-center pt-12 pb-6">
 <!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
-    <img class="shadow-xl rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
+    <img class="shadow-xl rounded w-[720px] h-[405px]" width="960" height="540" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 
@@ -78,7 +78,7 @@
             <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>
         </div>
         <div class="flex flex-col gap-5 p-5">
-            <Button text="Play" bg="#4bff5d"/>
+            <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?level={level.id}" disabled={level.modded}/>
             <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
         </div>
     </div>
@@ -88,6 +88,7 @@
     <table>
         <thead>
             <tr>
+                {#if level.modded} <th>Created for</th> {/if}
                 <th>Difficulty</th>
                 <th>Total views</th>
 <!--                <th>Total stars</th>-->
@@ -96,6 +97,7 @@
         </thead>
         <tbody>
             <tr class="text-5xl">
+                {#if level.modded} <td class="text-purple-500">{level.modded}</td> {/if}
                 <td style:color={difficultyColorMap.get(level.difficulty)}><Difficulty includeText difficulty={level.difficulty}/></td>
                 <td class="text-green-500">{level.views}</td>
 <!--                <td class="text-yellow-400">0</td>-->

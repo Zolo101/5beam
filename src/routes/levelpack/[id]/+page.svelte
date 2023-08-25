@@ -69,7 +69,8 @@
 <!--</div>-->
 
 <div class="flex justify-center pt-20 pb-5">
-    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>
+    <img class="rounded-sm h-[256px] mt-16" width="256" height="128" src={Box} alt="Placeholder Thumbnail"/>
+<!--    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
 <!--    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>-->
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
     <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
@@ -89,7 +90,7 @@
             <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>
         </div>
         <div class="flex flex-col gap-5 p-5">
-            <Button text="Play" bg="#4bff5d"/>
+            <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}" disabled={levelpack.modded}/>
             <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
         </div>
     </div>
@@ -99,6 +100,7 @@
     <table>
         <thead>
         <tr>
+            {#if levelpack.modded} <th>Created for</th> {/if}
             <th>Total levels</th>
             <th>Total views</th>
 <!--            <th>Total stars</th>-->
@@ -107,6 +109,7 @@
         </thead>
         <tbody>
         <tr class="text-5xl">
+            {#if levelpack.modded} <td class="text-purple-500">{levelpack.modded}</td> {/if}
 <!--            <td class="text-neutral-500"><Difficulty includeText difficulty={levelpack.difficulty}/></td>-->
             <td class="text-fuchsia-500">{levelpack.levels.length}</td>
             <td class="text-green-500">{levelpack.views}</td>

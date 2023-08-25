@@ -69,6 +69,7 @@
                 <APIReference type={"STRUCT"} reference={"User"}/>
             </p>
             <ul>
+                <li><code>creatorId</code> is now <code>id</code></li>
                 <li><code>createdAt</code> is now <code>created</code></li>
                 <li><code>name</code> is now <code>username</code></li>
                 <li><code>updated</code> has been added</li>
@@ -89,6 +90,7 @@
                 <APIReference type={"GET"} reference={["api", "user", "page"]}/>
             </p>
             <ul>
+                <li><code>creatorId</code> is now <code>id</code></li>
                 <li>Type and sort codes have changed.</li>
                 <li>New <code>featured</code> property.</li>
             </ul>
