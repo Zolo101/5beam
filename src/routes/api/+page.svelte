@@ -43,7 +43,6 @@
             </p>
             <ul>
                 <li><code>createdAt</code> is now <code>created</code></li>
-                <li><code>plays</code> is now <code>views</code></li>
                 <li><code>modded</code> has been added</li>
                 <li><code>updated</code> has been added (although users cannot edit levels yet)</li>
                 <li><code>creatorId</code> has been removed</li>
@@ -56,7 +55,7 @@
             </p>
             <ul>
                 <li>The maximum amount of levels in a levelpack is 100</li>
-                <li><code>views</code> has been added</li>
+                <li><code>plays</code> has been added</li>
                 <li><code>stars</code> has been added</li>
                 <li><code>modded</code> has been added</li>
                 <li><code>updated</code> has been added (although users cannot edit levelpacks yet)</li>
@@ -154,7 +153,7 @@
   "id": "h2o60d2dqklmwdz",
   "title": "Ice Cube's Revenge!",
   "updated": "2023-08-02 20:00:29.848Z",
-  "views": 0
+  "plays": 0
 }
             `}
     />
@@ -204,7 +203,7 @@
   "stars": 0,
   "title": "random levels",
   "updated": "2023-08-03 19:19:00.152Z",
-  "views": 0
+  "plays": 0
 }
             `}
     />
@@ -325,7 +324,7 @@
         <Table title="Sort Codes" heads={["Code", "Meaning"]} content={[
             ["0", "Age (newest)"],
             ["1", "Age (oldest)"],
-            ["2", "Views (descending)"],
+            ["2", "Plays (descending)"],
         ]}/>
     </APIEndpoint>
 
@@ -362,7 +361,7 @@
         <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
             ["0", "Age (newest)"],
             ["1", "Age (oldest)"],
-            ["2", "Views (descending)"],
+            ["2", "Plays (descending)"],
         ]}/>
     </APIEndpoint>
 

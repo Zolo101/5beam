@@ -33,7 +33,7 @@
             <div class="px-[29.50px] py-[12.13px] bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex">
                 <div class="self-stretch justify-center items-center gap-[55px] inline-flex">
                     <div class="w-[129.50px] h-[97px] relative">
-                        <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total views</div>
+                        <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-white text-2xl font-normal">Total plays</div>
                         <div class="w-[90px] h-[65px] left-[39.50px] top-[32px] absolute">
                             <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl font-normal">...</div>
                         </div>

@@ -5,7 +5,6 @@ import { BAD, OK, return404 } from "../../../../misc";
 export const GET: RequestHandler = async ({request}) => {
     const url = new URL(request.url)
     const id = url.searchParams.get("id")
-    const page = Number(url.searchParams.get("page"))
     const type = Number(url.searchParams.get("type") ?? 0)
     const sort = Number(url.searchParams.get("sort") ?? 0)
     const featured = Boolean(url.searchParams.get("data")) ?? false
@@ -17,5 +16,5 @@ export const GET: RequestHandler = async ({request}) => {
     if (sort < 0 || sort >= 2) return BAD("Invalid sort")
     if (id === null) return return404() // Not Found
 
-    return OK(await getFunc(id, page, sort, featured, mod))
+    return OK(await getFunc(id, sort, featured, mod))
 }

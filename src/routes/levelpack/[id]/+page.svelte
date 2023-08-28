@@ -91,7 +91,7 @@
         </div>
         <div class="flex flex-col gap-5 p-5">
             <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}" disabled={levelpack.modded}/>
-            <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
+            <Button text="Download (WIP)" bg="#4bffff" onclick={downloadLevel} disabled/>
         </div>
     </div>
     <!--</div>-->
@@ -102,7 +102,7 @@
         <tr>
             {#if levelpack.modded} <th>Created for</th> {/if}
             <th>Total levels</th>
-            <th>Total views</th>
+            <th>Total plays</th>
 <!--            <th>Total stars</th>-->
             <th>Created</th>
         </tr>
@@ -112,7 +112,7 @@
             {#if levelpack.modded} <td class="text-purple-500">{levelpack.modded}</td> {/if}
 <!--            <td class="text-neutral-500"><Difficulty includeText difficulty={levelpack.difficulty}/></td>-->
             <td class="text-fuchsia-500">{levelpack.levels.length}</td>
-            <td class="text-green-500">{levelpack.views}</td>
+            <td class="text-green-500">{levelpack.plays}</td>
 <!--            <td class="text-yellow-400">0</td>-->
             <td class="text-amber-500 text-3xl">{formatDate_Day(levelpack.created)}</td>
         </tr>
@@ -129,7 +129,7 @@
     <!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
     <!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl">0</div>-->
     <!--            </div>-->
-    <!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total views</div>-->
+    <!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total plays</div>-->
     <!--        </div>-->
     <!--        <div class="w-[120px] h-[98.73px] relative">-->
     <!--            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">-->

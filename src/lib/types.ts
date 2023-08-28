@@ -10,7 +10,7 @@ export type Level = {
     description: string
     data: string
 
-    views: number
+    plays: number
     stars: number
     difficulty: number
     featured: boolean
@@ -30,7 +30,7 @@ export type Levelpack = {
     description: string
     levels: string[]
 
-    views: number
+    plays: number
     stars: number
     featured: boolean
 

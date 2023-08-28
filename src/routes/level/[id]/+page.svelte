@@ -90,7 +90,7 @@
             <tr>
                 {#if level.modded} <th>Created for</th> {/if}
                 <th>Difficulty</th>
-                <th>Total views</th>
+                <th>Total plays</th>
 <!--                <th>Total stars</th>-->
                 <th>Created</th>
             </tr>
@@ -99,7 +99,7 @@
             <tr class="text-5xl">
                 {#if level.modded} <td class="text-purple-500">{level.modded}</td> {/if}
                 <td style:color={difficultyColorMap.get(level.difficulty)}><Difficulty includeText difficulty={level.difficulty}/></td>
-                <td class="text-green-500">{level.views}</td>
+                <td class="text-green-500">{level.plays}</td>
 <!--                <td class="text-yellow-400">0</td>-->
                 <td class="text-amber-500 text-3xl">{formatDate_Day(level.created)}</td>
             </tr>
@@ -116,7 +116,7 @@
 <!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
 <!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl">0</div>-->
 <!--            </div>-->
-<!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total views</div>-->
+<!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total plays</div>-->
 <!--        </div>-->
 <!--        <div class="w-[120px] h-[98.73px] relative">-->
 <!--            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">-->

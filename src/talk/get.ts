@@ -6,8 +6,8 @@ import type { RecordService } from "pocketbase";
 // TODO: Implement sort, also what is x?
 export async function getLevels(page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
-    const featuredFilter = featured ? "featured = true" : ""
-    const modFilter = mod ? `mod = "${mod}"` : ""
+    const featuredFilter = featured ? "featured = true && " : ""
+    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`
 
     return toPOJO((await levels
         .getList<Level>(page, 8, {
@@ -20,8 +20,8 @@ export async function getLevels(page: number, sortCode: number, featured: boolea
 
 export async function getLevelpacks(page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
-    const featuredFilter = featured ? "featured = true" : ""
-    const modFilter = mod ? `mod = "${mod}"` : ""
+    const featuredFilter = featured ? "featured = true && " : ""
+    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`
 
     return toPOJO((await levelpacks
         .getList<Levelpack>(page, 8, {
@@ -38,24 +38,30 @@ export async function getLevelpackByIdWithLevels(id: string) {
 }
 
 export async function getLevelById(id: string) {
-    const result = toPOJO((await levels.getOne<Level>(id, {expand: "creator"})))
-    // await levels.update<Level>(id, {views: result.views + 1})
-    await updateFetch<Level>(levels, id, {views: result.views + 1})
+    return toPOJO((await levels.getOne<Level>(id, {expand: "creator"})))
+}
+
+export async function getLevelpackById(id: string) {
+    return toPOJO((await levelpacks.getOne<Levelpack>(id, {expand: "creator"})))
+}
+
+export async function addPlayLevel(id: string) {
+    const result = await getLevelById(id)
+    await updateFetch<Level>(levels, id, {plays: result.plays + 1})
 
     return result
 }
 
-export async function getLevelpackById(id: string) {
-    const result = toPOJO((await levelpacks.getOne<Levelpack>(id, {expand: "creator"})))
-    // await levelpacks.update<Levelpack>(id, {views: result.views + 1})
-    await updateFetch<Levelpack>(levelpacks, id, {views: result.views + 1})
+export async function addPlayLevelpack(id: string) {
+    const result = await getLevelpackById(id)
+    await updateFetch<Levelpack>(levelpacks, id, {plays: result.plays + 1})
 
     return result
 }
 
 // TODO: Fulltext search?
 export async function getSearch(text: string, page: number, mod: string) {
-    const filter = mod ? `title ~ "${text}" && mod = "${mod}"` : `title ~ "${text}"` // TODO: Is this unsafe / escapable?
+    const filter = mod ? `title ~ "${text}" && modded = "${mod}"` : `title ~ "${text}" && modded = ""` // TODO: Is this unsafe / escapable?
 
     return toPOJO((await levels
         .getList<Level>(page, 8, {
@@ -77,12 +83,12 @@ export async function getUserByDiscordId(discordId: string) {
     return toPOJO(await users.getFirstListItem<PocketbaseUser>(`discordId = "${discordId}"`));
 }
 
-export async function getUserLevels(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
+export async function getUserLevels(id: string, sortCode: number, featured: boolean, mod: string) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
     let sort = getSort(sortCode)
     const featuredFilter = featured ? "featured = true" : ""
-    const modFilter = mod ? `mod = "${mod}"` : ""
+    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`
 
     // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
     return toPOJO((await users
@@ -95,10 +101,10 @@ export async function getUserLevels(id: string, page: number, sortCode: number, 
     ).expand.levels as Level[])
 }
 
-export async function getUserLevelpacks(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
+export async function getUserLevelpacks(id: string, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
     const featuredFilter = featured ? "featured = true" : ""
-    const modFilter = mod ? `mod = "${mod}"` : ""
+    const modFilter = mod ? `modded = "${mod}"` : ""
 
     return toPOJO((await users
             .getOne<PocketbaseUser>(id, {
@@ -170,7 +176,7 @@ function getSort(sortCode: number) {
         case 1:
             return "created"
         case 2:
-            return "-views"
+            return "-plays"
         // case 3:
         //  return "stars"
         default:

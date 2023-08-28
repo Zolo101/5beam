@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({request}) => {
     const mod = url.searchParams.get("mod") ?? ""
 
     if (type < 0 || type >= 2) return BAD("Invalid type")
-    let getFunc = type === 0 ? getLevels : getLevelpacks;
+    const getFunc = type === 0 ? getLevels : getLevelpacks;
 
     if (sort < 0 || sort >= 2) return BAD("Invalid sort")
 

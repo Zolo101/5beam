@@ -18,7 +18,7 @@
             <div class="relative right-[8px] top-[2.5px]">
                 <Icon name="plays" width="13" height="13"/>
             </div>
-            <div class="w-[39px] h-[17px] relative right-[5px] text-right text-green-500 text-[13px] font-normal">{levelpack.views}</div>
+            <div class="w-[39px] h-[17px] relative right-[5px] text-right text-green-500 text-[13px] font-normal">{levelpack.plays}</div>
         </div>
         <!--    <div class="w-[22px] h-[17px] pb-px left-[180px] top-[137px] absolute justify-start items-center gap-px inline-flex">-->
         <!--        <div class="w-[30px] text-right text-yellow-400 text-[13px] font-normal">{level.stars}</div>-->
