@@ -83,7 +83,8 @@ export async function getUserByDiscordId(discordId: string) {
     return toPOJO(await users.getFirstListItem<PocketbaseUser>(`discordId = "${discordId}"`));
 }
 
-export async function getUserLevels(id: string, sortCode: number, featured: boolean, mod: string) {
+// TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
+export async function getUserLevels(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
     let sort = getSort(sortCode)
@@ -91,29 +92,29 @@ export async function getUserLevels(id: string, sortCode: number, featured: bool
     const modFilter = mod ? `modded = "${mod}"` : `modded = ""`
 
     // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
-    return toPOJO((await users
-        .getOne<PocketbaseUser>(id, {
-            expand: "levels.creator",
-            sort,
-            filter: featuredFilter + modFilter
-        })
-    // @ts-ignore
-    ).expand.levels as Level[])
+    const userLevels = toPOJO((await users
+            .getOne<PocketbaseUser>(id, {
+                sort,
+                filter: featuredFilter + modFilter,
+            })
+    )).levels
+
+    return toPOJO((await getListIdPage<Level>(levels, page, 4, userLevels, "creator")).items)
 }
 
-export async function getUserLevelpacks(id: string, sortCode: number, featured: boolean, mod: string) {
+export async function getUserLevelpacks(id: string, page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)
     const featuredFilter = featured ? "featured = true" : ""
-    const modFilter = mod ? `modded = "${mod}"` : ""
+    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`
 
-    return toPOJO((await users
+    const userLevelpacks = toPOJO((await users
             .getOne<PocketbaseUser>(id, {
-                expand: "levelpacks.creator",
                 sort,
-                filter: featuredFilter + modFilter
+                filter: featuredFilter + modFilter,
             })
-    // @ts-ignore
-    ).expand.levelpacks as Levelpack[])
+    )).levelpacks
+
+    return toPOJO((await getListIdPage<Levelpack>(levelpacks, page, 4, userLevelpacks, "creator")).items)
 }
 
 // Pocketbase gives results in a weird format,
@@ -167,6 +168,13 @@ export function updateFetch<T>(collection: RecordService, id: string, body: Reco
         },
         body: JSON.stringify(body)
     }) as Promise<T>
+}
+
+function getListIdPage<T>(collection: RecordService, page: number, amount: number, ids: string[], expand: string) {
+    return collection.getList<T>(page, amount, {
+        filter: ids.map((id) => `id="${id}"`).join("||"),
+        expand
+    })
 }
 
 function getSort(sortCode: number) {

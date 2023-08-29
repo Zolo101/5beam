@@ -5,7 +5,7 @@
 
     export let levelpack: Levelpack;
 
-    let user = levelpack.creator;
+    $: user = levelpack.creator;
 </script>
 
 <a href="/levelpack/{levelpack.id}">

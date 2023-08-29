@@ -6,7 +6,7 @@
 
     export let level: Level;
 
-    let user = level.creator;
+    $: user = level.creator;
     const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail, true)
 </script>
 

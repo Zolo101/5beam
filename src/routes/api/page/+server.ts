@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({request}) => {
     if (type < 0 || type >= 2) return BAD("Invalid type")
     const getFunc = type === 0 ? getLevels : getLevelpacks;
 
-    if (sort < 0 || sort >= 2) return BAD("Invalid sort")
+    if (sort < 0 || sort >= 3) return BAD("Invalid sort")
 
     return OK(await getFunc(page, sort, featured, mod));
 }
