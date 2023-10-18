@@ -40,7 +40,7 @@
         {/if}
 
         {#if game_only}
-            <p class="warning endpoint-game_only">This endpoint can only be used on HTML5b's site.</p>
+            <p class="warning endpoint-game_only">For now, this endpoint can only be used on HTML5b's site.</p>
         {/if}
 
         {#if params}

@@ -26,7 +26,7 @@ export const POST: RequestHandler = async ({cookies, request}) => {
     const json = await request.json()
     const payload = PostLevelSchema.parse(json)
 
-    const access_token = cookies.get("access_token")
+    const access_token = cookies.get("access_token") ?? json.access_token
     if (access_token === undefined) return DENIED()
 
 
@@ -49,8 +49,7 @@ export const POST: RequestHandler = async ({cookies, request}) => {
 
         return OK(toPOJO(levelpack))
     } catch (e) {
-
         console.error(e)
-        return BAD("Invalid Payload")
+        return BAD("Invalid Payload: " + e)
     }
 }

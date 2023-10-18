@@ -109,7 +109,7 @@
             </ul>
 
             <p class="text-center">
-                <APIReference type={"GET"} reference={["api", "auth", "refresh"]}/>
+                <APIReference type={"POST"} reference={["api", "auth", "refresh"]}/>
             </p>
             <ul>
                 <li>New!</li>
@@ -409,8 +409,9 @@
 
     <APIEndpoint
             endpoint={["api", "auth", "refresh"]}
-            type="GET"
+            type="POST"
             game_only
+            token_required
     >
         <p>Gives you a new access_token. If this returns 400, it means your refresh_token is bad and you'll have to login again.</p>
         <Table heads={["Property", "Meaning", "Type"]} content={[
