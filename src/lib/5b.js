@@ -1812,8 +1812,8 @@ function resetLevel() {
     charCount = startLocations[currentLevel].length;
     levelWidth = levels[currentLevel][0].length;
     levelHeight = levels[currentLevel].length;
-    if (currentLevel === 0 && !playingLevelpack)
-      levels[0][13][29] = levels[0][13][30] = levels[0][13][31] = quirksMode ? 16 : 1;
+    // if (currentLevel === 0 && !playingLevelpack)
+    //   levels[0][13][29] = levels[0][13][30] = levels[0][13][31] = quirksMode ? 16 : 1;
     copyLevel(levels[currentLevel]);
     charCount2 = 0;
     for (let i = 0; i < charCount; i++) {
