@@ -91,7 +91,7 @@ export const DENIED = () => new Response("Authentication Denied. Have you given 
 
 
 // export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
-export const apiURL = dev ? "http://localhost:5173" : "https://clever-golick-4be132.netlify.app"
-export const functionsApiURL = dev ? "http://localhost:9999" : "https://clever-golick-4be132.netlify.app"
+export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
+export const functionsApiURL = dev ? "http://localhost:9999" : "https://5beam.zelo.dev"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`

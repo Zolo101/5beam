@@ -1,4 +1,4 @@
-import { renderImage } from "$lib/5b.js"
+import { renderImage } from "../src/lib/5b.js"
 import { createCanvas, Image } from "canvas";
 
 function newlineSplitter(file) {
