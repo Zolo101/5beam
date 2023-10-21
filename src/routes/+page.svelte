@@ -22,7 +22,7 @@
 
 <svelte:head>
     <meta property="og:title" content="5beam"/>
-    <meta property="og:description" content="Level Database for the web game BFDIA 5b."/>
+    <meta property="og:description" content="5beam is a website that allows you to upload, share, and play BFDIA 5b levels you've made! To upload levels, log in via discord!"/>
     <meta property="og:image" content="https://5beam.zelo.dev/box.png"/>
     <meta name="theme-color" content="#d10000">
 </svelte:head>
@@ -57,6 +57,11 @@
     </div>
 </Pagination>
 
+<div class="flex items-center justify-evenly max-w-[700px] bg-yellow-400 bg-opacity-50 rounded p-2 mx-auto mb-2">
+    <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
+    <span class="text-2xl font-bold text-yellow-300">Bored?</span>
+    <a href="/random" class="text-lg text-center text-yellow-100 hover:underline hover:cursor-pointer">Click here to play a random level!</a>
+</div>
 <p class="text-4xl text-neutral-300 font-bold p-2">Most Popular Levels</p>
 <Pagination
         bind:page={mostPopularLevelPage}

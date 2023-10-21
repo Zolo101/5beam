@@ -100,6 +100,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
 
         const levelFormData = new FormData()
         levelFormData.append("creator", dbUser.id)
+        // TODO: Set it to the actual level title
         levelFormData.append("title", `Level ${to5bLevelFormat(i)} of ${cl.title}`)
         levelFormData.append("description", "This level was automatically created for a levelpack.")
         levelFormData.append("data", level)

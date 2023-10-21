@@ -15,10 +15,13 @@
     const changePage = async (by: number) => {
         // dont go below zero
         page = (page + by < 1 ? 1 : page + by);
+        console.log(featured)
         output = await callback(page, type, sort, featured);
         // console.log(page, output)
     }
     export let removeOptions = false;
+
+    export let removeMovement = false;
 </script>
 
 {#if !removeOptions}
@@ -35,11 +38,13 @@
     </div>
 {/if}
 <slot></slot>
-<div class="text-center text-6xl p-5 text-neutral-300 select-none">
-    <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(-1)}>{"⟵"}</span>
-    <span class="font-bold font-mono">{page}</span>
-    <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(1)}>{"⟶"}</span>
-</div>
+{#if !removeMovement}
+    <div class="text-center text-6xl p-5 text-neutral-300 select-none">
+        <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(-1)}>{"⟵"}</span>
+        <span class="font-bold font-mono">{page}</span>
+        <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(1)}>{"⟶"}</span>
+    </div>
+{/if}
 
 <style>
     select {

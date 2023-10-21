@@ -34,6 +34,16 @@ export function formatDate_Day(date: string) {
     })
 }
 
+export function sample<T>(array: T[], amount: number) {
+    let result = []
+    for (let i = 0; i < amount; i++) {
+        const index = ~~(Math.random() * array.length)
+        result.push(array[index])
+        array.splice(index, 1)
+    }
+    return result
+}
+
 // export function formatDate_Full(date: Timestamp) {
 //     return new Date(date._seconds * 1000).toString()
 // }

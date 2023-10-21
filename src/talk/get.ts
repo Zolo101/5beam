@@ -1,6 +1,7 @@
 import { levelpacks, levels, users } from "$lib/pocketbase";
 import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
 import type { RecordService } from "pocketbase";
+import { sample } from "../misc";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 // TODO: Implement sort, also what is x?
@@ -17,6 +18,20 @@ export async function getLevels(page: number, sortCode: number, featured: boolea
         })
     ).items)
 }
+
+export async function getRandomLevels(amount: number, type: number, featured: boolean, mod: string) {
+    const featuredFilter = featured ? "featured = true && " : ""
+    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`
+    const db = type ? levelpacks : levels
+
+    // TODO: Do this function without getting every level in the database.
+    const everyRecord = await db
+        .getFullList<Level | Levelpack>({expand: "creator", filter: featuredFilter + modFilter})
+    const randomRecords = sample(everyRecord, Math.min(amount, 16))
+
+    return toPOJO(randomRecords)
+}
+
 
 export async function getLevelpacks(page: number, sortCode: number, featured: boolean, mod: string) {
     let sort = getSort(sortCode)

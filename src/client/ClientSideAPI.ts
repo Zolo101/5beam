@@ -30,6 +30,16 @@ export async function getLevelPageClient(page: number, type?: number, sort?: num
     return callAPI(url)
 }
 
+export async function getRandomLevelPageClient(amount: number, type?: number, featured?: number, mod?: string) {
+    const url = new URL(`${apiURL}/api/page/random`)
+    URLParamSet(url, "amount", amount)
+    URLParamSet(url, "type", type)
+    URLParamSet(url, "featured", featured)
+    URLParamSet(url, "mod", mod)
+
+    return callAPI(url)
+}
+
 export async function getLevelClient(id: string) {
     const url = new URL(`${apiURL}/api/level`)
     URLParamSet(url, "id", id)
