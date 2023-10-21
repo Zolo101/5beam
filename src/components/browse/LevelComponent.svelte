@@ -7,7 +7,7 @@
     export let level: Level;
 
     $: user = level.creator;
-    const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail, true)
+    $: thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail, true)
 </script>
 
 <a href="/level/{level.id}">

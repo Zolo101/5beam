@@ -47,7 +47,7 @@
 <Pagination
         bind:page={featuredLevelPage}
         bind:output={$featuredLevels}
-        callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+        callback={(page, sort, featured) => getLevelPageClient(page, 0, 0, 1)}
         removeOptions
 >
     <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
@@ -76,7 +76,6 @@
         bind:page={recentLevelPage}
         bind:output={$recentLevels}
         callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
-        featured={1}
         removeOptions
 >
     <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
