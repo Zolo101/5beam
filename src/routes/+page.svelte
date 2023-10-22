@@ -60,13 +60,13 @@
 <div class="flex items-center justify-evenly max-w-[700px] bg-yellow-400 bg-opacity-50 rounded p-2 mx-auto mb-2">
     <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
     <span class="text-2xl font-bold text-yellow-300">Bored?</span>
-    <a href="/random" class="text-lg text-center text-yellow-100 hover:underline hover:cursor-pointer">Click here to play a random level!</a>
+    <a href="/random" class="text-lg text-center text-yellow-100 hover:underline hover:cursor-pointer">Click here to view a random level!</a>
 </div>
 <p class="text-4xl text-neutral-300 font-bold p-2">Most Popular Levels</p>
 <Pagination
         bind:page={mostPopularLevelPage}
         bind:output={$mostPopularLevels}
-        callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+        callback={(page, sort, featured) => getLevelPageClient(page, 0, 2, featured)}
         removeOptions
 >
     <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">

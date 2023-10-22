@@ -5,11 +5,13 @@
 
     export let levelpack: Levelpack;
 
+    export let glow: boolean = false
+
     $: user = levelpack.creator;
 </script>
 
 <a href="/levelpack/{levelpack.id}">
-    <div class:modded={levelpack.modded} class="w-[209px] h-[158px] relative bg-zinc-700 text-neutral-50 rounded-[5px] shadow">
+    <div class:modded={levelpack.modded} class:glow={glow} class="w-[209px] h-[158px] relative bg-zinc-700 text-neutral-50 rounded-[5px] shadow outline outline-white/10">
         <!--    Thumbnail -->
         <img class="w-[120px] h-[108px] left-[46px] top-[7px] absolute rounded-sm bg-contain" src={Box} alt="Placeholder Thumbnail"/>
         <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{levelpack.title}</div>
@@ -35,6 +37,10 @@
 <style>
     .modded {
         /* TODO: Too much? */
-        @apply bg-purple-900 text-purple-400;
+        @apply bg-purple-900 text-purple-400 outline-purple-400/40;
+    }
+
+    .glow {
+        @apply outline-white/30;
     }
 </style>
