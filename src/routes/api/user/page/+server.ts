@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({request}) => {
     const page = Number(url.searchParams.get("page") ?? 0)
     const type = Number(url.searchParams.get("type") ?? 0)
     const sort = Number(url.searchParams.get("sort") ?? 0)
-    const featured = Boolean(url.searchParams.get("data")) ?? false
+    const featured = !!Number(url.searchParams.get("featured")) ?? false
     const mod = url.searchParams.get("mod") ?? ""
 
     if (type < 0 || type >= 2) return BAD("Invalid type")
