@@ -24,7 +24,6 @@
     <meta property="og:title" content="5beam"/>
     <meta property="og:description" content="5beam is a website that allows you to upload, share, and play BFDIA 5b levels you've made! To upload levels, log in via discord!"/>
     <meta property="og:image" content="https://5beam.zelo.dev/box.png"/>
-    <meta name="theme-color" content="#d10000">
 </svelte:head>
 
 {#if data.loggedIn}

@@ -27,7 +27,7 @@
 
 <svelte:head>
     <title>{level.title} - 5beam</title>
-    <meta property="og:title" content={level.title}/>
+    <meta property="og:title" content={level.title + " by " + level.creator.username}/>
     <meta property="og:description" content={level.description}/>
     <meta property="og:image" content={thumbnailUrl}/>
     <meta name="twitter:card" content="summary_large_image">

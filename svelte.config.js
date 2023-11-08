@@ -9,7 +9,7 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			edge: false,
+			edge: true,
 			split: false
 		}),
 		csrf: {

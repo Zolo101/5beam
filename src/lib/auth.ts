@@ -1,20 +1,10 @@
-import DiscordOauth2 from "discord-oauth2"
 import { redirectURL } from "../misc";
 import type { Cookies } from "@sveltejs/kit";
-
-export const oauth = new DiscordOauth2({
-    clientId: import.meta.env.VITE_AUTH_CLIENT_ID,
-    clientSecret: import.meta.env.VITE_AUTH_CLIENT_SECRET
-})
+import DiscordOauth2 from "$lib/DiscordOauth2";
 
 // Used for when you don't have a refresh token
 export async function requestTokenLogIn(code: string, redirectUri = redirectURL) {
-    return await oauth.tokenRequest({
-        code,
-        redirectUri,
-        scope: ["identify"],
-        grantType: "authorization_code",
-    })
+    return await DiscordOauth2.tokenRequestAuth(code, redirectUri);
 
     // TODO: Get user database info
     // const user = await oauth.getUser(result.access_token);
@@ -22,11 +12,7 @@ export async function requestTokenLogIn(code: string, redirectUri = redirectURL)
 }
 
 export async function refreshTokenRequest(cookies: Cookies, refreshToken: string) {
-    return oauth.tokenRequest({
-        refreshToken,
-        scope: ["identify"],
-        grantType: "refresh_token",
-    })
+    return DiscordOauth2.tokenRequestRefresh(refreshToken)
         .then(result => result)
         .catch(() => {
             // refresh_token is invalid, force logout

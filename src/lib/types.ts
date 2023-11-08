@@ -1,4 +1,4 @@
-import type { User } from "discord-oauth2";
+import type { User } from "$lib/DiscordOauth2";
 
 export type Level = {
     id: string

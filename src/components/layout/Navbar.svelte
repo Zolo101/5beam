@@ -2,7 +2,6 @@
     import { fly } from "svelte/transition";
     import { writable } from "svelte/store";
     import Logo from "./Logo.svelte";
-    import type { User } from "discord-oauth2";
     import { getSearchClient } from "../../client/ClientSideAPI";
     import LevelComponent from "../browse/LevelComponent.svelte";
     import Pagination from "../Pagination.svelte";

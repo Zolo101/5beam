@@ -3,9 +3,9 @@
 // and what to do when importing types
 
 // https://github.com/sveltejs/kit/issues/3766
-declare namespace App {
-    import type { User } from "discord-oauth2";
+import type { User } from "$lib/DiscordOauth2";
 
+declare namespace App {
     interface Locals {
         user: User
     }

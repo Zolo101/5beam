@@ -35,6 +35,8 @@ export function formatDate_Day(date: string) {
 }
 
 export function sample<T>(array: T[], amount: number) {
+    if (amount > array.length) throw new Error("Amount is greater than array length.")
+
     let result = []
     for (let i = 0; i < amount; i++) {
         const index = ~~(Math.random() * array.length)
@@ -95,6 +97,9 @@ export const OK = (body: any) => new Response(JSON.stringify(body), {status: 200
 
 // User error
 export const BAD = (message: string) => new Response(message, {status: 400})
+
+// Server error
+export const MY_BAD = (message: string) => new Response(message, {status: 500})
 
 // Denied
 export const DENIED = () => new Response("Authentication Denied. Have you given me a valid access_token?", {status: 401})

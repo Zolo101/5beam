@@ -32,7 +32,6 @@
 	"dependencies": {
 		"canvas": "^2.11.2",
 		"cookie": "^0.5.0",
-		"discord-oauth2": "^2.11.0",
 		"passport-discord": "^0.1.4",
 		"passport-oauth2-refresh": "^2.2.0",
 		"pocketbase": "^0.16.0",

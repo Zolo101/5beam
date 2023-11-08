@@ -1,10 +1,9 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { oauth } from "$lib/auth";
 import { BAD, DENIED, OK } from "../../../../misc";
 import { z } from "zod";
 import { createLevel } from "../../../../talk/create";
-import type { User } from "discord-oauth2";
 import { toPOJO } from "../../../../talk/get";
+import DiscordOauth2, { type User } from "$lib/DiscordOauth2";
 
 const PostLevelSchema = z.object({
     title: z
@@ -33,7 +32,7 @@ export const POST: RequestHandler = async ({cookies, request}) => {
     // Get user from access token
     let user: User;
     try {
-        user = await oauth.getUser(access_token)
+        user = await DiscordOauth2.getUser(access_token)
     } catch (e) {
         return DENIED()
     }

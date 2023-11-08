@@ -11,6 +11,7 @@
 </script>
 
 <svelte:head>
+    <meta name="theme-color" content="#d10000">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QDE04Q52S"></script>
     <script>

@@ -1,8 +1,9 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
-import { oauth, requestTokenLogIn, setAccessToken, setRefreshToken } from "$lib/auth";
+import { requestTokenLogIn, setAccessToken, setRefreshToken } from "$lib/auth";
 import { redirectURL } from "../../../../../misc";
 import { getUserByDiscordId } from "../../../../../talk/get";
+import DiscordOauth2 from "$lib/DiscordOauth2";
 
 export const GET: RequestHandler = async ({request, cookies}) => {
     const url = new URL(request.url)
@@ -12,7 +13,7 @@ export const GET: RequestHandler = async ({request, cookies}) => {
     setAccessToken(cookies, tokenResponse.access_token, tokenResponse.expires_in)
     setRefreshToken(cookies, tokenResponse.refresh_token)
 
-    const user = await oauth.getUser(tokenResponse.access_token);
+    const user = await DiscordOauth2.getUser(tokenResponse.access_token);
     console.log(user)
 
     getUserByDiscordId(user.id)
