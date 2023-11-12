@@ -31,10 +31,9 @@
 
 <style>
     table {
+        @apply outline outline-4 outline-black rounded border-hidden text-neutral-200;
         background: repeating-linear-gradient(-45deg, #5a5a5a, #5a5a5a 10px, #464646 10px, #464646 20px);;
-        border-collapse: collapse;
-        border: 1px solid black;
-        color: gainsboro;
+        /*border: 1px solid black;*/
     }
 
     caption {
@@ -44,18 +43,16 @@
     }
 
     th, td {
-        padding: 10px;
+        @apply p-2.5 border-2 border-neutral-800;
     }
 
     th {
         @apply bg-neutral-700;
         /*background-color: #5a5a5a;*/
-        border: 1px solid black;
     }
 
     td {
         background-color: #5a5a5a;
-        border: 1px solid black;
     }
 
     .dynamicWidth {

@@ -15,7 +15,6 @@
     const changePage = async (by: number) => {
         // dont go below zero
         page = (page + by < 1 ? 1 : page + by);
-        console.log(featured)
         output = await callback(page, type, sort, featured);
         // console.log(page, output)
     }

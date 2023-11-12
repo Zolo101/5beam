@@ -59,7 +59,7 @@
 
 <style>
     .warning {
-        @apply inline-block bg-black text-xl font-bold p-2 mb-7;
+        @apply inline-block bg-black text-xl font-bold p-2;
     }
 
     .endpoint.deprecated {

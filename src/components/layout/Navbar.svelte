@@ -53,7 +53,7 @@
 </div>
 
 {#if searchFocused}
-    <div transition:fly={{y: 500}} class="w-full backdrop-blur-md bg-black/80 shadow-2xl absolute z-10 py-[110px]">
+    <div transition:fly={{y: 500}} class="w-full backdrop-blur-md bg-black/80 shadow-2xl absolute z-20 py-[110px]">
         <Pagination
                 bind:page={searchPage}
                 bind:output={$searchResults}
