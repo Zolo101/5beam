@@ -1,6 +1,6 @@
 import type { CreateLevel, CreateLevelpack, CreateUser, Level, Levelpack } from "$lib/types";
 import { levelpacks, levels, users } from "$lib/pocketbase";
-import { functionsApiURL, getLevelThumbnailURL, to5bLevelFormat } from "../misc";
+import { functionsApiURL, getLevelThumbnailURL } from "../misc";
 import validate from "../client/FileValidator";
 import type { User } from "discord-oauth2";
 import { getUserByDiscordId, updateFetch } from "./get";
@@ -15,13 +15,16 @@ export async function validateLevelpack(levels: string[]) {
 }
 
 export async function generateThumbnail(level: string) {
-    return fetch(`${functionsApiURL}/.netlify/functions/createThumbnail`, {
+    const result = await fetch(`${functionsApiURL}/.netlify/functions/createThumbnail`, {
         method: "POST",
         headers: {
             "Content-Type": "text/plain"
         },
         body: level
     })
+
+    // Return nothing if there is a server error while generating thumbnail
+    return result.ok ? result : undefined
 }
 
 export async function createUser(cl: CreateUser) {
@@ -44,7 +47,7 @@ export async function createLevel(cl: CreateLevel) {
     levelFormData.append("title", cl.title)
     levelFormData.append("description", cl.description)
     levelFormData.append("data", trimmedLevel)
-    levelFormData.append("thumbnail", await thumbnail.blob())
+    if (thumbnail) levelFormData.append("thumbnail", await thumbnail.blob())
     levelFormData.append("modded", cl.modded)
 
     const levelReference = await levels.create<Level>(levelFormData)
@@ -97,14 +100,15 @@ export async function createLevelpack(cl: CreateLevelpack) {
         i++;
 
         const thumbnail = await generateThumbnail(level)
+        const split = level.split("\r\n")
+        const title = split[0] === "loadedLevels=" ? split[1] : split[0]
 
         const levelFormData = new FormData()
         levelFormData.append("creator", dbUser.id)
-        // TODO: Set it to the actual level title
-        levelFormData.append("title", `Level ${to5bLevelFormat(i)} of ${cl.title}`)
-        levelFormData.append("description", "This level was automatically created for a levelpack.")
+        levelFormData.append("title", title)
+        levelFormData.append("description", `This level is a part of levelpack "${cl.title}}".`)
         levelFormData.append("data", level)
-        levelFormData.append("thumbnail", await thumbnail.blob())
+        if (thumbnail) levelFormData.append("thumbnail", await thumbnail.blob())
         levelFormData.append("modded", cl.modded)
 
         levelsFormData.push(levelFormData)

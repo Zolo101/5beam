@@ -6,9 +6,9 @@ export type ValidateResult = z.infer<typeof validateResultSchema>
 
 export type DetectedLevel = z.infer<typeof detectedLevelSchema>
 
-type Sprite = z.infer<typeof spriteSchema>
+export type Sprite = z.infer<typeof spriteSchema>
 
-type Dialogue = z.infer<typeof dialogueSchema>
+export type Dialogue = z.infer<typeof dialogueSchema>
 
 export const validateLogSchema = z.object({
     at: z.number(),

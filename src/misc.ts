@@ -23,7 +23,9 @@ export const difficultyColorMap = new Map<number, string>([
 ]);
 
 export const Icons = import.meta.glob("$lib/assets/icons/*.svg", { eager: true, as: "raw" });
+export const Sprites = import.meta.glob("$lib/assets/sprites/*.svg", { eager: true, as: "raw" });
 export const difficultyImages = import.meta.glob("$lib/assets/difficulty/*.png", {eager: true, as: "url"})
+export const backgrounds = import.meta.glob("$lib/assets/backgrounds/*.png", {eager: true, as: "url"})
 
 // TODO: Research temporal https://tc39.es/proposal-temporal/docs/index.html
 export function formatDate_Day(date: string) {

@@ -5,7 +5,6 @@
     import Difficulty from "../../../components/Difficulty.svelte";
     import { difficultyColorMap, formatDate_Day, getLevelThumbnailURL } from "../../../misc";
 
-
     export let data: PageData;
 
     let level = data.level;
