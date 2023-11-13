@@ -2,12 +2,11 @@ import resourceData from "./images2.json";
 
 const version = "v0.1.1*";
 const levelToPreview = 0;
-let imageFunc;
+let ctx, imageFunc, createCanvas;
 const cwidth = 960;
 const cheight = 540;
 let pixelRatio = 1;
 let addedZoom = 1;
-let ctx;
 let osc1, osctx1;
 let osc2, osctx2;
 let osc3, osctx3;
