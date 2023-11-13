@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import { redirectURL, URLParamSet } from "../misc";
 
 // https://github.com/reboxer/discord-oauth2 doesn't work well with netlify edge functions, so i've replaced it with this
@@ -57,8 +58,6 @@ export default class DiscordOauth2 {
     static async getUser(token: string): Promise<User> {
         const result = await fetch("https://discord.com/api/users/@me", {
             headers: {
-                "User-Agent": "Discord-OAuth2",
-                "Accept-Encoding": "gzip,deflate",
                 "Authorization": `Bearer ${token}`,
             }
         })

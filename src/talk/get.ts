@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import { levelpacks, levels, users } from "$lib/pocketbase";
 import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
 import type { RecordService } from "pocketbase";
