@@ -11,6 +11,6 @@ export function onPostBuild(meta) {
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'))
     manifest.routes.find(route => {
         return route.function === 'render'
-    }).excluded_patterns.push('/.netlify/functions/api/*')
+    }).excluded_patterns.push('/.netlify/functions/*')
     writeFileSync(manifestPath, JSON.stringify(manifest))
 }
