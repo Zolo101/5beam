@@ -7,6 +7,7 @@ const cwidth = 960;
 const cheight = 540;
 let pixelRatio = 1;
 let addedZoom = 1;
+let ctx;
 let osc1, osctx1;
 let osc2, osctx2;
 let osc3, osctx3;
