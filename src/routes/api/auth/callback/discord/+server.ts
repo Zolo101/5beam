@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import type { RequestHandler } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 import { requestTokenLogIn, setAccessToken, setRefreshToken } from "$lib/auth";

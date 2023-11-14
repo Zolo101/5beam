@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import type { CreateLevel, CreateLevelpack, CreateUser, Level, Levelpack } from "$lib/types";
 import { levelpacks, levels, users } from "$lib/pocketbase";
 import { functionsApiURL, getLevelThumbnailURL } from "../misc";
@@ -67,7 +66,6 @@ export async function createLevel(cl: CreateLevel) {
                     url: `https://5beam.zelo.dev/level/${levelReference.id}`,
                     color: 5689629,
                     author: {
-                        // TODO: discord-oauth2 isnt being used anymore, so update them yourself
                         // TODO: Pull request discord-oauth2 on updating User types
                         // @ts-ignore
                         name: cl.creator.global_name,
