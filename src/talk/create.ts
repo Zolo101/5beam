@@ -4,6 +4,7 @@ import { levelpacks, levels, users } from "$lib/pocketbase";
 import { functionsApiURL, getLevelThumbnailURL } from "../misc";
 import validate from "../client/FileValidator";
 import { getUserByDiscordId, updateFetch } from "./get";
+import type { User } from "$lib/DiscordOauth2";
 
 // TODO: Make this function work for levelpacks aswell
 export async function validateLevel(level: string) {
@@ -15,7 +16,7 @@ export async function validateLevelpack(levels: string[]) {
 }
 
 export async function generateThumbnail(level: string) {
-    const result = await fetch(`${functionsApiURL}/.netlify/functions/createThumbnail`, {
+    const result = await fetch(`${functionsApiURL}/createThumbnail`, {
         method: "POST",
         headers: {
             "Content-Type": "text/plain"
