@@ -70,7 +70,7 @@ export function isLoggedIn() {
 }
 
 export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
-    return `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}`
+    return (filename) ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}` : fallbackThumbnailURL
 }
 
 // if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
@@ -113,3 +113,4 @@ export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const functionsApiURL = dev ? "http://localhost:9999/.netlify/functions" : "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`
+export const fallbackThumbnailURL = backgrounds["/src/lib/assets/backgrounds/0.png"]
