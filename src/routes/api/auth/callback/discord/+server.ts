@@ -14,7 +14,7 @@ export const GET: RequestHandler = async ({request, cookies}) => {
     setRefreshToken(cookies, tokenResponse.refresh_token)
 
     const user = await DiscordOauth2.getUser(tokenResponse.access_token);
-    console.log(user)
+    // console.log(user)
 
     getUserByDiscordId(user.id)
         .catch(async () => {

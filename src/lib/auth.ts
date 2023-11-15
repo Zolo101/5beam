@@ -12,13 +12,16 @@ export async function requestTokenLogIn(code: string, redirectUri = redirectURL)
 }
 
 export async function refreshTokenRequest(cookies: Cookies, refreshToken: string) {
-    return DiscordOauth2.tokenRequestRefresh(refreshToken)
-        .then(result => result)
-        .catch(() => {
-            // refresh_token is invalid, force logout
-            cookies.delete("refresh_token")
-            return undefined;
-        })
+    const result = await DiscordOauth2.tokenRequestRefresh(refreshToken)
+
+    if ("error" in result) {
+        cookies.delete("refresh_token")
+        return undefined
+    } else {
+        setAccessToken(cookies, result.access_token, result.expires_in)
+        setRefreshToken(cookies, result.refresh_token)
+        return result
+    }
 }
 
 export function setAccessToken(cookies: Cookies, token: string, expiresIn: number) {

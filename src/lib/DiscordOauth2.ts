@@ -18,13 +18,24 @@ export interface User {
     public_flags?: number;
 }
 
-export interface TokenRequestResult {
+export type TokenRequestResult = TokenRequestOk | TokenRequestError;
+
+export interface TokenRequestOk {
     access_token: string;
     token_type: string;
     expires_in: number;
     refresh_token: string;
     scope: string;
     // webhook?: Webhook;
+}
+
+export interface TokenRequestError {
+    error: string;
+}
+
+export interface ResponseError {
+    message: string;
+    code: number;
 }
 
 export default class DiscordOauth2 {
@@ -63,7 +74,14 @@ export default class DiscordOauth2 {
             }
         })
 
-        return result.json()
+        const user: User | ResponseError = await result.json()
+
+        // TODO: Is the "throw" approach good?
+        if ("message" in user) {
+            throw new Error(user.message)
+        } else {
+            return user
+        }
     }
 }
 

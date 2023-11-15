@@ -1,4 +1,5 @@
 import { dev } from "$app/environment";
+import { z } from "zod";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -90,6 +91,22 @@ export function readBlobInANSI(blob: Blob) {
     });
 }
 
+export const PostLevelSchema = z.object({
+    title: z
+        .string()
+        .min(1)
+        .max(64),
+    description: z
+        .string()
+        .max(1024),
+    modded: z
+        .string()
+        .max(64),
+    file: z
+        .string()
+        .max(1024 * 1024 * 5) // 5 MB Limit
+})
+
 // Cant find
 export function return404() {
     return new Response(null, {status: 404})
@@ -110,7 +127,7 @@ export const DENIED = () => new Response("Authentication Denied. Have you given 
 // export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 // TODO: Create new subdomain for lambda functions?
-export const functionsApiURL = dev ? "http://localhost:9999/.netlify/functions" : "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default"
+export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`
 export const fallbackThumbnailURL = backgrounds["/src/lib/assets/backgrounds/0.png"]
