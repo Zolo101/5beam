@@ -52,6 +52,7 @@ export async function createLevel(cl: CreateLevel) {
 
     const levelReference = await levels.create<Level>(levelFormData)
 
+    // TODO: This wont send if you are in local and the thumbnail fails to generate!
     await fetch(`https://canary.discord.com/api/webhooks/${import.meta.env.VITE_WEBHOOK_ID}/${import.meta.env.VITE_WEBHOOK_SECRET}`, {
         method: "POST",
         headers: {

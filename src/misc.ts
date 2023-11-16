@@ -130,4 +130,4 @@ export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`
-export const fallbackThumbnailURL = backgrounds["/src/lib/assets/backgrounds/0.png"]
+export const fallbackThumbnailURL = `${apiURL}${backgrounds["/src/lib/assets/backgrounds/0.png"]}`

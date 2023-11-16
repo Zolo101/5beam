@@ -1,4 +1,5 @@
 <script lang="ts">
+    import languageEncoding from "detect-file-encoding-and-language";
     import { derived, writable } from "svelte/store";
     import { fly } from "svelte/transition";
     import { postCreateLevelClient, postCreateLevelpackClient } from "../../client/ClientSideAPI";
@@ -35,8 +36,12 @@
         if ($result === undefined) return;
 
         if ($valid || $modded) {
-            // We need to read the file as ANSI to preserve the wood blocks (€)
-            let text = await readBlobInANSI($file!)
+            // 5b levels can either be ANSI (flash) or UTF-8 (HTML5), so we need to support both.
+            // We need to support ANSI to preserve the wood blocks (€) in flash levels.
+            let encoding = (await languageEncoding($file!)).encoding;
+            let isANSI = encoding === "CP1252"
+
+            let text = isANSI ? await readBlobInANSI($file!) : await $file!.text()
 
             const payload = {
                 access_token: data.access_token,
