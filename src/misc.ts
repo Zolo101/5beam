@@ -74,6 +74,10 @@ export function getLevelThumbnailURL(id: string, filename: string, mini: boolean
     return (filename) ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}` : fallbackThumbnailURL
 }
 
+export function getLevelThumbnailURLWebhook(id: string, filename: string, mini: boolean = false) {
+    return (filename) ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}` : `${apiURL}${fallbackThumbnailURL}`
+}
+
 // if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
 export function readBlobInANSI(blob: Blob) {
     return new Promise((resolve, reject) => {
@@ -130,4 +134,4 @@ export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`
 export const redirectURL_html5b = `${apiURL}/api/auth/callback/html5b`
-export const fallbackThumbnailURL = `${apiURL}${backgrounds["/src/lib/assets/backgrounds/0.png"]}`
+export const fallbackThumbnailURL = backgrounds["/src/lib/assets/backgrounds/0.png"]
