@@ -1,6 +1,6 @@
 import type { CreateLevel, CreateLevelpack, CreateUser, Level, Levelpack } from "$lib/types";
 import { levelpacks, levels, users } from "$lib/pocketbase";
-import { functionsApiURL, getLevelThumbnailURL, getLevelThumbnailURLWebhook } from "../misc";
+import { functionsApiURL, getLevelThumbnailURL } from "../misc";
 import validate from "../client/FileValidator";
 import { getUserByDiscordId, updateFetch } from "./get";
 import type { User } from "$lib/DiscordOauth2";
@@ -149,7 +149,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
                         icon_url: `https://cdn.discordapp.com/avatars/${cl.creator.id}/${cl.creator.avatar}.png`
                     },
                     image: {
-                        url: getLevelThumbnailURLWebhook(levelReferences[0].id, levelReferences[0].thumbnail)
+                        url: getLevelThumbnailURL(levelReferences[0].id, levelReferences[0].thumbnail)
                     }
                 }
             ]
