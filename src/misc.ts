@@ -1,5 +1,6 @@
 import { dev } from "$app/environment";
 import { z } from "zod";
+import type { User } from "$lib/DiscordOauth2";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -64,12 +65,6 @@ export function URLParamSet(url: URL, prop: string, param: number | string | und
     }
 }
 
-export function isLoggedIn() {
-    // const user: (DiscordUser | false) = get<any>(page.data.user).user
-    // return (user !== false)
-    return false
-}
-
 export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
     return (filename) ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}` : fallbackThumbnailURL
 }
@@ -106,6 +101,11 @@ export const PostLevelSchema = z.object({
         .string()
         .max(1024 * 1024 * 5) // 5 MB Limit
 })
+
+export const isLoggedIn = (user: User | undefined) => !!user
+
+// checks are done server-side as well
+export const isAdmin = (user: User | undefined) => user?.id === "189004032600309760"
 
 // Cant find
 export function return404() {

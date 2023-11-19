@@ -2,8 +2,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { BAD, DENIED, OK, PostLevelSchema } from "../../../../misc";
 import { createLevel } from "../../../../talk/create";
 import { toPOJO } from "../../../../talk/get";
-import DiscordOauth2, { type User } from "$lib/DiscordOauth2";
-import { refreshTokenRequest } from "$lib/auth";
+import { tryGettingUser } from "../../../../talk/admin";
 
 export const POST: RequestHandler = async ({cookies, request}) => {
     const json = await request.json()
@@ -13,23 +12,8 @@ export const POST: RequestHandler = async ({cookies, request}) => {
     const refresh_token = cookies.get("refresh_token") ?? json.refresh_token
 
     // Get user from access token
-    let user: User;
-    try {
-        user = await DiscordOauth2.getUser(access_token)
-    } catch (e) {
-        // Refresh token and try again
-        if (refresh_token) {
-            let result = await refreshTokenRequest(cookies, refresh_token)
-
-            if (result) {
-                user = await DiscordOauth2.getUser(result.access_token)
-            } else {
-                return DENIED()
-            }
-        } else {
-            return DENIED()
-        }
-    }
+    let user = await tryGettingUser(access_token, refresh_token, cookies)
+    if (!user) return DENIED()
 
     try {
         const level = await createLevel({

@@ -3,12 +3,15 @@
     import UserComponent from "../../../components/UserComponent.svelte";
     import Button from "../../../components/Button.svelte";
     import Difficulty from "../../../components/Difficulty.svelte";
-    import { difficultyColorMap, formatDate_Day, getLevelThumbnailURL } from "../../../misc";
+    import { apiURL, difficultyColorMap, formatDate_Day, getLevelThumbnailURL } from "../../../misc";
 
     export let data: PageData;
 
     let level = data.level;
     let user = data.level.creator;
+    let clientUser = data.user
+
+    let isOwner = user.id === clientUser.id
 
     const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail)
 
@@ -21,6 +24,13 @@
         a.setAttribute("download", `levels.txt`);
 
         a.click()
+    }
+
+    $: difficultyText = "Select a difficulty!";
+    const changeDifficulty = async (difficulty: number) => {
+        await fetch(`${apiURL}/api/admin/modify?id=${level.id}&difficulty=${difficulty}`, {
+            method: "POST"
+        })
     }
 </script>
 
@@ -83,6 +93,37 @@
     </div>
     <!--</div>-->
 </div>
+{#if isOwner || data.admin}
+<!--                            on:mouseover={() => difficultyText = difficultyMap.get(j)}-->
+    <div class="flex justify-center p-2 gap-2">
+        <div class="flex flex-col w-1/4 bg-black/50 rounded-[10px] shadow-2xl">
+            <div class="p-2 text-center m-auto">
+<!--                <span class="text-xl bg-red-600 rounded p-1 font-black">BETA</span>-->
+                <p class="text-xl font-bold text-center">Select a difficulty!</p>
+<!--                <a href="#">Check out this page if your unsure on what difficulty your level should be!</a>-->
+            </div>
+            <div class="w-full inline-grid justify-items-center items-center align-middle grid-cols-3 p-5">
+                {#each [0, 1, 2, 3, 4, 5, 6, 7] as j}
+                    <div
+                            class="hover:bg-white/20 rounded cursor-pointer transition hover:scale-110 p-1"
+                            on:click={() => changeDifficulty(j)}
+                    >
+                        <Difficulty difficulty={j}/>
+                    </div>
+                {/each}
+            </div>
+<!--            TODO: Improve if statement-->
+<!--            {#if difficultyText = "Select a difficulty!"}-->
+<!--                <Button text="Apply" bg="#38e000" onclick={downloadLevel}/>-->
+<!--            {/if}-->
+        </div>
+        <div class="flex flex-col justify-center p-5 gap-6 bg-black/50 rounded-[10px] shadow-2xl">
+            <Button text="Update level" bg="#a8e000" onclick={downloadLevel}/>
+            <Button text="Edit title/description" bg="#ffe15e" onclick={downloadLevel}/>
+            <Button text="Delete level" bg="#e00000" onclick={downloadLevel}/>
+        </div>
+    </div>
+{/if}
 <div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">
     <table>
         <thead>
@@ -142,6 +183,14 @@
 <!--<button>Download as 5b Level</button><Help text="In beta: Not all levelpacks can be converted!"/>-->
 
 <style>
+    a {
+        @apply text-blue-300;
+    }
+
+    a:hover {
+        @apply underline;
+    }
+
     th {
         @apply w-64 h-[49px] text-center text-2xl;
     }
