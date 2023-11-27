@@ -1,15 +1,18 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 import { requestTokenLogIn, setAccessToken, setRefreshToken } from "$lib/auth";
-import { redirectURL } from "../../../../../misc";
-import { getUserByDiscordId } from "../../../../../talk/get";
+import { BAD, redirectURL } from "../../../../../misc";
+import { getUserByDiscordId, updateFetch } from "../../../../../talk/get";
 import DiscordOauth2 from "$lib/DiscordOauth2";
+import { users } from "$lib/pocketbase";
 
 export const GET: RequestHandler = async ({request, cookies}) => {
     const url = new URL(request.url)
     const code = url.searchParams.get("code") ?? ""
 
     const tokenResponse = await requestTokenLogIn(code, redirectURL)
+    if ("error" in tokenResponse) return BAD(tokenResponse.error)
+
     setAccessToken(cookies, tokenResponse.access_token, tokenResponse.expires_in)
     setRefreshToken(cookies, tokenResponse.refresh_token)
 
@@ -17,6 +20,12 @@ export const GET: RequestHandler = async ({request, cookies}) => {
     // console.log(user)
 
     getUserByDiscordId(user.id)
+        .then((pbUser) => {
+            // Change username if they've updated it on discord
+            if (user.username !== pbUser.username) {
+                updateFetch(users, pbUser.id, {username: user.username})
+            }
+        })
         .catch(async () => {
             console.log("Creating user")
             // Have to use fetch because pocketbase doesn't have SDK header support
