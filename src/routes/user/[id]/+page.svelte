@@ -54,29 +54,37 @@
     </div>
 
     <p class="text-4xl text-neutral-300 font-bold p-2">Levels</p>
-    <Pagination
-            bind:page={levelPage}
-            bind:output={$levels}
-            callback={(page, sort, featured) => getUserLevelPageClient(user.id, page, 0, sort, featured)}
-    >
-        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
-            {#each $levels as level}
-                <LevelComponent {level}/>
-            {/each}
-        </div>
-    </Pagination>
+    {#if user.levels.length}
+        <Pagination
+                bind:page={levelPage}
+                bind:output={$levels}
+                callback={(page, sort, featured) => getUserLevelPageClient(user.id, page, 0, sort, featured)}
+        >
+            <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+                {#each $levels as level}
+                    <LevelComponent {level}/>
+                {/each}
+            </div>
+        </Pagination>
+    {:else}
+        <p>User has no levels!</p>
+    {/if}
     <br>
     <p class="text-4xl text-neutral-300 font-bold p-2">Levelpacks</p>
-    <Pagination
-            bind:page={levelpackPage}
-            bind:output={$levelpacks}
-            callback={(page, sort, featured) => getUserLevelPageClient(user.id, page, 1, sort, featured)}
-    >
-        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
-            {#each $levelpacks as levelpack}
-                <LevelpackComponent {levelpack}/>
-            {/each}
-        </div>
-    </Pagination>
+    {#if user.levelpacks.length}
+        <Pagination
+                bind:page={levelpackPage}
+                bind:output={$levelpacks}
+                callback={(page, sort, featured) => getUserLevelPageClient(user.id, page, 1, sort, featured)}
+        >
+            <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+                {#each $levelpacks as levelpack}
+                    <LevelpackComponent {levelpack}/>
+                {/each}
+            </div>
+        </Pagination>
+    {:else}
+        <p>User has no levelpacks!</p>
+    {/if}
 
 </div>
