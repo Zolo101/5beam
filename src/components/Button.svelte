@@ -8,7 +8,7 @@
 
 <a {href} on:click={onclick} >
     <button {disabled} class="
-        w-[246px] h-[40px] relative rounded-[10px] shadow-lg outline outline-4 outline-transparent hover:outline-neutral-800 transition-all cursor-pointer
+        w-[246px] h-[40px] relative rounded-[10px] shadow-lg outline outline-4 outline-transparent hover:outline-black/50 transition-all cursor-pointer
         disabled:outline-none disabled:opacity-40 disabled:cursor-not-allowed
     " style="background-color: {bg}">
         <span class="w-[246px] h-[40px] left-0 top-0 absolute bg-gradient-to-b from-transparent to-[#00000044] rounded-lg"></span>

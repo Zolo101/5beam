@@ -1,3 +1,3 @@
-<a href="/" class="text-5xl mx-10 px-15 hover:bg-neutral-300">
+<a href="/" class="text-neutral-200 text-5xl mx-5 px-15 hover:scale-110 transition-transform">
     <span class="font-extrabold">5b</span><span>eam</span>
 </a>
