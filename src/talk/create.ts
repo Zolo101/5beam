@@ -114,7 +114,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
 // Normalize newlines to CRLF (level array)
 function newlineSplitter(file: string) {
     return file
-        .replaceAll(/\\r?\\n/g, "\r\n") // convert to windows linebreaks (HTML5b requires this)
+        .replaceAll(/\r\n|\r|\n/g, "\r\n") // convert to windows linebreaks (HTML5b requires this)
         .split("\r\n\r\n")
 }
 

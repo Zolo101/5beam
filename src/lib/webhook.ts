@@ -55,15 +55,13 @@ export default class Webhook<P extends unknown[]> {
     }
 
     async send(...params: P) {
-        const response = await fetch(this.channel, {
+        await fetch(this.channel, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(this.bodyFunction(...params))
         })
-
-        return response.json()
     }
 
     // async sendWithCustomFetch(customFetch: CustomFetch,...params: P) {
