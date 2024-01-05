@@ -3,7 +3,7 @@
     import UserComponent from "../../../components/UserComponent.svelte";
     import Button from "../../../components/Button.svelte";
     import Difficulty from "../../../components/Difficulty.svelte";
-    import { apiURL, difficultyColorMap, formatDate_Day, getLevelThumbnailURL } from "../../../misc";
+    import { apiURL, formatDate_Day, getLevelThumbnailURL } from "../../../misc";
 
     export let data: PageData;
 
@@ -11,7 +11,7 @@
     let user = data.level.creator;
     let clientUser = data.user
 
-    let isOwner = user.id === clientUser.id
+    let isOwner = user.discordId === clientUser.id
 
     const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail)
 
@@ -26,9 +26,11 @@
         a.click()
     }
 
-    $: difficultyText = "Select a difficulty!";
-    const changeDifficulty = async (difficulty: number) => {
-        await fetch(`${apiURL}/api/admin/modify?id=${level.id}&difficulty=${difficulty}`, {
+    const deleteLevel = async () => {
+        const confirm = prompt("Are you sure you want to delete this level? Type the level name to confirm.")
+        if (confirm !== level.title) return
+
+        await fetch(`${apiURL}/api/admin/delete?id=${level.id}`, {
             method: "POST"
         })
     }
@@ -66,9 +68,8 @@
 <!--    </div>-->
 <!--</div>-->
 
-<div class="flex justify-center pt-12 pb-6">
+<div class="flex flex-row-reverse max-lg:flex-col justify-center pt-12 pb-6">
 <!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
-    <img class="shadow-xl rounded w-[720px] h-[405px]" width="960" height="540" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 
@@ -89,43 +90,46 @@
         <div class="flex flex-col gap-5 p-5">
             <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?level={level.id}" disabled={level.modded}/>
             <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
+            {#if isOwner || data.admin}
+                <Button text="Edit Level" bg="#a8e000" href="{level.id}/edit"/>
+            {/if}
         </div>
     </div>
+    <img class="shadow-xl rounded w-[720px] h-[405px]" width="960" height="540" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
     <!--</div>-->
 </div>
-{#if isOwner || data.admin}
 <!--                            on:mouseover={() => difficultyText = difficultyMap.get(j)}-->
     <div class="flex justify-center p-2 gap-2">
-        <div class="flex flex-col w-1/4 bg-black/50 rounded-[10px] shadow-2xl">
-            <div class="p-2 text-center m-auto">
-<!--                <span class="text-xl bg-red-600 rounded p-1 font-black">BETA</span>-->
-                <p class="text-xl font-bold text-center">Select a difficulty!</p>
-<!--                <a href="#">Check out this page if your unsure on what difficulty your level should be!</a>-->
-            </div>
-            <div class="w-full inline-grid justify-items-center items-center align-middle grid-cols-3 p-5">
-                {#each [0, 1, 2, 3, 4, 5, 6, 7] as j}
-                    <div
-                            class="hover:bg-white/20 rounded cursor-pointer transition hover:scale-110 p-1"
-                            on:click={() => changeDifficulty(j)}
-                    >
-                        <Difficulty difficulty={j}/>
-                    </div>
-                {/each}
-            </div>
-<!--            TODO: Improve if statement-->
-<!--            {#if difficultyText = "Select a difficulty!"}-->
-<!--                <Button text="Apply" bg="#38e000" onclick={downloadLevel}/>-->
-<!--            {/if}-->
-        </div>
-        <div class="flex flex-col justify-center p-5 gap-6 bg-black/50 rounded-[10px] shadow-2xl">
-            <Button text="Update level" bg="#a8e000" onclick={downloadLevel}/>
-            <Button text="Edit title/description" bg="#ffe15e" onclick={downloadLevel}/>
-            <Button text="Delete level" bg="#e00000" onclick={downloadLevel}/>
-        </div>
+<!--        <div class="flex flex-col w-1/4 bg-black/50 rounded-[10px] shadow-2xl">-->
+<!--            <div class="p-2 text-center m-auto">-->
+<!--&lt;!&ndash;                <span class="text-xl bg-red-600 rounded p-1 font-black">BETA</span>&ndash;&gt;-->
+<!--                <p class="text-xl font-bold text-center">Select a difficulty!</p>-->
+<!--&lt;!&ndash;                <a href="#">Check out this page if your unsure on what difficulty your level should be!</a>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="w-full inline-grid justify-items-center items-center align-middle grid-cols-3 p-5">-->
+<!--                {#each [0, 1, 2, 3, 4, 5, 6, 7] as j}-->
+<!--                    <div-->
+<!--                            class="hover:bg-white/20 rounded cursor-pointer transition hover:scale-110 p-1"-->
+<!--                            on:click={() => changeDifficulty(j)}-->
+<!--                    >-->
+<!--                        <Difficulty difficulty={j}/>-->
+<!--                    </div>-->
+<!--                {/each}-->
+<!--            </div>-->
+<!--&lt;!&ndash;            TODO: Improve if statement&ndash;&gt;-->
+<!--&lt;!&ndash;            {#if difficultyText = "Select a difficulty!"}&ndash;&gt;-->
+<!--&lt;!&ndash;                <Button text="Apply" bg="#38e000" onclick={downloadLevel}/>&ndash;&gt;-->
+<!--&lt;!&ndash;            {/if}&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div class="flex flex-col justify-center p-5 gap-6 bg-black/50 rounded-[10px] shadow-2xl">-->
+<!--            <Button text="Update level" bg="#a8e000" onclick={downloadLevel}/>-->
+<!--            <Button text="Edit level" bg="#ffe15e" onclick={downloadLevel}/>-->
+<!--            <Button text="Edit level" bg="#a8e000" href="{level.id}/edit"/>-->
+<!--            <Button text="Delete level" bg="#e00000" onclick={deleteLevel}/>-->
+<!--        </div>-->
     </div>
-{/if}
 <div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">
-    <table>
+    <table class="w-[1200px]">
         <thead>
             <tr>
                 {#if level.modded} <th>Created for</th> {/if}
@@ -138,7 +142,7 @@
         <tbody>
             <tr class="text-5xl">
                 {#if level.modded} <td class="text-purple-500">{level.modded}</td> {/if}
-                <td style:color={difficultyColorMap.get(level.difficulty)}><Difficulty includeText difficulty={level.difficulty}/></td>
+                <td><Difficulty includeText difficulty={level.difficulty}/></td>
                 <td class="text-green-500">{level.plays}</td>
 <!--                <td class="text-yellow-400">0</td>-->
                 <td class="text-amber-500 text-3xl">{formatDate_Day(level.created)}</td>

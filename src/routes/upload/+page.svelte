@@ -4,7 +4,7 @@
     import { fly } from "svelte/transition";
     import { postCreateLevelClient, postCreateLevelpackClient } from "../../client/ClientSideAPI";
     import Validator from "../../components/Validator.svelte";
-    import validate, { type ValidateResult } from "../../client/FileValidator";
+    import { validateFile, type ValidateResult } from "../../client/FileValidator";
     import type { PageData } from "./$types";
     import type { Level, Levelpack } from "$lib/types";
     import { readBlobInANSI } from "../../misc";
@@ -74,16 +74,7 @@
         page = ($title.length > 0 && ($valid || $modded)) ? 3 : 2
     }
 
-    file.subscribe(validateFile)
-    async function validateFile(f: File | undefined) {
-        if (f) {
-            console.log(f)
-            if (f.size > 1_000_000) return alert("File too big! (1MB MAX)")
-            if (f.type !== "text/plain") return alert("File must be a .txt file!")
-
-            result.set(validate(await f.text()))
-        }
-    }
+    file.subscribe((f) => validateFile(result, f))
 </script>
 
 <!-- "Changes may not be saved" -->

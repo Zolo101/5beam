@@ -39,3 +39,6 @@ svg {
     color: red;
 }
 
+.root {
+    @apply flex flex-col h-full;
+}

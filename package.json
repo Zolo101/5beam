@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-netlify": "^2.0.8",
 		"@sveltejs/kit": "^1.27.5",
+		"@types/diff": "^5.0.9",
 		"autoprefixer": "^10.4.16",
 		"postcss": "^8.4.31",
 		"svelte": "^4.2.3",
@@ -31,6 +32,7 @@
 		"canvas": "^2.11.2",
 		"cookie": "^0.6.0",
 		"detect-file-encoding-and-language": "^2.4.0",
+		"diff": "^5.1.0",
 		"passport-discord": "^0.1.4",
 		"passport-oauth2-refresh": "^2.2.0",
 		"pocketbase": "^0.19.0",

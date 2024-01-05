@@ -1,6 +1,26 @@
 import { apiURL, URLParamSet } from "../misc";
 import type { BaseUser } from "$lib/types";
 
+export async function postModifyLevelClient(payload: Record<string, any>, id: string) {
+    const url = new URL(`${apiURL}/api/modify/level`)
+    URLParamSet(url, "id", id)
+    const call = await fetch(url.toString(), {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    return call.json()
+}
+
+export async function postModifyLevelpackClient(payload: Record<string, any>, id: string) {
+    const url = new URL(`${apiURL}/api/modify/levelpack`)
+    URLParamSet(url, "id", id)
+    const call = await fetch(url.toString(), {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    return call.json()
+}
+
 export async function postCreateLevelClient(payload: Record<string, any>) {
     const url = new URL(`${apiURL}/api/create/level`)
     const call = await fetch(url.toString(), {

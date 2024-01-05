@@ -1,5 +1,5 @@
 import type { Level, Levelpack } from "$lib/types";
-import { getLevelThumbnailURL } from "../misc";
+import { generateDiff, getLevelThumbnailURL } from "../misc";
 
 type WebhookObject = {
     username?: string
@@ -43,7 +43,7 @@ const WebhookChannel = {
 }
 
 // 058. etc ruins the link because of markdown, so replace the dot with a similar unicode character
-const getMarkdownLevelURL = (level: Level) => `[${level.title.replace(".", "ꓸ")}](https://5beam.zelo.dev/level/${level.id})`
+const getMarkdownLevelURL = (level: Level) => `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/level/${level.id}>)`
 
 export default class Webhook<P extends unknown[]> {
     public channel: keyof typeof WebhookChannel
@@ -78,15 +78,21 @@ export default class Webhook<P extends unknown[]> {
     // }
 }
 
-export const UpdatedLevelWebhook = new Webhook("PublicLog", (level: Level) => {
-    return {
-        content: `**${getMarkdownLevelURL(level)} has been updated!**`,
-    }
-})
+// export const UpdatedLevelWebhook = new Webhook("PublicLog", (level: Level) => {
+//     return {
+//         content: `\`**${getMarkdownLevelURL(level)}\` has been updated!**`,
+//     }
+// })
 
 export const RemoveLevelWebhook = new Webhook("PrivateLog", (level: Level) => {
     return {
-        content: `**${getMarkdownLevelURL(level)} has been removed!**`,
+        content: `\`**${level.title}\` by ${level.creator.username} has been removed!**`,
+    }
+})
+
+export const RemoveLevelpackWebhook = new Webhook("PrivateLog", (levelpack: Levelpack) => {
+    return {
+        content: `\`**${levelpack.title}\` by ${levelpack.creator.username} has been removed!**`,
     }
 })
 
@@ -98,13 +104,19 @@ export const ChangeDifficultyWebhook = new Webhook("PublicLog", (newDifficulty: 
 
 export const ChangeTitleWebhook = new Webhook("PublicLog", (newTitle: string, level: Level) => {
     return {
-        content: `**${getMarkdownLevelURL(level)}**: **Changed title** from "${level.title}" to "${newTitle}"`,
+        content: `**${getMarkdownLevelURL(level)} has changed title:** \`\`\`diff\n${generateDiff(level.title, newTitle)}\`\`\``,
     }
 })
 
 export const ChangeDescriptionWebhook = new Webhook("PublicLog", (newDescription: string, level: Level) => {
     return {
-        content: `**${getMarkdownLevelURL(level)}**: **Changed description** from "${level.description}" to "${newDescription}"`,
+        content: `**${getMarkdownLevelURL(level)} has changed description:** \`\`\`diff\n${generateDiff(level.description, newDescription)}\`\`\``,
+    }
+})
+
+export const ChangeLevelWebhook = new Webhook("PublicLog", (_, level: Level) => {
+    return {
+        content: `**${getMarkdownLevelURL(level)} has changed its level data!**`,
     }
 })
 
