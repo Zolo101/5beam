@@ -11,7 +11,7 @@
     let user = data.level.creator;
     let clientUser = data.user
 
-    let isOwner = user.discordId === clientUser.id
+    let isOwner = user.discordId === clientUser?.id
 
     const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail)
 
