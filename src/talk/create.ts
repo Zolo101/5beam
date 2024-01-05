@@ -1,9 +1,10 @@
 import type { CreateLevel, CreateLevelpack, CreateUser, Level, Levelpack } from "$lib/types";
 import { levelpacks, levels, users } from "$lib/pocketbase";
-import { functionsApiURL, getLevelThumbnailURL } from "../misc";
+import { functionsApiURL } from "../misc";
 import validate from "../client/FileValidator";
 import { getUserByDiscordId, updateFetch } from "./get";
 import type { User } from "$lib/DiscordOauth2";
+import { NewLevelpackWebhook, NewLevelWebhook } from "$lib/webhook";
 
 // TODO: Make this function work for levelpacks aswell
 export async function validateLevel(level: string) {
@@ -53,34 +54,9 @@ export async function createLevel(cl: CreateLevel) {
     const levelReference = await levels.create<Level>(levelFormData)
 
     // TODO: This wont send if you are in local and the thumbnail fails to generate!
-    await fetch(`https://canary.discord.com/api/webhooks/${import.meta.env.VITE_WEBHOOK_ID}/${import.meta.env.VITE_WEBHOOK_SECRET}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: "New Level",
-            embeds: [
-                {
-                    title: cl.title,
-                    description: cl.description,
-                    url: `https://5beam.zelo.dev/level/${levelReference.id}`,
-                    color: 5689629,
-                    author: {
-                        // TODO: Pull request discord-oauth2 on updating User types
-                        // @ts-ignore
-                        name: cl.creator.global_name,
-                        url: `https://5beam.zelo.dev/user/3hfbpvnkpywte1k`,
-                        icon_url: `https://cdn.discordapp.com/avatars/${cl.creator.id}/${cl.creator.avatar}.png`
-                    },
-                    image: {
-                        url: getLevelThumbnailURL(levelReference.id, levelReference.thumbnail)
-                    }
-                }
-            ]
-        })
-    })
 
+
+    await NewLevelWebhook.send(levelReference)
     await addToUsersLevels(dbUser.id, levelReference.id)
 
     return levelReference;
@@ -107,7 +83,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
         const levelFormData = new FormData()
         levelFormData.append("creator", dbUser.id)
         levelFormData.append("title", title)
-        levelFormData.append("description", `This level is a part of levelpack "${cl.title}}".`)
+        levelFormData.append("description", `This level is a part of levelpack "${cl.title}".`)
         levelFormData.append("data", level)
         if (thumbnail) levelFormData.append("thumbnail", await thumbnail.blob())
         levelFormData.append("modded", cl.modded)
@@ -129,42 +105,16 @@ export async function createLevelpack(cl: CreateLevelpack) {
         modded: cl.modded
     })
 
-    await fetch(`https://canary.discord.com/api/webhooks/${import.meta.env.VITE_WEBHOOK_ID}/${import.meta.env.VITE_WEBHOOK_SECRET}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: "New Levelpack",
-            embeds: [
-                {
-                    title: cl.title,
-                    description: cl.description,
-                    url: `https://5beam.zelo.dev/levelpack/${levelpackReference.id}`,
-                    color: 3461525,
-                    author: {
-                        // @ts-ignore
-                        name: cl.creator.global_name,
-                        url: `https://5beam.zelo.dev/user/3hfbpvnkpywte1k`,
-                        icon_url: `https://cdn.discordapp.com/avatars/${cl.creator.id}/${cl.creator.avatar}.png`
-                    },
-                    image: {
-                        url: getLevelThumbnailURL(levelReferences[0].id, levelReferences[0].thumbnail)
-                    }
-                }
-            ]
-        })
-    })
-
+    await NewLevelpackWebhook.send(levelpackReference, levelReferences[0])
     await addToUsersLevelpacks(dbUser.id, levelpackReference.id)
 
     return levelpackReference;
 }
 
 // Normalize newlines to CRLF (level array)
-function newlineSplitter(file: string) {
+export function newlineSplitter(file: string) {
     return file
-        .replaceAll(/\\r?\\n/g, "\r\n") // convert to windows linebreaks (HTML5b requires this)
+        .replaceAll(/\r\n|\r|\n/g, "\r\n") // convert to windows linebreaks (HTML5b requires this)
         .split("\r\n\r\n")
 }
 

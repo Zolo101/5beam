@@ -1,7 +1,6 @@
 <script lang="ts">
     import "../app.css";
     import Navbar from "../components/layout/Navbar.svelte";
-    import Line from "../components/layout/Line.svelte";
     import Footer from "../components/layout/Footer.svelte";
     import type { PageData } from "./$types";
 
@@ -23,12 +22,10 @@
     </script>
 </svelte:head>
 
-<div class="h-fit backdrop-blur-[6px]">
-    <Navbar {user}/>
-    <Line/>
-    <div class="w-4/5 m-auto py-2">
+<Navbar {user}/>
+<div class="w-full backdrop-blur-[6px]">
+    <div class="w-4/5 max-w-[1000px] grow m-auto py-2">
         <slot></slot>
     </div>
 </div>
-
 <Footer/>

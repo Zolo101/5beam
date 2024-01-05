@@ -3,16 +3,15 @@
 // and what to do when importing types
 
 // https://github.com/sveltejs/kit/issues/3766
-import type { User } from "$lib/DiscordOauth2";
 
 declare namespace App {
+    import type { User } from "$lib/DiscordOauth2";
     interface Locals {
         user: User
     }
     interface PageData {
         user: User
-        // dbUser: PocketbaseUser
+        admin: boolean
         loggedIn: boolean
     }
-    // interface Platform {}
 }

@@ -6,20 +6,6 @@
 </script>
 
 <span>{prefix}</span>
-<a href="/user/{user.id}" target="_self">
+<a href="/user/{user.id}" target="_self" class="inline font-bold p-1 transition-colors rounded hover:text-black hover:bg-neutral-300/50">
     <span>{user.username}</span>
 </a>
-
-<style>
-    a {
-        display: inline;
-        font-weight: bold;
-        padding: 4px;
-        transition: background-color 0.3s;
-    }
-
-    a:hover {
-        background-color: rgba(245, 245, 245, 0.5);
-        color: black;
-    }
-</style>

@@ -174,15 +174,29 @@ function cleanObject(obj: Record<string, any>) {
     return obj;
 }
 
-export function updateFetch<T>(collection: RecordService, id: string, body: Record<string, unknown>) {
-    return fetch(`https://cdn.zelo.dev/api/collections/${collection.collectionIdOrName}/records/${id}`, {
+export async function updateFetch<T>(collection: RecordService, id: string, body: Record<string, unknown>) {
+    const result = await fetch(`https://cdn.zelo.dev/api/collections/${collection.collectionIdOrName}/records/${id}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             "secret": import.meta.env.VITE_POCKETBASE_USER_SECRET
         },
         body: JSON.stringify(body)
-    }) as Promise<T>
+    })
+
+    return await result.json() as Promise<T>
+}
+
+export async function updateFetchFormData<T>(collection: RecordService, id: string, body: FormData) {
+    const result = await fetch(`https://cdn.zelo.dev/api/collections/${collection.collectionIdOrName}/records/${id}`, {
+        method: "PATCH",
+        headers: {
+            "secret": import.meta.env.VITE_POCKETBASE_USER_SECRET
+        },
+        body: body
+    })
+
+    return await result.json() as Promise<T>
 }
 
 function getListIdPage<T>(collection: RecordService, page: number, amount: number, ids: string[], expand: string) {

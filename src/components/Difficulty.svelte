@@ -1,6 +1,6 @@
 <script lang="ts">
     // 0 to 7
-    import { difficultyImages, difficultyMap } from "../misc";
+    import { difficultyColorMap, difficultyImages, difficultyMap } from "../misc";
 
     export let difficulty: number = 0;
     export let includeText: boolean = false;
@@ -11,7 +11,7 @@
 
 <div>
     {#if includeText}
-        <span>{name}</span>
+        <span style:color={difficultyColorMap.get(difficulty)}>{name}</span>
     {/if}
     <img class="inline" src={image} alt={name}>
 </div>

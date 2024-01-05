@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Writable } from "svelte/store";
 
 export type ValidateLog = z.infer<typeof validateLogSchema>
 
@@ -15,6 +16,16 @@ export const validateLogSchema = z.object({
     message: z.string(),
     level: z.union([z.literal("info"), z.literal("warning"), z.literal("error")])
 })
+
+export async function validateFile(r: Writable<ValidateResult | undefined>, f: File | undefined) {
+    if (f) {
+        console.log(f)
+        if (f.size > 1_000_000) return alert("File too big! (1MB MAX)")
+        if (f.type !== "text/plain") return alert("File must be a .txt file!")
+
+        r.set(validate(await f.text()))
+    }
+}
 
 const spriteSchema = z.object({
     entityId: z.number(),

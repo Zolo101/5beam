@@ -25,30 +25,32 @@
 
 <div class="navbar">
     <Logo/>
-    <div class="list">
-<!--        <a href="/">Levels</a>-->
-<!--        <a href="/levelpacks">Levelpacks</a>-->
-        {#if loggedIn}
-            <a href="/upload">Upload</a>
-            <a href="/api">API</a>
-            <a href="/user">Profile</a>
-            <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
-        {:else}
-            <a href="/api">API</a>
-            <a href="/api/auth/discord">Log In</a>
-        {/if}
-    </div>
-    <div class="list-right">
-        <input
-                type="text"
-                id="search"
-                name="search"
-                class="bg-neutral-200 text-3xl rounded px-4 py-1"
-                maxlength="64"
-                placeholder="Search..."
-                bind:value={$searchText}
-        >
-<!--        <SearchResults search={$searchText} results={$searchResults}/>-->
+    <div class="flex items-center">
+        <div class="list mr-5">
+    <!--        <a href="/">Levels</a>-->
+    <!--        <a href="/levelpacks">Levelpacks</a>-->
+            {#if loggedIn}
+                <a href="/upload">Upload</a>
+                <a href="/api">API</a>
+                <a href="/user">Profile</a>
+                <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
+            {:else}
+                <a href="/api">API</a>
+                <a href="/api/auth/discord">Log In</a>
+            {/if}
+<!--        </div>-->
+<!--        <div>-->
+            <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    class="w-24 bg-neutral-200 text-2xl rounded px-2 py-0.5"
+                    maxlength="64"
+                    placeholder="Search..."
+                    bind:value={$searchText}
+            >
+    <!--        <SearchResults search={$searchText} results={$searchResults}/>-->
+        </div>
     </div>
 </div>
 
@@ -83,13 +85,9 @@
 
 <style>
     .navbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: row;
-        background: linear-gradient(white, #e9e9e9, white);
+        background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(233, 233, 233, 0.2) 75%, rgba(255, 255, 255, 0.0));
         padding: 5px;
-        @apply text-neutral-900;
+        @apply flex flex-row items-center justify-between p-1.5 text-black backdrop-blur-[6px];
     }
 
     ul {
@@ -99,7 +97,7 @@
     }
 
     .list a {
-        @apply inline text-3xl bg-neutral-200 px-4 py-1 mx-2 rounded transition-colors;
+        @apply inline text-2xl bg-neutral-200 px-4 py-1 mx-2 drop-shadow-2xl rounded transition-colors;
         /*padding: 3px 10px;*/
         /*margin: 0 5px;*/
         /*border-radius: 4px;*/

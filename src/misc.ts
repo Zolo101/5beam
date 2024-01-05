@@ -1,5 +1,7 @@
+import * as Diff from "diff";
 import { dev } from "$app/environment";
 import { z } from "zod";
+import type { User } from "$lib/DiscordOauth2";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -64,12 +66,6 @@ export function URLParamSet(url: URL, prop: string, param: number | string | und
     }
 }
 
-export function isLoggedIn() {
-    // const user: (DiscordUser | false) = get<any>(page.data.user).user
-    // return (user !== false)
-    return false
-}
-
 export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
     return (filename) ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=195x108": ""}` : fallbackThumbnailURL
 }
@@ -99,6 +95,12 @@ export const PostLevelSchema = z.object({
     description: z
         .string()
         .max(1024),
+    difficulty: z
+        .number()
+        .int()
+        .min(0)
+        .max(7)
+        .optional(), // TODO: Remove when you can select difficulties for levels and levelpacks in /upload
     modded: z
         .string()
         .max(64),
@@ -107,12 +109,42 @@ export const PostLevelSchema = z.object({
         .max(1024 * 1024 * 5) // 5 MB Limit
 })
 
+export function generateDiff(oldText: string, newText: string) {
+    const diffs = Diff.diffLines(oldText, newText, {newlineIsToken: true})
+    let result = ""
+    for (const change of diffs) {
+        const color = change.added ? "green" :
+            change.removed ? "red" : "grey";
+
+        switch (color) {
+            case "green":
+                result += `+ ${change.value}`
+                break;
+            case "red":
+                result += `- ${change.value}`
+                break;
+            default:
+                result += change.value
+                break;
+        }
+
+        result += "\n"
+    }
+
+    return result
+}
+
+export const isLoggedIn = (user: User | undefined) => !!user
+
+// checks are done server-side as well
+export const isAdmin = (user: User | undefined) => user?.id === "189004032600309760"
+
 // Cant find
 export function return404() {
     return new Response(null, {status: 404})
 }
 // All good
-export const OK = (body: any) => new Response(JSON.stringify(body), {status: 200})
+export const OK = (body?: any) => new Response(JSON.stringify(body), {status: 200})
 
 // User error
 export const BAD = (message: string) => new Response(message, {status: 400})

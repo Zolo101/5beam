@@ -9,7 +9,7 @@
     import Difficulty from "./Difficulty.svelte";
     // import SpriteViewer from "./viewer/SpriteViewer.svelte";
 
-    let dialog = document.querySelector<HTMLDivElement>("#levelDetails")
+    // let dialog = document.querySelector<HTMLDivElement>("#levelDetails")
     export let result: ValidateResult | undefined;
     let selectedLevel: DetectedLevel | undefined;
     let selectableDifficulties = [0, 1, 2, 3, 4, 5, 6]
@@ -36,7 +36,7 @@
         stickDetails();
     }
 
-    window.addEventListener("scroll", stickDetails)
+    // window.addEventListener("scroll", stickDetails)
 
 
 </script>

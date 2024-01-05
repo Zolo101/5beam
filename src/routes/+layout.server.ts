@@ -1,6 +1,7 @@
-import type { PageServerLoad } from "./$types";
+import type { LayoutServerLoad } from "./$types";
 import { refreshTokenRequest } from "$lib/auth";
 import DiscordOauth2, { type User } from "$lib/DiscordOauth2";
+import { isAdmin, isLoggedIn } from "../misc";
 
 export const load = (async ({ locals, cookies }) => {
     let user: User | undefined = locals?.user;
@@ -18,7 +19,8 @@ export const load = (async ({ locals, cookies }) => {
         }
     }
 
-    // let dbUser: PocketbaseUser | undefined = getUserById(u);
+    let admin = isAdmin(user);
+    let loggedIn = isLoggedIn(user);
 
-    return {user, loggedIn: !!user}
-}) satisfies PageServerLoad;
+    return {user, admin, loggedIn}
+}) satisfies LayoutServerLoad;

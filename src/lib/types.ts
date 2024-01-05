@@ -68,6 +68,8 @@ export type PocketbaseUser = BaseUser & (DiscordUser)
 export type DiscordUser = {
     type: "discord"
     discordId: string
+    global_name: string
+    avatar: string
 }
 
 export type BaseUser = {
