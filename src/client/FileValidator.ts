@@ -160,9 +160,13 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
     const sprites = processSprites(logs, lines.slice(2 + height, 2 + height + spriteNumber), id)
 
     const dialogueLength = Number(lines[2 + height + spriteNumber])
+    if (Number.isNaN(dialogueLength)) logs.push(createError(id, `Dialogue length number is missing! If your level has zero dialogue, just add "00" above the required deaths number.`))
     const dialogues = lines.slice(2 + height + spriteNumber + 1, 2 + height + spriteNumber + 1 + dialogueLength)
+    if (dialogueLength !== dialogues.length) logs.push(createError(id, `The dialogue length number does not match the amount of dialogue lines in the level file!`))
+    console.log(dialogueLength)
     const processedDialogues = processDialogue(logs, dialogues, id)
     const deathsRequired = Number(lines[2 + height + spriteNumber + 1 + dialogueLength])
+    if (Number.isNaN(deathsRequired)) logs.push(createError(id, `The deaths required to beat this level is missing! If your level can be beaten with zero deaths, just add "000000" to the end of your level file.`))
 
     return {
         id: id,
@@ -205,6 +209,13 @@ function processSprites(logs: ValidateLog[], sprites: string[], id: number): Spr
             motionPath = motionSpeedAndString.slice(2)
             if (motionSpeed < 0 || motionSpeed > 99) logs.push(createError(id, `Sprite ${i} has a motion speed of ${motionSpeed} which is not between 0 and 99`))
         }
+
+        if (Number.isNaN(entityId)) logs.push(createError(id, `Sprite ${i} has an entity id of '${spriteProps[0]}' which is not a number`))
+        if (Number.isNaN(x)) logs.push(createError(id, `Sprite ${i} has an x coordinate of '${spriteProps[1]}' which is not a number`))
+        if (Number.isNaN(y)) logs.push(createError(id, `Sprite ${i} has an y coordinate of '${spriteProps[2]}' which is not a number`))
+        if (Number.isNaN(roleId)) logs.push(createError(id, `Sprite ${i} has an role id of '${roleIdString}' which is not a number`))
+        if (Number.isNaN(motionSpeed)) logs.push(createError(id, `Sprite ${i} has an motion speed of '${motionSpeed}' which is not a number`))
+        if (Number.isNaN(motionPath)) logs.push(createError(id, `Sprite ${i} has an motion path of '${motionPath}' which is not a number`))
 
         if (entityId < 0 || entityId > 99) logs.push(createError(id, `Sprite ${i} has an entity id of ${entityId} which is not between 0 and 99`))
         // if (x < 0 || x > 99) logs.push(createError((`Sprite ${i} has an x of ${x} which is not between 0.00 and 99.00`)
