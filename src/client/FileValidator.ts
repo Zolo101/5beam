@@ -163,7 +163,6 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
     if (Number.isNaN(dialogueLength)) logs.push(createError(id, `Dialogue length number is missing! If your level has zero dialogue, just add "00" above the required deaths number.`))
     const dialogues = lines.slice(2 + height + spriteNumber + 1, 2 + height + spriteNumber + 1 + dialogueLength)
     if (dialogueLength !== dialogues.length) logs.push(createError(id, `The dialogue length number does not match the amount of dialogue lines in the level file!`))
-    console.log(dialogueLength)
     const processedDialogues = processDialogue(logs, dialogues, id)
     const deathsRequired = Number(lines[2 + height + spriteNumber + 1 + dialogueLength])
     if (Number.isNaN(deathsRequired)) logs.push(createError(id, `The deaths required to beat this level is missing! If your level can be beaten with zero deaths, just add "000000" to the end of your level file.`))

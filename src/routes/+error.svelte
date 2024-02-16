@@ -7,21 +7,14 @@
     // import NotFoundScreen from '../components/screens/NotFoundScreen.svelte'; // your own 404 screen component
 </script>
 
-<div class="http-error">
+<div class="text-white">
     <p class="status">{$page.status}</p>
     <p class="message">{$page.error.message}</p>
 </div>
 
 <style>
-    .http-error {
-        /*width: 50%;*/
-        /*margin: 0 auto;*/
-        color: whitesmoke;
-    }
-
     .status, .message {
-        text-align: center;
-        margin: 0;
+        @apply text-center m-0;
     }
 
     .status {

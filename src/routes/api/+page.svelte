@@ -295,7 +295,7 @@
     <APIEndpoint
             endpoint={["api", "user"]}
             params={[
-                ["id", "User ID", ParamType.INTEGER],
+                ["id", "User ID", ParamType.STRING],
                 ["discordId", "User's Discord ID", ParamType.STRING],
             ]}
     >
