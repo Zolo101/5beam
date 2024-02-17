@@ -13,17 +13,15 @@ import {
 import { generateThumbnail, newlineSplitter, validateLevel } from "../../../../talk/create";
 
 // TODO: Investigate fetch in RequestHandler
-export const POST: RequestHandler = async ({cookies, request}) => {
-    const url = new URL(request.url)
+export const POST: RequestHandler = async ({url, cookies, request}) => {
     const json = await request.json()
     const payload = PostLevelSchema.partial().parse(json)
 
     const id = url.searchParams.get("id")
     if (id === null) return return404() // Not Found
 
-    const access_token = cookies.get("access_token")
-    const refresh_token = cookies.get("refresh_token")
-    if (!access_token || !refresh_token) return DENIED()
+    const access_token = cookies.get("access_token") ?? json.access_token
+    const refresh_token = cookies.get("refresh_token") ?? json.refresh_token
 
     // Get user from access token
     const user = await tryGettingUser(access_token, refresh_token, cookies)
