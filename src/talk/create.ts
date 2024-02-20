@@ -37,8 +37,9 @@ export async function createUser(cl: CreateUser) {
 
 export async function createLevel(cl: CreateLevel) {
     const trimmedLevel = newlineSplitter(cl.level.trim())[0]
-    if (!await validateLevel(trimmedLevel)) throw new Error("Invalid level")
 
+    // if not valid and not modded, throw error
+    if (!await validateLevel(trimmedLevel) && !cl.modded) throw new Error("Invalid level")
 
     const thumbnail = await generateThumbnail(trimmedLevel)
     const dbUser = await getUserByDiscordId(cl.creator.id)
@@ -65,7 +66,9 @@ export async function createLevel(cl: CreateLevel) {
 export async function createLevelpack(cl: CreateLevelpack) {
     const trimmedLevels = newlineSplitter(cl.level.trim())
     if (trimmedLevels.length > 53) throw new Error("Too many levels")
-    if (!await validateLevelpack(trimmedLevels)) throw new Error("Invalid levelpack")
+
+    // if not valid and not modded, throw error
+    if (!await validateLevelpack(trimmedLevels) && !cl.modded) throw new Error("Invalid levelpack")
 
     const dbUser = await getUserByDiscordId(cl.creator.id)
 
