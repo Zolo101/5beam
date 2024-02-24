@@ -8,6 +8,7 @@
     import type { PageData } from "./$types";
     import type { Level, Levelpack } from "$lib/types";
     import { readBlobInANSI } from "../../misc";
+    import Dropzone from "svelte-file-dropzone";
 
     export let data: PageData;
     let user = data.user;
@@ -18,7 +19,7 @@
     const valid = derived(result, r => r?.valid)
     let eventStore = writable<Event>();
     // TODO: Allow multiple files?
-    let file = derived(eventStore, e => (e?.target as HTMLInputElement)?.files?.[0])
+    let file = derived(eventStore, e => (e as CustomEvent<{acceptedFiles: File[]}>)?.detail?.acceptedFiles[0])
     let title = writable("");
     let description = writable("");
     let modded = writable("");
@@ -95,7 +96,24 @@
                     <p class="text-xl text-center">Upload your level / levelpack!</p>
                     <p class="text-sm text-center mb-10">Levelpacks with more than 100 levels will not be accepted</p>
                     <div class="flex flex-col text-xl bg-neutral-100 bg-opacity-5 p-5 gap-2">
-                        <input on:change={(e) => $eventStore = e} type="file" name="file" class="rounded m-auto" accept="text/plain" required>
+                        <Dropzone
+                                accept="text/plain"
+                                multiple={false}
+                                maxSize={1000000}
+                                required={true}
+                                disableDefaultStyles={true}
+                                containerClasses="flex flex-col items-center bg-black/50 rounded outline outline-1 outline-dashed outline-white/25 p-5"
+
+                                on:drop={(e) => $eventStore = e}
+                        >
+                            {#if $file}
+                                <p>{$file.name} ({($file.size / 1000).toFixed(2)}KB)</p>
+                            {:else}
+                                <p>Drag and drop your file here!</p>
+                                <p>Or click here to select a file!</p>
+                            {/if}
+                        </Dropzone>
+<!--                        <input on:change={(e) => $eventStore = e} type="file" name="file" class="rounded m-auto" accept="text/plain" required>-->
                         <p class="text-neutral-50 pt-6">Is this for a 5b mod?</p>
                         {#if $modded}
                             <p class="text-sm text-neutral-50">Be aware, levels for 5b mods cannot be played on HTML5b, and do not show up by default on the homepage and searches</p>
