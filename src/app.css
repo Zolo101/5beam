@@ -21,6 +21,14 @@ body {
     );
 }
 
+nav {
+
+}
+
+footer {
+    @apply mt-auto flex justify-evenly text-neutral-50 bg-neutral-100/10 p-5;
+}
+
 button {
     @apply px-7 py-4 text-2xl bg-gradient-to-b rounded-lg shadow-md;
 }
