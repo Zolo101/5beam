@@ -28,28 +28,28 @@
 
 {#if data.loggedIn}
     <p class="text-3xl text-center p-5">5beam is a website that allows you to upload, share, and play BFDIA 5b levels you've made!</p>
-    <div class="flex gap-4 justify-center">
+    <div class="flex max-sm:flex-col max-sm:items-center gap-4 justify-center">
         <Button text="Play BFDIA 5b!" bg="#4ade80" href="https://coppersalts.github.io/HTML5b/"/>
         <Button text="Upload a level" bg="#38bdf8" href="/upload"/>
         <Button text="Join our discord!" bg="#5865f2" href="https://discord.gg/qtePFSH"/>
     </div>
 {:else}
     <p class="text-3xl text-center p-5">5beam is a website that allows you to upload, share, and play BFDIA 5b levels you've made! To upload levels, log in via discord!</p>
-    <div class="flex gap-4 justify-center">
+    <div class="flex max-sm:flex-col max-sm:items-center gap-4 justify-center">
         <Button text="Play BFDIA 5b!" bg="#4ade80" href="https://coppersalts.github.io/HTML5b/"/>
         <Button text="Join our discord!" bg="#5865f2" href="https://discord.gg/qtePFSH"/>
     </div>
 {/if}
 
 <br><br>
-<p class="text-4xl text-neutral-300 font-bold p-2">Featured Levels</p>
+<h2>Featured Levels</h2>
 <Pagination
         bind:page={featuredLevelPage}
         bind:output={$featuredLevels}
         callback={(page, sort, featured) => getLevelPageClient(page, 0, 0, 1)}
         removeOptions
 >
-    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+    <div class="pagination">
         {#each $featuredLevels as featuredLevel}
             <LevelComponent level={featuredLevel}/>
         {/each}
@@ -61,44 +61,55 @@
     <span class="text-2xl font-bold text-yellow-300">Bored?</span>
     <a href="/random" class="text-lg text-center text-yellow-100 hover:underline hover:cursor-pointer">Click here to view a random level!</a>
 </div>
-<p class="text-4xl text-neutral-300 font-bold p-2">Most Popular Levels</p>
-<Pagination
-        bind:page={mostPopularLevelPage}
-        bind:output={$mostPopularLevels}
-        callback={(page, sort, featured) => getLevelPageClient(page, 0, 2, featured)}
-        removeOptions
->
-    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
-        {#each $mostPopularLevels as mostPopularLevel}
-            <LevelComponent level={mostPopularLevel}/>
-        {/each}
-    </div>
-</Pagination>
 
-<p class="text-4xl text-neutral-300 font-bold p-2">Recent Levels</p>
+<h2>Recent Levels</h2>
 <Pagination
         bind:page={recentLevelPage}
         bind:output={$recentLevels}
         callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
         removeOptions
 >
-    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+    <div class="pagination">
         {#each $recentLevels as level}
             <LevelComponent {level}/>
         {/each}
     </div>
 </Pagination>
 
-<p class="text-4xl text-neutral-300 font-bold p-2">Recent Levelpacks</p>
+<h2>Most Popular Levels</h2>
+<Pagination
+        bind:page={mostPopularLevelPage}
+        bind:output={$mostPopularLevels}
+        callback={(page, sort, featured) => getLevelPageClient(page, 0, 2, featured)}
+        removeOptions
+>
+    <div class="pagination">
+        {#each $mostPopularLevels as mostPopularLevel}
+            <LevelComponent level={mostPopularLevel}/>
+        {/each}
+    </div>
+</Pagination>
+
+<h2>Recent Levelpacks</h2>
 <Pagination
         bind:page={levelpackPage}
         bind:output={$levelpacks}
         callback={(page, sort, featured) => getLevelPageClient(page, 1, sort, featured)}
         removeOptions
 >
-    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+    <div class="pagination max-w-[1100px]">
         {#each $levelpacks as levelpack}
             <LevelpackComponent {levelpack}/>
         {/each}
     </div>
 </Pagination>
+
+<style>
+    .pagination {
+        @apply flex flex-wrap m-auto justify-center gap-4;
+    }
+
+    h2 {
+        @apply text-4xl text-neutral-300 font-bold p-2 mx-10;
+    }
+</style>

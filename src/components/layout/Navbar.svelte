@@ -23,36 +23,38 @@
     })
 </script>
 
-<div class="navbar">
-    <Logo/>
-    <div class="flex items-center">
-        <div class="list mr-5">
-    <!--        <a href="/">Levels</a>-->
-    <!--        <a href="/levelpacks">Levelpacks</a>-->
-            {#if loggedIn}
-                <a href="/upload">Upload</a>
-                <a href="/api">API</a>
-                <a href="/user">Profile</a>
-                <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
-            {:else}
-                <a href="/api">API</a>
-                <a href="/api/auth/discord">Log In</a>
-            {/if}
-<!--        </div>-->
-<!--        <div>-->
+<nav>
+    <div class="flex w-[1024px] h-24 pt-2">
+        <Logo/>
+        <div class="w-full flex flex-col items-end">
+            <div class="flex flex-row gap-2 list mb-1">
+        <!--        <a href="/">Levels</a>-->
+        <!--        <a href="/levelpacks">Levelpacks</a>-->
+                {#if loggedIn}
+                    <a href="/upload">Upload</a>
+                    <a href="/api">API</a>
+                    <a href="/user">Profile</a>
+                    <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
+                {:else}
+                    <a href="/api">API</a>
+                    <a href="/api/auth/discord">Log In</a>
+                {/if}
+    <!--        </div>-->
+    <!--        <div>-->
+        <!--        <SearchResults search={$searchText} results={$searchResults}/>-->
+            </div>
             <input
                     type="text"
                     id="search"
                     name="search"
-                    class="w-24 bg-neutral-200 text-2xl rounded px-2 py-0.5"
+                    class="w-1/2 text-neutral-200 bg-neutral-800 text-2xl rounded px-2 py-0.5"
                     maxlength="64"
                     placeholder="Search..."
                     bind:value={$searchText}
             >
-    <!--        <SearchResults search={$searchText} results={$searchResults}/>-->
         </div>
     </div>
-</div>
+</nav>
 
 {#if searchFocused}
     <div transition:fly={{y: 500}} class="w-full backdrop-blur-md bg-black/80 shadow-2xl absolute z-20 py-[110px]">
@@ -63,12 +65,13 @@
                 removeOptions
                 removeMovement
         >
-                <div class="m-auto max-w-[900px]">
-                    <div class="text-6xl absolute top-[30px]">
+                <div class="m-auto max-w-[1600px]">
+                    <div class="text-6xl absolute top-[30px] transition-colors" style:color={!$searchResults.length ? "#ff7b7b" : "#e5e5e5"}>
                         <FiveBStyle text={$searchText}/>
                     </div>
                     {#if $searchResults.length}
-                        <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+                        <!-- TODO: Allow 3 levels in the same row at >1600px width-->
+                        <div class="flex flex-wrap gap-4 w-full">
                             {#each $searchResults as levelResult}
                                 <div on:click={() => searchFocused = false}>
                                     <LevelComponent glow level={levelResult}/>
@@ -84,12 +87,6 @@
 {/if}
 
 <style>
-    .navbar {
-        background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(233, 233, 233, 0.2) 75%, rgba(255, 255, 255, 0.0));
-        padding: 5px;
-        @apply flex flex-row items-center justify-between p-1.5 text-black backdrop-blur-[6px];
-    }
-
     ul {
         list-style-type: none;
         margin: 0;
@@ -97,14 +94,14 @@
     }
 
     .list a {
-        @apply inline text-2xl bg-neutral-200 px-4 py-1 mx-2 drop-shadow-2xl rounded transition-colors;
+        @apply text-2xl text-neutral-200 bg-neutral-800 px-4 py-1 drop-shadow-2xl rounded transition-colors;
         /*padding: 3px 10px;*/
         /*margin: 0 5px;*/
         /*border-radius: 4px;*/
     }
 
     .list a:hover {
-        @apply bg-neutral-300;
+        @apply bg-neutral-900;
     }
 
     li:hover {

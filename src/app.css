@@ -12,17 +12,20 @@ html {
 body {
     @apply m-0 h-full text-neutral-200;
     font-family: Inter, sans-serif;
-    background: repeating-linear-gradient(
-            46.2deg,
-            #721e1e,
-            #721e1e 10px,
-            #4c1414 10px,
-            #4c1414 20px
-    );
+    /*background: repeating-linear-gradient(*/
+    /*        46.2deg,*/
+    /*        #721e1e,*/
+    /*        #721e1e 10px,*/
+    /*        #4c1414 10px,*/
+    /*        #4c1414 20px*/
+    /*);*/
+    /*background-image: url("lib/assets/backgrounds/2.png");*/
 }
 
 nav {
-
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(233, 233, 233, 0.2) 90%, rgba(255, 255, 255, 0.0));
+    padding: 5px;
+    @apply flex items-center justify-center p-1.5 text-black backdrop-blur-[4px];
 }
 
 footer {
