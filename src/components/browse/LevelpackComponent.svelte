@@ -11,7 +11,7 @@
 </script>
 
 <a href="/levelpack/{levelpack.id}">
-    <div class:modded={levelpack.modded} class:glow={glow} class="w-[209px] h-[158px] relative bg-zinc-700 text-neutral-50 rounded-[5px] shadow outline outline-white/10">
+    <div class:modded={levelpack.modded} class:glow={glow} class="w-[309px] h-[158px] relative bg-zinc-700/20 backdrop-blur-xl backdrop-saturate-200 text-neutral-50 rounded-[5px] shadow outline outline-4 outline-white/10">
         <!--    Thumbnail -->
         <img class="w-[120px] h-[108px] left-[46px] top-[7px] absolute rounded-sm bg-contain" src={Box} alt="Placeholder Thumbnail"/>
         <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{levelpack.title}</div>

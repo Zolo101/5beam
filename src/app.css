@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    color-scheme: dark;
+}
+
 html {
     @apply h-full;
 }
@@ -20,6 +24,10 @@ body {
     /*        #4c1414 20px*/
     /*);*/
     /*background-image: url("lib/assets/backgrounds/2.png");*/
+}
+
+h2 {
+    @apply text-4xl text-neutral-300 font-bold p-2 mx-10;
 }
 
 nav {

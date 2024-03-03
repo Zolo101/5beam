@@ -27,8 +27,9 @@
 <!--    <img src={background} alt=""/>-->
 </div>
 <Navbar {user}/>
-<div class="w-full backdrop-blur-[3px]">
-    <div class="max-w-[1600px] grow m-auto py-2 m-auto">
+<!--<div class="w-full backdrop-blur-[3px]">-->
+<div class="w-full">
+    <div class="max-w-[1600px] grow m-auto py-2">
         <slot></slot>
     </div>
 </div>
@@ -37,11 +38,14 @@
 <style>
     /* parallel */
     .m {
+        @apply blur-sm;
         background-image: url("$lib/assets/backgrounds/2.png");
         background-size: cover;
         position: fixed;
-        width: 100%;
-        height: 100%;
+        left: -5px;
+        top: -5px;
+        width: 105%;
+        height: 105%;
         z-index: -1;
 
         overflow-x: hidden;

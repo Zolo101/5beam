@@ -8,31 +8,51 @@
 
     export let glow: boolean = false
 
+    const prefixes = ["", "K", "M", "B", "T"];
     $: user = level.creator;
     $: thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail, true)
+
+    const getPlaysString = () => {
+        let plays = level.plays;
+        let prefixIndex = 0;
+
+        while (plays > 1000) {
+            plays = plays / 1000;
+            prefixIndex++;
+        }
+
+        // only show 2 decimal places if we're using a prefix
+        return `${plays.toFixed(prefixIndex ? 2 : 0)}${prefixes[prefixIndex]}`;
+    }
 </script>
 
 <a href="/level/{level.id}">
-    <div class:modded={level.modded} class:glow={glow} class="w-[209px] h-[158px] relative bg-zinc-800 text-neutral-50 rounded-[5px] shadow outline outline-white/10">
-    <!--    Thumbnail -->
-<!--        <img class="w-[195px] h-[108px] left-[7px] top-[7px] absolute rounded-sm" src="https://via.placeholder.com/195x108" alt="Placeholder Thumbnail"/>-->
-        <img class="w-[195px] h-[108px] left-[7px] top-[7px] absolute rounded-sm" src={thumbnailUrl} alt="Level Thumbnail"/>
-        <div class="w-[195px] h-7 left-[7px] top-[115px] absolute text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</div>
-        <div class="w-[155px] h-5 left-[7px] top-[137px] absolute text-neutral-400 text-[13px] font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">by {user.username}</div>
-        <div class="w-[22px] h-[17px] left-[180px] top-[136px] absolute justify-start items-end gap-px inline-flex">
-            <div class="relative right-[14px] top-[2.5px]">
-                <Icon name="plays" width="13" height="13"/>
+<!--    <div class:modded={level.modded} class:glow={glow} class="w-[209px] h-[158px] p-[7px] bg-zinc-800 text-neutral-50 rounded-[5px] shadow flex-col justify-start items-start inline-flex outline outline-white/10">-->
+    <div class:modded={level.modded} class:glow={glow} class="w-[349px] h-[234px] p-[7px] bg-zinc-800/60 backdrop-blur-md backdrop-contrast-150 backdrop-brightness-150 text-neutral-50 rounded-[5px] shadow-2xl shadow-black/10 flex-col justify-start items-start inline-flex outline outline-white/10 transition-all hover:outline-white/40">
+        <div class="w-full h-full relative">
+            <img class="w-full h-full left-0 top-0 absolute rounded-sm object-cover" src={thumbnailUrl} alt="Level Thumbnail"/>
+            <div class="w-[35px] h-[35px] right-0 bottom-0 absolute">
+                <Difficulty difficulty={level.difficulty}/>
             </div>
-            <div class="w-[39px] h-[17px] relative right-[13px] text-left text-green-500 text-[13px] font-normal">{level.plays}</div>
+<!--            <img class="w-[35px] h-[35px] left-[160px] top-[73px] absolute" src="https://via.placeholder.com/35x35" />-->
         </div>
-    <!--    <div class="w-[22px] h-[17px] pb-px left-[180px] top-[137px] absolute justify-start items-center gap-px inline-flex">-->
-    <!--        <div class="w-[30px] text-right text-yellow-400 text-[13px] font-normal">{level.stars}</div>-->
-    <!--    </div>-->
-
-    <!--    Difficulty Icon -->
-    <!--    <img class="w-[35px] h-[35px] left-[167px] top-[80px] absolute" src="https://via.placeholder.com/35x35"/>-->
-        <div class="w-[35px] h-[35px] left-[167px] top-[80px] absolute">
-            <Difficulty difficulty={level.difficulty}/>
+        <div class="h-9 pr-[62px] justify-start items-center inline-flex">
+            <div class="w-full relative flex-col justify-start items-start flex">
+<!--                <p class="w-[200px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</p>-->
+                <p class="w-[290px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</p>
+                <div class="w-[289px] flex justify-between bottom-2 relative">
+                    <div class="w-[151px] h-5 top-2.5 relative text-neutral-400">
+                        <p class="left-0 top-0 absolute text-[13px]">by</p>
+                        <p class="w-[128px] h-5 left-[18px] top-0 absolute text-[13px] whitespace-nowrap overflow-hidden overflow-ellipsis">{user.username}</p>
+                    </div>
+                    <div class="left-[40px] relative flex w-[39px]">
+                        <div class="flex items-end relative right-[3px] top-[5px]">
+                            <Icon name="plays" width="13" height="13"/>
+                            <p class="w-[39px] h-[15px] text-green-500 text-[13px] pl-1">{getPlaysString()}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </a>
@@ -45,5 +65,9 @@
 
     .glow {
         @apply outline-white/30;
+    }
+
+    h2 {
+        @apply text-4xl text-neutral-300 font-bold p-2 mx-10;
     }
 </style>
