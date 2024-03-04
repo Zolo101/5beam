@@ -87,6 +87,19 @@ export function readBlobInANSI(blob: Blob) {
     });
 }
 
+const prefixes = ["", "K", "M", "B", "T"];
+export const getPlaysString = (plays: number) => {
+    let prefixIndex = 0;
+
+    while (plays > 1000) {
+        plays = plays / 1000;
+        prefixIndex++;
+    }
+
+    // only show 2 decimal places if we're using a prefix
+    return `${plays.toFixed(prefixIndex ? 2 : 0)}${prefixes[prefixIndex]}`;
+}
+
 export const PostLevelSchema = z.object({
     title: z
         .string()
@@ -156,8 +169,8 @@ export const MY_BAD = (message: string) => new Response(message, {status: 500})
 export const DENIED = () => new Response("Authentication Denied. Have you given me a valid access_token?", {status: 401})
 
 
-// export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev"
+// export const apiURL = !dev ? "http://localhost:4173" : "https://5beam.zelo.dev"
 // TODO: Create new subdomain for lambda functions?
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default"
 export const redirectURL = `${apiURL}/api/auth/callback/discord`

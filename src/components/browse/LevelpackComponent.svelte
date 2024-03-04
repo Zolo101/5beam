@@ -2,6 +2,7 @@
     import type { Levelpack } from "$lib/types";
     import Box from "$lib/assets/box.png"
     import Icon from "../Icon.svelte";
+    import { getPlaysString } from "../../misc";
 
     export let levelpack: Levelpack;
 
@@ -11,16 +12,18 @@
 </script>
 
 <a href="/levelpack/{levelpack.id}">
-    <div class:modded={levelpack.modded} class:glow={glow} class="w-[309px] h-[158px] relative bg-zinc-700/20 backdrop-blur-xl backdrop-saturate-200 text-neutral-50 rounded-[5px] shadow outline outline-4 outline-white/10">
+    <div class:modded={levelpack.modded} class:glow={glow} class="w-[309px] h-[158px] relative bg-zinc-700/20 backdrop-blur-xl backdrop-saturate-200 text-neutral-50 rounded-[5px] shadow outline outline-4 outline-white/10 transition-all hover:outline-white/40">
         <!--    Thumbnail -->
-        <img class="w-[120px] h-[108px] left-[46px] top-[7px] absolute rounded-sm bg-contain" src={Box} alt="Placeholder Thumbnail"/>
-        <div class="w-[122px] h-6 left-[7px] top-[115px] absolute text-xl font-normal whitespace-nowrap overflow-hidden overflow-ellipsis">{levelpack.title}</div>
-        <div class="w-[133px] h-3 left-[7px] top-[137px] absolute text-neutral-400 text-[13px] font-normal whitespace-nowrap overflow-ellipsis">by {user.username}</div>
+        <div class="flex w-full justify-center">
+            <img width="128" height="128" class="rounded-sm bg-contain" src={Box} alt="Placeholder Thumbnail"/>
+        </div>
+        <p class="w-[300px] h-6 left-[7px] top-[115px] absolute text-xl whitespace-nowrap overflow-hidden overflow-ellipsis">{levelpack.title}</p>
+        <p class="w-[233px] h-3 left-[7px] top-[137px] absolute text-neutral-400 text-[13px] whitespace-nowrap overflow-ellipsis">by {user.username}</p>
         <div class="w-[22px] h-[17px] left-[180px] top-[119px] absolute justify-start items-end gap-px inline-flex">
-            <div class="relative right-[8px] top-[2.5px]">
+            <div class="flex items-end relative left-[80px] top-[20px]">
                 <Icon name="plays" width="13" height="13"/>
+                <p class="w-[39px] h-[15px] relative text-green-500 text-[13px] pl-1">{getPlaysString(levelpack.plays)}</p>
             </div>
-            <div class="w-[39px] h-[17px] relative right-[5px] text-right text-green-500 text-[13px] font-normal">{levelpack.plays}</div>
         </div>
         <!--    <div class="w-[22px] h-[17px] pb-px left-[180px] top-[137px] absolute justify-start items-center gap-px inline-flex">-->
         <!--        <div class="w-[30px] text-right text-yellow-400 text-[13px] font-normal">{level.stars}</div>-->
@@ -41,6 +44,6 @@
     }
 
     .glow {
-        @apply outline-white/30;
+        @apply outline-white/40;
     }
 </style>
