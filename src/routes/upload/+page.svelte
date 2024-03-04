@@ -83,16 +83,16 @@
 
 {#if loggedIn}
     <!--TODO: Add close (X) button at top right -->
-    <div transition:fly={{y: -200}} class="max-w-[700px] bg-blue-400 bg-opacity-50 rounded p-2 mx-auto mb-2">
+    <aside transition:fly={{y: -200}} class="max-w-[700px] backdrop-blur-lg bg-blue-400/20 rounded p-2 mx-auto mb-2">
         <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
         <p class="text-2xl font-bold text-blue-300">Did you know?</p>
         <p class="text-lg text-center text-blue-100">You can directly create and upload levels & levelpacks in HTML5b!</p>
-    </div>
-    <div class="flex items-start max-w-[1400px] m-auto gap-2">
+    </aside>
+    <section class="flex items-start max-w-[1400px] m-auto gap-2">
         <div class="w-1/2 text-neutral-100 bg-neutral-900 bg-opacity-40 p-4 rounded-lg shadow-lg">
             {#if page >= 1 && page !== 4}
                 <div transition:fly={{x: -200}}>
-                    <p class="text-6xl text-neutral-500 text-right relative w-full h-0 right-[10px] -z-10 text-opacity-50 italic font-extrabold">1</p>
+                    <p class="text-6xl text-neutral-500/50 text-right relative w-full h-0 right-[10px] -z-10 italic font-extrabold">1</p>
                     <p class="text-xl text-center">Upload your level / levelpack!</p>
                     <p class="text-sm text-center mb-10">Levelpacks with more than 100 levels will not be accepted</p>
                     <div class="flex flex-col text-xl bg-neutral-100 bg-opacity-5 p-5 gap-2">
@@ -118,9 +118,9 @@
                         {#if $modded}
                             <p class="text-sm text-neutral-50">Be aware, levels for 5b mods cannot be played on HTML5b, and do not show up by default on the homepage and searches</p>
                         {/if}
-                        <select bind:value={$modded} name="modded" class="text-black rounded p-2.5">
+                        <select bind:value={$modded} name="modded" class="rounded p-2.5">
                             <option value={""}>No</option>
-                            <option value={"5*"}>5*</option>
+                            <option value={"5*"}>5*30</option>
                         </select>
                     </div>
 <!--                    <a class="text-xs float-right my-4" href="http://battlefordreamisland.com/5b/levels.txt" target="_blank">Click here to see an example of a level / levelpack</a>-->
@@ -166,7 +166,7 @@
                 {/if}
             </div>
         {/if}
-    </div>
+    </section>
 {:else}
     <h1 class="text-6xl text-center font-extrabold">only users can upload levels 😡</h1>
 {/if}

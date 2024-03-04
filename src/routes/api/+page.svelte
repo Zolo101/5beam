@@ -119,7 +119,7 @@
     <APIEndpoint endpoint={["Supported Mods"]} type="INFO">
         <div class="text-3xl">
             <ul>
-                <li>Mawilite's 5*</li>
+                <li>Mawilite's 5*30</li>
             </ul>
         </div>
         <p>Contact <APIReference type={"DISCORD"} reference={["zelo101"]}/> if you'd like to have your 5b mod supported!</p>

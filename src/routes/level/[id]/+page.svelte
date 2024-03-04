@@ -68,7 +68,29 @@
 <!--    </div>-->
 <!--</div>-->
 
-<div class="flex flex-row-reverse max-lg:flex-col justify-center pt-12 pb-6">
+<section class="flex flex-col max-xl:items-center text-neutral-100 mt-2 xl:mx-48">
+    <p class="max-sm:text-center text-6xl font-bold mb-1"  style:color={level.featured ? "#ffea65" : "#f5f5f5"}>{level.title}</p>
+<!--    TODO: Add star icon for featured levels? -->
+    <section class="max-md:flex-col max-md:text-xs text-xl flex eee">
+        <span class="text-xl"><UserComponent prefix="by" {user}/></span>
+        <span class="px-1">::</span>
+        <span class="font-black"><Difficulty includeText includeImage={false} difficulty={level.difficulty}/></span>
+        <span class="px-1">::</span>
+        <span class="font-black text-green-500 pr-1">{level.plays}</span>
+        <span class="text-green-500">plays</span>
+        <span class="px-1">::</span>
+<!--        <span class="font-black text-amber-500 pr-1">Uploaded on</span>-->
+        <span class="font-black text-amber-500">{formatDate_Day(level.created)}</span>
+    </section>
+<!--    <tr class="text-5xl">-->
+<!--        {#if level.modded} <td class="text-purple-500">{level.modded}</td> {/if}-->
+<!--        <td><Difficulty includeText difficulty={level.difficulty}/></td>-->
+<!--        <td class="text-green-500">{level.plays}</td>-->
+<!--        &lt;!&ndash;                <td class="text-yellow-400">0</td>&ndash;&gt;-->
+<!--        <td class="text-amber-500 text-3xl">{formatDate_Day(level.created)}</td>-->
+<!--    </tr>-->
+</section>
+<div class="flex flex-col items-center py-6">
 <!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
@@ -81,25 +103,25 @@
     <!--        </div>-->
     <!--        <div class="w-[45px] h-[0px] relative"></div>-->
     <!--    </div>-->
-    <div class="my-10 flex-col items-center gap-2.5 inline-flex">
+    <img class="shadow-xl rounded object-cover" width="960" height="540" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
+<!--    <div class="my-10 flex-col items-center gap-2.5 inline-flex">-->
         <!--        <div class="w-[707px] h-[69px]"><span class="text-white text-[64px] font-black">Lo</span><span class="text-white text-[64px]">rem Ipsum</span></div>-->
-        <div class="text-center">
-            <p class="w-[350px] text-white text-5xl m-4">{level.title}</p>
-            <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>
-        </div>
-        <div class="flex flex-col gap-5 p-5">
-            <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?level={level.id}" disabled={level.modded}/>
-            <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
-            {#if isOwner || data.admin}
-                <Button text="Edit Level" bg="#a8e000" href="{level.id}/edit"/>
-            {/if}
-        </div>
+<!--        <div class="text-center">-->
+<!--            <p class="w-[350px] text-white text-5xl m-4">{level.title}</p>-->
+<!--            <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="flex flex-row max-lg:flex-col gap-5 pt-5">
+        <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?level={level.id}" disabled={level.modded}/>
+        <Button text="Download" bg="#4bffff" onclick={downloadLevel}/>
+        {#if isOwner || data.admin}
+            <Button text="Edit Level" bg="#a8e000" href="{level.id}/edit"/>
+        {/if}
     </div>
-    <img class="shadow-xl rounded w-[720px] h-[405px]" width="960" height="540" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
     <!--</div>-->
 </div>
 <!--                            on:mouseover={() => difficultyText = difficultyMap.get(j)}-->
-    <div class="flex justify-center p-2 gap-2">
+<!--    <div class="flex justify-center p-2 gap-2">-->
 <!--        <div class="flex flex-col w-1/4 bg-black/50 rounded-[10px] shadow-2xl">-->
 <!--            <div class="p-2 text-center m-auto">-->
 <!--&lt;!&ndash;                <span class="text-xl bg-red-600 rounded p-1 font-black">BETA</span>&ndash;&gt;-->
@@ -127,28 +149,28 @@
 <!--            <Button text="Edit level" bg="#a8e000" href="{level.id}/edit"/>-->
 <!--            <Button text="Delete level" bg="#e00000" onclick={deleteLevel}/>-->
 <!--        </div>-->
-    </div>
-<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">
-    <table class="w-[1200px]">
-        <thead>
-            <tr>
-                {#if level.modded} <th>Created for</th> {/if}
-                <th>Difficulty</th>
-                <th>Total plays</th>
-<!--                <th>Total stars</th>-->
-                <th>Created</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="text-5xl">
-                {#if level.modded} <td class="text-purple-500">{level.modded}</td> {/if}
-                <td><Difficulty includeText difficulty={level.difficulty}/></td>
-                <td class="text-green-500">{level.plays}</td>
-<!--                <td class="text-yellow-400">0</td>-->
-                <td class="text-amber-500 text-3xl">{formatDate_Day(level.created)}</td>
-            </tr>
-        </tbody>
-    </table>
+<!--    </div>-->
+<!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">-->
+<!--    <table class="w-[1200px]">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                {#if level.modded} <th>Created for</th> {/if}-->
+<!--                <th>Difficulty</th>-->
+<!--                <th>Total plays</th>-->
+<!--&lt;!&ndash;                <th>Total stars</th>&ndash;&gt;-->
+<!--                <th>Created</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--            <tr class="text-5xl">-->
+<!--                {#if level.modded} <td class="text-purple-500">{level.modded}</td> {/if}-->
+<!--                <td><Difficulty includeText difficulty={level.difficulty}/></td>-->
+<!--                <td class="text-green-500">{level.plays}</td>-->
+<!--&lt;!&ndash;                <td class="text-yellow-400">0</td>&ndash;&gt;-->
+<!--                <td class="text-amber-500 text-3xl">{formatDate_Day(level.created)}</td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
 <!--    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">-->
 <!--        <div class="w-32 h-[98.01px] relative">-->
 <!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
@@ -179,8 +201,8 @@
 <!--            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-2xl">Created</div>-->
 <!--        </div>-->
 <!--    </div>-->
-</div>
-<p class="text-4xl text-neutral-300 font-bold pl-2.5 pt-5">Description</p>
+<!--</div>-->
+<p class="text-4xl text-neutral-300 font-bold pl-2.5">Description</p>
 <p class="text-2xl p-5">{level.description}</p>
 
 <!--<br>-->

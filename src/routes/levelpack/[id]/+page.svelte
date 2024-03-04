@@ -6,12 +6,19 @@
     import LevelComponent from "../../../components/browse/LevelComponent.svelte";
     import Box from "$lib/assets/box.png";
     import { formatDate_Day } from "../../../misc";
+    import Difficulty from "../../../components/Difficulty.svelte";
     // import Difficulty from "../../../components/Difficulty.svelte";
     export let data: PageData;
 
     let levelpack = data.levelpack;
     let user = data.levelpack.creator;
-    let expanded = false;
+    // let expanded = false;
+
+    const levels = getLevelpackClient(levelpack.id, 1)
+        // .then((res) => {
+        //     levelpack = res;
+            // expanded = true;
+        // })
 
     // const thumbnailUrl = getLevelThumbnailURL(levelpack.id, levelpack.thumbnail)
 
@@ -31,7 +38,7 @@
         getLevelpackClient(levelpack.id, 1)
             .then((res) => {
                 levelpack = res;
-                expanded = true;
+                // expanded = true;
             })
     }
 </script>
@@ -68,8 +75,33 @@
 <!--    </div>-->
 <!--</div>-->
 
-<div class="flex justify-center pt-20 pb-5">
-    <img class="rounded-sm h-[256px] mt-16" width="256" height="128" src={Box} alt="Placeholder Thumbnail"/>
+<section class="flex flex-col max-xl:items-center text-neutral-100 mt-2 xl:mx-48">
+    <p class="max-sm:text-center text-6xl font-bold mb-1"  style:color={levelpack.featured ? "#ffea65" : "#f5f5f5"}>{levelpack.title}</p>
+    <!--    TODO: Add star icon for featured levels? -->
+    <section class="max-md:flex-col max-md:text-xs text-xl flex eee">
+        <span class="text-xl"><UserComponent prefix="by" {user}/></span>
+        <span class="px-1">::</span>
+        <span class="font-black"><Difficulty includeText includeImage={false} difficulty={levelpack.difficulty}/></span>
+        <span class="px-1">::</span>
+        <span class="font-black text-purple-500 pr-1">{levelpack.levels.length}</span>
+        <span class="text-purple-500">levels</span>
+        <span class="px-1">::</span>
+        <span class="font-black text-green-500 pr-1">{levelpack.plays}</span>
+        <span class="text-green-500">plays</span>
+        <span class="px-1">::</span>
+        <!--        <span class="font-black text-amber-500 pr-1">Uploaded on</span>-->
+        <span class="font-black text-amber-500">{formatDate_Day(levelpack.created)}</span>
+    </section>
+    <!--    <tr class="text-5xl">-->
+    <!--        {#if levelpack.modded} <td class="text-purple-500">{levelpack.modded}</td> {/if}-->
+    <!--        <td><Difficulty includeText difficulty={levelpack.difficulty}/></td>-->
+    <!--        <td class="text-green-500">{levelpack.plays}</td>-->
+    <!--        &lt;!&ndash;                <td class="text-yellow-400">0</td>&ndash;&gt;-->
+    <!--        <td class="text-amber-500 text-3xl">{formatDate_Day(levelpack.created)}</td>-->
+    <!--    </tr>-->
+</section>
+<!--<div class="flex justify-center pt-20 pb-5">-->
+<!--    <img class="rounded-sm h-[256px] mt-16" width="256" height="128" src={Box} alt="Placeholder Thumbnail"/>-->
 <!--    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
 <!--    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>-->
     <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
@@ -83,41 +115,41 @@
     <!--        </div>-->
     <!--        <div class="w-[45px] h-[0px] relative"></div>-->
     <!--    </div>-->
-    <div class="my-10 flex-col items-center gap-2.5 inline-flex">
+<!--    <div class="my-10 flex-col items-center gap-2.5 inline-flex">-->
         <!--        <div class="w-[707px] h-[69px]"><span class="text-white text-[64px] font-black">Lo</span><span class="text-white text-[64px]">rem Ipsum</span></div>-->
-        <div class="text-center">
-            <p class="w-[350px] text-white text-5xl m-4">{levelpack.title}</p>
-            <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>
-        </div>
-        <div class="flex flex-col gap-5 p-5">
+<!--        <div class="text-center">-->
+<!--            <p class="w-[350px] text-white text-5xl m-4">{levelpack.title}</p>-->
+<!--            <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>-->
+<!--        </div>-->
+        <div class="flex flex-row max-lg:flex-col justify-center gap-5 pt-5">
             <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}" disabled={levelpack.modded}/>
             <Button text="Download (WIP)" bg="#4bffff" onclick={downloadLevel} disabled/>
         </div>
-    </div>
+<!--    </div>-->
     <!--</div>-->
-</div>
-<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">
-    <table>
-        <thead>
-        <tr>
-            {#if levelpack.modded} <th>Created for</th> {/if}
-            <th>Total levels</th>
-            <th>Total plays</th>
-<!--            <th>Total stars</th>-->
-            <th>Created</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="text-5xl">
-            {#if levelpack.modded} <td class="text-purple-500">{levelpack.modded}</td> {/if}
-<!--            <td class="text-neutral-500"><Difficulty includeText difficulty={levelpack.difficulty}/></td>-->
-            <td class="text-fuchsia-500">{levelpack.levels.length}</td>
-            <td class="text-green-500">{levelpack.plays}</td>
-<!--            <td class="text-yellow-400">0</td>-->
-            <td class="text-amber-500 text-3xl">{formatDate_Day(levelpack.created)}</td>
-        </tr>
-        </tbody>
-    </table>
+<!--</div>-->
+<!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            {#if levelpack.modded} <th>Created for</th> {/if}-->
+<!--            <th>Total levels</th>-->
+<!--            <th>Total plays</th>-->
+<!--&lt;!&ndash;            <th>Total stars</th>&ndash;&gt;-->
+<!--            <th>Created</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr class="text-5xl">-->
+<!--            {#if levelpack.modded} <td class="text-purple-500">{levelpack.modded}</td> {/if}-->
+<!--&lt;!&ndash;            <td class="text-neutral-500"><Difficulty includeText difficulty={levelpack.difficulty}/></td>&ndash;&gt;-->
+<!--            <td class="text-fuchsia-500">{levelpack.levels.length}</td>-->
+<!--            <td class="text-green-500">{levelpack.plays}</td>-->
+<!--&lt;!&ndash;            <td class="text-yellow-400">0</td>&ndash;&gt;-->
+<!--            <td class="text-amber-500 text-3xl">{formatDate_Day(levelpack.created)}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
     <!--    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">-->
     <!--        <div class="w-32 h-[98.01px] relative">-->
     <!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
@@ -148,20 +180,26 @@
     <!--            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-2xl">Created</div>-->
     <!--        </div>-->
     <!--    </div>-->
-</div>
+<!--</div>-->
 <p class="text-4xl text-neutral-300 font-bold pl-2.5 pt-5">Description</p>
 <p class="text-2xl p-5">{levelpack.description}</p>
 <p class="text-4xl text-neutral-300 font-bold pl-2.5 pt-5">Levels included</p>
-<div class="flex flex-wrap m-auto gap-4 max-w-[900px] pt-5">
-    {#if expanded}
-        {#each levelpack.levels as level}
+<div class="flex flex-wrap justify-center gap-4 pt-5">
+    {#await levels}
+        <div class="m-auto">
+            <p>Loading...</p>
+        </div>
+    {:then ls}
+        {#each ls.levels as level}
             <LevelComponent {level}/>
         {/each}
-    {:else}
-        <div class="m-auto">
-            <Button text="View Levels" bg="#d5ff4b" onclick={viewLevels}/>
-        </div>
-    {/if}
+    {/await}
+    <!--{#if expanded}-->
+    <!--{:else}-->
+<!--        <div class="m-auto">-->
+<!--            <Button text="View Levels" bg="#d5ff4b" onclick={viewLevels}/>-->
+<!--        </div>-->
+    <!--{/if}-->
 </div>
 
 <!--<br>-->

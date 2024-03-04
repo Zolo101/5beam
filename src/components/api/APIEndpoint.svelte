@@ -19,7 +19,7 @@
     ])
 </script>
 
-<div class="bg-neutral-600 w-[min(60vw, 1000px)] m-5 outline outline-black shadow-xl rounded"
+<section class="bg-neutral-600/40 backdrop-blur-xl w-[min(60vw, 1000px)] m-5 outline outline-white/10 shadow-2xl rounded"
      class:deprecated={deprecated || wip}
      class:game_only={game_only}
 >
@@ -55,7 +55,7 @@
             <slot></slot>
         </div>
     </div>
-</div>
+</section>
 
 <style>
     .warning {

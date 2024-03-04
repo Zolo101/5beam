@@ -15,7 +15,7 @@ export async function refreshTokenRequest(cookies: Cookies, refreshToken: string
     const result = await DiscordOauth2.tokenRequestRefresh(refreshToken)
 
     if ("error" in result) {
-        cookies.delete("refresh_token")
+        cookies.delete("refresh_token", {path: "/"})
         return undefined
     } else {
         setAccessToken(cookies, result.access_token, result.expires_in)

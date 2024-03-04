@@ -10,6 +10,7 @@
     import { postModifyLevelClient } from "../../../../client/ClientSideAPI";
     import type { Level } from "$lib/types";
     import { fly } from "svelte/transition";
+    import Dropzone from "svelte-file-dropzone";
 
     export let data: PageData;
 
@@ -23,7 +24,7 @@
     let hasAccess = (user.discordId === clientUser?.id) || data.admin
 
     let eventStore = writable<Event>();
-    let file = derived(eventStore, e => (e?.target as HTMLInputElement)?.files?.[0])
+    let file = derived(eventStore, e => (e as CustomEvent<{acceptedFiles: File[]}>)?.detail?.acceptedFiles[0])
 
     let title = writable<string>(data.level.title);
     let description = writable<string>(data.level.description);
@@ -101,7 +102,7 @@
 <!--<svelte:window on:beforeunload={() => ""}/>-->
 
 {#if hasAccess}
-    <div class="bg-black/20 rounded py-3">
+    <div class="bg-black/20 backdrop-blur-md rounded py-3">
         <div class="flex justify-center w-full">
             <!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
             <img class="shadow-xl rounded w-[360px] h-[203px]" width="960" height="540" src={thumbnailUrl} alt="Placeholder Thumbnail"/>
@@ -128,12 +129,12 @@
 
         {#if page === 1}
         <div transition:fly={{y: -200}} class="flex pt-5">
-            <div class="flex flex-col gap-2 w-1/2 text-xl text-black text-neutral-50 mx-4 my-2">
+            <div class="flex flex-col gap-2 w-1/2 text-xl text-neutral-100 mx-4 my-2">
                 <p>Title:</p>
-                <input bind:value={$title} class="p-2.5 rounded text-black" type="text" name="title" maxlength="64" placeholder="My 5b level (max 64 chars)" required>
+                <input bind:value={$title} class="p-2.5 rounded" type="text" name="title" maxlength="64" placeholder="My 5b level (max 64 chars)" required>
                 <br>
                 <p>Description:</p>
-                <textarea bind:value={$description} class="p-2.5 rounded text-black" name="description" rows="5" cols="33" maxlength="1024" placeholder="Level description (max 1024 chars)" required></textarea>
+                <textarea bind:value={$description} class="p-2.5 rounded" name="description" rows="5" cols="33" maxlength="1024" placeholder="Level description (max 1024 chars)" required></textarea>
                 <p>Difficulty:</p>
                 <div class="flex flex-col text-2xl font-bold justify-items-center items-center align-middle">
                     <input
@@ -152,9 +153,9 @@
                 {#if $modded}
                     <p class="text-sm">Be aware, levels for 5b mods cannot be played on HTML5b, and do not show up by default on the homepage and searches</p>
                 {/if}
-                <select bind:value={$modded} name="modded" class="text-black rounded p-2.5">
+                <select bind:value={$modded} name="modded" class="rounded p-2.5">
                     <option value={""}>No</option>
-                    <option value={"5*"}>5*</option>
+                    <option value={"5*"}>5*30</option>
                 </select>
             </div>
 <!--            TODO: w-1/2 is temporary, it helps but doesnt fix the "goes outside of the div" problem -->
@@ -162,7 +163,23 @@
 <!--                <p class="text-sm text-center">For now, the difficulty of a level will be reset whenever a level is updated.</p>-->
                 <p class="text-xl text-center">If you want you can also edit the level data for small changes, but make sure it only contains 1 level!</p>
                 <div class="flex flex-col text-xl bg-neutral-100 bg-opacity-5 p-5 gap-2">
-                    <input on:change={(e) => $eventStore = e} type="file" name="file" class="rounded m-auto" accept="text/plain" required>
+                    <Dropzone
+                            accept="text/plain"
+                            multiple={false}
+                            maxSize={1000000}
+                            required={true}
+                            disableDefaultStyles={true}
+                            containerClasses="flex flex-col items-center bg-black/50 rounded outline outline-1 outline-dashed outline-white/25 p-5"
+
+                            on:drop={(e) => $eventStore = e}
+                    >
+                        {#if $file}
+                            <p>{$file.name} ({($file.size / 1000).toFixed(2)}KB)</p>
+                        {:else}
+                            <p>Drag and drop your file here!</p>
+                            <p>Or click here to select a file!</p>
+                        {/if}
+                    </Dropzone>
                 </div>
                 <div class="pt-5">
                     <Validator result={$result}/>

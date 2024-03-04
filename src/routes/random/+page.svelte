@@ -26,7 +26,7 @@
         removeOptions
         removeMovement
 >
-    <div class="flex flex-wrap m-auto gap-4 max-w-[900px]">
+    <div class="flex flex-wrap justify-center m-auto gap-4">
         {#each $randomLevels as randomLevel}
             <LevelComponent level={randomLevel}/>
         {/each}
