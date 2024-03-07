@@ -20,6 +20,8 @@
         gtag('js', new Date());
         gtag('config', 'G-8QDE04Q52S');
     </script>
+<!--    TODO: After a month, remove the google analytics -->
+    <script defer src="https://analytics.zelo.dev/script.js" data-website-id="45534dc8-3f72-4cdb-a0d1-d40308cee3ed"></script>
 </svelte:head>
 
 <div class="m">
