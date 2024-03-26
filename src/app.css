@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    color-scheme: dark;
+}
+
+html {
+    @apply h-full;
+}
+
+/* Globals */
+body {
+    @apply m-0 h-full text-neutral-200;
+    font-family: Inter, sans-serif;
+    /*background: repeating-linear-gradient(*/
+    /*        46.2deg,*/
+    /*        #721e1e,*/
+    /*        #721e1e 10px,*/
+    /*        #4c1414 10px,*/
+    /*        #4c1414 20px*/
+    /*);*/
+    /*background-image: url("lib/assets/backgrounds/2.png");*/
+}
+
+h2 {
+    @apply text-4xl text-neutral-300 font-bold p-2 mx-10;
+}
+
+nav {
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(233, 233, 233, 0.2) 90%, rgba(255, 255, 255, 0.0));
+    padding: 5px;
+    @apply flex items-center justify-center p-1.5 text-black backdrop-blur-[4px];
+}
+
+footer {
+    @apply mt-auto flex justify-evenly text-neutral-50 bg-neutral-100/10 p-5;
+}
+
+button {
+    @apply px-7 py-4 text-2xl bg-gradient-to-b rounded-lg shadow-md;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* TODO: Is this a good idea? */
+svg {
+    @apply inline;
+}
+
+.error {
+    color: red;
+}
+
+.root {
+    @apply flex flex-col h-full;
+}

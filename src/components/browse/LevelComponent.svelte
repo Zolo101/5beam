@@ -1,78 +1,59 @@
 <script lang="ts">
+    import type { Level } from "$lib/types";
     import Difficulty from "../Difficulty.svelte";
-    import User from "../User.svelte";
+    import { getLevelThumbnailURL, getPlaysString } from "../../misc";
+    import Icon from "../Icon.svelte";
 
-    export let level: any
+    export let level: Level;
+
+    export let glow: boolean = false
+
+    $: user = level.creator;
+    $: thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail, true)
 </script>
 
-<div class="level">
-    <div class="header">
-        <span class="title">{level.title}</span>
-        <Difficulty difficulty={level.difficulty}/>
+<a href="/level/{level.id}">
+<!--    <div class:modded={level.modded} class:glow={glow} class="w-[209px] h-[158px] p-[7px] bg-zinc-800 text-neutral-50 rounded-[5px] shadow flex-col justify-start items-start inline-flex outline outline-white/10">-->
+    <div class:modded={level.modded} class:glow={glow} class="w-[349px] h-[234px] p-2 bg-zinc-800/60 backdrop-blur-xl backdrop-contrast-150 backdrop-brightness-125 text-neutral-50 rounded-[5px] shadow-2xl shadow-black/10 flex-col justify-start items-start inline-flex outline outline-white/10 transition-all hover:outline-white/40">
+        <div class="w-full h-full relative">
+            <img class="w-full h-full left-0 top-0 absolute rounded-sm object-cover" src={thumbnailUrl} alt="Level Thumbnail"/>
+            <div class="w-[35px] h-[35px] right-0 bottom-0 absolute">
+                <Difficulty difficulty={level.difficulty}/>
+            </div>
+<!--            <img class="w-[35px] h-[35px] left-[160px] top-[73px] absolute" src="https://via.placeholder.com/35x35" />-->
+        </div>
+        <div class="h-9 pr-[62px] justify-start items-center inline-flex">
+            <div class="w-full relative flex-col justify-start items-start flex">
+<!--                <p class="w-[200px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden overflow-ellipsis">{level.title}</p>-->
+                <p class="w-[290px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden overflow-ellipsis drop-shadow-lg">{level.title}</p>
+                <div class="w-[289px] flex justify-between bottom-2 relative">
+                    <div class="w-[151px] h-5 top-2.5 relative text-neutral-400">
+                        <p class="left-0 top-0 absolute text-[13px]">by</p>
+                        <p class="w-[228px] h-5 left-[18px] top-0 absolute text-[13px] whitespace-nowrap overflow-hidden overflow-ellipsis">{user.username}</p>
+                    </div>
+                    <div class="left-[40px] relative flex w-[39px]">
+                        <div class="flex items-end relative right-[3px] top-[5px]">
+                            <Icon name="plays" width="13" height="13"/>
+                            <p class="w-[39px] h-[15px] text-green-500 text-[13px] pl-1">{getPlaysString(level.plays)}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="info">
-        <User prefix="by" user={level.creator}/>
-        <span class="plays">{level.plays} plays,</span>
-        <span class="stars">{level.stars} stars</span>
-        <p class="description">{level.description}</p>
-    </div>
-</div>
+</a>
 
 <style>
-    .level {
-        box-shadow: 2px 2px 0px 6px black;
-        padding: 10px;
-        background-color: rgba(98, 98, 98, 0.75);
-        backdrop-filter: blur(5px) invert();
-        border-radius: 2px;
-        transition: box-shadow 0.3s;
-
-        min-height: 140px;
+    .modded {
+        /* TODO: Too much? */
+        @apply bg-purple-950 text-purple-500 outline-purple-500/40;
     }
 
-    .level:hover {
-        cursor: pointer;
-        box-shadow: 0px 0px 0px 3px whitesmoke;
+    .glow {
+        @apply outline-white/40;
     }
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .user {
-        font-weight: bold;
-    }
-
-    .title {
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-        font-size: 1.6em;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .description {
-        text-overflow: ellipsis;
-        overflow: hidden;
-
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        margin: 10px 0;
-    }
-
-    .plays {
-        color: whitesmoke;
-        text-align: right;
-        margin: 0;
-    }
-
-    .stars {
-        color: gold;
-        text-align: right;
-        margin: 0;
+    h2 {
+        @apply text-4xl text-neutral-300 font-bold p-2 mx-10;
     }
 </style>
