@@ -65,7 +65,7 @@ export async function createLevel(cl: CreateLevel) {
 
 export async function createLevelpack(cl: CreateLevelpack) {
     const trimmedLevels = newlineSplitter(cl.level.trim())
-    if (trimmedLevels.length > 53) throw new Error("Too many levels")
+    if (trimmedLevels.length > 200) throw new Error("Too many levels")
 
     // if not valid and not modded, throw error
     if (!await validateLevelpack(trimmedLevels) && !cl.modded) throw new Error("Invalid levelpack")

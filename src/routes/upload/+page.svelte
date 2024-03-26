@@ -94,7 +94,7 @@
                 <div transition:fly={{x: -200}}>
                     <p class="text-6xl text-neutral-500/50 text-right relative w-full h-0 right-[10px] -z-10 italic font-extrabold">1</p>
                     <p class="text-xl text-center">Upload your level / levelpack!</p>
-                    <p class="text-sm text-center mb-10">Levelpacks with more than 100 levels will not be accepted</p>
+                    <p class="text-sm text-center mb-10">Levelpacks with more than 200 levels will not be accepted</p>
                     <div class="flex flex-col text-xl bg-neutral-100 bg-opacity-5 p-5 gap-2">
                         <Dropzone
                                 accept="text/plain"
