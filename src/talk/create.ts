@@ -15,17 +15,14 @@ export async function validateLevelpack(levels: string[]) {
     return levels.every((level) => validate(level).valid)
 }
 
-export async function generateThumbnail(level: string) {
-    const result = await fetch(`${functionsApiURL}/createThumbnail`, {
+export function generateThumbnail(level: string) {
+    return fetch(`${functionsApiURL}/createThumbnail`, {
         method: "POST",
         headers: {
             "Content-Type": "text/plain"
         },
         body: level
     })
-
-    // Return nothing if there is a server error while generating thumbnail
-    return result.ok ? result : undefined
 }
 
 export async function createUser(cl: CreateUser) {
@@ -75,11 +72,14 @@ export async function createLevelpack(cl: CreateLevelpack) {
     const levelsFormData: FormData[] = []
     const levelReferences: Level[] = []
 
-    let i = 0;
-    for (const level of trimmedLevels) {
-        i++;
+    // spam amazon servers with thumbnail generation requests 😭
+    const thumbnailPromises = trimmedLevels.map(l => generateThumbnail(l))
+    const thumbnails = await Promise.allSettled(thumbnailPromises);
 
-        const thumbnail = await generateThumbnail(level)
+    for (let i = 0; i < trimmedLevels.length; i++) {
+        const level = trimmedLevels[i]
+        const thumbnail = thumbnails[i]
+
         const split = level.split("\r\n")
         const title = split[0] === "loadedLevels=" ? split[1] : split[0]
 
@@ -88,12 +88,12 @@ export async function createLevelpack(cl: CreateLevelpack) {
         levelFormData.append("title", title)
         levelFormData.append("description", `This level is a part of levelpack "${cl.title}".`)
         levelFormData.append("data", level)
-        if (thumbnail) levelFormData.append("thumbnail", await thumbnail.blob())
+        if (thumbnail.status === "fulfilled") levelFormData.append("thumbnail", await thumbnail.value.blob())
         levelFormData.append("modded", cl.modded)
 
         levelsFormData.push(levelFormData)
 
-        console.log("Completed level", i, "out of", trimmedLevels.length)
+        console.log("Completed level", i + 1, "out of", trimmedLevels.length)
     }
 
     for (const levelFormData of levelsFormData) {

@@ -129,7 +129,7 @@
             {#if page >= 2 && page !== 4}
                 <div transition:fly={{x: -200}} class="py-5">
                     <p class="text-6xl text-neutral-500 text-right relative w-full h-0 right-[10px] -z-10 text-opacity-50 italic font-extrabold">2</p>
-                    <div class="flex flex-col gap-2 w-4/5 text-xl text-black my-2 mx-auto">
+                    <div class="flex flex-col gap-2 w-4/5 text-xl my-2 mx-auto">
                         <p class="text-neutral-50">Title:</p>
                         <input bind:value={$title} on:input={onTitleChange} class="p-2.5 rounded" type="text" name="title" maxlength="64" placeholder="My 5b level (max 64 chars)" required>
                         <br>
@@ -150,7 +150,7 @@
                 <div transition:fly={{x: -200}}>
                     <p class="text-6xl text-neutral-500 text-right relative w-full h-0 right-[10px] -z-10 text-opacity-50 italic font-extrabold">:)</p>
                     <p class="text-2xl">Thank you for uploading to 5beam!</p>
-                    <p class="w-4/5">You will be redirected to the level shortly while we generate the thumbnail. It takes around 3 seconds to generate a thumbnail for each level.</p>
+                    <p class="w-4/5">You'll be redirected to your level after we generate the thumbnails. This should take at most 10 seconds.</p>
                 </div>
             {/if}
         </div>
