@@ -122,26 +122,11 @@ export function newlineSplitter(file: string) {
 }
 
 async function addToUsersLevels(userId: string, levelId: string) {
-    let userLevelsArray = (await users.getOne(userId)).levels;
-    if (userLevelsArray === undefined) {
-        userLevelsArray = [levelId]
-    } else {
-        userLevelsArray.push(levelId)
-    }
-
-    return updateFetch<User>(users, userId, {levels: userLevelsArray})
+    return updateFetch<User>(users, userId, {"levels+": levelId})
 }
 
-// TODO: Merge with addToUsersLevels?
 async function addToUsersLevelpacks(userId: string, levelpackId: string) {
-    let userLevelpacksArray = (await users.getOne(userId)).levelpacks;
-    if (userLevelpacksArray === undefined) {
-        userLevelpacksArray = [levelpackId]
-    } else {
-        userLevelpacksArray.push(levelpackId)
-    }
-
-    return updateFetch<User>(users, userId, {levelpacks: userLevelpacksArray})
+    return updateFetch<User>(users, userId, {"levelpacks+": levelpackId})
 }
 
 // TODO: I'll do this via functions
