@@ -44,7 +44,7 @@ const dialogueSchema = z.object({
 
 export const detectedLevelSchema = z.object({
     id: z.number(),
-    name: z.string(),
+    name: z.string().max(64),
     width: z.number(),
     height: z.number(),
     spriteNumber: z.number(),
@@ -128,6 +128,8 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
 
     const lines = level.split("\n")
     const name = lines[0]
+    if (name.length > 64) logs.push(createError(id, `Level name must be 64 characters or less!`))
+
     const props = lines[1].split(",")
 
     // props
