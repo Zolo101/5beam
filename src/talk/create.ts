@@ -39,6 +39,7 @@ export async function createLevel(cl: CreateLevel) {
     if (!await validateLevel(trimmedLevel) && !cl.modded) throw new Error("Invalid level")
 
     const thumbnail = await generateThumbnail(trimmedLevel)
+    const successful = thumbnail?.headers.get("Content-Type") === "image/png";
     const dbUser = await getUserByDiscordId(cl.creator.id)
 
     const levelFormData = new FormData()
@@ -46,7 +47,7 @@ export async function createLevel(cl: CreateLevel) {
     levelFormData.append("title", cl.title)
     levelFormData.append("description", cl.description)
     levelFormData.append("data", trimmedLevel)
-    if (thumbnail) levelFormData.append("thumbnail", await thumbnail.blob())
+    if (thumbnail && successful) levelFormData.append("thumbnail", await thumbnail.blob())
     levelFormData.append("modded", cl.modded)
 
     const levelReference = await levels.create<Level>(levelFormData)
@@ -80,6 +81,10 @@ export async function createLevelpack(cl: CreateLevelpack) {
         const level = trimmedLevels[i]
         const thumbnail = thumbnails[i]
 
+        // On very rare occasions, the thumbnail generator can fail but not return 500.
+        // Instead, giving a 200 response with a text/plain content type, saying "RangeError: Invalid array length".
+        const successful = thumbnail.status === "fulfilled" && thumbnail.value.headers.get("Content-Type") === "image/png";
+
         const split = level.split("\r\n")
         const title = split[0] === "loadedLevels=" ? split[1] : split[0]
 
@@ -88,7 +93,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
         levelFormData.append("title", title)
         levelFormData.append("description", `This level is a part of levelpack "${cl.title}".`)
         levelFormData.append("data", level)
-        if (thumbnail.status === "fulfilled") levelFormData.append("thumbnail", await thumbnail.value.blob())
+        if (successful) levelFormData.append("thumbnail", await thumbnail.value.blob())
         levelFormData.append("modded", cl.modded)
 
         levelsFormData.push(levelFormData)
