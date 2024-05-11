@@ -95,6 +95,7 @@ export async function createLevelpack(cl: CreateLevelpack) {
         levelFormData.append("data", level)
         if (successful) levelFormData.append("thumbnail", await thumbnail.value.blob())
         levelFormData.append("modded", cl.modded)
+        levelFormData.append("unlisted", "true")
 
         levelsFormData.push(levelFormData)
 

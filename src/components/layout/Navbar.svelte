@@ -33,8 +33,8 @@
                 {#if loggedIn}
                     <a href="/upload">Upload</a>
                     <a href="/api">API</a>
-                    <a href="/user">Profile</a>
-                    <a href="/api/auth/signout/discord">Sign Out ({user.username})</a>
+                    <a href="/user">Profile ({user.username})</a>
+                    <a href="/api/auth/signout/discord">Sign Out</a>
                 {:else}
                     <a href="/api">API</a>
                     <a href="/api/auth/discord">Log In</a>
