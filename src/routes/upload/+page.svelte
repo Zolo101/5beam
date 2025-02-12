@@ -121,6 +121,7 @@
                         <select bind:value={$modded} name="modded" class="rounded p-2.5">
                             <option value={""}>No</option>
                             <option value={"5*"}>5*30</option>
+                            <option value={"golden5"}>Golden5</option>
                         </select>
                     </div>
 <!--                    <a class="text-xs float-right my-4" href="http://battlefordreamisland.com/5b/levels.txt" target="_blank">Click here to see an example of a level / levelpack</a>-->

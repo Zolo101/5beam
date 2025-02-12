@@ -156,6 +156,7 @@
                 <select bind:value={$modded} name="modded" class="rounded p-2.5">
                     <option value={""}>No</option>
                     <option value={"5*"}>5*30</option>
+                    <option value={"golden5"}>Golden5</option>
                 </select>
             </div>
 <!--            TODO: w-1/2 is temporary, it helps but doesnt fix the "goes outside of the div" problem -->
