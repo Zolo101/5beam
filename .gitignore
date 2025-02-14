@@ -1,8 +1,10 @@
 .DS_Store
 node_modules
+/build
 /dist
 /.svelte-kit
 /package
+/.idea
 .env
 .env.*
 !.env.example
@@ -10,3 +12,5 @@ node_modules
 
 yarn-error.log
 ./Caddyfile
+
+/.netlify
