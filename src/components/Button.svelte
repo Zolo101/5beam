@@ -3,12 +3,14 @@
     export let bg: string = "#ffffff";
     export let href: string = "#";
     export let onclick: () => void = () => {};
+    export let event: string = "";
     export let disabled: boolean = false;
 </script>
 
 <a {href} on:click={onclick}>
     <button
         {disabled}
+        data-umami-event={event}
         class="
         relative h-[40px] w-[246px] cursor-pointer rounded-[10px] shadow-lg outline outline-4 outline-transparent transition-all hover:outline-black/50
         disabled:cursor-not-allowed disabled:opacity-40 disabled:outline-hidden

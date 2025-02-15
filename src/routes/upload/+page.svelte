@@ -59,12 +59,20 @@
             const type = $result.levels.length === 1;
             const typeName = type ? "level" : "levelpack";
             const func = type ? postCreateLevelClient : postCreateLevelpackClient;
+
+            // @ts-ignore
+            window.umami.track("upload-level");
+
             func(payload)
                 .then((res: Level | Levelpack) => {
                     window.location.href = `/${typeName}/${res.id}`;
                 })
                 .catch((err: unknown) => {
                     console.error(err);
+
+                    // @ts-ignore
+                    window.umami.track("upload-level-failed");
+
                     alert(
                         "Unfortunately your upload has failed. Please contact @zelo101 on discord with your level(s)."
                     );

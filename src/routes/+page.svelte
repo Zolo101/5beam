@@ -42,7 +42,12 @@
             {#if data.loggedIn}
                 <Button text="Upload a level" bg="#38bdf8" href="/upload" />
             {/if}
-            <Button text="Join our discord!" bg="#5865f2" href="https://discord.gg/qtePFSH" />
+            <Button
+                text="Join our discord!"
+                bg="#5865f2"
+                href="https://discord.gg/qtePFSH"
+                event="discord-join"
+            />
         </div>
     </section>
     <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">

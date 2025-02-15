@@ -83,6 +83,9 @@
                 payload.file = text;
             }
 
+            // @ts-ignore
+            window.umami.track("edit-level");
+
             // for now, we're only supporting level editing
             // const type = $result.levels.length === 1
             // const typeName = type ? "level" : "levelpack"
@@ -97,6 +100,10 @@
                 })
                 .catch((err: unknown) => {
                     console.error(err);
+
+                    // @ts-ignore
+                    window.umami.track("edit-level-failed");
+
                     alert(
                         "Unfortunately your edit has failed. Please contact @zelo101 on discord with your level(s)."
                     );

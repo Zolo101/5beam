@@ -215,13 +215,3 @@
 
 <!--<br>-->
 <!--<button>Download as 5b Level</button><Help text="In beta: Not all levelpacks can be converted!"/>-->
-
-<style>
-    th {
-        @apply h-[49px] w-64 text-center text-2xl;
-    }
-
-    td {
-        @apply h-[61.29px] w-[117.78px] p-0 text-center;
-    }
-</style>

@@ -131,11 +131,12 @@
             text="Play"
             bg="#4bff5d"
             href="https://coppersalts.github.io/HTML5b?level={level.id}"
+            event="play-level"
             disabled={level.modded}
         />
-        <Button text="Download" bg="#4bffff" onclick={downloadLevel} />
+        <Button text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
         {#if isOwner || data.admin}
-            <Button text="Edit Level" bg="#a8e000" href="{level.id}/edit" />
+            <Button text="Edit Level" bg="#a8e000" href="{level.id}/edit" event="edit-level" />
         {/if}
     </div>
     <!--</div>-->
