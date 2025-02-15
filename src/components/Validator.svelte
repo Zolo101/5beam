@@ -148,7 +148,7 @@
         {/if}
         <div class="info">
             {#if selectedLevel.logs.length > 0}
-                <div class="bg-opacity-50 rounded-sm bg-neutral-700 p-2.5 text-neutral-200">
+                <div class="rounded-sm bg-neutral-700/50 p-2.5 text-neutral-200">
                     {#each selectedLevel.logs as log}
                         <Log {log} />
                     {/each}

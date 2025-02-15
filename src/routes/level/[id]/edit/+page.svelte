@@ -200,7 +200,7 @@
                     <select bind:value={$modded} name="modded" class="rounded-sm p-2.5">
                         <option value={""}>No</option>
                         <option value={"5*"}>5*30</option>
-                        <option value={"golden5"}>Golden5</option>
+                        <option value={"golden5"}>Golden 5</option>
                     </select>
                 </div>
                 <!--            TODO: w-1/2 is temporary, it helps but doesnt fix the "goes outside of the div" problem -->
@@ -210,7 +210,7 @@
                         If you want you can also edit the level data for small changes, but make
                         sure it only contains 1 level!
                     </p>
-                    <div class="bg-opacity-5 flex flex-col gap-2 bg-neutral-100 p-5 text-xl">
+                    <div class="flex flex-col gap-2 bg-neutral-100/5 p-5 text-xl">
                         <Dropzone
                             accept="text/plain"
                             multiple={false}

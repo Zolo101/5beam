@@ -132,8 +132,8 @@
     <APIEndpoint endpoint={["Supported Mods"]} type="INFO">
         <div class="text-3xl">
             <ul>
-                <li>Mawilite's 5*30</li>
-                <li>The Golden Guard's Golden5</li>
+                <li>Mawilite's "5*30"</li>
+                <li>The Golden Guard's "Golden 5"</li>
             </ul>
         </div>
         <p>

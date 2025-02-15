@@ -20,22 +20,19 @@
     const featuredLevels = writable(data.featuredLevels);
     const mostPopularLevels = writable(data.mostPopularLevels);
     const levelpacks = writable(data.levelpacks);
+
+    const description = "Play, share and upload BFDIA 5b levels!!";
 </script>
 
 <svelte:head>
     <meta property="og:title" content="5beam" />
-    <meta
-        property="og:description"
-        content="5beam allows you to upload, share, and play BFDIA 5b levels you've made!"
-    />
+    <meta property="og:description" content={description} />
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
 </svelte:head>
 
 <section class="mx-5 flex pt-2 max-md:flex-col">
     <section class="flex w-1/2 flex-col justify-center max-md:w-full max-md:pb-2">
-        <p class="p-5 text-center text-3xl">
-            5beam allows you to upload, share, and play BFDIA 5b levels you've made!
-        </p>
+        <p class="p-5 text-center text-3xl font-bold">{description}</p>
         <div class="flex flex-wrap justify-center gap-4 max-sm:flex-col max-sm:items-center">
             <Button
                 text="Play BFDIA 5b!"
@@ -48,7 +45,7 @@
             <Button text="Join our discord!" bg="#5865f2" href="https://discord.gg/qtePFSH" />
         </div>
     </section>
-    <aside>
+    <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
         <video
             width="960"
             height="540"
@@ -58,7 +55,7 @@
             muted
             loop
         />
-        <section class="text-sm">
+        <section class="text-2xl">
             <a class="hover:underline" href="/level/defmxfn312m41c3">Autobook 2</a><span
                 class="pl-1">by</span
             ><UserComponent prefix="" user={{ id: "6cmdcntll4sgnzz", username: "coppersalts" }} />

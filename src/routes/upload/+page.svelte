@@ -99,7 +99,7 @@
         </p>
     </aside>
     <section class="m-auto flex max-w-[1400px] items-start gap-2">
-        <div class="bg-opacity-40 w-1/2 rounded-lg bg-neutral-900 p-4 text-neutral-100 shadow-lg">
+        <div class="w-1/2 rounded-lg bg-neutral-900/40 p-4 text-neutral-100 shadow-lg">
             {#if page >= 1 && page !== 4}
                 <div transition:fly={{ x: -200 }}>
                     <p
@@ -111,14 +111,14 @@
                     <p class="mb-10 text-center text-sm">
                         Levelpacks with more than 200 levels will not be accepted
                     </p>
-                    <div class="bg-opacity-5 flex flex-col gap-2 bg-neutral-100 p-5 text-xl">
+                    <div class="flex flex-col gap-2 bg-neutral-100/5 p-5 text-xl">
                         <Dropzone
                             accept="text/plain"
                             multiple={false}
                             maxSize={1000000}
                             required={true}
                             disableDefaultStyles={true}
-                            containerClasses="flex flex-col items-center bg-black/50 rounded-sm outline outline-1 outline-dashed outline-white/25 p-5"
+                            containerClasses="flex flex-col items-center bg-black/50 rounded-sm outline outline-dashed outline-white/25 p-5"
                             on:drop={(e) => ($eventStore = e)}
                         >
                             {#if $file}
@@ -139,7 +139,7 @@
                         <select bind:value={$modded} name="modded" class="rounded-sm p-2.5">
                             <option value={""}>No</option>
                             <option value={"5*"}>5*30</option>
-                            <option value={"golden5"}>Golden5</option>
+                            <option value={"golden5"}>Golden 5</option>
                         </select>
                     </div>
                     <!--                    <a class="text-xs float-right my-4" href="http://battlefordreamisland.com/5b/levels.txt" target="_blank">Click here to see an example of a level / levelpack</a>-->

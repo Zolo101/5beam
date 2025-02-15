@@ -17,7 +17,7 @@
     <div
         class:modded={level.modded}
         class:glow
-        class="inline-flex h-[234px] w-[349px] flex-col items-start justify-start rounded-[5px] bg-zinc-800/60 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
+        class="inline-flex h-[234px] w-[349px] flex-col items-start justify-start rounded-[5px] bg-zinc-800/60 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
     >
         <div class="relative h-full w-full">
             <img
