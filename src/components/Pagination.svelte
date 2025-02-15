@@ -38,7 +38,7 @@
 {/if}
 <slot></slot>
 {#if !removeMovement}
-    <div class="select-none p-5 text-center text-6xl text-neutral-300">
+    <div class="p-5 text-center text-6xl text-neutral-300 select-none">
         <span
             role="button"
             class="cursor-pointer font-bold transition-colors hover:text-neutral-500"

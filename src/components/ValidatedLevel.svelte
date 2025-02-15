@@ -17,15 +17,15 @@
 <div
     role="button"
     class="
-    h-[128px] w-[128px] transform cursor-pointer select-none rounded-[10px] bg-cover
-    shadow-xl duration-200 ease-in-out hover:scale-105 hover:shadow-2xl hover:outline hover:outline-4 hover:outline-white/10
+    h-[128px] w-[128px] transform cursor-pointer rounded-[10px] bg-cover shadow-xl
+    duration-200 ease-in-out select-none hover:scale-105 hover:shadow-2xl hover:outline hover:outline-4 hover:outline-white/10
 "
     class:warningLog
     class:errorLog
     style="background-image: url({getBackground(level.background)});"
     on:click={() => (opened = !opened)}
 >
-    <span class="z-0 select-none px-1.5 text-4xl font-bold text-white mix-blend-overlay"
+    <span class="z-0 px-1.5 text-4xl font-bold text-white mix-blend-overlay select-none"
         >{to5bLevelFormat(level.id)}</span
     >
 </div>

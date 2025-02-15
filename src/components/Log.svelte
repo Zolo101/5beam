@@ -31,7 +31,7 @@
 
 <style>
     .log {
-        @apply my-2 rounded bg-opacity-30 p-2 font-bold shadow drop-shadow;
+        @apply bg-opacity-30 my-2 rounded p-2 font-bold shadow drop-shadow;
     }
 
     .icon {

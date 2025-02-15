@@ -47,7 +47,7 @@
                 type="text"
                 id="search"
                 name="search"
-                class="w-1/2 rounded bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200"
+                class="w-1/2 rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200"
                 maxlength="64"
                 placeholder="Search..."
                 bind:value={$searchText}

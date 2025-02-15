@@ -52,7 +52,7 @@
         <video
             width="960"
             height="540"
-            class="rounded shadow-2xl shadow-white/20 outline outline-2 outline-white/5"
+            class="rounded-sm shadow-2xl shadow-white/20 outline outline-2 outline-white/5"
             src={homepageVideo}
             autoplay
             muted
@@ -81,7 +81,7 @@
 </Pagination>
 
 <section
-    class="mx-auto mb-2 flex max-w-[700px] items-center justify-evenly rounded bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
+    class="mx-auto mb-2 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
 >
     <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
     <span class="text-3xl font-bold text-yellow-300">Bored?</span>

@@ -107,13 +107,13 @@
     <!--<div class="w-[952px] h-[924px] relative bg-white bg-opacity-20 flex-col justify-start items-start inline-flex">-->
     <!--    <div class="justify-center items-center gap-3 inline-flex">-->
     <!--        <div class="w-[45px] h-[0px] relative origin-top-left rotate-180"></div>-->
-    <!--        <div class="w-[66px] h-[46px] bg-gradient-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
+    <!--        <div class="w-[66px] h-[46px] bg-linear-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
     <!--            <div class="w-[66px] h-[46px] text-center text-neutral-500 text-[32px] font-bold">0</div>-->
     <!--        </div>-->
     <!--        <div class="w-[45px] h-[0px] relative"></div>-->
     <!--    </div>-->
     <img
-        class="rounded object-cover shadow-xl"
+        class="rounded-sm object-cover shadow-xl"
         width="960"
         height="540"
         src={thumbnailUrl}
@@ -144,14 +144,14 @@
 <!--    <div class="flex justify-center p-2 gap-2">-->
 <!--        <div class="flex flex-col w-1/4 bg-black/50 rounded-[10px] shadow-2xl">-->
 <!--            <div class="p-2 text-center m-auto">-->
-<!--&lt;!&ndash;                <span class="text-xl bg-red-600 rounded p-1 font-black">BETA</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                <span class="text-xl bg-red-600 rounded-sm p-1 font-black">BETA</span>&ndash;&gt;-->
 <!--                <p class="text-xl font-bold text-center">Select a difficulty!</p>-->
 <!--&lt;!&ndash;                <a href="#">Check out this page if your unsure on what difficulty your level should be!</a>&ndash;&gt;-->
 <!--            </div>-->
 <!--            <div class="w-full inline-grid justify-items-center items-center align-middle grid-cols-3 p-5">-->
 <!--                {#each [0, 1, 2, 3, 4, 5, 6, 7] as j}-->
 <!--                    <div-->
-<!--                            class="hover:bg-white/20 rounded cursor-pointer transition hover:scale-110 p-1"-->
+<!--                            class="hover:bg-white/20 rounded-sm cursor-pointer transition hover:scale-110 p-1"-->
 <!--                            on:click={() => changeDifficulty(j)}-->
 <!--                    >-->
 <!--                        <Difficulty difficulty={j}/>-->
@@ -170,7 +170,7 @@
 <!--            <Button text="Delete level" bg="#e00000" onclick={deleteLevel}/>-->
 <!--        </div>-->
 <!--    </div>-->
-<!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">-->
+<!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow-sm justify-center items-center inline-flex py-3">-->
 <!--    <table class="w-[1200px]">-->
 <!--        <thead>-->
 <!--            <tr>-->

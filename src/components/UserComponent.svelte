@@ -8,6 +8,6 @@
 <span class="font-normal">{prefix}</span><a
     href="/user/{user.id}"
     target="_self"
-    class="rounded p-1 font-bold transition-colors hover:bg-neutral-300/50 hover:text-black"
+    class="rounded-sm p-1 font-bold transition-colors hover:bg-neutral-300/50 hover:text-black"
     >{user.username}</a
 >

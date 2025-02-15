@@ -107,16 +107,16 @@
     <!--    </tr>-->
 </section>
 <!--<div class="flex justify-center pt-20 pb-5">-->
-<!--    <img class="rounded-sm h-[256px] mt-16" width="256" height="128" src={Box} alt="Placeholder Thumbnail"/>-->
-<!--    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
-<!--    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>-->
+<!--    <img class="rounded-xs h-[256px] mt-16" width="256" height="128" src={Box} alt="Placeholder Thumbnail"/>-->
+<!--    <img class="rounded-xs" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
+<!--    <img class="rounded-sm" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>-->
 <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
 <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 
 <!--<div class="w-[952px] h-[924px] relative bg-white bg-opacity-20 flex-col justify-start items-start inline-flex">-->
 <!--    <div class="justify-center items-center gap-3 inline-flex">-->
 <!--        <div class="w-[45px] h-[0px] relative origin-top-left rotate-180"></div>-->
-<!--        <div class="w-[66px] h-[46px] bg-gradient-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
+<!--        <div class="w-[66px] h-[46px] bg-linear-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
 <!--            <div class="w-[66px] h-[46px] text-center text-neutral-500 text-[32px] font-bold">0</div>-->
 <!--        </div>-->
 <!--        <div class="w-[45px] h-[0px] relative"></div>-->
@@ -139,7 +139,7 @@
 <!--    </div>-->
 <!--</div>-->
 <!--</div>-->
-<!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">-->
+<!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow-sm justify-center items-center inline-flex py-3">-->
 <!--    <table>-->
 <!--        <thead>-->
 <!--        <tr>-->
@@ -192,9 +192,9 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
-<p class="pl-2.5 pt-5 text-4xl font-bold text-neutral-300">Description</p>
+<p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Description</p>
 <p class="p-5 text-2xl">{levelpack.description}</p>
-<p class="pl-2.5 pt-5 text-4xl font-bold text-neutral-300">Levels included</p>
+<p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Levels included</p>
 <div class="flex flex-wrap justify-center gap-4 pt-5">
     {#await levels}
         <div class="m-auto">

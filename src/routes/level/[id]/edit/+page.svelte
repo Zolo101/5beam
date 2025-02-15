@@ -112,11 +112,11 @@
 <!--<svelte:window on:beforeunload={() => ""}/>-->
 
 {#if hasAccess}
-    <div class="rounded bg-black/20 py-3 backdrop-blur-md">
+    <div class="rounded-sm bg-black/20 py-3 backdrop-blur-md">
         <div class="flex w-full justify-center">
             <!--    <img class="rounded-2xl" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
             <img
-                class="h-[203px] w-[360px] rounded shadow-xl"
+                class="h-[203px] w-[360px] rounded-sm shadow-xl"
                 width="960"
                 height="540"
                 src={thumbnailUrl}
@@ -128,7 +128,7 @@
             <!--<div class="w-[952px] h-[924px] relative bg-white bg-opacity-20 flex-col justify-start items-start inline-flex">-->
             <!--    <div class="justify-center items-center gap-3 inline-flex">-->
             <!--        <div class="w-[45px] h-[0px] relative origin-top-left rotate-180"></div>-->
-            <!--        <div class="w-[66px] h-[46px] bg-gradient-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
+            <!--        <div class="w-[66px] h-[46px] bg-linear-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
             <!--            <div class="w-[66px] h-[46px] text-center text-neutral-500 text-[32px] font-bold">0</div>-->
             <!--        </div>-->
             <!--        <div class="w-[45px] h-[0px] relative"></div>-->
@@ -149,7 +149,7 @@
                     <p>Title:</p>
                     <input
                         bind:value={$title}
-                        class="rounded p-2.5"
+                        class="rounded-sm p-2.5"
                         type="text"
                         name="title"
                         maxlength="64"
@@ -160,7 +160,7 @@
                     <p>Description:</p>
                     <textarea
                         bind:value={$description}
-                        class="rounded p-2.5"
+                        class="rounded-sm p-2.5"
                         name="description"
                         rows="5"
                         cols="33"
@@ -197,7 +197,7 @@
                             up by default on the homepage and searches
                         </p>
                     {/if}
-                    <select bind:value={$modded} name="modded" class="rounded p-2.5">
+                    <select bind:value={$modded} name="modded" class="rounded-sm p-2.5">
                         <option value={""}>No</option>
                         <option value={"5*"}>5*30</option>
                         <option value={"golden5"}>Golden5</option>
@@ -210,14 +210,14 @@
                         If you want you can also edit the level data for small changes, but make
                         sure it only contains 1 level!
                     </p>
-                    <div class="flex flex-col gap-2 bg-neutral-100 bg-opacity-5 p-5 text-xl">
+                    <div class="bg-opacity-5 flex flex-col gap-2 bg-neutral-100 p-5 text-xl">
                         <Dropzone
                             accept="text/plain"
                             multiple={false}
                             maxSize={1000000}
                             required={true}
                             disableDefaultStyles={true}
-                            containerClasses="flex flex-col items-center bg-black/50 rounded outline outline-1 outline-dashed outline-white/25 p-5"
+                            containerClasses="flex flex-col items-center bg-black/50 rounded-sm outline outline-1 outline-dashed outline-white/25 p-5"
                             on:drop={(e) => ($eventStore = e)}
                         >
                             {#if $file}
@@ -241,7 +241,7 @@
                             <input
                                 type="submit"
                                 value="Edit!"
-                                class="cursor-pointer rounded bg-green-400 p-2 text-xl text-green-800 transition-colors disabled:cursor-not-allowed disabled:bg-green-500 disabled:opacity-25"
+                                class="cursor-pointer rounded-sm bg-green-400 p-2 text-xl text-green-800 transition-colors disabled:cursor-not-allowed disabled:bg-green-500 disabled:opacity-25"
                             />
                         </form>
                     {/if}

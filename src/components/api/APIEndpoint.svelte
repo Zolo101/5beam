@@ -20,7 +20,7 @@
 </script>
 
 <section
-    class="w-[min(60vw, 1000px)] m-5 rounded bg-neutral-600/40 shadow-2xl outline outline-white/10 backdrop-blur-xl"
+    class="w-[min(60vw, 1000px)] m-5 rounded-sm bg-neutral-600/40 shadow-2xl outline outline-white/10 backdrop-blur-xl"
     class:deprecated={deprecated || wip}
     class:game_only
 >
@@ -57,7 +57,7 @@
 
         {#if code}
             <pre
-                class="rounded bg-neutral-800 p-5 font-mono outline outline-neutral-500">{code}</pre>
+                class="rounded-sm bg-neutral-800 p-5 font-mono outline outline-neutral-500">{code}</pre>
         {/if}
 
         <div class="p-5 text-neutral-300">

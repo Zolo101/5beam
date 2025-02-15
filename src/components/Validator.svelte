@@ -54,7 +54,7 @@
                 <div on:click={() => selectLevel(level)}>
                     <ValidatedLevel {level} {i} />
                 </div>
-                <!--                <div on:click={() => selectedDifficulties[i] = !selectedDifficulties[i]} class="relative w-[35px] h-[0px] left-[90px] bottom-[40px] hover:bg-white/20 rounded cursor-pointer transition hover:scale-110">-->
+                <!--                <div on:click={() => selectedDifficulties[i] = !selectedDifficulties[i]} class="relative w-[35px] h-[0px] left-[90px] bottom-[40px] hover:bg-white/20 rounded-sm cursor-pointer transition hover:scale-110">-->
                 <!--                    <Difficulty difficulty={levelDifficulties[i]}/>-->
                 <!--                </div>-->
             </div>
@@ -62,7 +62,7 @@
             {#if false}
                 <div class="flex w-full rounded-[10px] bg-black/50 shadow-2xl">
                     <div class="m-auto p-2 text-center">
-                        <span class="rounded bg-red-600 p-1 text-xl font-black">BETA</span>
+                        <span class="rounded-sm bg-red-600 p-1 text-xl font-black">BETA</span>
                         <span class="text-center text-xl font-bold"
                             >Select a difficulty for
                         </span><span class="text-xl">{to5bLevelFormat(i + 1)}</span>
@@ -74,7 +74,7 @@
                     <div class="inline-grid w-3/4 grid-cols-3 justify-items-center p-5">
                         {#each [0, 1, 2, 3, 4, 5, 6] as j}
                             <div
-                                class="cursor-pointer rounded p-1 transition hover:scale-110 hover:bg-white/20"
+                                class="cursor-pointer rounded-sm p-1 transition hover:scale-110 hover:bg-white/20"
                                 on:click={() => (levelDifficulties[i] = j)}
                             >
                                 <Difficulty difficulty={j} />
@@ -92,7 +92,7 @@
     <div
         transition:fly={{ x: -100 }}
         id="levelDetails"
-        class="absolute left-0 top-0 z-10 w-1/2 rounded-br-xl bg-green-950/80 p-5 shadow-2xl backdrop-blur-md"
+        class="absolute top-0 left-0 z-10 w-1/2 rounded-br-xl bg-green-950/80 p-5 shadow-2xl backdrop-blur-md"
     >
         <div class="flex items-start justify-between text-7xl">
             <div>
@@ -112,11 +112,11 @@
                 </div>
                 <div>
                     {#if selectedLevel.levelType === "L"}
-                        <span class="code !bg-green-500/50 text-green-300 !outline-green-500/80"
+                        <span class="code bg-green-500/50! text-green-300 outline-green-500/80!"
                             >L</span
                         >
                     {:else}
-                        <span class="code !bg-purple-500/50 text-purple-300 !outline-purple-500/80"
+                        <span class="code bg-purple-500/50! text-purple-300 outline-purple-500/80!"
                             >H</span
                         >
                     {/if}
@@ -148,7 +148,7 @@
         {/if}
         <div class="info">
             {#if selectedLevel.logs.length > 0}
-                <div class="rounded bg-neutral-700 bg-opacity-50 p-2.5 text-neutral-200">
+                <div class="bg-opacity-50 rounded-sm bg-neutral-700 p-2.5 text-neutral-200">
                     {#each selectedLevel.logs as log}
                         <Log {log} />
                     {/each}
