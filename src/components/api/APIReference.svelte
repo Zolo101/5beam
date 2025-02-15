@@ -1,7 +1,7 @@
 <script lang="ts">
     import Filepath from "./Filepath.svelte";
 
-    export let type: "GET" | "POST" | "STRUCT" | string = "OTHER"
+    export let type: "GET" | "POST" | "STRUCT" | string = "OTHER";
     export let reference: string | string[];
 </script>
 
@@ -9,7 +9,7 @@
     <span class="type colour-{type}">{type}</span>
     <span class="text">
         {#if Array.isArray(reference)}
-            <Filepath directory={reference}/>
+            <Filepath directory={reference} />
         {:else}
             {reference}
         {/if}

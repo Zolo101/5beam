@@ -21,14 +21,14 @@
                             <p class="plays">{result.plays} plays</p>
                             <p class="stars">{result.stars} stars</p>
                         </div>
-                        <Difficulty difficulty={result.difficulty}/>
+                        <Difficulty difficulty={result.difficulty} />
                     </div>
-                    <br>
+                    <br />
                 {:else}
                     <p class="title">{result.title}</p>
                 {/if}
                 <div class="footer">
-                    <User prefix="By" user={result.creator}/>
+                    <User prefix="By" user={result.creator} />
                     <p>@ {formatDate_Day(result.createdAt)}</p>
                 </div>
             </div>
@@ -67,7 +67,8 @@
         justify-content: space-between;
     }
 
-    p, span {
+    p,
+    span {
         margin: 0;
     }
 
@@ -75,6 +76,10 @@
         font-size: 1.8em;
     }
 
-    .plays { color:  whitesmoke; }
-    .stars { color: gold; }
+    .plays {
+        color: whitesmoke;
+    }
+    .stars {
+        color: gold;
+    }
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts">
-    export let directory: string[]
-    export let oppositeSlash: boolean = false
+    export let directory: string[];
+    export let oppositeSlash: boolean = false;
 
     const slash = oppositeSlash ? "\\" : "/";
 </script>

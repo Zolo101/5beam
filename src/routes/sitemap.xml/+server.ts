@@ -8,37 +8,40 @@ function formatDate(date: string) {
 }
 
 async function createLevelSitemap() {
-    return (await levels.getFullList())
-        .map(level => `<url>
+    return (await levels.getFullList()).map(
+        (level) => `<url>
     <loc>${apiURL}/level/${level.id}</loc>
     <lastmod>${formatDate(level.updated)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
-</url>`)
+</url>`
+    );
 }
 
 async function createLevelpackSitemap() {
-    return (await levelpacks.getFullList())
-        .map(levelpack => `<url>
+    return (await levelpacks.getFullList()).map(
+        (levelpack) => `<url>
     <loc>${apiURL}/levelpack/${levelpack.id}</loc>
     <lastmod>${formatDate(levelpack.updated)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
-</url>`)
+</url>`
+    );
 }
 
 async function createUserSitemap() {
-    return (await users.getFullList())
-        .map(user => `<url>
+    return (await users.getFullList()).map(
+        (user) => `<url>
     <loc>${apiURL}/user/${user.id}</loc>
     <lastmod>${formatDate(user.updated)}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-</url>`)
+</url>`
+    );
 }
 
 async function mainSitemap() {
-    const lastUpdate = await levels.getFullList({sort: "-created", limit: 1})
+    const lastUpdate = await levels.getFullList({ sort: "-created", limit: 1 });
     return `<url>
     <loc>${apiURL}</loc>
     <lastmod>${formatDate(lastUpdate[0].updated)}</lastmod>
@@ -50,20 +53,20 @@ async function mainSitemap() {
     <lastmod>2023-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
-</url>`
+</url>`;
 }
 
 async function sitemap() {
     return [
         await mainSitemap(),
-        ...await createLevelSitemap(),
-        ...await createLevelpackSitemap(),
-        ...await createUserSitemap()
-    ].join("\n")
+        ...(await createLevelSitemap()),
+        ...(await createLevelpackSitemap()),
+        ...(await createUserSitemap())
+    ].join("\n");
 }
 
 export const GET: RequestHandler = async () => {
-    const urls = await sitemap()
+    const urls = await sitemap();
     return new Response(
         `
         <?xml version="1.0" encoding="UTF-8" ?>
@@ -84,4 +87,4 @@ export const GET: RequestHandler = async () => {
             }
         }
     );
-}
+};

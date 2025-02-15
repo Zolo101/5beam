@@ -11,31 +11,37 @@
 </script>
 
 <svelte:head>
-    <meta name="theme-color" content="#d10000">
+    <meta name="theme-color" content="#d10000" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QDE04Q52S"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-8QDE04Q52S');
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-8QDE04Q52S");
     </script>
-<!--    TODO: After a month, remove the google analytics -->
-    <script defer src="https://analytics.zelo.dev/script.js" data-website-id="45534dc8-3f72-4cdb-a0d1-d40308cee3ed"></script>
+    <!--    TODO: After a month, remove the google analytics -->
+    <script
+        defer
+        src="https://analytics.zelo.dev/script.js"
+        data-website-id="45534dc8-3f72-4cdb-a0d1-d40308cee3ed"
+    ></script>
 </svelte:head>
 
 <div class="m">
-<!--    <div></div>-->
-<!--    <img src={background} alt=""/>-->
+    <!--    <div></div>-->
+    <!--    <img src={background} alt=""/>-->
 </div>
-<Navbar {user}/>
+<Navbar {user} />
 <!--<div class="w-full backdrop-blur-[3px]">-->
 <div class="w-full">
-    <div class="max-w-[1600px] grow m-auto py-2">
+    <div class="m-auto max-w-[1600px] grow py-2">
         <slot></slot>
     </div>
 </div>
-<Footer/>
+<Footer />
 
 <style>
     /* parallel */
@@ -54,7 +60,6 @@
 
         perspective: 1px;
     }
-
 
     /*.m {*/
     /*    height: 100vh;*/

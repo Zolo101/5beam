@@ -7,11 +7,11 @@
 declare namespace App {
     import type { User } from "$lib/DiscordOauth2";
     interface Locals {
-        user: User
+        user: User;
     }
     interface PageData {
-        user: User
-        admin: boolean
-        loggedIn: boolean
+        user: User;
+        admin: boolean;
+        loggedIn: boolean;
     }
 }

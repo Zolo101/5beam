@@ -14,17 +14,17 @@
 
     const changePage = async (by: number) => {
         // dont go below zero
-        page = (page + by < 1 ? 1 : page + by);
+        page = page + by < 1 ? 1 : page + by;
         output = await callback(page, type, sort, featured);
         // console.log(page, output)
-    }
+    };
     export let removeOptions = false;
 
     export let removeMovement = false;
 </script>
 
 {#if !removeOptions}
-    <div class="ml-5 mb-3">
+    <div class="mb-3 ml-5">
         <select name="filter" bind:value={featured}>
             <option value={1}>Featured</option>
             <option value={0}>All</option>
@@ -38,16 +38,24 @@
 {/if}
 <slot></slot>
 {#if !removeMovement}
-    <div class="text-center text-6xl p-5 text-neutral-300 select-none">
-        <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(-1)}>{"⟵"}</span>
-        <span class="font-bold font-mono">{page}</span>
-        <span role="button" class="font-bold cursor-pointer hover:text-neutral-500 transition-colors" on:click={() => changePage(1)}>{"⟶"}</span>
+    <div class="select-none p-5 text-center text-6xl text-neutral-300">
+        <span
+            role="button"
+            class="cursor-pointer font-bold transition-colors hover:text-neutral-500"
+            on:click={() => changePage(-1)}>{"⟵"}</span
+        >
+        <span class="font-mono font-bold">{page}</span>
+        <span
+            role="button"
+            class="cursor-pointer font-bold transition-colors hover:text-neutral-500"
+            on:click={() => changePage(1)}>{"⟶"}</span
+        >
     </div>
 {/if}
 
 <style>
     select {
-        @apply text-neutral-50 bg-neutral-800 rounded cursor-pointer shadow transition-colors p-2 mx-1;
+        @apply mx-1 cursor-pointer rounded bg-neutral-800 p-2 text-neutral-50 shadow transition-colors;
     }
 
     select:hover {

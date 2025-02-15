@@ -2,25 +2,25 @@ import type { Level, Levelpack } from "$lib/types";
 import { generateDiff, getLevelThumbnailURL } from "../misc";
 
 type WebhookObject = {
-    username?: string
-    content?: string
-    embeds?: WebhookEmbed[]
-}
+    username?: string;
+    content?: string;
+    embeds?: WebhookEmbed[];
+};
 
 type WebhookEmbed = {
-    title: string
-    description: string
-    url: string
-    color: number
+    title: string;
+    description: string;
+    url: string;
+    color: number;
     author: {
-        name: string
-        url: string
-        icon_url: string
-    },
+        name: string;
+        url: string;
+        icon_url: string;
+    };
     image?: {
-        url: string
-    }
-}
+        url: string;
+    };
+};
 
 // type CustomFetch = (url: string, init?: RequestInit) => Promise<Response>
 
@@ -32,26 +32,27 @@ const difficultyEmoji = [
     "<:hard:1175550124987007028>",
     "<:extreme:1175550116891983872>",
     "<:insane:1175550119639261245>",
-    "<:impossible:1175550118561333399>",
-] as const
+    "<:impossible:1175550118561333399>"
+] as const;
 
 const WebhookChannel = {
     New: import.meta.env.VITE_WEBHOOK_NEW,
     PublicLog: import.meta.env.VITE_WEBHOOK_PUBLIC_LOG,
     PrivateLog: import.meta.env.VITE_WEBHOOK_PRIVATE_LOG,
-    Featured: import.meta.env.VITE_WEBHOOK_FEATURED,
-}
+    Featured: import.meta.env.VITE_WEBHOOK_FEATURED
+};
 
 // 058. etc ruins the link because of markdown, so replace the dot with a similar unicode character
-const getMarkdownLevelURL = (level: Level) => `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/level/${level.id}>)`
+const getMarkdownLevelURL = (level: Level) =>
+    `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/level/${level.id}>)`;
 
 export default class Webhook<P extends unknown[]> {
-    public channel: keyof typeof WebhookChannel
-    public bodyFunction: (...params: P) => WebhookObject
+    public channel: keyof typeof WebhookChannel;
+    public bodyFunction: (...params: P) => WebhookObject;
 
     constructor(channel: Webhook<P>["channel"], bodyFunction: Webhook<P>["bodyFunction"]) {
-        this.channel = WebhookChannel[channel]
-        this.bodyFunction = bodyFunction
+        this.channel = WebhookChannel[channel];
+        this.bodyFunction = bodyFunction;
     }
 
     async send(...params: P) {
@@ -61,7 +62,7 @@ export default class Webhook<P extends unknown[]> {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(this.bodyFunction(...params))
-        })
+        });
     }
 
     // async sendWithCustomFetch(customFetch: CustomFetch,...params: P) {
@@ -86,39 +87,45 @@ export default class Webhook<P extends unknown[]> {
 
 export const RemoveLevelWebhook = new Webhook("PrivateLog", (level: Level) => {
     return {
-        content: `\`**${level.title}\` by ${level.creator.username} has been removed!**`,
-    }
-})
+        content: `\`**${level.title}\` by ${level.creator.username} has been removed!**`
+    };
+});
 
 export const RemoveLevelpackWebhook = new Webhook("PrivateLog", (levelpack: Levelpack) => {
     return {
-        content: `\`**${levelpack.title}\` by ${levelpack.creator.username} has been removed!**`,
-    }
-})
+        content: `\`**${levelpack.title}\` by ${levelpack.creator.username} has been removed!**`
+    };
+});
 
-export const ChangeDifficultyWebhook = new Webhook("PublicLog", (newDifficulty: number, level: Level) => {
-    return {
-        content: `**${getMarkdownLevelURL(level)}**: **Changed difficulty** from ${difficultyEmoji[level.difficulty]} to ${difficultyEmoji[newDifficulty]}`,
+export const ChangeDifficultyWebhook = new Webhook(
+    "PublicLog",
+    (newDifficulty: number, level: Level) => {
+        return {
+            content: `**${getMarkdownLevelURL(level)}**: **Changed difficulty** from ${difficultyEmoji[level.difficulty]} to ${difficultyEmoji[newDifficulty]}`
+        };
     }
-})
+);
 
 export const ChangeTitleWebhook = new Webhook("PublicLog", (newTitle: string, level: Level) => {
     return {
-        content: `**${getMarkdownLevelURL(level)} has changed title:** \`\`\`diff\n${generateDiff(level.title, newTitle)}\`\`\``,
-    }
-})
+        content: `**${getMarkdownLevelURL(level)} has changed title:** \`\`\`diff\n${generateDiff(level.title, newTitle)}\`\`\``
+    };
+});
 
-export const ChangeDescriptionWebhook = new Webhook("PublicLog", (newDescription: string, level: Level) => {
-    return {
-        content: `**${getMarkdownLevelURL(level)} has changed description:** \`\`\`diff\n${generateDiff(level.description, newDescription)}\`\`\``,
+export const ChangeDescriptionWebhook = new Webhook(
+    "PublicLog",
+    (newDescription: string, level: Level) => {
+        return {
+            content: `**${getMarkdownLevelURL(level)} has changed description:** \`\`\`diff\n${generateDiff(level.description, newDescription)}\`\`\``
+        };
     }
-})
+);
 
 export const ChangeLevelWebhook = new Webhook("PublicLog", (_, level: Level) => {
     return {
-        content: `**${getMarkdownLevelURL(level)} has changed its level data!**`,
-    }
-})
+        content: `**${getMarkdownLevelURL(level)} has changed its level data!**`
+    };
+});
 
 export const NewFeaturedWebhook = new Webhook("Featured", (level: Level) => {
     return {
@@ -139,8 +146,8 @@ export const NewFeaturedWebhook = new Webhook("Featured", (level: Level) => {
                 }
             }
         ]
-    }
-})
+    };
+});
 
 export const NewLevelWebhook = new Webhook("New", (level: Level) => {
     return {
@@ -161,8 +168,8 @@ export const NewLevelWebhook = new Webhook("New", (level: Level) => {
                 }
             }
         ]
-    }
-})
+    };
+});
 
 export const NewLevelpackWebhook = new Webhook("New", (levelpack: Levelpack, preview: Level) => {
     return {
@@ -183,8 +190,8 @@ export const NewLevelpackWebhook = new Webhook("New", (levelpack: Levelpack, pre
                 }
             }
         ]
-    }
-})
+    };
+});
 
 // const e = {
 //     "username": "New Level",

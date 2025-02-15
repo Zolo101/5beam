@@ -1,5 +1,5 @@
 <script lang="ts">
-    import star from "$lib/assets/star.png"
+    import star from "$lib/assets/star.png";
 
     export let amount: number = 0;
     export let includeText: boolean = true;
@@ -9,7 +9,7 @@
     {#if includeText}
         <span>{amount}</span>
     {/if}
-    <img src={star} alt="Star">
+    <img src={star} alt="Star" />
 </div>
 
 <style>

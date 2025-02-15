@@ -5,4 +5,9 @@
     export let prefix: string;
 </script>
 
-<span class="font-normal">{prefix}</span><a href="/user/{user.id}" target="_self" class="font-bold p-1 transition-colors rounded hover:text-black hover:bg-neutral-300/50">{user.username}</a>
+<span class="font-normal">{prefix}</span><a
+    href="/user/{user.id}"
+    target="_self"
+    class="rounded p-1 font-bold transition-colors hover:bg-neutral-300/50 hover:text-black"
+    >{user.username}</a
+>

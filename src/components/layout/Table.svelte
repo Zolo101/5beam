@@ -1,11 +1,11 @@
 <script lang="ts">
     export let title: string = "";
     export let heads: string[] = [];
-    export let content: [string, ...any][]
-    export let dynamicWidth: boolean = true
+    export let content: [string, ...any][];
+    export let dynamicWidth: boolean = true;
 </script>
 
-<table class:dynamicWidth={dynamicWidth}>
+<table class:dynamicWidth>
     {#if title}
         <caption>{title}</caption>
     {/if}
@@ -31,19 +31,26 @@
 
 <style>
     table {
-        @apply outline outline-4 outline-black rounded border-hidden text-neutral-200;
-        background: repeating-linear-gradient(-45deg, #5a5a5a, #5a5a5a 10px, #464646 10px, #464646 20px);;
+        @apply rounded border-hidden text-neutral-200 outline outline-4 outline-black;
+        background: repeating-linear-gradient(
+            -45deg,
+            #5a5a5a,
+            #5a5a5a 10px,
+            #464646 10px,
+            #464646 20px
+        );
         /*border: 1px solid black;*/
     }
 
     caption {
-        @apply text-sm bg-black p-1;
+        @apply bg-black p-1 text-sm;
         /*background-color: black;*/
         /*padding: 5px;*/
     }
 
-    th, td {
-        @apply p-2.5 border-2 border-neutral-800;
+    th,
+    td {
+        @apply border-2 border-neutral-800 p-2.5;
     }
 
     th {

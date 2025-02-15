@@ -43,26 +43,26 @@ export default class DiscordOauth2 {
     // clientSecret: string = import.meta.env.VITE_AUTH_CLIENT_SECRET
 
     static tokenRequestAuth(code: string, redirectUri: string = redirectURL) {
-        const body = new URL("https://discord.com/api/oauth2/token")
-        URLParamSet(body, "client_id", import.meta.env.VITE_AUTH_CLIENT_ID)
-        URLParamSet(body, "client_secret", import.meta.env.VITE_AUTH_CLIENT_SECRET)
-        URLParamSet(body, "grant_type", "authorization_code")
-        URLParamSet(body, "redirect_uri", redirectUri)
-        URLParamSet(body, "code", code)
-        URLParamSet(body, "scope", "identify")
+        const body = new URL("https://discord.com/api/oauth2/token");
+        URLParamSet(body, "client_id", import.meta.env.VITE_AUTH_CLIENT_ID);
+        URLParamSet(body, "client_secret", import.meta.env.VITE_AUTH_CLIENT_SECRET);
+        URLParamSet(body, "grant_type", "authorization_code");
+        URLParamSet(body, "redirect_uri", redirectUri);
+        URLParamSet(body, "code", code);
+        URLParamSet(body, "scope", "identify");
 
-        return sendRequest(body)
+        return sendRequest(body);
     }
 
     static tokenRequestRefresh(token: string) {
-        const body = new URL("https://discord.com/api/oauth2/token")
-        URLParamSet(body, "client_id", import.meta.env.VITE_AUTH_CLIENT_ID)
-        URLParamSet(body, "client_secret", import.meta.env.VITE_AUTH_CLIENT_SECRET)
-        URLParamSet(body, "grant_type", "refresh_token")
-        URLParamSet(body, "refresh_token", token)
-        URLParamSet(body, "scope", "identify")
+        const body = new URL("https://discord.com/api/oauth2/token");
+        URLParamSet(body, "client_id", import.meta.env.VITE_AUTH_CLIENT_ID);
+        URLParamSet(body, "client_secret", import.meta.env.VITE_AUTH_CLIENT_SECRET);
+        URLParamSet(body, "grant_type", "refresh_token");
+        URLParamSet(body, "refresh_token", token);
+        URLParamSet(body, "scope", "identify");
 
-        return sendRequest(body)
+        return sendRequest(body);
     }
 
     static async getUser(token: string): Promise<User> {
@@ -70,17 +70,17 @@ export default class DiscordOauth2 {
             headers: {
                 "User-Agent": "Discord-OAuth2",
                 "Accept-Encoding": "gzip,deflate",
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`
             }
-        })
+        });
 
-        const user: User | ResponseError = await result.json()
+        const user: User | ResponseError = await result.json();
 
         // TODO: Is the "throw" approach good?
         if ("message" in user) {
-            throw new Error(user.message)
+            throw new Error(user.message);
         } else {
-            return user
+            return user;
         }
     }
 }
@@ -91,9 +91,9 @@ async function sendRequest(url: URL): Promise<TokenRequestResult> {
         body: url.searchParams.toString(),
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            "refresh_token": url.searchParams.get("refresh_token") ?? ""
+            refresh_token: url.searchParams.get("refresh_token") ?? ""
         }
-    })
+    });
 
-    return result.json()
+    return result.json();
 }

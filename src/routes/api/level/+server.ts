@@ -2,16 +2,15 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { getLevelById } from "../../../talk/get";
 import { OK, return404 } from "../../../misc";
 
-export const GET: RequestHandler = async ({request}) => {
-    const url = new URL(request.url)
-    const id = url.searchParams.get("id")
+export const GET: RequestHandler = async ({ request }) => {
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id");
 
-    if (id === null) return return404() // Not Found
+    if (id === null) return return404(); // Not Found
     // e()
 
-    return OK(await getLevelById(id))
-}
-
+    return OK(await getLevelById(id));
+};
 
 // ugly debug function
 /*

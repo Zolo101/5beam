@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -27,21 +27,25 @@ body {
 }
 
 h2 {
-    @apply text-4xl text-neutral-300 font-bold p-2 mx-10;
+    @apply mx-10 p-2 text-4xl font-bold text-neutral-300;
 }
 
 nav {
-    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(233, 233, 233, 0.2) 90%, rgba(255, 255, 255, 0.0));
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.2),
+        rgba(233, 233, 233, 0.2) 90%,
+        rgba(255, 255, 255, 0)
+    );
     padding: 5px;
     @apply flex items-center justify-center p-1.5 text-black backdrop-blur-[4px];
 }
 
 footer {
-    @apply mt-auto flex justify-evenly text-neutral-50 bg-neutral-100/10 p-5;
+    @apply mt-auto flex justify-evenly bg-neutral-100/10 p-5 text-neutral-50;
 }
 
 button {
-    @apply px-7 py-4 text-2xl bg-gradient-to-b rounded-lg shadow-md;
+    @apply rounded-lg bg-gradient-to-b px-7 py-4 text-2xl shadow-md;
 }
 
 a {
@@ -59,5 +63,5 @@ svg {
 }
 
 .root {
-    @apply flex flex-col h-full;
+    @apply flex h-full flex-col;
 }

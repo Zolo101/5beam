@@ -13,8 +13,9 @@
 </div>
 
 <style>
-    .status, .message {
-        @apply text-center m-0;
+    .status,
+    .message {
+        @apply m-0 text-center;
     }
 
     .status {

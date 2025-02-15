@@ -7,21 +7,21 @@
 </script>
 
 {#if log.level === "info"}
-    <div class="bg-blue-700 text-blue-500 log">
+    <div class="log bg-blue-700 text-blue-500">
         <div class="flex items-center">
             <span class="icon">ℹ️</span>
             <span>{log.message}</span>
         </div>
     </div>
 {:else if log.level === "warning"}
-    <div class="bg-amber-700 text-amber-500 log">
+    <div class="log bg-amber-700 text-amber-500">
         <div class="flex items-center">
             <span class="icon">⚠️</span>
             <span>{log.message}</span>
         </div>
     </div>
 {:else if log.level === "error"}
-    <div class="bg-red-700 text-red-500 log">
+    <div class="log bg-red-700 text-red-500">
         <div class="flex items-center">
             <span class="icon">🛑</span>
             <span>{log.message}</span>
@@ -31,7 +31,7 @@
 
 <style>
     .log {
-        @apply bg-opacity-30 rounded font-bold p-2 my-2 shadow drop-shadow;
+        @apply my-2 rounded bg-opacity-30 p-2 font-bold shadow drop-shadow;
     }
 
     .icon {

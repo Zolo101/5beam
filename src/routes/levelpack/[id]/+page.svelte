@@ -14,16 +14,16 @@
     let user = data.levelpack.creator;
     // let expanded = false;
 
-    const levels = getLevelpackClient(levelpack.id, 1)
-        // .then((res) => {
-        //     levelpack = res;
-            // expanded = true;
-        // })
+    const levels = getLevelpackClient(levelpack.id, 1);
+    // .then((res) => {
+    //     levelpack = res;
+    // expanded = true;
+    // })
 
     // const thumbnailUrl = getLevelThumbnailURL(levelpack.id, levelpack.thumbnail)
 
     const downloadLevel = () => {
-        alert("WIP")
+        alert("WIP");
         // const a = document.createElement("a");
         // const blob = new Blob([levelpack.data], {type: "text/plain"});
         // const url = URL.createObjectURL(blob);
@@ -32,23 +32,22 @@
         // a.setAttribute("download", `levels.txt`);
         //
         // a.click()
-    }
+    };
 
     const viewLevels = () => {
-        getLevelpackClient(levelpack.id, 1)
-            .then((res) => {
-                levelpack = res;
-                // expanded = true;
-            })
-    }
+        getLevelpackClient(levelpack.id, 1).then((res) => {
+            levelpack = res;
+            // expanded = true;
+        });
+    };
 </script>
 
 <svelte:head>
     <title>{levelpack.title} - 5beam</title>
-    <meta property="og:title" content={levelpack.title}/>
-    <meta property="og:description" content={levelpack.description}/>
-    <meta property="og:image" content={Box}/>
-    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:title" content={levelpack.title} />
+    <meta property="og:description" content={levelpack.description} />
+    <meta property="og:image" content={Box} />
+    <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <!--<div class="level">-->
@@ -75,18 +74,25 @@
 <!--    </div>-->
 <!--</div>-->
 
-<section class="flex flex-col max-xl:items-center text-neutral-100 mt-2 xl:mx-48">
-    <p class="max-sm:text-center text-6xl font-bold mb-1"  style:color={levelpack.featured ? "#ffea65" : "#f5f5f5"}>{levelpack.title}</p>
+<section class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48">
+    <p
+        class="mb-1 text-6xl font-bold max-sm:text-center"
+        style:color={levelpack.featured ? "#ffea65" : "#f5f5f5"}
+    >
+        {levelpack.title}
+    </p>
     <!--    TODO: Add star icon for featured levels? -->
-    <section class="max-md:flex-col max-md:text-xs text-xl flex eee">
-        <span class="text-xl"><UserComponent prefix="by" {user}/></span>
+    <section class="eee flex text-xl max-md:flex-col max-md:text-xs">
+        <span class="text-xl"><UserComponent prefix="by" {user} /></span>
         <span class="px-1">::</span>
-        <span class="font-black"><Difficulty includeText includeImage={false} difficulty={levelpack.difficulty}/></span>
+        <span class="font-black"
+            ><Difficulty includeText includeImage={false} difficulty={levelpack.difficulty} /></span
+        >
         <span class="px-1">::</span>
-        <span class="font-black text-purple-500 pr-1">{levelpack.levels.length}</span>
+        <span class="pr-1 font-black text-purple-500">{levelpack.levels.length}</span>
         <span class="text-purple-500">levels</span>
         <span class="px-1">::</span>
-        <span class="font-black text-green-500 pr-1">{levelpack.plays}</span>
+        <span class="pr-1 font-black text-green-500">{levelpack.plays}</span>
         <span class="text-green-500">plays</span>
         <span class="px-1">::</span>
         <!--        <span class="font-black text-amber-500 pr-1">Uploaded on</span>-->
@@ -104,29 +110,34 @@
 <!--    <img class="rounded-sm h-[256px] mt-16" width="256" height="128" src={Box} alt="Placeholder Thumbnail"/>-->
 <!--    <img class="rounded-sm" src="https://via.placeholder.com/720x405" alt="Placeholder Thumbnail"/>-->
 <!--    <img class="rounded" width="720" height="405" src={thumbnailUrl} alt="Placeholder Thumbnail"/>-->
-    <!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
-    <!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
+<!--    <div class="bg-neutral-300 w-[480px] h-[270px]"></div>-->
+<!--    <div class="bg-neutral-300 w-[720px] h-[405px]"></div>-->
 
-    <!--<div class="w-[952px] h-[924px] relative bg-white bg-opacity-20 flex-col justify-start items-start inline-flex">-->
-    <!--    <div class="justify-center items-center gap-3 inline-flex">-->
-    <!--        <div class="w-[45px] h-[0px] relative origin-top-left rotate-180"></div>-->
-    <!--        <div class="w-[66px] h-[46px] bg-gradient-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
-    <!--            <div class="w-[66px] h-[46px] text-center text-neutral-500 text-[32px] font-bold">0</div>-->
-    <!--        </div>-->
-    <!--        <div class="w-[45px] h-[0px] relative"></div>-->
-    <!--    </div>-->
+<!--<div class="w-[952px] h-[924px] relative bg-white bg-opacity-20 flex-col justify-start items-start inline-flex">-->
+<!--    <div class="justify-center items-center gap-3 inline-flex">-->
+<!--        <div class="w-[45px] h-[0px] relative origin-top-left rotate-180"></div>-->
+<!--        <div class="w-[66px] h-[46px] bg-gradient-to-b from-white to-neutral-600 rounded-[10px] justify-center items-center flex">-->
+<!--            <div class="w-[66px] h-[46px] text-center text-neutral-500 text-[32px] font-bold">0</div>-->
+<!--        </div>-->
+<!--        <div class="w-[45px] h-[0px] relative"></div>-->
+<!--    </div>-->
 <!--    <div class="my-10 flex-col items-center gap-2.5 inline-flex">-->
-        <!--        <div class="w-[707px] h-[69px]"><span class="text-white text-[64px] font-black">Lo</span><span class="text-white text-[64px]">rem Ipsum</span></div>-->
+<!--        <div class="w-[707px] h-[69px]"><span class="text-white text-[64px] font-black">Lo</span><span class="text-white text-[64px]">rem Ipsum</span></div>-->
 <!--        <div class="text-center">-->
 <!--            <p class="w-[350px] text-white text-5xl m-4">{levelpack.title}</p>-->
 <!--            <p class="text-white text-2xl"><UserComponent prefix="by" {user}/></p>-->
 <!--        </div>-->
-        <div class="flex flex-row max-lg:flex-col justify-center gap-5 pt-5">
-            <Button text="Play" bg="#4bff5d" href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}" disabled={levelpack.modded}/>
-            <Button text="Download (WIP)" bg="#4bffff" onclick={downloadLevel} disabled/>
-        </div>
+<div class="flex flex-row justify-center gap-5 pt-5 max-lg:flex-col">
+    <Button
+        text="Play"
+        bg="#4bff5d"
+        href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}"
+        disabled={levelpack.modded}
+    />
+    <Button text="Download (WIP)" bg="#4bffff" onclick={downloadLevel} disabled />
+</div>
 <!--    </div>-->
-    <!--</div>-->
+<!--</div>-->
 <!--</div>-->
 <!--<div class="w-full bg-black bg-opacity-50 rounded-[5px] shadow justify-center items-center inline-flex py-3">-->
 <!--    <table>-->
@@ -150,40 +161,40 @@
 <!--        </tr>-->
 <!--        </tbody>-->
 <!--    </table>-->
-    <!--    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">-->
-    <!--        <div class="w-32 h-[98.01px] relative">-->
-    <!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
-    <!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-neutral-500 text-5xl">Unknown</div>-->
-    <!--            </div>-->
-    <!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Difficulty</div>-->
-    <!--        </div>-->
-    <!--        <div class="w-32 h-[98.01px] relative">-->
-    <!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
-    <!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl">0</div>-->
-    <!--            </div>-->
-    <!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total plays</div>-->
-    <!--        </div>-->
-    <!--        <div class="w-[120px] h-[98.73px] relative">-->
-    <!--            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">-->
-    <!--                <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl">0</div>-->
-    <!--            </div>-->
-    <!--            <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total stars</div>-->
-    <!--        </div>-->
-    <!--        <div class="w-[129.50px] h-[98.07px] relative">-->
-    <!--            <div class="w-[90px] h-[65px] left-[39.50px] top-[33.07px] absolute">-->
-    <!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-fuchsia-500 text-5xl">0</div>-->
-    <!--            </div>-->
-    <!--            <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total levels</div>-->
-    <!--        </div>-->
-    <!--        <div class="w-[150.50px] h-[94px] relative">-->
-    <!--            <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl">02-2023</div>-->
-    <!--            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-2xl">Created</div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+<!--    <div class="self-stretch justify-center items-center gap-[55px] inline-flex">-->
+<!--        <div class="w-32 h-[98.01px] relative">-->
+<!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
+<!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-neutral-500 text-5xl">Unknown</div>-->
+<!--            </div>-->
+<!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Difficulty</div>-->
+<!--        </div>-->
+<!--        <div class="w-32 h-[98.01px] relative">-->
+<!--            <div class="w-[90px] h-[65px] left-[38px] top-[33.01px] absolute">-->
+<!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-green-500 text-5xl">0</div>-->
+<!--            </div>-->
+<!--            <div class="w-32 h-[49px] left-0 top-0 absolute text-center text-2xl">Total plays</div>-->
+<!--        </div>-->
+<!--        <div class="w-[120px] h-[98.73px] relative">-->
+<!--            <div class="w-[86px] h-[65px] pt-px pb-[2.71px] left-[34px] top-[33.73px] absolute justify-start items-center gap-[0.31px] inline-flex">-->
+<!--                <div class="w-[117.78px] h-[61.29px] text-right text-yellow-400 text-5xl">0</div>-->
+<!--            </div>-->
+<!--            <div class="w-[120px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total stars</div>-->
+<!--        </div>-->
+<!--        <div class="w-[129.50px] h-[98.07px] relative">-->
+<!--            <div class="w-[90px] h-[65px] left-[39.50px] top-[33.07px] absolute">-->
+<!--                <div class="w-[159.55px] h-[65px] left-[-115px] top-0 absolute text-right text-fuchsia-500 text-5xl">0</div>-->
+<!--            </div>-->
+<!--            <div class="w-[129px] h-[49px] left-0 top-0 absolute text-center text-2xl">Total levels</div>-->
+<!--        </div>-->
+<!--        <div class="w-[150.50px] h-[94px] relative">-->
+<!--            <div class="w-[150.50px] h-[68px] left-0 top-[26px] absolute text-center text-amber-500 text-4xl">02-2023</div>-->
+<!--            <div class="w-[112.17px] h-[49px] left-[20.10px] top-0 absolute text-center text-2xl">Created</div>-->
+<!--        </div>-->
+<!--    </div>-->
 <!--</div>-->
-<p class="text-4xl text-neutral-300 font-bold pl-2.5 pt-5">Description</p>
-<p class="text-2xl p-5">{levelpack.description}</p>
-<p class="text-4xl text-neutral-300 font-bold pl-2.5 pt-5">Levels included</p>
+<p class="pl-2.5 pt-5 text-4xl font-bold text-neutral-300">Description</p>
+<p class="p-5 text-2xl">{levelpack.description}</p>
+<p class="pl-2.5 pt-5 text-4xl font-bold text-neutral-300">Levels included</p>
 <div class="flex flex-wrap justify-center gap-4 pt-5">
     {#await levels}
         <div class="m-auto">
@@ -191,14 +202,14 @@
         </div>
     {:then ls}
         {#each ls.levels as level}
-            <LevelComponent {level}/>
+            <LevelComponent {level} />
         {/each}
     {/await}
     <!--{#if expanded}-->
     <!--{:else}-->
-<!--        <div class="m-auto">-->
-<!--            <Button text="View Levels" bg="#d5ff4b" onclick={viewLevels}/>-->
-<!--        </div>-->
+    <!--        <div class="m-auto">-->
+    <!--            <Button text="View Levels" bg="#d5ff4b" onclick={viewLevels}/>-->
+    <!--        </div>-->
     <!--{/if}-->
 </div>
 
@@ -207,10 +218,10 @@
 
 <style>
     th {
-        @apply w-64 h-[49px] text-center text-2xl;
+        @apply h-[49px] w-64 text-center text-2xl;
     }
 
     td {
-        @apply w-[117.78px] h-[61.29px] text-center p-0;
+        @apply h-[61.29px] w-[117.78px] p-0 text-center;
     }
 </style>

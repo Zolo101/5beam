@@ -11,7 +11,7 @@ export const load = (async ({ locals, cookies }) => {
         const refreshToken = cookies.get("refresh_token");
 
         if (refreshToken) {
-            const result = await refreshTokenRequest(cookies, refreshToken)
+            const result = await refreshTokenRequest(cookies, refreshToken);
 
             if (result) {
                 user = await DiscordOauth2.getUser(result.access_token);
@@ -22,5 +22,5 @@ export const load = (async ({ locals, cookies }) => {
     let admin = isAdmin(user);
     let loggedIn = isLoggedIn(user);
 
-    return {user, admin, loggedIn}
+    return { user, admin, loggedIn };
 }) satisfies LayoutServerLoad;

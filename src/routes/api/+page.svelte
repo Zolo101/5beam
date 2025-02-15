@@ -25,21 +25,21 @@
 
 <div class="flex flex-col items-center">
     <APIEndpoint endpoint={["5beam 2023 summer update"]} type="INFO">
-        <p class="text-xl text-center">There has been some major changes:</p>
-        <br>
+        <p class="text-center text-xl">There has been some major changes:</p>
+        <br />
         <div class="flex flex-col gap-5">
-<!--            <p>-->
-<!--                - <APIReference type={"STRUCT"} reference={"Level"}/> now has a "creator" property of <APIReference type={"STRUCT"} reference={"User"}/>.-->
-<!--            </p>-->
+            <!--            <p>-->
+            <!--                - <APIReference type={"STRUCT"} reference={"Level"}/> now has a "creator" property of <APIReference type={"STRUCT"} reference={"User"}/>.-->
+            <!--            </p>-->
             <p class="text-center">
-                <APIReference type={"INFO"} reference={"Everything"}/>
+                <APIReference type={"INFO"} reference={"Everything"} />
             </p>
             <ul>
                 <li>The <code>amount</code> parameter has been removed from all endpoints</li>
             </ul>
 
             <p class="text-center">
-                <APIReference type={"STRUCT"} reference={"Level"}/>
+                <APIReference type={"STRUCT"} reference={"Level"} />
             </p>
             <ul>
                 <li><code>createdAt</code> is now <code>created</code></li>
@@ -51,34 +51,47 @@
             </ul>
 
             <p class="text-center">
-                <APIReference type={"STRUCT"} reference={"Levelpack"}/>
+                <APIReference type={"STRUCT"} reference={"Levelpack"} />
             </p>
             <ul>
                 <li>The maximum amount of levels in a levelpack is 100</li>
                 <li><code>plays</code> has been added</li>
                 <li><code>stars</code> has been added</li>
                 <li><code>modded</code> has been added</li>
-                <li><code>updated</code> has been added (although users cannot edit levelpacks yet)</li>
-                <li>By default, <code>levels</code> will now have a list of level ID's. But you can use the <code>levels</code> parameter to change it back to how it was before.</li>
+                <li>
+                    <code>updated</code> has been added (although users cannot edit levelpacks yet)
+                </li>
+                <li>
+                    By default, <code>levels</code> will now have a list of level ID's. But you can
+                    use the <code>levels</code> parameter to change it back to how it was before.
+                </li>
                 <li><code>creatorId</code> has been removed</li>
                 <li><code>createdAt</code> is now <code>created</code></li>
             </ul>
 
             <p class="text-center">
-                <APIReference type={"STRUCT"} reference={"User"}/>
+                <APIReference type={"STRUCT"} reference={"User"} />
             </p>
             <ul>
                 <li><code>creatorId</code> is now <code>id</code></li>
                 <li><code>createdAt</code> is now <code>created</code></li>
                 <li><code>name</code> is now <code>username</code></li>
                 <li><code>updated</code> has been added</li>
-                <li><code>levelpacks</code> has been added. It's an array of levelpacks ID's the user has made.</li>
-                <li><code>levels</code> has been added. It's an array of level ID's the user has made.</li>
-                <li><code>stars</code> has been added. It's an array of level ID's the user has starred. (although for now this feature is WIP)</li>
+                <li>
+                    <code>levelpacks</code> has been added. It's an array of levelpacks ID's the user
+                    has made.
+                </li>
+                <li>
+                    <code>levels</code> has been added. It's an array of level ID's the user has made.
+                </li>
+                <li>
+                    <code>stars</code> has been added. It's an array of level ID's the user has starred.
+                    (although for now this feature is WIP)
+                </li>
             </ul>
 
             <p class="text-center">
-                <APIReference type={"GET"} reference={["api", "page"]}/>
+                <APIReference type={"GET"} reference={["api", "page"]} />
             </p>
             <ul>
                 <li>Type and sort codes have changed.</li>
@@ -86,7 +99,7 @@
             </ul>
 
             <p class="text-center">
-                <APIReference type={"GET"} reference={["api", "user", "page"]}/>
+                <APIReference type={"GET"} reference={["api", "user", "page"]} />
             </p>
             <ul>
                 <li><code>creatorId</code> is now <code>id</code></li>
@@ -95,21 +108,21 @@
             </ul>
 
             <p class="text-center">
-                <APIReference type={"GET"} reference={["api", "search"]}/>
+                <APIReference type={"GET"} reference={["api", "search"]} />
             </p>
             <ul>
                 <li>Search results may be different because of the move to another database.</li>
             </ul>
 
             <p class="text-center">
-                <APIReference type={"GET"} reference={["api", "auth", "discord"]}/>
+                <APIReference type={"GET"} reference={["api", "auth", "discord"]} />
             </p>
             <ul>
                 <li>No changes, but it's now in the API docs</li>
             </ul>
 
             <p class="text-center">
-                <APIReference type={"POST"} reference={["api", "auth", "refresh"]}/>
+                <APIReference type={"POST"} reference={["api", "auth", "refresh"]} />
             </p>
             <ul>
                 <li>New!</li>
@@ -123,17 +136,20 @@
                 <li>The Golden Guard's Golden5</li>
             </ul>
         </div>
-        <p>Contact <APIReference type={"DISCORD"} reference={["zelo101"]}/> if you'd like to have your 5b mod supported!</p>
+        <p>
+            Contact <APIReference type={"DISCORD"} reference={["zelo101"]} /> if you'd like to have your
+            5b mod supported!
+        </p>
     </APIEndpoint>
-<!--    <div class="ratelimit-container">-->
-<!--        {#each ratelimits as ratelimit}-->
-<!--            <p class="ratelimit"><span class="endpoint-type-{ratelimit[0]}">{ratelimit[0]}</span> {ratelimit[1]} requests per {ratelimit[2]} minutes</p>-->
-<!--        {/each}-->
-<!--    </div>-->
+    <!--    <div class="ratelimit-container">-->
+    <!--        {#each ratelimits as ratelimit}-->
+    <!--            <p class="ratelimit"><span class="endpoint-type-{ratelimit[0]}">{ratelimit[0]}</span> {ratelimit[1]} requests per {ratelimit[2]} minutes</p>-->
+    <!--        {/each}-->
+    <!--    </div>-->
     <APIEndpoint
-            endpoint={["Level"]}
-            type="STRUCT"
-            code={`
+        endpoint={["Level"]}
+        type="STRUCT"
+        code={`
 {
   "created": "2023-08-02 20:00:29.848Z",
   "creator": {
@@ -161,9 +177,9 @@
     />
 
     <APIEndpoint
-            endpoint={["Levelpack"]}
-            type="STRUCT"
-            code={`
+        endpoint={["Levelpack"]}
+        type="STRUCT"
+        code={`
 {
   "created": "2023-08-03 19:19:00.152Z",
   "creator": {
@@ -211,9 +227,9 @@
     />
 
     <APIEndpoint
-            endpoint={["User"]}
-            type="STRUCT"
-            code={`
+        endpoint={["User"]}
+        type="STRUCT"
+        code={`
 {
   "created": "2023-08-02 19:58:58.929Z",
   "discordId": "1128443643221508187",
@@ -228,207 +244,240 @@
 }
             `}
     >
-        <p>There is a parameter in most endpoints that let you expand the levels property to actually include the levels.</p>
+        <p>
+            There is a parameter in most endpoints that let you expand the levels property to
+            actually include the levels.
+        </p>
     </APIEndpoint>
 
-    <APIEndpoint
-            endpoint={["api", "level"]}
-            params={[
-                ["id", "Level ID", ParamType.INTEGER],
-            ]}
-    >
-                <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
-        <p>Returns a <APIReference type={"STRUCT"} reference={"Level"}/>.</p>
+    <APIEndpoint endpoint={["api", "level"]} params={[["id", "Level ID", ParamType.INTEGER]]}>
+        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
+        <p>Returns a <APIReference type={"STRUCT"} reference={"Level"} />.</p>
     </APIEndpoint>
 
-<!--    <APIEndpoint-->
-<!--            endpoint={["api", "level", "vote"]}-->
-<!--            params={[-->
-<!--                ["id", "Level ID", ParamType.INTEGER],-->
-<!--                ["difficulty", "1 - 7 (easiest to hardest)", ParamType.INTEGER],-->
-<!--            ]}-->
-<!--            wip-->
-<!--            token_required-->
-<!--    >-->
-<!--        <p>Lets a user give a difficulty for a level. This will be used to calculate the final difficulty of the level.</p>-->
-<!--    </APIEndpoint>-->
+    <!--    <APIEndpoint-->
+    <!--            endpoint={["api", "level", "vote"]}-->
+    <!--            params={[-->
+    <!--                ["id", "Level ID", ParamType.INTEGER],-->
+    <!--                ["difficulty", "1 - 7 (easiest to hardest)", ParamType.INTEGER],-->
+    <!--            ]}-->
+    <!--            wip-->
+    <!--            token_required-->
+    <!--    >-->
+    <!--        <p>Lets a user give a difficulty for a level. This will be used to calculate the final difficulty of the level.</p>-->
+    <!--    </APIEndpoint>-->
 
-<!--    <APIEndpoint-->
-<!--            endpoint={["api", "level", "star"]}-->
-<!--            params={[-->
-<!--                ["id", "Level ID", ParamType.INTEGER],-->
-<!--                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],-->
-<!--            ]}-->
-<!--            wip-->
-<!--            token_required-->
-<!--    >-->
-<!--        <p>Stars a level.</p>-->
-<!--    </APIEndpoint>-->
+    <!--    <APIEndpoint-->
+    <!--            endpoint={["api", "level", "star"]}-->
+    <!--            params={[-->
+    <!--                ["id", "Level ID", ParamType.INTEGER],-->
+    <!--                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],-->
+    <!--            ]}-->
+    <!--            wip-->
+    <!--            token_required-->
+    <!--    >-->
+    <!--        <p>Stars a level.</p>-->
+    <!--    </APIEndpoint>-->
 
     <APIEndpoint
-            endpoint={["api", "levelpack"]}
-            params={[
-                ["id", "Levelpack ID", ParamType.INTEGER],
-                ["levels", "Include Levels", ParamType.INTEGER, 0],
-            ]}
+        endpoint={["api", "levelpack"]}
+        params={[
+            ["id", "Levelpack ID", ParamType.INTEGER],
+            ["levels", "Include Levels", ParamType.INTEGER, 0]
+        ]}
     >
         <p>Level codes:</p>
-        <Table title="Level Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "Return Level ID's"],
-            ["1", "Return STRUCT Levels (can be slow)"],
-        ]}/>
+        <Table
+            title="Level Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Return Level ID's"],
+                ["1", "Return STRUCT Levels (can be slow)"]
+            ]}
+        />
         <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
-        <p>Returns a <APIReference type={"STRUCT"} reference={"Levelpack"}/></p>
+        <p>Returns a <APIReference type={"STRUCT"} reference={"Levelpack"} /></p>
     </APIEndpoint>
 
-<!--    <APIEndpoint-->
-<!--            endpoint={["api", "levelpack", "star"]}-->
-<!--            params={[-->
-<!--                ["id", "Levelpack ID", ParamType.INTEGER],-->
-<!--                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],-->
-<!--            ]}-->
-<!--            wip-->
-<!--            token_required-->
-<!--    >-->
-<!--        <p>Stars a levelpack.</p>-->
-<!--    </APIEndpoint>-->
-
+    <!--    <APIEndpoint-->
+    <!--            endpoint={["api", "levelpack", "star"]}-->
+    <!--            params={[-->
+    <!--                ["id", "Levelpack ID", ParamType.INTEGER],-->
+    <!--                ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN],-->
+    <!--            ]}-->
+    <!--            wip-->
+    <!--            token_required-->
+    <!--    >-->
+    <!--        <p>Stars a levelpack.</p>-->
+    <!--    </APIEndpoint>-->
 
     <APIEndpoint
-            endpoint={["api", "user"]}
-            params={[
-                ["id", "User ID", ParamType.STRING],
-                ["discordId", "User's Discord ID", ParamType.STRING],
-            ]}
+        endpoint={["api", "user"]}
+        params={[
+            ["id", "User ID", ParamType.STRING],
+            ["discordId", "User's Discord ID", ParamType.STRING]
+        ]}
     >
-        <p>Returns a <APIReference type={"STRUCT"} reference={"User"}/>.</p>
+        <p>Returns a <APIReference type={"STRUCT"} reference={"User"} />.</p>
         <p>You can use either "id" or "discordId", but if you use both, only "id" will be used.</p>
     </APIEndpoint>
 
     <APIEndpoint
-            endpoint={["api", "page"]}
-            params={[
-                ["page", "Page number", ParamType.INTEGER],
-                ["type", "Type of", ParamType.INTEGER, 0],
-                ["sort", "Sort by", ParamType.INTEGER, 0],
-                ["featured", "Only featured levels / levelpacks", ParamType.BOOLEAN, false],
-                ["mod", "Only show levels / levelpacks that are for a specific 5b mod", ParamType.STRING],
-            ]}
-    >
-                <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
-        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/>.</p>
-        <p>Type codes:</p>
-        <Table title="Type Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "Levels"],
-            ["1", "Levelpacks"],
-        ]}/>
-        <p>Sort codes:</p>
-        <Table title="Sort Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "Age (newest)"],
-            ["1", "Age (oldest)"],
-            ["2", "Plays (descending)"],
-        ]}/>
-    </APIEndpoint>
-
-    <APIEndpoint
-            endpoint={["api", "search"]}
-            params={[
-                ["text", "Search text", ParamType.STRING],
-                ["page", "Page number", ParamType.INTEGER],
-                ["mod", "Only show levels that are for a specific 5b mod", ParamType.STRING],
-            ]}
+        endpoint={["api", "page"]}
+        params={[
+            ["page", "Page number", ParamType.INTEGER],
+            ["type", "Type of", ParamType.INTEGER, 0],
+            ["sort", "Sort by", ParamType.INTEGER, 0],
+            ["featured", "Only featured levels / levelpacks", ParamType.BOOLEAN, false],
+            [
+                "mod",
+                "Only show levels / levelpacks that are for a specific 5b mod",
+                ParamType.STRING
+            ]
+        ]}
     >
         <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
-        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> who's title contains the search text. Levelpacks are not supported in search yet.</p>
-    </APIEndpoint>
-
-    <APIEndpoint
-            endpoint={["api", "user", "page"]}
-            params={[
-                ["id", "User ID", ParamType.INTEGER],
-                ["page", "Page number", ParamType.INTEGER],
-                ["type", "Type of", ParamType.INTEGER, 0],
-                ["sort", "Sort by", ParamType.INTEGER, 0],
-                ["mod", "Only show levels / levelpacks that are for a specific 5b mod", ParamType.STRING],
-            ]}
-    >
-                <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
-        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"}/> created by the user.</p>
+        <p>Returns a list of <APIReference type={"STRUCT"} reference={"Level"} />.</p>
         <p>Type codes:</p>
-        <Table title="Type Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "Levels"],
-            ["1", "Levelpacks"],
-        ]}/>
+        <Table
+            title="Type Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Levels"],
+                ["1", "Levelpacks"]
+            ]}
+        />
         <p>Sort codes:</p>
-        <Table title="Filter Codes" heads={["Code", "Meaning"]} content={[
-            ["0", "Age (newest)"],
-            ["1", "Age (oldest)"],
-            ["2", "Plays (descending)"],
-        ]}/>
+        <Table
+            title="Sort Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Age (newest)"],
+                ["1", "Age (oldest)"],
+                ["2", "Plays (descending)"]
+            ]}
+        />
     </APIEndpoint>
 
     <APIEndpoint
-            endpoint={["api", "create", "level"]}
-            type="POST"
-            game_only
-            token_required
+        endpoint={["api", "search"]}
+        params={[
+            ["text", "Search text", ParamType.STRING],
+            ["page", "Page number", ParamType.INTEGER],
+            ["mod", "Only show levels that are for a specific 5b mod", ParamType.STRING]
+        ]}
     >
-        <p>Create a <APIReference type={"STRUCT"} reference={"Level"}/>. Make sure access_token is valid before posting! You will need to give 5beam the following using a FormData object:</p>
-        <Table heads={["Property", "Meaning", "Type"]} content={[
+        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
+        <p>
+            Returns a list of <APIReference type={"STRUCT"} reference={"Level"} /> who's title contains
+            the search text. Levelpacks are not supported in search yet.
+        </p>
+    </APIEndpoint>
+
+    <APIEndpoint
+        endpoint={["api", "user", "page"]}
+        params={[
+            ["id", "User ID", ParamType.INTEGER],
+            ["page", "Page number", ParamType.INTEGER],
+            ["type", "Type of", ParamType.INTEGER, 0],
+            ["sort", "Sort by", ParamType.INTEGER, 0],
+            [
+                "mod",
+                "Only show levels / levelpacks that are for a specific 5b mod",
+                ParamType.STRING
+            ]
+        ]}
+    >
+        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
+        <p>
+            Returns a list of <APIReference type={"STRUCT"} reference={"Level"} /> created by the user.
+        </p>
+        <p>Type codes:</p>
+        <Table
+            title="Type Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Levels"],
+                ["1", "Levelpacks"]
+            ]}
+        />
+        <p>Sort codes:</p>
+        <Table
+            title="Filter Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Age (newest)"],
+                ["1", "Age (oldest)"],
+                ["2", "Plays (descending)"]
+            ]}
+        />
+    </APIEndpoint>
+
+    <APIEndpoint endpoint={["api", "create", "level"]} type="POST" game_only token_required>
+        <p>
+            Create a <APIReference type={"STRUCT"} reference={"Level"} />. Make sure access_token is
+            valid before posting! You will need to give 5beam the following using a FormData object:
+        </p>
+        <Table
+            heads={["Property", "Meaning", "Type"]}
+            content={[
                 ["access_token", "User's discord access token.", ParamType.STRING],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
                 ["data", "Level file", "File"],
-                ["modded", "What mod this level is for (Leave blank for HTML5b / Flash 5b)", ParamType.STRING]
-            ]}>
-        </Table>
+                [
+                    "modded",
+                    "What mod this level is for (Leave blank for HTML5b / Flash 5b)",
+                    ParamType.STRING
+                ]
+            ]}
+        ></Table>
     </APIEndpoint>
 
-    <APIEndpoint
-            endpoint={["api", "create", "levelpack"]}
-            type="POST"
-            game_only
-            token_required
-    >
-        <p>Create a <APIReference type={"STRUCT"} reference={"Levelpack"}/>. Make sure access_token is valid before posting! You will need to give 5beam the following using a FormData object:</p>
-        <Table heads={["Property", "Meaning", "Type"]} content={[
+    <APIEndpoint endpoint={["api", "create", "levelpack"]} type="POST" game_only token_required>
+        <p>
+            Create a <APIReference type={"STRUCT"} reference={"Levelpack"} />. Make sure
+            access_token is valid before posting! You will need to give 5beam the following using a
+            FormData object:
+        </p>
+        <Table
+            heads={["Property", "Meaning", "Type"]}
+            content={[
                 ["access_token", "User's discord access token.", ParamType.STRING],
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
                 ["data", "Levelpack file", "File"],
-                ["modded", "What mod this levelpack is for (Leave blank for HTML5b / Flash 5b)", ParamType.STRING]
-            ]}>
-        </Table>
+                [
+                    "modded",
+                    "What mod this levelpack is for (Leave blank for HTML5b / Flash 5b)",
+                    ParamType.STRING
+                ]
+            ]}
+        ></Table>
     </APIEndpoint>
 
-    <APIEndpoint
-            endpoint={["api", "auth", "discord"]}
-            type="GET"
-            game_only
-    >
+    <APIEndpoint endpoint={["api", "auth", "discord"]} type="GET" game_only>
         <p>Endpoint for logging into 5beam discord oauth, returns an access & refresh token.</p>
     </APIEndpoint>
 
-    <APIEndpoint
-            endpoint={["api", "auth", "refresh"]}
-            type="POST"
-            game_only
-            token_required
-    >
-        <p>Gives you a new access_token. If this returns 400, it means your refresh_token is bad and you'll have to login again.</p>
-        <Table heads={["Property", "Meaning", "Type"]} content={[
-                ["refresh_token", "User's discord refresh token.", ParamType.STRING],
-            ]}>
-        </Table>
+    <APIEndpoint endpoint={["api", "auth", "refresh"]} type="POST" game_only token_required>
+        <p>
+            Gives you a new access_token. If this returns 400, it means your refresh_token is bad
+            and you'll have to login again.
+        </p>
+        <Table
+            heads={["Property", "Meaning", "Type"]}
+            content={[["refresh_token", "User's discord refresh token.", ParamType.STRING]]}
+        ></Table>
     </APIEndpoint>
 </div>
 
 <style>
     code {
-        @apply bg-neutral-700 rounded p-1 mx-0.5;
+        @apply mx-0.5 rounded bg-neutral-700 p-1;
     }
 
     ul {
-        @apply flex flex-col gap-2 list-disc;
+        @apply flex list-disc flex-col gap-2;
     }
 </style>

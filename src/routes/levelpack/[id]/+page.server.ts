@@ -3,5 +3,5 @@ import { getLevelpackById } from "../../../talk/get";
 
 export const load = (async ({ params }) => {
     const levelpack = await getLevelpackById(params.id);
-    return {levelpack}
+    return { levelpack };
 }) satisfies PageServerLoad;
