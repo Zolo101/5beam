@@ -13,7 +13,7 @@
 
 <a href="/levelpack/{levelpack.id}">
     <div
-        class:modded={levelpack.modded}
+        class:moddedLevelpack={levelpack.modded}
         class:glow
         class="relative h-[158px] w-[309px] rounded-[5px] bg-zinc-700/20 text-neutral-50 shadow-sm outline outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
     >
@@ -58,14 +58,3 @@
         <!--    </div>-->
     </div>
 </a>
-
-<style>
-    .modded {
-        /* TODO: Too much? */
-        @apply bg-purple-900 text-purple-400 outline-purple-400/40;
-    }
-
-    .glow {
-        @apply outline-white/40;
-    }
-</style>

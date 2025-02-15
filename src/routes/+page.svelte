@@ -133,9 +133,3 @@
         {/each}
     </section>
 </Pagination>
-
-<style>
-    .pagination {
-        @apply m-auto flex flex-wrap justify-center gap-4;
-    }
-</style>

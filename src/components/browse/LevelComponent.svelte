@@ -60,18 +60,3 @@
         </div>
     </div>
 </a>
-
-<style>
-    .modded {
-        /* TODO: Too much? */
-        @apply bg-purple-950 text-purple-500 outline-purple-500/40;
-    }
-
-    .glow {
-        @apply outline-white/40;
-    }
-
-    h2 {
-        @apply mx-10 p-2 text-4xl font-bold text-neutral-300;
-    }
-</style>

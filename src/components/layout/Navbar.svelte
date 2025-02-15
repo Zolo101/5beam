@@ -99,17 +99,6 @@
         padding: 0;
     }
 
-    .list a {
-        @apply rounded bg-neutral-800 px-4 py-1 text-2xl text-neutral-200 drop-shadow-2xl transition-colors;
-        /*padding: 3px 10px;*/
-        /*margin: 0 5px;*/
-        /*border-radius: 4px;*/
-    }
-
-    .list a:hover {
-        @apply bg-neutral-900;
-    }
-
     li:hover {
         cursor: pointer;
         font-weight: bold;

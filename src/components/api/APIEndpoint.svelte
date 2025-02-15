@@ -65,27 +65,3 @@
         </div>
     </div>
 </section>
-
-<style>
-    .warning {
-        @apply inline-block bg-black p-2 text-xl font-bold;
-    }
-
-    .endpoint.deprecated {
-        background: repeating-linear-gradient(45deg, grey, grey 40px, #7f7b78 40px, #7f7b78 80px);
-    }
-
-    .endpoint.game_only {
-        background: #847877;
-    }
-
-    .endpoint.deprecated .name,
-    .warning {
-        color: orange;
-    }
-
-    .endpoint.game_only .name,
-    .endpoint-game_only {
-        color: palevioletred;
-    }
-</style>

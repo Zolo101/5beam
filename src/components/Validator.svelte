@@ -157,26 +157,3 @@
         </div>
     </div>
 {/if}
-
-<style>
-    .code {
-        @apply rounded bg-white/20 px-2 font-black shadow outline outline-2 outline-white/50;
-    }
-
-    .warningLog {
-        @apply shadow-amber-900 outline outline-4 outline-amber-500;
-    }
-
-    .errorLog {
-        @apply shadow-red-900 outline outline-4 outline-red-500;
-    }
-
-    .level-props {
-        text-align: center;
-    }
-
-    .sprites,
-    .dialogues {
-        padding: 10px;
-    }
-</style>

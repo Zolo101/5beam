@@ -24,7 +24,7 @@
 </script>
 
 {#if !removeOptions}
-    <div class="mb-3 ml-5">
+    <div class="mb-3 ml-5 *:mx-1 *:cursor-pointer *:rounded *:bg-neutral-800 *:p-2 *:text-neutral-50 *:shadow *:transition-colors *:hover:bg-neutral-700">
         <select name="filter" bind:value={featured}>
             <option value={1}>Featured</option>
             <option value={0}>All</option>
@@ -52,13 +52,3 @@
         >
     </div>
 {/if}
-
-<style>
-    select {
-        @apply mx-1 cursor-pointer rounded bg-neutral-800 p-2 text-neutral-50 shadow transition-colors;
-    }
-
-    select:hover {
-        @apply bg-neutral-700;
-    }
-</style>

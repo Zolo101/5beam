@@ -65,10 +65,10 @@ button {
     @apply rounded-lg bg-linear-to-b px-7 py-4 text-2xl shadow-md;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+/*a {*/
+/*    text-decoration: none;*/
+/*    color: inherit;*/
+/*}*/
 
 /* TODO: Is this a good idea? */
 svg {
@@ -81,4 +81,145 @@ svg {
 
 .root {
     @apply flex h-full flex-col;
+}
+
+/* TODO: Eventually we want to get rid of all below */
+/* Navbar */
+
+.list a {
+    @apply rounded bg-neutral-800 px-4 py-1 text-2xl text-neutral-200 drop-shadow-2xl transition-colors;
+}
+
+.list a:hover {
+    @apply bg-neutral-900;
+}
+
+/* Level Component */
+
+.modded {
+    /* TODO: Too much? */
+    @apply bg-purple-950 text-purple-500 outline-purple-500/40;
+}
+
+.glow {
+    @apply outline-white/40;
+}
+
+/* Levelpack Component */
+
+.moddedLevelpack {
+    /* TODO: Too much? */
+    @apply bg-purple-900 text-purple-400 outline-purple-400/40;
+}
+
+
+/* Pagination */
+
+.pagination {
+    @apply m-auto flex flex-wrap justify-center gap-4;
+}
+
+/* API */
+
+code {
+    @apply mx-0.5 rounded bg-neutral-700 p-1;
+}
+
+ul {
+    @apply flex list-disc flex-col gap-2;
+}
+
+/* API Endpoint */
+
+.warning {
+    @apply inline-block bg-black p-2 text-xl font-bold;
+}
+
+.endpoint.deprecated {
+    background: repeating-linear-gradient(45deg, grey, grey 40px, #7f7b78 40px, #7f7b78 80px);
+}
+
+.endpoint.game_only {
+    background: #847877;
+}
+
+.endpoint.deprecated .name,
+.warning {
+    color: orange;
+}
+
+.endpoint.game_only .name,
+.endpoint-game_only {
+    color: palevioletred;
+}
+
+/* Table */
+
+table {
+    @apply rounded border-hidden text-neutral-200 outline outline-4 outline-black;
+    background: repeating-linear-gradient(
+            -45deg,
+            #5a5a5a,
+            #5a5a5a 10px,
+            #464646 10px,
+            #464646 20px
+    );
+    /*border: 1px solid black;*/
+}
+
+caption {
+    @apply bg-black p-1 text-sm;
+    /*background-color: black;*/
+    /*padding: 5px;*/
+}
+
+th,
+td {
+    @apply border-2 border-neutral-800 p-2.5;
+}
+
+th {
+    @apply bg-neutral-700;
+    /*background-color: #5a5a5a;*/
+}
+
+td {
+    background-color: #5a5a5a;
+}
+
+.dynamicWidth {
+    width: 100%;
+}
+
+/* Validator */
+
+.code {
+    @apply rounded bg-white/20 px-2 font-black shadow outline outline-2 outline-white/50;
+}
+
+.warningLog {
+    @apply shadow-amber-900 outline outline-4 outline-amber-500;
+}
+
+.errorLog {
+    @apply shadow-red-900 outline outline-4 outline-red-500;
+}
+
+.level-props {
+    text-align: center;
+}
+
+.sprites,
+.dialogues {
+    padding: 10px;
+}
+
+/* Log */
+
+.log {
+    @apply my-2 rounded p-2 font-bold shadow drop-shadow;
+}
+
+.icon {
+    @apply text-2xl;
 }

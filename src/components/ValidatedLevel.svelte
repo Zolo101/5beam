@@ -29,13 +29,3 @@
         >{to5bLevelFormat(level.id)}</span
     >
 </div>
-
-<style>
-    .warningLog {
-        @apply shadow-amber-900 outline outline-4 outline-amber-500;
-    }
-
-    .errorLog {
-        @apply shadow-red-900 outline outline-4 outline-red-500;
-    }
-</style>

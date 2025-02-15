@@ -30,7 +30,7 @@
     ></script>
 </svelte:head>
 
-<div class="m">
+<div class="m blur-sm">
     <!--    <div></div>-->
     <!--    <img src={background} alt=""/>-->
 </div>
@@ -46,7 +46,6 @@
 <style>
     /* parallel */
     .m {
-        @apply blur-sm;
         background-image: url("$lib/assets/backgrounds/2.png");
         background-size: cover;
         position: fixed;

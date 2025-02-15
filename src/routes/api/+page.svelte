@@ -471,13 +471,3 @@
         ></Table>
     </APIEndpoint>
 </div>
-
-<style>
-    code {
-        @apply mx-0.5 rounded bg-neutral-700 p-1;
-    }
-
-    ul {
-        @apply flex list-disc flex-col gap-2;
-    }
-</style>
