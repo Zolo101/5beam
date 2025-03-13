@@ -15,34 +15,28 @@
     <div
         class:moddedLevelpack={levelpack.modded}
         class:glow
-        class="relative h-[158px] w-[309px] rounded-[5px] bg-zinc-700/20 text-neutral-50 shadow-sm outline outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
+        class="w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
     >
         <!--    Thumbnail -->
         <div class="flex w-full justify-center">
             <img
                 width="128"
                 height="128"
-                class="rounded-xs bg-contain"
+                class="rounded-xs"
                 src={Box}
                 alt="Placeholder Thumbnail"
             />
         </div>
-        <p
-            class="absolute top-[115px] left-[7px] h-6 w-[300px] overflow-hidden text-xl text-ellipsis whitespace-nowrap"
-        >
+        <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap">
             {levelpack.title}
         </p>
-        <p
-            class="absolute top-[137px] left-[7px] h-3 w-[233px] text-[13px] text-ellipsis whitespace-nowrap text-neutral-400"
-        >
-            by {user.username}
-        </p>
-        <div
-            class="absolute top-[119px] left-[180px] inline-flex h-[17px] w-[22px] items-end justify-start gap-px"
-        >
-            <div class="relative top-[20px] left-[80px] flex items-end">
+        <div class="flex justify-between gap-2">
+            <p class="text-ellipsis whitespace-nowrap text-neutral-400">
+                by {user.username}
+            </p>
+            <div class="flex items-end">
                 <Icon name="plays" width="13" height="13" />
-                <p class="relative h-[15px] w-[39px] pl-1 text-[13px] text-green-500">
+                <p class="h-[15px] pl-1 text-green-500">
                     {getPlaysString(levelpack.plays)}
                 </p>
             </div>

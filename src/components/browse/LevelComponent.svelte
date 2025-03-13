@@ -17,43 +17,33 @@
     <div
         class:modded={level.modded}
         class:glow
-        class="inline-flex h-[234px] w-[349px] flex-col items-start justify-start rounded-[5px] bg-zinc-800/60 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
+        class="flex w-[350px] flex-col items-start justify-start rounded-lg bg-zinc-800/70 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
     >
-        <div class="relative h-full w-full">
-            <img
-                class="absolute top-0 left-0 h-full w-full rounded-xs object-cover"
-                src={thumbnailUrl}
-                alt="Level Thumbnail"
-            />
-            <div class="absolute right-0 bottom-0 h-[35px] w-[35px]">
+        <div class="inline-flex h-full w-full">
+            <img class="rounded-xs" src={thumbnailUrl} alt="Level Thumbnail" />
+            <div class=" inline h-[35px] w-[35px]">
                 <Difficulty difficulty={level.difficulty} />
             </div>
             <!--            <img class="w-[35px] h-[35px] left-[160px] top-[73px] absolute" src="https://via.placeholder.com/35x35" />-->
         </div>
-        <div class="inline-flex h-9 items-center justify-start pr-[62px]">
-            <div class="relative flex w-full flex-col items-start justify-start">
+        <div class="flex w-full items-center justify-start">
+            <div class="w-full flex-col items-start justify-start">
                 <!--                <p class="w-[200px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden text-ellipsis">{level.title}</p>-->
-                <p
-                    class="relative top-1.5 w-[290px] overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg"
-                >
+                <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg">
                     {level.title}
                 </p>
-                <div class="relative bottom-2 flex w-[289px] justify-between">
-                    <div class="relative top-2.5 h-5 w-[151px] text-neutral-400">
-                        <p class="absolute top-0 left-0 text-[13px]">by</p>
-                        <p
-                            class="absolute top-0 left-[18px] h-5 w-[228px] overflow-hidden text-[13px] text-ellipsis whitespace-nowrap"
-                        >
+                <div class="flex justify-between gap-2 text-sm">
+                    <div class="grow text-neutral-400">
+                        <span>by</span>
+                        <span class="overflow-hidden text-ellipsis whitespace-nowrap">
                             {user.username}
-                        </p>
+                        </span>
                     </div>
-                    <div class="relative left-[40px] flex w-[39px]">
-                        <div class="relative top-[5px] right-[3px] flex items-end">
-                            <Icon name="plays" width="13" height="13" />
-                            <p class="h-[15px] w-[39px] pl-1 text-[13px] text-green-500">
-                                {getPlaysString(level.plays)}
-                            </p>
-                        </div>
+                    <div class="flex items-end">
+                        <Icon name="plays" width="13" height="13" />
+                        <p class="h-[15px] pl-1 text-green-500">
+                            {getPlaysString(level.plays)}
+                        </p>
                     </div>
                 </div>
             </div>

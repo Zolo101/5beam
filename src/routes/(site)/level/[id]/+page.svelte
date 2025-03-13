@@ -75,7 +75,7 @@
         src={thumbnailUrl}
         alt="Placeholder Thumbnail"
     />
-    <div class="flex flex-row gap-5 pt-5 max-lg:flex-col">
+    <div class="flex gap-5 pt-5 max-lg:flex-col">
         <Button
             text="Play"
             bg="#4bff5d"

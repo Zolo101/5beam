@@ -27,7 +27,7 @@
     const dailyLevelCreator = dailyLevel.expand.creator;
     // console.log(dailyLevel, dailyLevelCreator);
 
-    const description = "Play, share and upload BFDIA 5b levels!!";
+    const description = "Play, share and upload BFDIA 5b levels!";
 
     const b = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
 </script>
@@ -83,7 +83,9 @@
     <p class="">Daily Level</p>
 </div>
 <section class="mx-10 flex gap-5 max-lg:flex-col">
-    <section class="flex grow gap-2 rounded-sm bg-green-600/50 p-3 outline-2 outline-green-400/90">
+    <section
+        class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-500/70 to-green-700/50 p-3 outline-2 outline-green-400/90"
+    >
         <img class="w-1/2 rounded-xs object-cover" src={b} alt="Level Thumbnail" />
         <div class="flex w-full flex-col gap-2 p-2">
             <div>
@@ -105,14 +107,14 @@
                     text="Play!"
                     bg="#4bff5d"
                     href="https://coppersalts.github.io/HTML5b?level={dailyLevel.id}"
-                    event="play-level"
+                    event="play-level-daily"
                     disabled={dailyLevel.modded}
                 />
             </div>
         </div>
     </section>
     <section
-        class="min-h-full content-center rounded-sm bg-emerald-600/70 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90"
+        class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90"
     >
         <p>Weekly challenges coming soon!</p>
     </section>

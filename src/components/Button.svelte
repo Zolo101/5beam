@@ -12,17 +12,11 @@
         {disabled}
         data-umami-event={event}
         class="
-        relative h-[40px] w-[246px] cursor-pointer rounded-[10px] shadow-lg outline outline-4 outline-transparent transition-all hover:outline-black/50
-        disabled:cursor-not-allowed disabled:opacity-40 disabled:outline-hidden
+        h-[40px] cursor-pointer text-black transition-all hover:outline-black/50 hover:brightness-75
+        disabled:cursor-not-allowed
     "
         style="background-color: {bg}"
     >
-        <span
-            class="absolute top-0 left-0 h-[40px] w-[246px] rounded-lg bg-linear-to-b from-transparent to-[#00000044]"
-        ></span>
-        <span
-            class="absolute top-1 left-0 h-[40px] w-[246px] text-center text-2xl font-normal text-black"
-            >{text}</span
-        >
+        {text}
     </button>
 </a>
