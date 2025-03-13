@@ -132,7 +132,7 @@ export async function getSearch(text: string, page: number, mod: string) {
 
     return toPOJO(
         (
-            await levels.getList<Level>(page, 8, {
+            await levels.getList<Level>(page, 12, {
                 expand: "creator",
                 filter
             })

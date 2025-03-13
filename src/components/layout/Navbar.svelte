@@ -6,6 +6,7 @@
     import LevelComponent from "../browse/LevelComponent.svelte";
     import Pagination from "../Pagination.svelte";
     import FiveBStyle from "../FiveBStyle.svelte";
+    import Icon from "../Icon.svelte";
 
     export let user: User;
 
@@ -39,9 +40,6 @@
                     <a href="/api">API</a>
                     <a href="/api/auth/discord">Log In</a>
                 {/if}
-                <!--        </div>-->
-                <!--        <div>-->
-                <!--        <SearchResults search={$searchText} results={$searchResults}/>-->
             </div>
             <input
                 type="text"
@@ -59,7 +57,7 @@
 {#if searchFocused}
     <div
         transition:fly={{ y: 500 }}
-        class="absolute z-20 w-full bg-black/80 py-[110px] shadow-2xl backdrop-blur-md"
+        class="absolute z-20 w-full bg-black/80 py-10 shadow-2xl backdrop-blur-md"
     >
         <Pagination
             bind:page={searchPage}
@@ -68,16 +66,23 @@
             removeOptions
             removeMovement
         >
-            <div class="m-auto max-w-[1600px]">
+            <div class="flex flex-col gap-5">
                 <div
-                    class="absolute top-[30px] text-6xl transition-colors"
+                    class="mx-10 flex justify-between text-6xl transition-colors"
                     style:color={!$searchResults.length ? "#ff7b7b" : "#e5e5e5"}
                 >
-                    <FiveBStyle text={$searchText} />
+                    <div>
+                        <FiveBStyle text={$searchText} />
+                    </div>
+                    <a
+                        href="#"
+                        class="font-black transition-transform hover:scale-120"
+                        on:click={() => (searchFocused = false)}>✕</a
+                    >
                 </div>
                 {#if $searchResults.length}
                     <!-- TODO: Allow 3 levels in the same row at >1600px width-->
-                    <div class="flex w-full flex-wrap gap-4">
+                    <div class="flex w-full flex-wrap justify-center gap-4">
                         {#each $searchResults as levelResult}
                             <div on:click={() => (searchFocused = false)}>
                                 <LevelComponent glow level={levelResult} />
