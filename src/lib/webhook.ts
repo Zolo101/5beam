@@ -39,7 +39,8 @@ const WebhookChannel = {
     New: import.meta.env.VITE_WEBHOOK_NEW,
     PublicLog: import.meta.env.VITE_WEBHOOK_PUBLIC_LOG,
     PrivateLog: import.meta.env.VITE_WEBHOOK_PRIVATE_LOG,
-    Featured: import.meta.env.VITE_WEBHOOK_FEATURED
+    Featured: import.meta.env.VITE_WEBHOOK_FEATURED,
+    Daily: import.meta.env.VITE_WEBHOOK_DAILYIES
 };
 
 // 058. etc ruins the link because of markdown, so replace the dot with a similar unicode character
@@ -188,6 +189,32 @@ export const NewLevelpackWebhook = new Webhook("New", (levelpack: Levelpack, pre
                 image: {
                     url: getLevelThumbnailURL(preview.id, preview.thumbnail)
                 }
+            }
+        ]
+    };
+});
+
+export const NewDailyWebhook = new Webhook("Daily", (level: Level) => {
+    return {
+        username: "New Daily",
+        embeds: [
+            {
+                title: level.title,
+                description: level.description,
+                url: `https://5beam.zelo.dev/level/${level.id}`,
+                color: 16761344,
+                author: {
+                    name: level.creator.global_name,
+                    url: `https://5beam.zelo.dev/user/${level.creator.id}`,
+                    icon_url: `https://cdn.discordapp.com/avatars/${level.creator.id}/${level.creator.avatar}.png`
+                },
+                image: {
+                    url: getLevelThumbnailURL(level.id, level.thumbnail)
+                },
+                footer: {
+                    text: `${level.plays} plays`
+                },
+                timestamp: level.created
             }
         ]
     };

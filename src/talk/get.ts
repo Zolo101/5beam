@@ -1,8 +1,34 @@
-import { levelpacks, levels, users } from "$lib/pocketbase";
-import type { Level, Levelpack, PocketbaseUser } from "$lib/types";
+import { dailyies, levelpacks, levels, users, weeklies } from "$lib/pocketbase";
+import type { Daily, Level, Levelpack, PocketbaseUser, WeeklyChallenge } from "$lib/types";
 import type { RecordService } from "pocketbase";
 import { sample } from "../misc";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
+
+export async function getDaily() {
+    const daily = toPOJO(
+        await dailyies.getList<Daily>(1, 1, {
+            expand: "level,level.creator",
+            sort: "-created"
+        })
+    ).items;
+
+    if (daily.length === 0) {
+        return null;
+    } else {
+        return daily;
+    }
+}
+
+export async function getWeeklyChallenge() {
+    return toPOJO(
+        (
+            await weeklies.getList<WeeklyChallenge>(1, 1, {
+                expand: "creator",
+                sort: "-created"
+            })
+        ).items
+    );
+}
 
 // TODO: Implement sort, also what is x?
 export async function getLevels(page: number, sortCode: number, featured: boolean, mod: string) {

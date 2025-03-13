@@ -48,7 +48,7 @@ export function formatDate_Day(date: string) {
 export function sample<T>(array: T[], amount: number) {
     if (amount > array.length) throw new Error("Amount is greater than array length.");
 
-    let result = [];
+    const result = [];
     for (let i = 0; i < amount; i++) {
         const index = ~~(Math.random() * array.length);
         result.push(array[index]);

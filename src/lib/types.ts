@@ -39,6 +39,20 @@ export type Levelpack = {
     // TODO: thumbnail property?
 };
 
+export type Daily = {
+    /** level id */
+    id: string;
+
+    /** have we already featured this */
+    featured: boolean;
+};
+
+export type WeeklyChallenge = {
+    /** levelpack id */
+    id: string;
+    attempts: number;
+};
+
 export type CreateUser = {
     discordId: string;
     username: string;

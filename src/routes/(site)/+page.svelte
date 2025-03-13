@@ -8,6 +8,9 @@
     import homepageVideo from "$lib/assets/5beam_homepage_video.webm";
     import type { PageData } from "../../../.svelte-kit/types/src/routes";
     import UserComponent from "../../components/UserComponent.svelte";
+    import { getLevelThumbnailURL, getPlaysString } from "../../misc";
+    import Icon from "../../components/Icon.svelte";
+    import Difficulty from "../../components/Difficulty.svelte";
 
     export let data: PageData;
     let user = data.user;
@@ -20,8 +23,13 @@
     const featuredLevels = writable(data.featuredLevels);
     const mostPopularLevels = writable(data.mostPopularLevels);
     const levelpacks = writable(data.levelpacks);
+    const { level: dailyLevel } = data.daily[0].expand;
+    const dailyLevelCreator = dailyLevel.expand.creator;
+    // console.log(dailyLevel, dailyLevelCreator);
 
     const description = "Play, share and upload BFDIA 5b levels!!";
+
+    const b = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
 </script>
 
 <svelte:head>
@@ -43,7 +51,7 @@
                 <Button text="Upload a level" bg="#38bdf8" href="/upload" />
             {/if}
             <Button
-                text="Join our discord!"
+                text="Join the 5b discord!"
                 bg="#5865f2"
                 href="https://discord.gg/qtePFSH"
                 event="discord-join"
@@ -68,6 +76,48 @@
     </aside>
 </section>
 
+<div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
+    <p class=" w-min rounded bg-gradient-to-b from-orange-400 to-yellow-500 p-2 text-black/90">
+        NEW!
+    </p>
+    <p class="">Daily Level</p>
+</div>
+<section class="mx-10 flex gap-5 max-lg:flex-col">
+    <section class="flex grow gap-2 rounded-sm bg-green-600/50 p-3 outline-2 outline-green-400/90">
+        <img class="w-1/2 rounded-xs object-cover" src={b} alt="Level Thumbnail" />
+        <div class="flex w-full flex-col gap-2 p-2">
+            <div>
+                <span class="text-center text-4xl font-bold">{dailyLevel.title}</span>
+                <UserComponent prefix="by" user={dailyLevelCreator} />
+            </div>
+            <p class="grow">{dailyLevel.description}</p>
+            <div class="flex w-full justify-around gap-2">
+                <div class="text-3xl font-bold">
+                    <Difficulty difficulty={dailyLevel.difficulty} includeText />
+                </div>
+                <div class="inline text-2xl font-bold text-green-500">
+                    <Icon name="plays" width="26" height="26" />
+                    <span>{getPlaysString(dailyLevel.plays)}</span>
+                </div>
+            </div>
+            <div class="**:w-full">
+                <Button
+                    text="Play!"
+                    bg="#4bff5d"
+                    href="https://coppersalts.github.io/HTML5b?level={dailyLevel.id}"
+                    event="play-level"
+                    disabled={dailyLevel.modded}
+                />
+            </div>
+        </div>
+    </section>
+    <section
+        class="min-h-full content-center rounded-sm bg-emerald-600/70 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90"
+    >
+        <p>Weekly challenges coming soon!</p>
+    </section>
+</section>
+
 <h2>Featured Levels</h2>
 <Pagination
     bind:page={featuredLevelPage}
@@ -90,7 +140,7 @@
     <a
         href="/random"
         class="text-center text-xl text-yellow-100 hover:cursor-pointer hover:underline"
-        >Click here to view a random level!</a
+        >Click here for random levels!</a
     >
 </section>
 

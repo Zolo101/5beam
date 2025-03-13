@@ -12,7 +12,8 @@
         "check": "svelte-kit sync && svelte-check --tsconfig tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig tsconfig.json --watch",
         "format": "prettier --write .",
-        "lint": "prettier --check . && eslint ."
+        "lint": "prettier --check . && eslint .",
+        "functions": "netlify functions:serve"
     },
     "author": "Zelo101",
     "devDependencies": {
@@ -42,6 +43,7 @@
     },
     "type": "module",
     "dependencies": {
+        "@netlify/functions": "^3.0.1",
         "canvas": "^2.11.2",
         "cookie": "^0.6.0",
         "detect-file-encoding-and-language": "^2.4.0",

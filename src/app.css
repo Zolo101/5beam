@@ -31,7 +31,7 @@ html {
 
 /* Globals */
 body {
-    @apply m-0 h-full text-neutral-200;
+    @apply m-0 h-full text-neutral-100;
     font-family: Inter, sans-serif;
     /*background: repeating-linear-gradient(*/
     /*        46.2deg,*/
@@ -44,7 +44,7 @@ body {
 }
 
 h2 {
-    @apply mx-10 p-2 text-4xl font-bold text-neutral-300;
+    @apply mx-10 p-2 text-4xl font-bold text-neutral-100;
 }
 
 nav {
@@ -62,7 +62,8 @@ footer {
 }
 
 button {
-    @apply rounded-lg bg-linear-to-b px-7 py-4 text-2xl shadow-md;
+    @apply rounded-lg bg-linear-to-b px-7 text-2xl shadow-md;
+    background: linear-gradient(to bottom, transparent, #00000044);
 }
 
 /*a {*/

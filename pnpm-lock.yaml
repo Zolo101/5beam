@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@netlify/functions':
+        specifier: ^3.0.1
+        version: 3.0.1
       canvas:
         specifier: ^2.11.2
         version: 2.11.2
@@ -498,6 +501,14 @@ packages:
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
+
+  '@netlify/functions@3.0.1':
+    resolution: {integrity: sha512-KqVvGatPnn3lw80vXsFbYV3H2S9FI9TQHneFVR6BBvfHWiqTvs8NwUoBpnUWgqPKKeUMuynycDabeSi9CW2WWw==}
+    engines: {node: '>=18.0.0'}
+
+  '@netlify/serverless-functions-api@1.35.0':
+    resolution: {integrity: sha512-BH9eF3s7bUbqkcEUMR7dne/iCXSpZD10KVkGcs53eDrON5pKxsMdXvrdAx/q0HD24vJgHXGXObGSr5sjPllGEA==}
+    engines: {node: '>=18.0.0'}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2174,6 +2185,12 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@netlify/functions@3.0.1':
+    dependencies:
+      '@netlify/serverless-functions-api': 1.35.0
+
+  '@netlify/serverless-functions-api@1.35.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
