@@ -3,6 +3,7 @@
     import Box from "$lib/assets/box.png";
     import Icon from "../Icon.svelte";
     import { getPlaysString } from "../../misc";
+    import Button from "../Button.svelte";
 
     export let levelpack: Levelpack;
 
@@ -27,9 +28,21 @@
                 alt="Placeholder Thumbnail"
             />
         </div>
-        <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap">
-            {levelpack.title}
-        </p>
+        <div class="flex h-7 justify-between gap-2">
+            <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap">
+                {levelpack.title}
+            </p>
+            <div class="my-1 **:h-6 **:text-sm!">
+                {#if !levelpack.modded}
+                    <Button
+                        text="Play"
+                        bg="#4bff5d"
+                        href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}"
+                        event="play-level"
+                    />
+                {/if}
+            </div>
+        </div>
         <div class="flex justify-between gap-2">
             <p class="text-ellipsis whitespace-nowrap text-neutral-400">
                 by {user.username}

@@ -3,6 +3,7 @@
     import Difficulty from "../Difficulty.svelte";
     import { getLevelThumbnailURL, getPlaysString } from "../../misc";
     import Icon from "../Icon.svelte";
+    import Button from "../Button.svelte";
 
     export let level: Level;
 
@@ -29,9 +30,23 @@
         <div class="flex w-full items-center justify-start">
             <div class="w-full flex-col items-start justify-start">
                 <!--                <p class="w-[200px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden text-ellipsis">{level.title}</p>-->
-                <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg">
-                    {level.title}
-                </p>
+                <div class="flex h-7 justify-between gap-2">
+                    <p
+                        class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg"
+                    >
+                        {level.title}
+                    </p>
+                    <div class="my-1 **:h-6 **:text-sm!">
+                        {#if !level.modded}
+                            <Button
+                                text="Play"
+                                bg="#4bff5d"
+                                href="https://coppersalts.github.io/HTML5b?level={level.id}"
+                                event="play-level"
+                            />
+                        {/if}
+                    </div>
+                </div>
                 <div class="flex justify-between gap-2 text-sm">
                     <div class="grow text-neutral-400">
                         <span>by</span>
