@@ -8,7 +8,7 @@ function formatDate(date: string) {
 }
 
 async function createLevelSitemap() {
-    return (await levels.getFullList()).map(
+    return (await levels.getFullList({ requestKey: null })).map(
         (level) => `<url>
     <loc>${apiURL}/level/${level.id}</loc>
     <lastmod>${formatDate(level.updated)}</lastmod>
@@ -41,7 +41,7 @@ async function createUserSitemap() {
 }
 
 async function mainSitemap() {
-    const lastUpdate = await levels.getFullList({ sort: "-created", limit: 1 });
+    const lastUpdate = await levels.getFullList({ sort: "-created", limit: 1, requestKey: null });
     return `<url>
     <loc>${apiURL}</loc>
     <lastmod>${formatDate(lastUpdate[0].updated)}</lastmod>
@@ -58,10 +58,12 @@ async function mainSitemap() {
 
 async function sitemap() {
     return [
-        await mainSitemap(),
-        ...(await createLevelSitemap()),
-        ...(await createLevelpackSitemap()),
-        ...(await createUserSitemap())
+        await Promise.all([
+            mainSitemap(),
+            createLevelSitemap(),
+            createLevelpackSitemap(),
+            createUserSitemap()
+        ])
     ].join("\n");
 }
 

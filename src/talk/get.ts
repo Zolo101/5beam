@@ -1,6 +1,6 @@
 import { dailyies, levelpacks, levels, users, weeklies } from "$lib/pocketbase";
 import type { Daily, Level, Levelpack, PocketbaseUser, WeeklyChallenge } from "$lib/types";
-import type { RecordService } from "pocketbase";
+import type { RecordListOptions, RecordService } from "pocketbase";
 import { sample } from "../misc";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
@@ -31,8 +31,14 @@ export async function getWeeklyChallenge() {
 }
 
 // TODO: Implement sort, also what is x?
-export async function getLevels(page: number, sortCode: number, featured: boolean, mod: string) {
-    let sort = getSort(sortCode);
+export async function getLevels(
+    page: number,
+    sortCode: number,
+    featured: boolean,
+    mod: string,
+    options?: RecordListOptions
+) {
+    const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
 
@@ -41,7 +47,8 @@ export async function getLevels(page: number, sortCode: number, featured: boolea
             await levels.getList<Level>(page, 8, {
                 expand: "creator",
                 sort,
-                filter: featuredFilter + modFilter
+                filter: featuredFilter + modFilter,
+                ...options
             })
         ).items
     );
@@ -71,9 +78,10 @@ export async function getLevelpacks(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string
+    mod: string,
+    options?: RecordListOptions
 ) {
-    let sort = getSort(sortCode);
+    const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
 
@@ -82,7 +90,8 @@ export async function getLevelpacks(
             await levelpacks.getList<Levelpack>(page, 8, {
                 expand: "creator",
                 sort,
-                filter: featuredFilter + modFilter
+                filter: featuredFilter + modFilter,
+                ...options
             })
         ).items
     );
@@ -149,11 +158,12 @@ export async function getUserLevels(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string
+    mod: string,
+    options?: RecordListOptions
 ) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
-    let sort = getSort(sortCode);
+    const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
     const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
 
@@ -161,7 +171,8 @@ export async function getUserLevels(
     const userLevels = toPOJO(
         await users.getOne<PocketbaseUser>(id, {
             sort,
-            filter: featuredFilter + modFilter
+            filter: featuredFilter + modFilter,
+            ...options
         })
     ).levels;
 
@@ -173,16 +184,18 @@ export async function getUserLevelpacks(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string
+    mod: string,
+    options?: RecordListOptions
 ) {
-    let sort = getSort(sortCode);
+    const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
     const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
 
     const userLevelpacks = toPOJO(
         await users.getOne<PocketbaseUser>(id, {
             sort,
-            filter: featuredFilter + modFilter
+            filter: featuredFilter + modFilter,
+            ...options
         })
     ).levelpacks;
 
