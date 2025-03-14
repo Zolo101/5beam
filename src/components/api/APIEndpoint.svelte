@@ -20,11 +20,11 @@
 </script>
 
 <section
-    class="w-[min(60vw, 1000px)] m-5 rounded-sm bg-neutral-600/40 shadow-2xl outline outline-white/10 backdrop-blur-xl"
+    class="bg-neutral-600/40 outline outline-white/10 backdrop-blur-xl"
     class:deprecated={deprecated || wip}
     class:game_only
 >
-    <div class="inline bg-black p-2 text-3xl font-bold">
+    <div class="bg-black p-2 text-3xl font-bold">
         <span style:color={colors.get(type)}>{type}</span>
         <span class="name"><Filepath directory={endpoint} /></span>
         {#if token_required}
