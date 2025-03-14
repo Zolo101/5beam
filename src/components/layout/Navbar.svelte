@@ -27,20 +27,7 @@
 <nav>
     <div class="flex h-24 w-[1024px] pt-2">
         <Logo />
-        <div class="flex w-full flex-col items-end">
-            <div class="list mb-1 flex flex-row gap-2">
-                <!--        <a href="/">Levels</a>-->
-                <!--        <a href="/levelpacks">Levelpacks</a>-->
-                {#if loggedIn}
-                    <a href="/upload">Upload</a>
-                    <a href="/api">API</a>
-                    <a href="/user">Profile ({user.username})</a>
-                    <a href="/api/auth/signout/discord">Sign Out</a>
-                {:else}
-                    <a href="/api">API</a>
-                    <a href="/api/auth/discord">Log In</a>
-                {/if}
-            </div>
+        <div class="list mb-1 flex flex-row items-center gap-2 text-xl">
             <input
                 type="text"
                 id="search"
@@ -50,6 +37,17 @@
                 placeholder="Search..."
                 bind:value={$searchText}
             />
+            {#if loggedIn}
+                <a href="/upload">Upload</a>
+                <a href="/mods">Mods</a>
+                <!-- <div class="flex flex-col gap-2 text-sm"> -->
+                <a href="/user">Profile</a>
+                <a href="/api/auth/signout/discord" class="w-41">Sign Out</a>
+                <!-- </div> -->
+            {:else}
+                <a href="/mods">Mods</a>
+                <a href="/api/auth/discord">Log In</a>
+            {/if}
         </div>
     </div>
 </nav>

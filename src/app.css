@@ -88,7 +88,7 @@ svg {
 /* Navbar */
 
 .list a {
-    @apply rounded bg-neutral-800 px-4 py-1 text-2xl text-neutral-200 drop-shadow-2xl transition-colors;
+    @apply rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors;
 }
 
 .list a:hover {

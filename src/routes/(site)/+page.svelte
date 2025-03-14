@@ -99,7 +99,7 @@
                 </div>
                 <div class="inline text-2xl font-bold text-green-500">
                     <Icon name="plays" width="26" height="26" />
-                    <span>{getPlaysString(dailyLevel.plays)}</span>
+                    <span class="drop-shadow-sm">{getPlaysString(dailyLevel.plays)}</span>
                 </div>
             </div>
             <div class="**:w-full">
