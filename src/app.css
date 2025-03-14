@@ -132,7 +132,7 @@ ul {
 /* API Endpoint */
 
 .warning {
-    @apply inline-block bg-black p-2 text-xl font-bold;
+    @apply inline-block bg-black p-2 font-bold;
 }
 
 .endpoint.deprecated {

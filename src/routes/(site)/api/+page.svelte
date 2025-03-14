@@ -254,6 +254,18 @@
         />
     </APIEndpoint>
 
+    <APIEndpoint endpoint={["api", "daily"]} type="GET">
+        <p>
+            Returns the daily <APIReference type={"STRUCT"} reference={"Level"} />.
+        </p>
+    </APIEndpoint>
+
+    <APIEndpoint endpoint={["api", "weekly"]} type="GET">
+        <p>
+            Returns the weekly <APIReference type={"STRUCT"} reference={"Levelpack"} /> challenge.
+        </p>
+    </APIEndpoint>
+
     <APIEndpoint
         endpoint={["api", "search"]}
         params={[

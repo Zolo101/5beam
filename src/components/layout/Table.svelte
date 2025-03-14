@@ -5,7 +5,7 @@
     export let dynamicWidth: boolean = true;
 </script>
 
-<table class:dynamicWidth>
+<table class:dynamicWidth class="mt-5">
     {#if title}
         <caption>{title}</caption>
     {/if}

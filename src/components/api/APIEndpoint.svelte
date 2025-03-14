@@ -28,7 +28,7 @@
         <span style:color={colors.get(type)}>{type}</span>
         <span class="name"><Filepath directory={endpoint} /></span>
         {#if token_required}
-            <span class="float-right bg-black p-2 text-lg text-amber-600">user token required</span>
+            <span class="float-right bg-black p-2 text-lg text-amber-600">Auth Required</span>
         {/if}
     </div>
     <div class="p-5">
@@ -41,8 +41,9 @@
         {/if}
 
         {#if game_only}
-            <p class="warning endpoint-game_only">
-                For now, this endpoint can only be used on HTML5b's site.
+            <p class="warning endpoint-game_only text-sm">
+                For now, this endpoint can only be used on HTML5b's site. Let me know if you would
+                like access to this.
             </p>
         {/if}
 
