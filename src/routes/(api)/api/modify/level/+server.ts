@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, DENIED, isAdmin, OK, PostLevelSchema, return404 } from "../../../../../misc";
+import { BAD, DENIED, isAdmin, OK, PostLevelSchema, NOT_FOUND } from "../../../../../misc";
 import { getLevelById, toPOJO, updateFetchFormData } from "../../../../../talk/get";
 import { tryGettingUser } from "../../../../../talk/admin";
 import { levels } from "$lib/pocketbase";
@@ -18,7 +18,7 @@ export const POST: RequestHandler = async ({ url, cookies, request }) => {
     const payload = PostLevelSchema.partial().parse(json);
 
     const id = url.searchParams.get("id");
-    if (id === null) return return404(); // Not Found
+    if (id === null) return NOT_FOUND(); // Not Found
 
     const access_token = cookies.get("access_token") ?? json.access_token;
     const refresh_token = cookies.get("refresh_token") ?? json.refresh_token;

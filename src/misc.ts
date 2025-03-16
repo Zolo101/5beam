@@ -146,7 +146,7 @@ export const isLoggedIn = (user: User | undefined) => !!user;
 export const isAdmin = (user: User | undefined) => user?.id === "189004032600309760";
 
 // Cant find
-export function return404() {
+export function NOT_FOUND() {
     return new Response(null, { status: 404 });
 }
 // All good

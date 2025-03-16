@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserByDiscordId, getUserById } from "../../../../talk/get";
-import { OK, return404 } from "../../../../misc";
+import { OK, NOT_FOUND } from "../../../../misc";
 
 export const GET: RequestHandler = async ({ url }) => {
     const id = url.searchParams.get("id");
@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ url }) => {
             let body = await getUserByDiscordId(discordId);
             return OK(body);
         } else {
-            return return404();
+            return NOT_FOUND();
         }
     } else if (discordId === null) {
         // use id

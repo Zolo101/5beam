@@ -1,12 +1,12 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getLevelById } from "../../../../talk/get";
-import { OK, return404 } from "../../../../misc";
+import { OK, NOT_FOUND } from "../../../../misc";
 
 export const GET: RequestHandler = async ({ request }) => {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
-    if (id === null) return return404(); // Not Found
+    if (id === null) return NOT_FOUND(); // Not Found
     // e()
 
     return OK(await getLevelById(id));

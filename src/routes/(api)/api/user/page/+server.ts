@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserLevelpacks, getUserLevels } from "../../../../../talk/get";
-import { BAD, OK, return404 } from "../../../../../misc";
+import { BAD, OK, NOT_FOUND } from "../../../../../misc";
 
 export const GET: RequestHandler = async ({ request }) => {
     const url = new URL(request.url);
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ request }) => {
     const getFunc = type ? getUserLevelpacks : getUserLevels;
 
     if (sort < 0 || sort >= 3) return BAD("Invalid sort");
-    if (id === null) return return404(); // Not Found
+    if (id === null) return NOT_FOUND(); // Not Found
 
     return OK(await getFunc(id, page, sort, featured, mod));
 };

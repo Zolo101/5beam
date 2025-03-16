@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { OK, return404 } from "../../../../misc";
+import { OK, NOT_FOUND } from "../../../../misc";
 import { getLevelpackById, getLevelpackByIdWithLevels } from "../../../../talk/get";
 
 export const GET: RequestHandler = async ({ request }) => {
@@ -7,7 +7,7 @@ export const GET: RequestHandler = async ({ request }) => {
     const id = url.searchParams.get("id");
     const levels = Number(url.searchParams.get("levels") ?? 0);
 
-    if (id === null) return return404(); // Not Found
+    if (id === null) return NOT_FOUND(); // Not Found
 
     const getFunc = levels ? getLevelpackByIdWithLevels : getLevelpackById;
 
