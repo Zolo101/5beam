@@ -62,7 +62,7 @@ footer {
 }
 
 button {
-    @apply rounded-lg bg-linear-to-b px-7 text-2xl shadow-md;
+    @apply rounded-lg bg-linear-to-b px-7 shadow-md;
     background: linear-gradient(to bottom, transparent, #00000044);
 }
 
