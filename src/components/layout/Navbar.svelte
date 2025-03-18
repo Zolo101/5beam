@@ -55,7 +55,7 @@
 {#if searchFocused}
     <div
         transition:fly={{ y: 500 }}
-        class="absolute z-20 w-full bg-black/80 py-10 shadow-2xl backdrop-blur-md"
+        class="absolute top-24 z-20 w-full bg-black/80 py-10 shadow-2xl backdrop-blur-md"
     >
         <Pagination
             bind:page={searchPage}
@@ -82,9 +82,7 @@
                     <!-- TODO: Allow 3 levels in the same row at >1600px width-->
                     <div class="flex w-full flex-wrap justify-center gap-4">
                         {#each $searchResults as levelResult}
-                            <div on:click={() => (searchFocused = false)}>
-                                <LevelComponent glow level={levelResult} />
-                            </div>
+                            <LevelComponent glow level={levelResult} />
                         {/each}
                     </div>
                 {:else}
