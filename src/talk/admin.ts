@@ -12,7 +12,7 @@ export async function tryGettingUser(
     } catch (e) {
         // Refresh token and try again
         if (refresh_token) {
-            let result = await refreshTokenRequest(cookies, refresh_token);
+            const result = await refreshTokenRequest(cookies, refresh_token);
 
             if (result) {
                 return await DiscordOauth2.getUser(result.access_token);

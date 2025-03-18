@@ -11,6 +11,7 @@
     import { getLevelThumbnailURL, getPlaysString } from "../../misc";
     import Icon from "../../components/Icon.svelte";
     import Difficulty from "../../components/Difficulty.svelte";
+    import BigButton from "../../components/BigButton.svelte";
 
     export let data: PageData;
     let user = data.user;
@@ -41,21 +42,27 @@
 <section class="mx-5 flex pt-2 max-md:flex-col">
     <section class="flex w-1/2 flex-col justify-center max-md:w-full max-md:pb-2">
         <p class="p-5 text-center text-3xl font-bold">{description}</p>
-        <div class="flex flex-wrap justify-center gap-4 max-sm:flex-col max-sm:items-center">
-            <Button
+        <div
+            class="mx-10 flex flex-col justify-center gap-4 text-4xl font-bold max-lg:text-2xl max-sm:items-center"
+        >
+            <BigButton
                 text="Play BFDIA 5b!"
                 bg="#4ade80"
                 href="https://coppersalts.github.io/HTML5b/"
+                newWindow
             />
-            {#if data.loggedIn}
-                <Button text="Upload a level" bg="#38bdf8" href="/upload" />
-            {/if}
-            <Button
-                text="Join the 5b discord!"
-                bg="#5865f2"
-                href="https://discord.gg/qtePFSH"
-                event="discord-join"
-            />
+            <div class="flex justify-between gap-4 text-4xl *:grow max-xl:flex-col max-xl:text-2xl">
+                {#if data.loggedIn}
+                    <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
+                {/if}
+                <BigButton
+                    text="Join the 5b discord!"
+                    bg="#5865f2"
+                    href="https://discord.gg/qtePFSH"
+                    event="discord-join"
+                    newWindow
+                />
+            </div>
         </div>
     </section>
     <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
@@ -82,7 +89,7 @@
     </p>
     <p class="">Daily Level</p>
 </div>
-<section class="mx-10 flex gap-5 max-lg:flex-col">
+<section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
     <section
         class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-500/70 to-green-700/50 p-3 outline-2 outline-green-400/90"
     >
@@ -93,21 +100,22 @@
                 <UserComponent prefix="by" user={dailyLevelCreator} />
             </div>
             <p class="grow">{dailyLevel.description}</p>
-            <div class="flex w-full justify-around gap-2">
-                <div class="text-3xl font-bold">
+            <div class="flex w-full justify-around gap-2 text-3xl">
+                <div class="font-bold">
                     <Difficulty difficulty={dailyLevel.difficulty} includeText />
                 </div>
-                <div class="inline text-2xl font-bold text-green-500">
+                <div class="inline font-bold text-green-500">
                     <Icon name="plays" width="26" height="26" />
                     <span class="drop-shadow-sm">{getPlaysString(dailyLevel.plays)}</span>
                 </div>
             </div>
-            <div class="**:w-full">
+            <div class="**:w-full **:text-2xl">
                 <Button
                     text="Play!"
                     bg="#4bff5d"
                     href="https://coppersalts.github.io/HTML5b?level={dailyLevel.id}"
                     event="play-level-daily"
+                    newWindow
                     disabled={dailyLevel.modded}
                 />
             </div>

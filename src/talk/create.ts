@@ -1,5 +1,5 @@
 import type { CreateLevel, CreateLevelpack, CreateUser, Level, Levelpack } from "$lib/types";
-import { levelpacks, levels, users } from "$lib/pocketbase";
+import { dailyies, levelpacks, levels, users } from "$lib/pocketbase";
 import { functionsApiURL } from "../misc";
 import validate from "../client/FileValidator";
 import { getUserByDiscordId, updateFetch } from "./get";
@@ -135,6 +135,14 @@ async function addToUsersLevels(userId: string, levelId: string) {
 
 async function addToUsersLevelpacks(userId: string, levelpackId: string) {
     return updateFetch<User>(users, userId, { "levelpacks+": levelpackId });
+}
+
+export async function featureLevel(levelId: string) {
+    return updateFetch<Level>(levels, levelId, { featured: true });
+}
+
+export async function addDailyLevel(levelId: string) {
+    return dailyies.create({ level: levelId, featured: false });
 }
 
 // TODO: I'll do this via functions

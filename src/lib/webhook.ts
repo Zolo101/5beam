@@ -144,7 +144,11 @@ export const NewFeaturedWebhook = new Webhook("Featured", (level: Level) => {
                 },
                 image: {
                     url: getLevelThumbnailURL(level.id, level.thumbnail)
-                }
+                },
+                footer: {
+                    text: `${level.plays} plays`
+                },
+                timestamp: level.created
             }
         ]
     };

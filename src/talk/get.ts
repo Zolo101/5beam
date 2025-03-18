@@ -7,8 +7,7 @@ import { sample } from "../misc";
 export async function getDaily() {
     const daily = toPOJO(
         await dailyies.getList<Daily>(1, 1, {
-            expand: "level,level.creator",
-            sort: "-created"
+            expand: "level,level.creator"
         })
     ).items;
 
@@ -257,6 +256,7 @@ export async function updateFetch<T>(
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
+                // TODO: Stop doing this
                 secret: import.meta.env.VITE_POCKETBASE_USER_SECRET
             },
             body: JSON.stringify(body)

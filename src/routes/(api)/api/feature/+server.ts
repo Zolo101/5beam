@@ -1,13 +1,9 @@
-import { DENIED, MY_BAD, OK, NOT_FOUND } from "../../../../misc";
-import { getDaily } from "../../../../talk/get";
+import { NewFeaturedWebhook } from "$lib/webhook";
+import { NOT_FOUND } from "../../../../misc";
+import { DENIED, isAdmin, MY_BAD, OK } from "../../../../misc";
 import { tryGettingUser } from "../../../../talk/admin";
-import { isAdmin } from "../../../../misc";
-import { addDailyLevel } from "../../../../talk/create";
+import { featureLevel } from "../../../../talk/create";
 import type { RequestHandler } from "./$types";
-
-export const GET: RequestHandler = async () => {
-    return OK(await getDaily());
-};
 
 export const POST: RequestHandler = async ({ cookies, url }) => {
     const id = url.searchParams.get("id");
@@ -23,10 +19,11 @@ export const POST: RequestHandler = async ({ cookies, url }) => {
 
     if (id) {
         try {
-            await addDailyLevel(id);
+            const level = await featureLevel(id);
+            await NewFeaturedWebhook.send(level);
             return OK();
         } catch (e) {
-            return MY_BAD("Failed to add level to dailyies");
+            return MY_BAD("Failed to feature level");
         }
     } else {
         return NOT_FOUND();
