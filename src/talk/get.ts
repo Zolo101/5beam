@@ -7,7 +7,8 @@ import { sample } from "../misc";
 export async function getDaily() {
     const daily = toPOJO(
         await dailyies.getList<Daily>(1, 1, {
-            expand: "level,level.creator"
+            expand: "level,level.creator",
+            filter: "featured = false"
         })
     ).items;
 
