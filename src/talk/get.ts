@@ -65,13 +65,13 @@ export async function getRandomLevels(
     const db = type ? levelpacks : levels;
 
     // TODO: Do this function without getting every level in the database.
-    const everyRecord = await db.getFullList<Level | Levelpack>({
+    const everyRecord = await db.getList<Level | Levelpack>(0, amount, {
         expand: "creator",
-        filter: featuredFilter + modFilter
+        filter: "unlisted = false && " + featuredFilter + modFilter,
+        sort: "@random"
     });
-    const randomRecords = sample(everyRecord, Math.min(amount, 16));
 
-    return toPOJO(randomRecords);
+    return toPOJO(everyRecord.items);
 }
 
 export async function getLevelpacks(
