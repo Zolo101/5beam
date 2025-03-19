@@ -1,5 +1,4 @@
 import type { Config } from "@netlify/functions";
-// import { schedule } from "@netlify/functions";
 import { dailyies, levels, pb } from "../src/lib/pocketbase";
 import type { Daily, Level } from "../src/lib/types";
 
@@ -100,7 +99,6 @@ const sendWebhook = async (level: Level) => {
 };
 
 export default async () => {
-    // export const handler = schedule("@daily", async () => {
     // Plan A: Get a level thats ready to be a "daily"
     await pb.admins.authWithPassword(
         Netlify.env.get("ADMIN_EMAIL")!,
@@ -137,8 +135,6 @@ export default async () => {
     } else {
         sendWebhook(dailyiesList[1].expand.level);
     }
-
-    return { statusCode: 200 };
 };
 
 export const config: Config = {
