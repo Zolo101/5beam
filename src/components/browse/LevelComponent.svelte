@@ -7,6 +7,7 @@
     import Icon from "../Icon.svelte";
     import Button from "../Button.svelte";
     import FunctionButton from "../FunctionButton.svelte";
+    import UserComponent from "../UserComponent.svelte";
 
     export let level: Level;
 
@@ -42,7 +43,7 @@
 >
     <div class="inline-flex h-full w-full">
         <a href="/level/{level.id}">
-            <img class="rounded-xs" src={thumbnailUrl} alt="Level Thumbnail" />
+            <img class="rounded-sm" src={thumbnailUrl} alt="Level Thumbnail" />
             <div class="absolute bottom-14.5 left-2.5 inline h-[35px] w-[35px]">
                 <Difficulty difficulty={level.difficulty} />
             </div>
@@ -53,9 +54,12 @@
         <div class="w-full flex-col items-start justify-start">
             <!--                <p class="w-[200px] top-1.5 relative text-xl whitespace-nowrap overflow-hidden text-ellipsis">{level.title}</p>-->
             <div class="flex h-7 justify-between gap-2">
-                <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg">
+                <a
+                    href="/level/{level.id}"
+                    class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg"
+                >
                     {level.title}
-                </p>
+                </a>
                 <div class="my-1 **:h-6 **:text-sm!">
                     <!-- TODO: Admin only -->
                     {#if page.data.admin}
@@ -92,14 +96,11 @@
             </div>
             <div class="flex justify-between gap-2 text-sm">
                 <div class="grow text-neutral-400">
-                    <span>by</span>
-                    <span class="overflow-hidden text-ellipsis whitespace-nowrap">
-                        {user.username}
-                    </span>
+                    <UserComponent {user} prefix="by" />
                 </div>
                 <div class="flex items-end">
                     <Icon name="plays" width="13" height="13" />
-                    <p class="h-[15px] pl-1 text-green-500">
+                    <p class="h-[15px] pl-1 font-bold text-green-500">
                         {getPlaysString(level.plays)}
                     </p>
                 </div>

@@ -93,10 +93,14 @@
     <section
         class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-500/70 to-green-700/50 p-3 outline-2 outline-green-400/90"
     >
-        <img class="w-1/2 rounded-xs object-cover" src={b} alt="Level Thumbnail" />
+        <a class="w-full" href="/level/{dailyLevel.id}">
+            <img class="rounded-sm object-cover" src={b} alt="Level Thumbnail" />
+        </a>
         <div class="flex w-full flex-col gap-2 p-2">
             <div>
-                <span class="text-center text-4xl font-bold">{dailyLevel.title}</span>
+                <a href="/level/{dailyLevel.id}">
+                    <span class="text-center text-4xl font-bold">{dailyLevel.title}</span>
+                </a>
                 <UserComponent prefix="by" user={dailyLevelCreator} />
             </div>
             <p class="grow">{dailyLevel.description}</p>

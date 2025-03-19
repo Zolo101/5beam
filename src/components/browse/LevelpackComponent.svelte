@@ -4,6 +4,7 @@
     import Icon from "../Icon.svelte";
     import { getPlaysString } from "../../misc";
     import Button from "../Button.svelte";
+    import UserComponent from "../UserComponent.svelte";
 
     export let levelpack: Levelpack;
 
@@ -44,12 +45,12 @@
             </div>
         </div>
         <div class="flex justify-between gap-2">
-            <p class="text-ellipsis whitespace-nowrap text-neutral-400">
-                by {user.username}
-            </p>
+            <div class="grow">
+                <UserComponent prefix="by" {user} />
+            </div>
             <div class="flex items-end">
                 <Icon name="plays" width="13" height="13" />
-                <p class="h-[15px] pl-1 text-green-500">
+                <p class="h-[15px] pl-1 font-bold text-green-500">
                     {getPlaysString(levelpack.plays)}
                 </p>
             </div>
