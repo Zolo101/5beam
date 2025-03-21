@@ -118,12 +118,13 @@ export default async () => {
     // Add a random level (last resort!!)
     // BUT THIS SHOULD ONLY HAPPEN AS A LAST RESORT OBVS...
     if (dailyiesList.length <= 1) {
-        const randomLevels = await levels.getFullList<Level>({
+        const randomLevels = await levels.getList<Level>(0, 1, {
             expand: "creator",
-            filter: "plays > 100 && featured = false && difficulty > 0"
+            filter: "plays > 100 && featured = false && difficulty > 0 && difficulty < 7",
+            sort: "@random"
         });
 
-        const [randomLevel]: Level[] = sample(randomLevels, 1);
+        const randomLevel = randomLevels.items[0];
 
         await dailyies.create({
             level: randomLevel.id
@@ -131,9 +132,9 @@ export default async () => {
 
         // console.log(nextUp);
 
-        sendWebhook(dailyiesList[0].expand.level);
+        await sendWebhook(dailyiesList[0].expand.level);
     } else {
-        sendWebhook(dailyiesList[1].expand.level);
+        await sendWebhook(dailyiesList[1].expand.level);
     }
 };
 
