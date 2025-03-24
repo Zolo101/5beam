@@ -100,10 +100,9 @@ const sendWebhook = async (level: Level) => {
 
 export default async () => {
     // Plan A: Get a level thats ready to be a "daily"
-    await pb.admins.authWithPassword(
-        Netlify.env.get("ADMIN_EMAIL")!,
-        Netlify.env.get("ADMIN_PASS")!
-    );
+    await pb
+        .collection("_superusers")
+        .authWithPassword(Netlify.env.get("ADMIN_EMAIL")!, Netlify.env.get("ADMIN_PASS")!);
 
     const dailyiesList = await dailyies.getFullList<Daily>({
         expand: "level,level.creator",
