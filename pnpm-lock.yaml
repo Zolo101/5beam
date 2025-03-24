@@ -30,11 +30,11 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       pocketbase:
-        specifier: ^0.21.5
-        version: 0.21.5
+        specifier: ^0.25.2
+        version: 0.25.2
       pocketbase-expandless:
         specifier: ^0.5.0
-        version: 0.5.0(pocketbase@0.21.5)
+        version: 0.5.0(pocketbase@0.25.2)
       svelte-file-dropzone:
         specifier: ^2.0.9
         version: 2.0.9(svelte@4.2.19)
@@ -1492,8 +1492,8 @@ packages:
     peerDependencies:
       pocketbase: ^0.12.0
 
-  pocketbase@0.21.5:
-    resolution: {integrity: sha512-bnI/uinnQps+ElSlzxkc4yvwuSFfKcoszDtXH/4QT2FhGq2mJVUvDlxn+rjRXVntUjPfmMG5LEPZ1eGqV6ssog==}
+  pocketbase@0.25.2:
+    resolution: {integrity: sha512-ONZl1+qHJMnhR2uacBlBJ90lm7njtL/zy0606+1ROfK9hSL4LRBRc8r89rMcNRzPzRqCNyoFTh2Qg/lYXdEC1w==}
 
   postcss-load-config@3.1.4:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
@@ -3152,11 +3152,11 @@ snapshots:
 
   picomatch@2.3.1: {}
 
-  pocketbase-expandless@0.5.0(pocketbase@0.21.5):
+  pocketbase-expandless@0.5.0(pocketbase@0.25.2):
     dependencies:
-      pocketbase: 0.21.5
+      pocketbase: 0.25.2
 
-  pocketbase@0.21.5: {}
+  pocketbase@0.25.2: {}
 
   postcss-load-config@3.1.4(postcss@8.5.2):
     dependencies:

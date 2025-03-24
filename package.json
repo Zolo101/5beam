@@ -50,7 +50,7 @@
         "diff": "^5.2.0",
         "passport-discord": "^0.1.4",
         "passport-oauth2-refresh": "^2.2.0",
-        "pocketbase": "^0.21.5",
+        "pocketbase": "^0.25.2",
         "pocketbase-expandless": "^0.5.0",
         "svelte-file-dropzone": "^2.0.9",
         "zod": "^3.24.2"
