@@ -25,7 +25,8 @@
     style="background-image: url({getBackground(level.background)});"
     on:click={() => (opened = !opened)}
 >
-    <span class="z-0 px-1.5 text-4xl font-bold text-white mix-blend-overlay select-none"
+    <span
+        class="absolute bottom-0 z-0 px-1.5 text-4xl font-bold text-white mix-blend-overlay select-none"
         >{to5bLevelFormat(level.id)}</span
     >
 </div>

@@ -39,8 +39,8 @@
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
 </svelte:head>
 
-<section class="mx-5 flex pt-2 max-md:flex-col">
-    <section class="flex w-1/2 flex-col justify-center max-md:w-full max-md:pb-2">
+<section class="mx-5 flex pt-2 max-lg:flex-col">
+    <section class="flex w-1/2 flex-col justify-center max-lg:w-full max-lg:pb-2">
         <p class="p-5 text-center text-3xl font-bold">{description}</p>
         <div
             class="mx-10 flex flex-col justify-center gap-4 text-4xl font-bold max-lg:text-2xl max-sm:items-center"
@@ -51,10 +51,8 @@
                 href="https://coppersalts.github.io/HTML5b/"
                 newWindow
             />
-            <div class="flex justify-between gap-4 text-4xl *:grow max-xl:flex-col max-xl:text-2xl">
-                {#if data.loggedIn}
-                    <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
-                {/if}
+            <div class="flex justify-between gap-4 text-3xl *:grow max-xl:flex-col max-xl:text-2xl">
+                <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
                 <BigButton
                     text="Join the 5b discord!"
                     bg="#5865f2"

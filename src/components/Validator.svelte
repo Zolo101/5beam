@@ -42,22 +42,18 @@
 
 <div class="flex flex-wrap justify-center gap-3">
     {#if result}
-        {#if result.globalLogs.length > 0}
-            <div class="p-2.5 text-neutral-200">
-                {#each result.globalLogs as log}
-                    <Log {log} />
-                {/each}
-            </div>
-        {/if}
+        {#each result.globalLogs as log}
+            <Log {log} />
+        {/each}
         {#each result.levels as level, i}
-            <div>
-                <div on:click={() => selectLevel(level)}>
+            <section>
+                <div in:fly={{ y: 200, duration: 100 * i }} on:click={() => selectLevel(level)}>
                     <ValidatedLevel {level} {i} />
                 </div>
                 <!--                <div on:click={() => selectedDifficulties[i] = !selectedDifficulties[i]} class="relative w-[35px] h-[0px] left-[90px] bottom-[40px] hover:bg-white/20 rounded-sm cursor-pointer transition hover:scale-110">-->
                 <!--                    <Difficulty difficulty={levelDifficulties[i]}/>-->
                 <!--                </div>-->
-            </div>
+            </section>
             <!--{#if !selectedDifficulties[i]}-->
             {#if false}
                 <div class="flex w-full rounded-[10px] bg-black/50 shadow-2xl">
@@ -86,74 +82,3 @@
         {/each}
     {/if}
 </div>
-
-{#if selectedLevel}
-    <!-- TODO: Figure out how to scroll down this validator since you cant see the full details on level 46. -->
-    <div
-        transition:fly={{ x: -100 }}
-        id="levelDetails"
-        class="absolute top-0 left-0 z-10 w-1/2 rounded-br-xl bg-green-950/80 p-5 shadow-2xl backdrop-blur-md"
-    >
-        <div class="flex items-start justify-between text-7xl">
-            <div>
-                <span>{to5bLevelFormat(selectedLevel.id)}.</span>
-                <span class="font-bold">{selectedLevel.name}</span>
-            </div>
-            <div>
-                <button class="p-0 text-7xl" on:click={() => (selectedLevel = undefined)}>✕</button>
-            </div>
-        </div>
-        <div class="flex content-between items-end gap-5 text-4xl">
-            <div class="flex w-full items-end gap-5 text-4xl">
-                <div class="flex items-end gap-2 px-2 pt-4">
-                    <span class="code">{selectedLevel.width}</span>
-                    <span class="text-5xl font-black">×</span>
-                    <span class="code">{selectedLevel.height}</span>
-                </div>
-                <div>
-                    {#if selectedLevel.levelType === "L"}
-                        <span class="code bg-green-500/50! text-green-300 outline-green-500/80!"
-                            >L</span
-                        >
-                    {:else}
-                        <span class="code bg-purple-500/50! text-purple-300 outline-purple-500/80!"
-                            >H</span
-                        >
-                    {/if}
-                </div>
-            </div>
-            <!--            <div class="flex items-center gap-2 code text-xl" style="background: {difficultyColorMap.get(0)}; outline-colour: {difficultyColorMap.get(0)}">-->
-            <!--                <Difficulty difficulty={0}/>-->
-            <!--                <span>{difficultyMap.get(0)}</span>-->
-            <!--            </div>-->
-        </div>
-        <div class="px-2 pt-8">
-            <!--                        <h2>Sprites</h2>-->
-            <Table
-                title="Sprites ({selectedLevel.sprites.length})"
-                heads={["Sprite ID", "X", "Y", "Role ID", "Motion Speed", "Motion Path"]}
-                content={tableSprites}
-            />
-            <!--            <SpriteViewer sprites={selectedLevel.sprites}/>-->
-        </div>
-        {#if selectedLevel.dialogues.length > 0}
-            <div class="px-2 pt-8">
-                <!--                        <h2>Dialogues</h2>-->
-                <Table
-                    title="Dialogues ({selectedLevel.dialogues.length})"
-                    heads={["Sprite ID", "Emotion", "Text"]}
-                    content={tableDialogues}
-                />
-            </div>
-        {/if}
-        <div class="info">
-            {#if selectedLevel.logs.length > 0}
-                <div class="rounded-sm bg-neutral-700/50 p-2.5 text-neutral-200">
-                    {#each selectedLevel.logs as log}
-                        <Log {log} />
-                    {/each}
-                </div>
-            {/if}
-        </div>
-    </div>
-{/if}

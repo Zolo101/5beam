@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ cookies, request }) => {
     const refresh_token = cookies.get("refresh_token") ?? json.refresh_token;
 
     // Get user from access token
-    let user = await tryGettingUser(access_token, refresh_token, cookies);
+    const user = await tryGettingUser(access_token, refresh_token, cookies);
     if (!user) return DENIED();
 
     try {
