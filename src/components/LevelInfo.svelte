@@ -18,7 +18,7 @@
     <div
         transition:fly={{ x: -100 }}
         id="levelDetails"
-        class=" z-10 w-1/2 rounded-br-xl bg-green-950/80 p-5 shadow-2xl backdrop-blur-md"
+        class="absolute top-0 left-0 z-10 w-full rounded-br-xl bg-green-950/80 p-5 shadow-2xl backdrop-blur-md"
     >
         <div class="flex items-start justify-between text-7xl">
             <div>

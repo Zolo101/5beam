@@ -120,7 +120,7 @@
     </p>
 </aside> -->
 <section class="m-auto flex max-w-[1400px] items-start gap-2">
-    <div class="w-1/2 rounded-lg bg-neutral-900/40 p-4 text-neutral-100 shadow-lg">
+    <div class="w-full rounded-lg bg-neutral-900/40 p-4 text-neutral-100 shadow-lg">
         {#if page >= 1 && page !== 4}
             <div transition:fly={{ x: -200 }}>
                 <div class="flex flex-col gap-2 text-xl">
@@ -137,15 +137,13 @@
                             <p>{$file.name} ({($file.size / 1000).toFixed(2)}KB)</p>
                         {:else}
                             <div class="py-25">
-                                <p>Drag and drop your file here!</p>
-                                <p>Or click here to select a file!</p>
-                                <p class="text-sm">
+                                <p>Drag and drop your file here, or click to select a file!</p>
+                                <p class="text-center text-sm">
                                     Levelpacks with more than 200 levels will not be accepted
                                 </p>
                             </div>
                         {/if}
                     </Dropzone>
-                    <!--                        <input on:change={(e) => $eventStore = e} type="file" name="file" class="rounded-sm m-auto" accept="text/plain" required>-->
                     <p class="pt-6 text-neutral-50">Is this for a 5b mod?</p>
                     {#if $modded}
                         <p class="text-sm text-neutral-50">
@@ -159,7 +157,6 @@
                         <option value={"5*"}>5*30</option>
                     </select>
                 </div>
-                <!--                    <a class="text-xs float-right my-4" href="http://battlefordreamisland.com/5b/levels.txt" target="_blank">Click here to see an example of a level / levelpack</a>-->
             </div>
         {/if}
         {#if page >= 2 && page !== 4}
@@ -212,8 +209,8 @@
             </div>
         {/if}
     </div>
-    {#if page !== 4}
-        <div transition:fly={{ x: -200 }} class="w-1/2 rounded-sm bg-neutral-500/25 p-2 font-bold">
+    {#if page > 1 && page < 4}
+        <div transition:fly={{ x: -200 }} class="w-full rounded-sm bg-neutral-500/25 p-2 font-bold">
             {#if $modded}
                 <p class="p-5 text-center">
                     Levels for mods cannot be automatically validated yet. For now, check that your
