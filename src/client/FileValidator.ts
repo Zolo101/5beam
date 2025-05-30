@@ -83,12 +83,7 @@ function validate(file: string) {
                 i += 1;
                 result.levels.push(processLevel(result, level, i));
             } catch (e) {
-                result.globalLogs.push(
-                    createError(
-                        0,
-                        "Malformed level / levelpack. Are you sure this is a BFDIA 5b level file?"
-                    )
-                );
+                result.globalLogs.push(createError(0, `Error processing level ${i}: ${e}`));
                 result.valid = false;
                 console.error(e);
             }
@@ -235,10 +230,19 @@ function processSprites(logs: ValidateLog[], sprites: string[], id: number): Spr
     let i = 1;
     for (const sprite of sprites) {
         const spriteProps = sprite.split(",");
+        if (spriteProps.length !== 4) {
+            throw new Error(
+                `Sprite ${i} has an incorrect amount of commas! You might've used a dot instead of a comma`
+            );
+        }
+
         const entityId = Number(spriteProps[0]);
         const x = Number(spriteProps[1]);
         const y = Number(spriteProps[2]);
         const roleIdAndMotionSpeedAndString = spriteProps[3];
+        // if (!roleIdAndMotionSpeedAndString) {
+        //     debugger;
+        // }
         const [roleIdString, motionSpeedAndString] = roleIdAndMotionSpeedAndString.split(" ");
         const roleId = Number(roleIdString);
         let motionSpeed;
