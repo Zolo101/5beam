@@ -36,11 +36,11 @@ const difficultyEmoji = [
 ] as const;
 
 const WebhookChannel = {
-    New: import.meta.env.VITE_WEBHOOK_NEW,
-    PublicLog: import.meta.env.VITE_WEBHOOK_PUBLIC_LOG,
-    PrivateLog: import.meta.env.VITE_WEBHOOK_PRIVATE_LOG,
-    Featured: import.meta.env.VITE_WEBHOOK_FEATURED,
-    Daily: import.meta.env.VITE_WEBHOOK_DAILYIES
+    New: [import.meta.env.VITE_WEBHOOK_NEW, import.meta.env.VITE_WEBHOOK_NEW_5BCENTRAL],
+    PublicLog: [import.meta.env.VITE_WEBHOOK_PUBLIC_LOG],
+    PrivateLog: [import.meta.env.VITE_WEBHOOK_PRIVATE_LOG],
+    Featured: [import.meta.env.VITE_WEBHOOK_FEATURED],
+    Daily: [import.meta.env.VITE_WEBHOOK_DAILYIES]
 };
 
 // 058. etc ruins the link because of markdown, so replace the dot with a similar unicode character
@@ -48,21 +48,27 @@ const getMarkdownLevelURL = (level: Level) =>
     `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/level/${level.id}>)`;
 
 export default class Webhook<P extends unknown[]> {
-    public channel: keyof typeof WebhookChannel;
+    public channel: string[];
     public bodyFunction: (...params: P) => WebhookObject;
 
-    constructor(channel: Webhook<P>["channel"], bodyFunction: Webhook<P>["bodyFunction"]) {
+    constructor(channel: keyof typeof WebhookChannel, bodyFunction: Webhook<P>["bodyFunction"]) {
         this.channel = WebhookChannel[channel];
         this.bodyFunction = bodyFunction;
     }
 
     async send(...params: P) {
-        await fetch(this.channel, {
+        for (const channel of this.channel) {
+            await this.sendToChannel(channel, this.bodyFunction(...params));
+        }
+    }
+
+    private async sendToChannel(channel: string, body: WebhookObject) {
+        await fetch(channel, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(this.bodyFunction(...params))
+            body: JSON.stringify(body)
         });
     }
 
