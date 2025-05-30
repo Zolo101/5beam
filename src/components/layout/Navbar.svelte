@@ -7,8 +7,12 @@
     import Pagination from "../Pagination.svelte";
     import FiveBStyle from "../FiveBStyle.svelte";
     import Icon from "../Icon.svelte";
+    import { usersV2 } from "$lib/pocketbase";
+    import type { PocketbaseUser } from "$lib/types";
+    import { toPOJO } from "../../talk/get";
+    import type { RecordModel } from "pocketbase";
 
-    export let user: User;
+    export let user: PocketbaseUser;
 
     let loggedIn = !!user;
 
@@ -22,31 +26,47 @@
         searchFocused = text.length > 0;
         searchResults.set(await getSearchClient(text, 16));
     });
+
+    const logIn = async () => {
+        try {
+            const res = await usersV2.authWithOAuth2({ provider: "discord", scopes: ["identify"] });
+            // The response contains auth data and user info
+            if (res) {
+                // Convert the record to a plain object and update the user state
+                const userData = toPOJO(res.record) as unknown as PocketbaseUser;
+                user = userData;
+                loggedIn = true;
+                // Redirect to the callback URL if needed
+                if (res.meta?.redirectUrl) {
+                    window.location.href = res.meta.redirectUrl;
+                }
+            }
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
+    };
 </script>
 
 <nav>
-    <div class="flex h-24 w-[1024px] pt-2">
+    <div class="mx-5 flex h-24 grow justify-between pt-2">
         <Logo />
         <div class="list mb-1 flex flex-row items-center gap-2 text-xl">
             <input
                 type="text"
                 id="search"
                 name="search"
-                class="w-1/2 rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200"
+                class="rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200 max-lg:w-40"
                 maxlength="64"
                 placeholder="Search..."
                 bind:value={$searchText}
             />
+            <a href="/upload">Upload</a>
+            <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
-                <a href="/upload">Upload</a>
-                <a href="/mods">Mods</a>
-                <!-- <div class="flex flex-col gap-2 text-sm"> -->
                 <a href="/user">Profile</a>
-                <a href="/api/auth/signout/discord" class="w-41">Sign Out</a>
-                <!-- </div> -->
+                <a href="/api/auth/signout/discord">Log Out</a>
             {:else}
-                <a href="/mods">Mods</a>
-                <a href="/api/auth/discord">Log In</a>
+                <a href="/" on:click={logIn}>Log In</a>
             {/if}
         </div>
     </div>

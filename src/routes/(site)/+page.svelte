@@ -130,6 +130,16 @@
     </section>
 </section>
 
+<section
+    class="mx-auto mb-4 flex max-w-[900px] items-center justify-evenly rounded-sm bg-indigo-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
+>
+    <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
+    <span class="text-3xl font-bold text-indigo-300">Did you know about 5b mods?</span>
+    <a href="/mods" class="text-center text-xl text-indigo-100 hover:cursor-pointer hover:underline"
+        >Click here to browse and play them!</a
+    >
+</section>
+
 <h2>Featured Levels</h2>
 <Pagination
     bind:page={featuredLevelPage}
@@ -145,7 +155,7 @@
 </Pagination>
 
 <section
-    class="mx-auto mb-2 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
+    class="mx-auto mb-4 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
 >
     <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
     <span class="text-3xl font-bold text-yellow-300">Bored?</span>

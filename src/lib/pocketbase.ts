@@ -2,7 +2,9 @@ import Pocketbase from "pocketbase";
 
 // prod
 export const pb = new Pocketbase("https://cdn.zelo.dev");
+/** @deprecated Use `usersV2` */
 export const users = pb.collection("5beam_users_discord");
+export const usersV2 = pb.collection("5beam_users");
 export const levels = pb.collection("5beam_levels");
 export const levelpacks = pb.collection("5beam_levelpacks");
 
