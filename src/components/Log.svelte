@@ -7,21 +7,21 @@
 </script>
 
 {#if log.level === "info"}
-    <div class="log bg-blue-700/30 text-blue-500">
+    <div class="log bg-blue-900/75 text-blue-200">
         <div class="flex items-center">
             <span class="icon">ℹ️</span>
             <span>{log.message}</span>
         </div>
     </div>
 {:else if log.level === "warning"}
-    <div class="log bg-amber-700/30 text-amber-500">
+    <div class="log bg-amber-900/75 text-amber-200">
         <div class="flex items-center">
             <span class="icon">⚠️</span>
             <span>{log.message}</span>
         </div>
     </div>
 {:else if log.level === "error"}
-    <div class="log bg-red-700/30 text-red-500">
+    <div class="log bg-red-900/75 text-red-200">
         <div class="flex items-center">
             <span class="icon">🛑</span>
             <span>{log.message}</span>
