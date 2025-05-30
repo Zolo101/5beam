@@ -5,11 +5,13 @@
     export let event: string = "";
     export let disabled: boolean = false;
     export let newWindow: boolean = false;
+    export let onclick: () => void = () => {};
 </script>
 
 <a {href} target={newWindow ? "_blank" : "_self"}>
     <button
         {disabled}
+        on:click={onclick}
         data-umami-event={event}
         class="
         h-[40px] cursor-pointer text-black inset-shadow-xs inset-shadow-black/50 transition-all hover:outline-black/50 hover:brightness-75
