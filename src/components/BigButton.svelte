@@ -13,7 +13,7 @@
         {disabled}
         data-umami-event={event}
         class="
-        h-24 w-full cursor-pointer text-black/75 inset-ring-2 inset-shadow-sm inset-shadow-black/25 inset-ring-white/10 transition-all
+        button h-24 w-full cursor-pointer text-black/75 inset-ring-2 inset-shadow-sm inset-shadow-black/25 inset-ring-white/10 transition-all
         hover:outline-black/50 hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75
     "
         style="background-color: {bg}"

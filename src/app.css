@@ -61,7 +61,7 @@ footer {
     @apply mt-auto flex justify-evenly bg-neutral-100/10 p-5 text-neutral-50;
 }
 
-button {
+.button {
     @apply rounded-lg bg-linear-to-b px-7 shadow-md;
     background: linear-gradient(to bottom, transparent, #00000044);
 }
@@ -212,7 +212,7 @@ td {
 /* Log */
 
 .log {
-    @apply my-2 rounded p-2 font-bold shadow drop-shadow;
+    @apply my-2 rounded p-2 font-bold shadow drop-shadow *:gap-2;
 }
 
 .icon {
