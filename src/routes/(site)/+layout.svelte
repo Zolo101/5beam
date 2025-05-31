@@ -12,17 +12,6 @@
 
 <svelte:head>
     <meta name="theme-color" content="#d10000" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QDE04Q52S"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "G-8QDE04Q52S");
-    </script>
-    <!--    TODO: After a month, remove the google analytics -->
     <script
         defer
         src="https://analytics.zelo.dev/script.js"
