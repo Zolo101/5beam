@@ -22,9 +22,15 @@
     const searchResults = writable([]);
     const searchText = writable("");
 
+    // TODO: I believe svelte 5 fixes this but for some reason
+    // it runs on page load, causing getSearchClient to be called
+    // EACH TIME!!!
+    // So this is a temp fix
     searchText.subscribe(async (text) => {
         searchFocused = text.length > 0;
-        searchResults.set(await getSearchClient(text, 16));
+        if (searchFocused) {
+            searchResults.set(await getSearchClient(text, 16));
+        }
     });
 
     const logIn = async () => {
