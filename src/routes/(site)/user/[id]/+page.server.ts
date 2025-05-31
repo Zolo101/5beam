@@ -1,11 +1,15 @@
-import type { PageServerLoad } from "../../../../../.svelte-kit/types/src/routes";
+import { error } from "@sveltejs/kit";
 import { getUserById, getUserLevelpacks, getUserLevels } from "../../../../talk/get";
+import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ params }) => {
+export const load: PageServerLoad = async ({ params }) => {
     const [creator, levels, levelpacks] = await Promise.all([
         getUserById(params.id),
         getUserLevels(params.id, 0, 0, false, "", { requestKey: null }),
         getUserLevelpacks(params.id, 0, 1, false, "", { requestKey: null })
     ]);
+    if (!creator) {
+        throw error(404, "User not found");
+    }
     return { creator, levels, levelpacks };
-}) satisfies PageServerLoad;
+};

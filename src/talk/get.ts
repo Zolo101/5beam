@@ -1,7 +1,6 @@
 import { dailyies, levelpacks, levels, users, weeklies } from "$lib/pocketbase";
 import type { Daily, Level, Levelpack, PocketbaseUser, WeeklyChallenge } from "$lib/types";
-import type { RecordListOptions, RecordService } from "pocketbase";
-import { sample } from "../misc";
+import { ClientResponseError, type RecordListOptions, type RecordService } from "pocketbase";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 export async function getDaily() {
@@ -102,12 +101,29 @@ export async function getLevelpackByIdWithLevels(id: string) {
     return toPOJO(await levelpacks.getOne<Levelpack>(id, { expand: "creator, levels.creator" }));
 }
 
+// TODO: Fix 500 error (it should be 404 lol...)
 export async function getLevelById(id: string) {
-    return toPOJO(await levels.getOne<Level>(id, { expand: "creator" }));
+    try {
+        return toPOJO(await levels.getOne<Level>(id, { expand: "creator" }));
+    } catch (e) {
+        // 404 -- Not found
+        if (e instanceof ClientResponseError && e.status === 404) {
+            return null;
+        }
+        throw e;
+    }
 }
 
 export async function getLevelpackById(id: string) {
-    return toPOJO(await levelpacks.getOne<Levelpack>(id, { expand: "creator" }));
+    try {
+        return toPOJO(await levelpacks.getOne<Levelpack>(id, { expand: "creator" }));
+    } catch (e) {
+        // 404 -- Not found
+        if (e instanceof ClientResponseError && e.status === 404) {
+            return null;
+        }
+        throw e;
+    }
 }
 
 export async function addPlayLevel(id: string) {
@@ -143,7 +159,15 @@ export async function getSearch(text: string, page: number, mod: string) {
 export async function getUserById(id: string) {
     // return await getDoc(doc(collection(db, "users"), id))
 
-    return toPOJO(await users.getOne<PocketbaseUser>(id));
+    try {
+        return toPOJO(await users.getOne<PocketbaseUser>(id));
+    } catch (e) {
+        // 404 -- Not found
+        if (e instanceof ClientResponseError && e.status === 404) {
+            return null;
+        }
+        throw e;
+    }
 }
 
 export async function getUserByDiscordId(discordId: string) {
@@ -209,7 +233,11 @@ export async function getUserLevelpacks(
 // so sveltekit won't complain
 // TODO: ...also, this does more than just "toPOJO"
 // TODO: import { moveExpandsInline } from "pocketbase-expandless";
-export function toPOJO<T extends Record<string, any> | Record<string, any>[]>(obj: T): T {
+export function toPOJO<T extends Record<string, unknown> | Record<string, unknown>[]>(
+    obj: T
+): T | null {
+    if (obj === undefined || obj === null) return null;
+
     const result = Array.isArray(obj)
         ? structuredClone(obj.map(cleanObject))
         : structuredClone(cleanObject(obj));
