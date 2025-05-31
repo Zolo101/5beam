@@ -29,7 +29,6 @@ export async function getWeeklyChallenge() {
     );
 }
 
-// TODO: Implement sort, also what is x?
 export async function getLevels(
     page: number,
     sortCode: number,
@@ -101,7 +100,6 @@ export async function getLevelpackByIdWithLevels(id: string) {
     return toPOJO(await levelpacks.getOne<Levelpack>(id, { expand: "creator, levels.creator" }));
 }
 
-// TODO: Fix 500 error (it should be 404 lol...)
 export async function getLevelById(id: string) {
     try {
         return toPOJO(await levels.getOne<Level>(id, { expand: "creator" }));
@@ -231,8 +229,8 @@ export async function getUserLevelpacks(
 // Pocketbase gives results in a weird format,
 // so we need to convert it to a POJO (plain old javascript object)
 // so sveltekit won't complain
-// TODO: ...also, this does more than just "toPOJO"
-// TODO: import { moveExpandsInline } from "pocketbase-expandless";
+// TODO: ...also, this does more than just "toPOJO"... see cleanObject
+// moveExpandsInline from pocketbase-expandless does not work...
 export function toPOJO<T extends Record<string, unknown> | Record<string, unknown>[]>(
     obj: T
 ): T | null {
@@ -286,6 +284,7 @@ export async function updateFetch<T>(
             headers: {
                 "Content-Type": "application/json",
                 // TODO: Stop doing this
+                // no but really stop doing this
                 secret: import.meta.env.VITE_POCKETBASE_USER_SECRET
             },
             body: JSON.stringify(body)

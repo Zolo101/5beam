@@ -19,12 +19,10 @@
     {/if}
 </section>
 
-<!-- TODO: Increase difficulty icon setting? -->
 <style>
     img {
         width: 35px;
         height: 35px;
-        /*padding: 5px;*/
         image-rendering: pixelated;
     }
 </style>

@@ -57,8 +57,7 @@
     >
         {levelpack.title}
     </p>
-    <!--    TODO: Add star icon for featured levels? -->
-    <section class="eee flex text-xl max-md:flex-col max-md:text-xs">
+    <section class="flex text-xl max-md:flex-col max-md:text-xs">
         <span class="text-xl"><UserComponent prefix="by" {user} /></span>
         <span class="px-1">::</span>
         <span class="font-black"

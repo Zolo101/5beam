@@ -3,6 +3,7 @@ import { addPlayLevel, addPlayLevelpack } from "../../../../talk/get";
 import { BAD, OK } from "../../../../misc";
 
 // TODO: Add better ratelimit
+// pocketbase now has ratelimit so we *could* do this
 export const GET: RequestHandler = async ({ request }) => {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
