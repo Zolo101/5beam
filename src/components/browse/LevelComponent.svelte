@@ -57,11 +57,14 @@
                 <a
                     href="/level/{level.id}"
                     class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg"
+                    style:color={level.featured ? "#ffea65" : "#f5f5f5"}
                 >
+                    {#if level.featured}
+                        <Icon name="starred" width="20" height="20" />
+                    {/if}
                     {level.title}
                 </a>
                 <div class="my-1 **:h-6 **:text-sm!">
-                    <!-- TODO: Admin only -->
                     {#if page.data.admin}
                         <div class="absolute right-2 bottom-15 flex **:px-2!">
                             {#if !level.featured}

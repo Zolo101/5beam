@@ -1,9 +1,10 @@
 <script lang="ts">
-    import type { PageData } from "../../../../../.svelte-kit/types/src/routes";
+    import type { PageData } from "./$types";
     import UserComponent from "../../../../components/UserComponent.svelte";
     import Button from "../../../../components/Button.svelte";
     import Difficulty from "../../../../components/Difficulty.svelte";
     import { apiURL, formatDate_Day, getLevelThumbnailURL } from "../../../../misc";
+    import Icon from "../../../../components/Icon.svelte";
 
     export let data: PageData;
 
@@ -51,10 +52,11 @@
         class="mb-1 text-6xl font-bold max-sm:text-center"
         style:color={level.featured ? "#ffea65" : "#f5f5f5"}
     >
+        <Icon name="starred" width="56" height="56" />
         {level.title}
     </p>
     <!--    TODO: Add star icon for featured levels? -->
-    <section class="eee flex text-xl max-md:flex-col max-md:text-xs">
+    <section class="flex text-xl max-md:flex-col max-md:text-xs">
         <span class="text-xl"><UserComponent prefix="by" {user} /></span>
         <span class="px-1">::</span>
         <span class="font-black"
@@ -81,7 +83,7 @@
             bg="#4bff5d"
             href="https://coppersalts.github.io/HTML5b?level={level.id}"
             event="play-level"
-            disabled={level.modded}
+            disabled={!!level.modded}
         />
         <Button text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
         {#if isOwner || data.admin}
