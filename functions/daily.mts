@@ -131,7 +131,7 @@ export default async () => {
 
         // console.log(nextUp);
 
-        await sendWebhook(dailyiesList[0].expand.level);
+        await sendWebhook(randomLevel);
     } else {
         await sendWebhook(dailyiesList[1].expand.level);
     }
