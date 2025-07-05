@@ -18,8 +18,8 @@
         output = await callback(page, type, sort, featured);
         // console.log(page, output)
     };
-    export let removeOptions = false;
 
+    export let removeOptions = false;
     export let removeMovement = false;
 </script>
 
@@ -40,17 +40,15 @@
 {/if}
 <slot></slot>
 {#if !removeMovement}
-    <div class="p-5 text-center text-6xl text-neutral-300 select-none">
-        <span
-            role="button"
-            class="cursor-pointer font-bold transition-colors hover:text-neutral-500"
-            on:click={() => changePage(-1)}>{"⟵"}</span
+    <div class="p-5 text-center text-6xl font-bold text-neutral-300 select-none">
+        <button
+            class="cursor-pointer transition-colors hover:text-neutral-500"
+            on:click={() => changePage(-1)}>{"⟵"}</button
         >
-        <span class="font-mono font-bold">{page}</span>
-        <span
-            role="button"
-            class="cursor-pointer font-bold transition-colors hover:text-neutral-500"
-            on:click={() => changePage(1)}>{"⟶"}</span
+        <span class="font-mono">{page}</span>
+        <button
+            class="cursor-pointer transition-colors hover:text-neutral-500"
+            on:click={() => changePage(1)}>{"⟶"}</button
         >
     </div>
 {/if}

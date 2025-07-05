@@ -2,7 +2,6 @@
     import "../../app.css";
     import Navbar from "../../components/layout/Navbar.svelte";
     import Footer from "../../components/layout/Footer.svelte";
-    // import background from "$lib/assets/backgrounds/2.png";
     import type { PageData } from "../../../.svelte-kit/types/src/routes";
 
     export let data: PageData;
@@ -19,13 +18,9 @@
     ></script>
 </svelte:head>
 
-<div class="m blur-sm">
-    <!--    <div></div>-->
-    <!--    <img src={background} alt=""/>-->
-</div>
+<div class="m fixed -z-10 h-screen w-screen bg-cover"></div>
 <Navbar {user} />
-<!--<div class="w-full backdrop-blur-[3px]">-->
-<div class="w-full">
+<div class="main w-full">
     <div class="m-auto max-w-[1600px] grow py-2">
         <slot></slot>
     </div>
@@ -33,36 +28,17 @@
 <Footer />
 
 <style>
-    /* parallel */
     .m {
         background-image: url("$lib/assets/backgrounds/2.png");
-        background-size: cover;
-        position: fixed;
-        left: -5px;
-        top: -5px;
-        width: 105%;
-        height: 105%;
-        z-index: -1;
-
-        overflow-x: hidden;
-
-        perspective: 1px;
+        animation: hue-rotate 10s linear infinite;
     }
 
-    /*.m {*/
-    /*    height: 100vh;*/
-    /*    overflow-x: hidden;*/
-    /*    perspective: 1px;*/
-    /*    z-index: -1;*/
-    /*}*/
-
-    /*img {*/
-    /*    position: absolute;*/
-    /*    top: 0;*/
-    /*    right: 0;*/
-    /*    bottom: 0;*/
-    /*    left: 0;*/
-
-    /*    transform: translateZ(0);*/
-    /*}*/
+    @keyframes hue-rotate {
+        0% {
+            filter: blur(2px) hue-rotate(0deg);
+        }
+        100% {
+            filter: blur(2px) hue-rotate(360deg);
+        }
+    }
 </style>

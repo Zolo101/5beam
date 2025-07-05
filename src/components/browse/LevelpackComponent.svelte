@@ -48,11 +48,19 @@
             <div class="grow">
                 <UserComponent prefix="by" {user} />
             </div>
-            <div class="flex items-end">
-                <Icon name="plays" width="13" height="13" />
-                <p class="h-[15px] pl-1 font-bold text-green-500">
-                    {getPlaysString(levelpack.plays)}
-                </p>
+            <div class="flex items-end gap-4 *:gap-1">
+                <div class="flex items-end">
+                    <Icon name="levels" width="13" height="13" />
+                    <p class="h-[15px] font-bold text-purple-400">
+                        {getPlaysString(levelpack.levels.length)}
+                    </p>
+                </div>
+                <div class="flex items-end">
+                    <Icon name="plays" width="13" height="13" />
+                    <p class="h-[15px] font-bold text-green-500">
+                        {getPlaysString(levelpack.plays)}
+                    </p>
+                </div>
             </div>
         </div>
         <!--    <div class="w-[22px] h-[17px] pb-px left-[180px] top-[137px] absolute justify-start items-center gap-px inline-flex">-->

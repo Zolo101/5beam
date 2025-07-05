@@ -57,16 +57,11 @@ nav {
     @apply flex items-center justify-center p-1.5 text-black backdrop-blur-[4px];
 }
 
-footer {
-    @apply mt-auto flex justify-evenly bg-neutral-100/10 p-5 text-neutral-50;
-}
-
 .button {
     @apply rounded-lg bg-linear-to-b px-7 shadow-md;
     background: linear-gradient(to bottom, transparent, #00000044);
 }
 
-/* TODO: Is this a good idea? */
 svg {
     @apply inline;
 }

@@ -6,11 +6,9 @@
     import LevelComponent from "../browse/LevelComponent.svelte";
     import Pagination from "../Pagination.svelte";
     import FiveBStyle from "../FiveBStyle.svelte";
-    import Icon from "../Icon.svelte";
     import { usersV2 } from "$lib/pocketbase";
     import type { PocketbaseUser } from "$lib/types";
     import { toPOJO } from "../../talk/get";
-    import type { RecordModel } from "pocketbase";
 
     export let user: PocketbaseUser;
 
@@ -74,6 +72,8 @@
             {:else}
                 <a href="/" on:click={logIn}>Log In</a>
             {/if}
+            <span>•</span>
+            <a href="/discord">Discord</a>
         </div>
     </div>
 </nav>
@@ -86,7 +86,7 @@
         <Pagination
             bind:page={searchPage}
             bind:output={$searchResults}
-            callback={(page, sort, featured) => getSearchClient($searchText)}
+            callback={() => getSearchClient($searchText)}
             removeOptions
             removeMovement
         >
@@ -98,10 +98,9 @@
                     <div>
                         <FiveBStyle text={$searchText} />
                     </div>
-                    <a
-                        href="#"
+                    <button
                         class="font-black transition-transform hover:scale-120"
-                        on:click={() => (searchFocused = false)}>✕</a
+                        on:click={() => (searchFocused = false)}>✕</button
                     >
                 </div>
                 {#if $searchResults.length}
@@ -118,16 +117,3 @@
         </Pagination>
     </div>
 {/if}
-
-<style>
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    li:hover {
-        cursor: pointer;
-        font-weight: bold;
-    }
-</style>

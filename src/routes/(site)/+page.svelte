@@ -53,13 +53,13 @@
             />
             <div class="flex justify-between gap-4 text-3xl *:grow max-xl:flex-col max-xl:text-2xl">
                 <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
-                <BigButton
+                <!-- <BigButton
                     text="Join the 5b discord!"
                     bg="#5865f2"
                     href="https://discord.gg/qtePFSH"
                     event="discord-join"
                     newWindow
-                />
+                /> -->
             </div>
         </div>
     </section>
@@ -67,7 +67,7 @@
         <video
             width="960"
             height="540"
-            class="rounded-sm shadow-2xl shadow-white/20 outline outline-2 outline-white/5"
+            class="rounded-sm shadow-2xl shadow-white/20 outline-4 outline-white/5"
             src={homepageVideo}
             autoplay
             muted
@@ -81,11 +81,10 @@
     </aside>
 </section>
 
-<div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
-    <p class=" w-min rounded bg-gradient-to-b from-orange-400 to-yellow-500 p-2 text-black/90">
-        NEW!
+<div class="m-2 flex items-center gap-2 pl-10 text-4xl font-black">
+    <p class="bg-gradient-to-b from-orange-300 to-yellow-200 bg-clip-text p-2 text-transparent">
+        Daily Level
     </p>
-    <p class="">Daily Level</p>
 </div>
 <section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
     <section
@@ -180,6 +179,7 @@
     </section>
 </Pagination>
 
+<!-- TODO: Replace with Trending -->
 <h2>Most Popular Levels</h2>
 <Pagination
     bind:page={mostPopularLevelPage}
