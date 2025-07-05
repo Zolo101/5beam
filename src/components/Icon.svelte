@@ -7,7 +7,10 @@
     export let height: string;
 
     const filename = `/src/lib/assets/icons/${name.toLowerCase()}.svg`;
-    const html = Icons[filename].replace("<svg", `<svg width="${width}" height="${height}"`);
+    const html = Icons[filename].default.replace(
+        "<svg",
+        `<svg width="${width}" height="${height}"`
+    );
 </script>
 
 {@html html}
