@@ -13,13 +13,17 @@
     import Difficulty from "../../components/Difficulty.svelte";
     import BigButton from "../../components/BigButton.svelte";
 
-    export let data: PageData;
+    let { data }: { data: PageData } = $props();
     let user = data.user;
 
-    $: recentLevelPage = 1;
-    $: featuredLevelPage = 1;
-    $: mostPopularLevelPage = 1;
-    $: levelpackPage = 1;
+    let recentLevelPage = $state(1);
+
+    let featuredLevelPage = $state(1);
+
+    let mostPopularLevelPage = $state(1);
+
+    let levelpackPage = $state(1);
+
     const recentLevels = writable(data.recentLevels);
     const featuredLevels = writable(data.featuredLevels);
     const mostPopularLevels = writable(data.mostPopularLevels);
@@ -72,11 +76,14 @@
             autoplay
             muted
             loop
-        />
+        ></video>
         <section class="text-2xl">
             <a class="hover:underline" href="/level/defmxfn312m41c3">Autobook 2</a><span
                 class="pl-1">by</span
-            ><UserComponent prefix="" user={{ id: "6cmdcntll4sgnzz", username: "coppersalts" }} />
+            ><UserComponent
+                prefix=""
+                creator={{ id: "6cmdcntll4sgnzz", username: "coppersalts" }}
+            />
         </section>
     </aside>
 </section>
@@ -98,7 +105,7 @@
                 <a href="/level/{dailyLevel.id}">
                     <span class="text-center text-4xl font-bold">{dailyLevel.title}</span>
                 </a>
-                <UserComponent prefix="by" user={dailyLevelCreator} />
+                <UserComponent prefix="by" creator={dailyLevelCreator} />
             </div>
             <p class="grow">{dailyLevel.description}</p>
             <div class="flex w-full justify-around gap-2 text-3xl">

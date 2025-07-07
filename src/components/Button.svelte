@@ -1,17 +1,29 @@
 <script lang="ts">
-    export let text: string = "(text)";
-    export let bg: string = "#ffffff";
-    export let href: string = "";
-    export let event: string = "";
-    export let disabled: boolean = false;
-    export let newWindow: boolean = false;
-    export let onclick: () => void = () => {};
+    interface Props {
+        text?: string;
+        bg?: string;
+        href?: string;
+        event?: string;
+        disabled?: boolean;
+        newWindow?: boolean;
+        onclick?: () => void;
+    }
+
+    let {
+        text = "(text)",
+        bg = "#ffffff",
+        href = "",
+        event = "",
+        disabled = false,
+        newWindow = false,
+        onclick = () => {}
+    }: Props = $props();
 </script>
 
 <a {href} target={newWindow ? "_blank" : "_self"}>
     <button
         {disabled}
-        on:click={onclick}
+        {onclick}
         data-umami-event={event}
         class="
         button h-[40px] cursor-pointer text-black inset-shadow-xs inset-shadow-black/50 transition-all hover:outline-black/50 hover:brightness-75

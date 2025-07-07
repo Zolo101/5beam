@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { preventDefault } from 'svelte/legacy';
+
     import languageEncoding from "detect-file-encoding-and-language";
     import { derived, writable } from "svelte/store";
     import { fly } from "svelte/transition";
@@ -13,11 +15,15 @@
     import { readBlobInANSI } from "../../../misc";
     import Dropzone from "svelte-file-dropzone";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
     let user = data.user;
 
     const loggedIn = !!user;
-    let page = 1;
+    let page = $state(1);
     const result = writable<ValidateResult | undefined>();
     const valid = derived(result, (r) => r?.valid);
     let eventStore = writable<Event>();
@@ -95,7 +101,7 @@
 </script>
 
 <!-- "Changes may not be saved" -->
-<svelte:window on:beforeunload={() => true} />
+<svelte:window onbeforeunload={() => true} />
 
 <!--TODO: Add close (X) button at top right -->
 {#if !loggedIn}
@@ -165,7 +171,7 @@
                     <p class="text-neutral-50">Title:</p>
                     <input
                         bind:value={$title}
-                        on:input={onTitleChange}
+                        oninput={onTitleChange}
                         class="rounded-sm bg-black/50 p-2.5"
                         type="text"
                         name="title"
@@ -190,7 +196,7 @@
         {/if}
         {#if page >= 3 && page !== 4}
             <div transition:fly={{ x: -200 }}>
-                <form class="m-auto flex w-2/5 flex-col" on:submit|preventDefault={onSubmit}>
+                <form class="m-auto flex w-2/5 flex-col" onsubmit={preventDefault(onSubmit)}>
                     <input
                         type="submit"
                         value="Upload!"

@@ -1,10 +1,15 @@
 <script lang="ts">
     import { Icons } from "../misc";
 
-    // TODO: Make an "unknown" icon
-    export let name: string;
-    export let width: string;
-    export let height: string;
+    
+    interface Props {
+        // TODO: Make an "unknown" icon
+        name: string;
+        width: string;
+        height: string;
+    }
+
+    let { name, width, height }: Props = $props();
 
     const filename = `/src/lib/assets/icons/${name.toLowerCase()}.svg`;
     const html = Icons[filename].default.replace(

@@ -10,12 +10,17 @@
     import type { PocketbaseUser } from "$lib/types";
     import { toPOJO } from "../../talk/get";
 
-    export let user: PocketbaseUser;
+    interface Props {
+        user: PocketbaseUser;
+    }
 
-    let loggedIn = !!user;
+    let { user = $bindable() }: Props = $props();
 
-    let searchFocused = false;
-    $: searchPage = 0;
+    let loggedIn = $state(!!user);
+
+    let searchFocused = $state(false);
+    let searchPage = $state(0);
+    
 
     const searchResults = writable([]);
     const searchText = writable("");
@@ -70,7 +75,7 @@
                 <a href="/user">Profile</a>
                 <a href="/api/auth/signout/discord">Log Out</a>
             {:else}
-                <a href="/" on:click={logIn}>Log In</a>
+                <a href="/" onclick={logIn}>Log In</a>
             {/if}
             <span>•</span>
             <a href="/discord">Discord</a>
@@ -100,7 +105,7 @@
                     </div>
                     <button
                         class="font-black transition-transform hover:scale-120"
-                        on:click={() => (searchFocused = false)}>✕</button
+                        onclick={() => (searchFocused = false)}>✕</button
                     >
                 </div>
                 {#if $searchResults.length}

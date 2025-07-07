@@ -2,9 +2,13 @@
     // 0 to 7
     import { difficultyColorMap, difficultyImages, difficultyMap } from "../misc";
 
-    export let difficulty: number = 0;
-    export let includeText: boolean = false;
-    export let includeImage: boolean = true;
+    interface Props {
+        difficulty?: number;
+        includeText?: boolean;
+        includeImage?: boolean;
+    }
+
+    let { difficulty = 0, includeText = false, includeImage = true }: Props = $props();
     const name = difficultyMap.get(difficulty) ?? "unknown";
     const filename = name.toLowerCase();
     const image = difficultyImages[`/src/lib/assets/difficulty/${filename}.png`].default;

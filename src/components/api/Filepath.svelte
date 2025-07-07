@@ -1,6 +1,10 @@
 <script lang="ts">
-    export let directory: string[];
-    export let oppositeSlash: boolean = false;
+    interface Props {
+        directory: string[];
+        oppositeSlash?: boolean;
+    }
+
+    let { directory, oppositeSlash = false }: Props = $props();
 
     const slash = oppositeSlash ? "\\" : "/";
 </script>

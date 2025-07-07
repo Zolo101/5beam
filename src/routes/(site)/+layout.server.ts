@@ -1,4 +1,4 @@
-import type { LayoutServerLoad } from "../../../.svelte-kit/types/src/routes";
+import type { LayoutServerLoad } from "./$types";
 import { refreshTokenRequest } from "$lib/auth";
 import DiscordOauth2, { type User } from "$lib/DiscordOauth2";
 import { isAdmin, isLoggedIn } from "../../misc";
@@ -19,8 +19,8 @@ export const load = (async ({ locals, cookies }) => {
         }
     }
 
-    let admin = isAdmin(user);
-    let loggedIn = isLoggedIn(user);
+    const admin = isAdmin(user);
+    const loggedIn = isLoggedIn(user);
 
     return { user, admin, loggedIn };
 }) satisfies LayoutServerLoad;

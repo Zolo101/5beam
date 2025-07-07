@@ -1,8 +1,12 @@
 <script lang="ts">
     import star from "$lib/assets/star.png";
 
-    export let amount: number = 0;
-    export let includeText: boolean = true;
+    interface Props {
+        amount?: number;
+        includeText?: boolean;
+    }
+
+    let { amount = 0, includeText = true }: Props = $props();
 </script>
 
 <div class="star">

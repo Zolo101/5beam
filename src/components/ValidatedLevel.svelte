@@ -3,9 +3,14 @@
     import { backgrounds, to5bLevelFormat } from "../misc";
     import Difficulty from "./Difficulty.svelte";
 
-    export let level: DetectedLevel;
-    export let levelDifficulties: number[];
-    $: opened = false;
+    interface Props {
+        level: DetectedLevel;
+        levelDifficulties: number[];
+    }
+
+    let { level, levelDifficulties = $bindable() }: Props = $props();
+    let opened = $state(false);
+    
 
     // TODO: Find a better way to get the log level of a validation
     const warningLog = level.logs.find((l) => l.level === "warning") !== undefined;
@@ -24,7 +29,7 @@
     class:warningLog
     class:errorLog
     style="background-image: url({getBackground(level.background)});"
-    on:click={() => (opened = !opened)}
+    onclick={() => (opened = !opened)}
 >
     <span
         class="absolute right-0 bottom-0 z-0 px-1.5 text-4xl font-bold text-white mix-blend-overlay select-none"
@@ -49,7 +54,7 @@
             {#each [1, 2, 3, 4, 5, 6] as j}
                 <button
                     class="cursor-pointer rounded-sm p-1 transition hover:scale-110 hover:bg-white/20"
-                    on:click={() => (levelDifficulties[level.id] = j)}
+                    onclick={() => (levelDifficulties[level.id] = j)}
                 >
                     <Difficulty difficulty={j} />
                 </button>

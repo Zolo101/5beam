@@ -2,21 +2,36 @@
     import Table from "../layout/Table.svelte";
     import Filepath from "./Filepath.svelte";
 
-    export let endpoint: string[];
-    export let deprecated = false;
-    export let wip = false;
-    export let game_only = false;
-    export let token_required = false;
-    export let type: "INFO" | "GET" | "POST" | "STRUCT" = "GET";
-    export let params: [[unknown, unknown, unknown, unknown?]];
-    export let code: string;
+    interface Props {
+        endpoint: string[];
+        deprecated?: boolean;
+        wip?: boolean;
+        game_only?: boolean;
+        token_required?: boolean;
+        type?: "INFO" | "GET" | "POST" | "STRUCT";
+        params?: [string, string, string, unknown?][];
+        code?: string;
+        children?: import("svelte").Snippet;
+    }
 
-    let colors = new Map<string, string>([
-        ["INFO", "grey"],
-        ["GET", "lawngreen"],
-        ["POST", "hotpink"],
-        ["STRUCT", "deepskyblue"]
-    ]);
+    let {
+        endpoint,
+        deprecated = false,
+        wip = false,
+        game_only = false,
+        token_required = false,
+        type = "GET",
+        params,
+        code,
+        children
+    }: Props = $props();
+
+    const colors = {
+        INFO: "grey",
+        GET: "lawngreen",
+        POST: "hotpink",
+        STRUCT: "deepskyblue"
+    };
 </script>
 
 <section
@@ -25,7 +40,7 @@
     class:game_only
 >
     <div class="bg-black p-2 text-3xl font-bold">
-        <span style:color={colors.get(type)}>{type}</span>
+        <span style:color={colors[type]}>{type}</span>
         <span class="name"><Filepath directory={endpoint} /></span>
         {#if token_required}
             <span class="float-right bg-black p-2 text-lg text-amber-600">Auth Required</span>
@@ -62,7 +77,7 @@
         {/if}
 
         <div class="p-5 text-neutral-300">
-            <slot></slot>
+            {@render children?.()}
         </div>
     </div>
 </section>

@@ -5,13 +5,17 @@
     import Table from "./layout/Table.svelte";
     import Log from "./Log.svelte";
 
-    export let selectedLevel: DetectedLevel | undefined;
+    interface Props {
+        selectedLevel: DetectedLevel | undefined;
+    }
 
-    $: tableSprites = selectedLevel?.sprites.map((s) =>
+    let { selectedLevel = $bindable() }: Props = $props();
+
+    let tableSprites = $derived(selectedLevel?.sprites.map((s) =>
         Object.values(s).filter((v) => v !== undefined)
-    );
+    ));
 
-    $: tableDialogues = selectedLevel?.dialogues.map((d) => Object.values(d));
+    let tableDialogues = $derived(selectedLevel?.dialogues.map((d) => Object.values(d)));
 </script>
 
 {#if selectedLevel}
@@ -26,7 +30,7 @@
                 <span class="font-bold">{selectedLevel.name}</span>
             </div>
             <div>
-                <button class="p-0 text-7xl" on:click={() => (selectedLevel = undefined)}>✕</button>
+                <button class="p-0 text-7xl" onclick={() => (selectedLevel = undefined)}>✕</button>
             </div>
         </div>
         <div class="flex content-between items-end gap-5 text-4xl">

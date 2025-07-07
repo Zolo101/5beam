@@ -6,7 +6,11 @@
     import LevelpackComponent from "../../../../components/browse/LevelpackComponent.svelte";
     import type { PageData } from "../../../../../.svelte-kit/types/src/routes";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
 
     let user = data.creator;
     const levels = writable(data.levels);
@@ -16,8 +20,10 @@
     let month = (date.getMonth() + 1).toString().padStart(2, "0");
     let year = date.getFullYear();
 
-    $: levelPage = 1;
-    $: levelpackPage = 1;
+    let levelPage = $state(1);
+    
+    let levelpackPage = $state(1);
+    
 </script>
 
 <svelte:head>

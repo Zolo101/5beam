@@ -1,16 +1,6 @@
 <script lang="ts">
-    export let page = 1;
-    export let callback: (page: number, ...parameters: number[]) => Promise<unknown>;
-
-    // Output variable to bind to
-    export let output: unknown;
-
     // (Usually) server-side data, which would be replaced upon page change
-    export const input: unknown = output;
-
-    export let type: number = 0;
-    export let featured: number = 0;
-    export let sort: number = 0;
+    // export const input: unknown = output;
 
     const changePage = async (by: number) => {
         // dont go below zero
@@ -19,8 +9,30 @@
         // console.log(page, output)
     };
 
-    export let removeOptions = false;
-    export let removeMovement = false;
+    interface Props {
+        page?: number;
+        callback: (page: number, ...parameters: number[]) => Promise<unknown>;
+        // Output variable to bind to
+        output: unknown;
+        type?: number;
+        featured?: number;
+        sort?: number;
+        removeOptions?: boolean;
+        removeMovement?: boolean;
+        children?: import("svelte").Snippet;
+    }
+
+    let {
+        page = $bindable(1),
+        callback,
+        output = $bindable(),
+        type = 0,
+        featured = $bindable(0),
+        sort = $bindable(0),
+        removeOptions = false,
+        removeMovement = false,
+        children
+    }: Props = $props();
 </script>
 
 {#if !removeOptions}
@@ -38,17 +50,17 @@
         </select>
     </div>
 {/if}
-<slot></slot>
+{@render children?.()}
 {#if !removeMovement}
     <div class="p-5 text-center text-6xl font-bold text-neutral-300 select-none">
         <button
             class="cursor-pointer transition-colors hover:text-neutral-500"
-            on:click={() => changePage(-1)}>{"⟵"}</button
+            onclick={() => changePage(-1)}>{"⟵"}</button
         >
         <span class="font-mono">{page}</span>
         <button
             class="cursor-pointer transition-colors hover:text-neutral-500"
-            on:click={() => changePage(1)}>{"⟶"}</button
+            onclick={() => changePage(1)}>{"⟶"}</button
         >
     </div>
 {/if}

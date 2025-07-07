@@ -4,7 +4,12 @@
     import Footer from "../../components/layout/Footer.svelte";
     import type { PageData } from "../../../.svelte-kit/types/src/routes";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+        children?: import('svelte').Snippet;
+    }
+
+    let { data, children }: Props = $props();
 
     let user = data.user;
 </script>
@@ -22,7 +27,7 @@
 <Navbar {user} />
 <div class="main w-full">
     <div class="m-auto max-w-[1600px] grow py-2">
-        <slot></slot>
+        {@render children?.()}
     </div>
 </div>
 <Footer />

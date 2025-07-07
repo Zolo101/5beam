@@ -6,13 +6,16 @@
     import { apiURL, formatDate_Day, getLevelThumbnailURL } from "../../../../misc";
     import Icon from "../../../../components/Icon.svelte";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
 
-    let level = data.level;
-    let user = data.level.creator;
-    let clientUser = data.user;
+    let { data }: Props = $props();
 
-    let isOwner = user.discordId === clientUser?.id;
+    let { level, user: clientUser } = data;
+    let { creator } = level;
+
+    let isOwner = creator.discordId === clientUser?.id;
 
     const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail);
 
@@ -57,7 +60,7 @@
     </p>
     <!--    TODO: Add star icon for featured levels? -->
     <section class="flex text-xl max-md:flex-col max-md:text-xs">
-        <span class="text-xl"><UserComponent prefix="by" {user} /></span>
+        <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
         <span class="px-1">::</span>
         <span class="font-black"
             ><Difficulty includeText includeImage={false} difficulty={level.difficulty} /></span

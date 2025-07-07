@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { preventDefault } from "svelte/legacy";
+
     import type { PageData } from "../../../../../../.svelte-kit/types/src/routes";
     import UserComponent from "../../../../../components/UserComponent.svelte";
     import { getLevelThumbnailURL, readBlobInANSI } from "../../../../../misc";
@@ -12,16 +14,20 @@
     import { fly } from "svelte/transition";
     import Dropzone from "svelte-file-dropzone";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
 
     const result = writable<ValidateResult | undefined>();
     const valid = derived(result, (r) => r?.valid && r.levels.length === 1);
-    let level = data.level;
-    let user = data.level.creator;
-    let clientUser = data.user;
-    let page = 1;
+    const { level, user: clientUser } = data;
+    const { creator } = level;
 
-    let hasAccess = user.discordId === clientUser?.id || data.admin;
+    let page = $state(1);
+
+    let hasAccess = creator.discordId === clientUser?.id || data.admin;
 
     let eventStore = writable<Event>();
     let file = derived(
@@ -144,7 +150,7 @@
                 <!--        <div class="w-[707px] h-[69px]"><span class="text-white text-[64px] font-black">Lo</span><span class="text-white text-[64px]">rem Ipsum</span></div>-->
                 <!--                <div class="m-auto">-->
                 <p class="mx-4 w-[350px] text-center text-5xl text-white">{level.title}</p>
-                <p class="mx-4 text-2xl text-white"><UserComponent prefix="by" {user} /></p>
+                <p class="mx-4 text-2xl text-white"><UserComponent prefix="by" {creator} /></p>
                 <!--                </div>-->
             </div>
             <!--</div>-->
@@ -242,7 +248,7 @@
                     {#if ($valid || $fileUnchanged) && $changed}
                         <form
                             class="flex w-full flex-col pt-5"
-                            on:submit|preventDefault={onSubmit}
+                            onsubmit={preventDefault(onSubmit)}
                             transition:fly={{ y: 200 }}
                         >
                             <input

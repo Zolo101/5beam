@@ -5,9 +5,14 @@
     import { writable } from "svelte/store";
     import type { PageData } from "../../../../.svelte-kit/types/src/routes";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
 
-    $: randomLevelPage = 1;
+    let { data }: Props = $props();
+
+    let randomLevelPage = $state(1);
+    
     const randomLevels = writable(data.randomLevels);
 </script>
 

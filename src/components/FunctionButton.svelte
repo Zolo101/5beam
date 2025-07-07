@@ -1,13 +1,23 @@
 <script lang="ts">
-    export let text: string = "(text)";
-    export let bg: string = "#ffffff";
-    export let onclick: () => void = () => {};
-    export let event: string = "";
-    export let disabled: boolean = false;
+    interface Props {
+        text?: string;
+        bg?: string;
+        onclick?: () => void;
+        event?: string;
+        disabled?: boolean;
+    }
+
+    let {
+        text = "(text)",
+        bg = "#ffffff",
+        onclick = () => {},
+        event = "",
+        disabled = false
+    }: Props = $props();
 </script>
 
 <button
-    on:click={onclick}
+    {onclick}
     {disabled}
     data-umami-event={event}
     class="

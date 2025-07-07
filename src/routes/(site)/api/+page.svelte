@@ -2,16 +2,11 @@
     import APIEndpoint from "../../../components/api/APIEndpoint.svelte";
     import Table from "../../../components/layout/Table.svelte";
     import APIReference from "../../../components/api/APIReference.svelte";
-    // const ratelimits = [
-    //     ["GET", 1000, 10],
-    //     ["POST", 5, 1],
-    // ]
-
-    enum ParamType {
-        STRING = "STRING",
-        INTEGER = "INTEGER",
-        BOOLEAN = "BOOLEAN"
-    }
+    const ParamType = {
+        STRING: "STRING",
+        INTEGER: "INTEGER",
+        BOOLEAN: "BOOLEAN"
+    };
 </script>
 
 <svelte:head>

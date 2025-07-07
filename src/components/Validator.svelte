@@ -5,9 +5,13 @@
     import Log from "./Log.svelte";
     import LevelInfo from "./LevelInfo.svelte";
 
-    export let result: ValidateResult | undefined;
-    let selectedLevel: DetectedLevel | undefined;
-    $: levelDifficulties = new Array(result?.levels.length).fill(0);
+    interface Props {
+        result: ValidateResult | undefined;
+    }
+
+    let { result }: Props = $props();
+    let selectedLevel: DetectedLevel | undefined = $state();
+    let levelDifficulties = $derived(new Array(result?.levels.length).fill(0));
 
     const selectLevel = (level: DetectedLevel) => {
         selectedLevel = level;
@@ -21,7 +25,7 @@
         {/each}
         {#each result.levels as level, i}
             <section>
-                <button in:fly={{ y: 200, duration: 100 * i }} on:click={() => selectLevel(level)}>
+                <button in:fly={{ y: 200, duration: 100 * i }} onclick={() => selectLevel(level)}>
                     <ValidatedLevel {level} {levelDifficulties} />
                 </button>
             </section>

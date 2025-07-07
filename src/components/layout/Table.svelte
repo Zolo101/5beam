@@ -1,8 +1,17 @@
 <script lang="ts">
-    export let title: string = "";
-    export let heads: string[] = [];
-    export let content: [string, ...any][];
-    export let dynamicWidth: boolean = true;
+    interface Props {
+        title?: string;
+        heads?: string[];
+        content: [string, ...any][];
+        dynamicWidth?: boolean;
+    }
+
+    let {
+        title = "",
+        heads = [],
+        content,
+        dynamicWidth = true
+    }: Props = $props();
 </script>
 
 <table class:dynamicWidth class="mt-5">

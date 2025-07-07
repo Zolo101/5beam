@@ -6,21 +6,17 @@
     import Button from "../Button.svelte";
     import UserComponent from "../UserComponent.svelte";
 
-    export let levelpack: Levelpack;
-
-    export let glow: boolean = false;
-
-    $: user = levelpack.creator;
+    const { levelpack, glow = false }: { levelpack: Levelpack; glow?: boolean } = $props();
+    const { creator, id, modded, title, levels, plays } = levelpack;
 </script>
 
-<a href="/levelpack/{levelpack.id}">
-    <div
-        class:moddedLevelpack={levelpack.modded}
-        class:glow
-        class="w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
-    >
-        <!--    Thumbnail -->
-        <div class="flex w-full justify-center">
+<div
+    class:moddedLevelpack={modded}
+    class:glow
+    class="w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
+>
+    <div class="flex w-full justify-center">
+        <a href="/levelpack/{id}">
             <img
                 width="128"
                 height="128"
@@ -28,49 +24,40 @@
                 src={Box}
                 alt="Placeholder Thumbnail"
             />
-        </div>
-        <div class="flex h-7 justify-between gap-2">
-            <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap">
-                {levelpack.title}
-            </p>
-            <div class="my-1 **:h-6 **:text-sm!">
-                {#if !levelpack.modded}
-                    <Button
-                        text="Play"
-                        bg="#4bff5d"
-                        href="https://coppersalts.github.io/HTML5b?levelpack={levelpack.id}"
-                        event="play-level"
-                    />
-                {/if}
-            </div>
-        </div>
-        <div class="flex justify-between gap-2">
-            <div class="grow">
-                <UserComponent prefix="by" {user} />
-            </div>
-            <div class="flex items-end gap-4 *:gap-1">
-                <div class="flex items-end">
-                    <Icon name="levels" width="13" height="13" />
-                    <p class="h-[15px] font-bold text-purple-400">
-                        {getPlaysString(levelpack.levels.length)}
-                    </p>
-                </div>
-                <div class="flex items-end">
-                    <Icon name="plays" width="13" height="13" />
-                    <p class="h-[15px] font-bold text-green-500">
-                        {getPlaysString(levelpack.plays)}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!--    <div class="w-[22px] h-[17px] pb-px left-[180px] top-[137px] absolute justify-start items-center gap-px inline-flex">-->
-        <!--        <div class="w-[30px] text-right text-yellow-400 text-[13px] font-normal">{level.stars}</div>-->
-        <!--    </div>-->
-
-        <!--    Difficulty Icon -->
-        <!--    <img class="w-[35px] h-[35px] left-[167px] top-[80px] absolute" src="https://via.placeholder.com/35x35"/>-->
-        <!--    <div class="w-[35px] h-[35px] left-[167px] top-[80px] absolute">-->
-        <!--        <Difficulty difficulty={levelpack.difficulty}/>-->
-        <!--    </div>-->
+        </a>
     </div>
-</a>
+    <div class="flex h-7 justify-between gap-2">
+        <p class="overflow-hidden text-xl text-ellipsis whitespace-nowrap">
+            {title}
+        </p>
+        <div class="my-1 **:h-6 **:text-sm!">
+            {#if !modded}
+                <Button
+                    text="Play"
+                    bg="#4bff5d"
+                    href="https://coppersalts.github.io/HTML5b?levelpack={id}"
+                    event="play-level"
+                />
+            {/if}
+        </div>
+    </div>
+    <div class="flex justify-between gap-2">
+        <div class="grow">
+            <UserComponent prefix="by" {creator} />
+        </div>
+        <div class="flex items-end gap-4 *:gap-1">
+            <div class="flex items-end">
+                <Icon name="levels" width="13" height="13" />
+                <p class="h-[15px] font-bold text-purple-400">
+                    {getPlaysString(levels.length)}
+                </p>
+            </div>
+            <div class="flex items-end">
+                <Icon name="plays" width="13" height="13" />
+                <p class="h-[15px] font-bold text-green-500">
+                    {getPlaysString(plays)}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { PageData } from "../../../../../.svelte-kit/types/src/routes";
+    import { PageData } from "./$types";
     import UserComponent from "../../../../components/UserComponent.svelte";
     import Button from "../../../../components/Button.svelte";
     import { getLevelpackClient } from "../../../../client/ClientSideAPI";
@@ -7,11 +7,16 @@
     import Box from "$lib/assets/box.png";
     import { formatDate_Day } from "../../../../misc";
     import Difficulty from "../../../../components/Difficulty.svelte";
-    // import Difficulty from "../../../components/Difficulty.svelte";
-    export let data: PageData;
 
-    let levelpack = data.levelpack;
-    let user = data.levelpack.creator;
+    interface Props {
+        // import Difficulty from "../../../components/Difficulty.svelte";
+        data: PageData;
+    }
+
+    const { data }: Props = $props();
+
+    const { levelpack } = data;
+    const { creator } = levelpack;
     // let expanded = false;
 
     const levels = getLevelpackClient(levelpack.id, 1);
@@ -34,12 +39,12 @@
         // a.click()
     };
 
-    const viewLevels = () => {
-        getLevelpackClient(levelpack.id, 1).then((res) => {
-            levelpack = res;
-            // expanded = true;
-        });
-    };
+    // const viewLevels = () => {
+    //     getLevelpackClient(levelpack.id, 1).then((res) => {
+    //         levelpack = res;
+    //         // expanded = true;
+    //     });
+    // };
 </script>
 
 <svelte:head>
@@ -58,7 +63,7 @@
         {levelpack.title}
     </p>
     <section class="flex text-xl max-md:flex-col max-md:text-xs">
-        <span class="text-xl"><UserComponent prefix="by" {user} /></span>
+        <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
         <span class="px-1">::</span>
         <span class="font-black"
             ><Difficulty includeText includeImage={false} difficulty={levelpack.difficulty} /></span

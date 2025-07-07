@@ -1,8 +1,12 @@
 <script lang="ts">
     import Filepath from "./Filepath.svelte";
 
-    export let type: "GET" | "POST" | "STRUCT" | string = "OTHER";
-    export let reference: string | string[];
+    interface Props {
+        type?: "GET" | "POST" | "STRUCT" | string;
+        reference: string | string[];
+    }
+
+    let { type = "OTHER", reference }: Props = $props();
 </script>
 
 <div class="reference">
