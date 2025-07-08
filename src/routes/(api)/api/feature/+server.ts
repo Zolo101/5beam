@@ -1,31 +1,33 @@
+import { createObjectSchema } from "$lib/parse";
 import { NewFeaturedWebhook } from "$lib/webhook";
-import { NOT_FOUND } from "../../../../misc";
+import { BAD } from "../../../../misc";
 import { DENIED, isAdmin, MY_BAD, OK } from "../../../../misc";
 import { tryGettingUser } from "../../../../talk/admin";
 import { featureLevel } from "../../../../talk/create";
 import type { RequestHandler } from "./$types";
 
+const urlSchema = createObjectSchema("id");
+const cookiesSchema = createObjectSchema("access_token", "refresh_token");
 export const POST: RequestHandler = async ({ cookies, url }) => {
-    const id = url.searchParams.get("id");
+    try {
+        const { id } = urlSchema.parse(url);
 
-    const access_token = cookies.get("access_token") ?? "";
-    const refresh_token = cookies.get("refresh_token") ?? "";
+        const { access_token, refresh_token } = cookiesSchema.parse(cookies);
 
-    const user = await tryGettingUser(access_token, refresh_token, cookies);
-    if (!user) return DENIED();
+        const user = await tryGettingUser(access_token, refresh_token, cookies);
+        if (!user) return DENIED();
 
-    const allowed = isAdmin(user);
-    if (!allowed) return DENIED();
+        const allowed = isAdmin(user);
+        if (!allowed) return DENIED();
 
-    if (id) {
         try {
             const level = await featureLevel(id);
             await NewFeaturedWebhook.send(level);
             return OK();
-        } catch (e) {
+        } catch {
             return MY_BAD("Failed to feature level");
         }
-    } else {
-        return NOT_FOUND();
+    } catch {
+        return BAD();
     }
 };

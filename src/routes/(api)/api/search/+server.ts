@@ -1,12 +1,18 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getSearch } from "../../../../talk/get";
-import { OK } from "../../../../misc";
+import { BAD, MY_BAD, OK } from "../../../../misc";
+import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
-export const GET: RequestHandler = async ({ request }) => {
-    const url = new URL(request.url);
-    const text = url.searchParams.get("text") ?? "";
-    const page = Number(url.searchParams.get("page") ?? 0);
-    const mod = url.searchParams.get("mod") ?? "";
-
-    return OK(await getSearch(text, page, mod));
+const schema = createObjectSchema("text", "page", "mod");
+export const GET: RequestHandler = async ({ url }) => {
+    try {
+        const { text, page, mod } = parseFromUrlSearchParams(schema, url);
+        try {
+            return OK(await getSearch(text, page, mod));
+        } catch {
+            return MY_BAD();
+        }
+    } catch {
+        return BAD();
+    }
 };

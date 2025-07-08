@@ -1,15 +1,16 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getLevelById } from "../../../../talk/get";
 import { OK, NOT_FOUND } from "../../../../misc";
+import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
-export const GET: RequestHandler = async ({ request }) => {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
-    if (id === null) return NOT_FOUND(); // Not Found
-    // e()
-
-    return OK(await getLevelById(id));
+const schema = createObjectSchema("id");
+export const GET: RequestHandler = async ({ url }) => {
+    try {
+        const { id } = parseFromUrlSearchParams(schema, url);
+        return OK(await getLevelById(id));
+    } catch {
+        return NOT_FOUND();
+    }
 };
 
 // ugly debug function

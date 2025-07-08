@@ -33,12 +33,12 @@ export async function getLevels(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string,
+    mod: string | undefined,
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
+    const modFilter = `modded = "${mod}"`;
 
     return toPOJO(
         (
@@ -56,10 +56,10 @@ export async function getRandomLevels(
     amount: number,
     type: number,
     featured: boolean,
-    mod: string
+    mod: string | undefined
 ) {
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
+    const modFilter = `modded = "${mod}"`;
     const db = type ? levelpacks : levels;
 
     // TODO: Do this function without getting every level in the database.
@@ -76,7 +76,7 @@ export async function getLevelpacks(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string,
+    mod: string | undefined,
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
@@ -139,10 +139,8 @@ export async function addPlayLevelpack(id: string) {
 }
 
 // TODO: Fulltext search?
-export async function getSearch(text: string, page: number, mod: string) {
-    const filter = mod
-        ? `title ~ "${text}" && modded = "${mod}"`
-        : `title ~ "${text}" && modded = ""`; // TODO: Is this unsafe / escapable?
+export async function getSearch(text: string, page: number, mod: string | undefined) {
+    const filter = `title ~ "${text}" && modded = "${mod}"`;
 
     return toPOJO(
         (
@@ -180,14 +178,14 @@ export async function getUserLevels(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string,
+    mod: string | undefined,
     options?: RecordListOptions
 ) {
     // const levels = query(collection(db, "users", id, "levels"), limit(amount));
     // return await getDocs(levels);
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
-    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
+    const modFilter = `modded = "${mod}"`;
 
     // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
     const userLevels = toPOJO(
@@ -206,12 +204,12 @@ export async function getUserLevelpacks(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string,
+    mod: string | undefined,
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
-    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
+    const modFilter = `modded = "${mod}"`;
 
     const userLevelpacks = toPOJO(
         await users.getOne<PocketbaseUser>(id, {
