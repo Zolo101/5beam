@@ -23,6 +23,7 @@ layer(base);
 
 :root {
     color-scheme: dark;
+    background-color: #000000;
 }
 
 html {
@@ -101,12 +102,6 @@ svg {
 .moddedLevelpack {
     /* TODO: Too much? */
     @apply bg-purple-900 text-purple-400 outline-purple-400/40;
-}
-
-/* Pagination */
-
-.pagination {
-    @apply m-auto flex flex-wrap justify-center gap-4;
 }
 
 /* API */
