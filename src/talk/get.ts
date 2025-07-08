@@ -33,7 +33,8 @@ export async function getLevels(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string | undefined,
+    mod: string,
+    amount: number,
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
@@ -42,7 +43,7 @@ export async function getLevels(
 
     return toPOJO(
         (
-            await levels.getList<Level>(page, 8, {
+            await levels.getList<Level>(page, amount, {
                 expand: "creator",
                 sort,
                 filter: featuredFilter + modFilter,
@@ -56,11 +57,11 @@ export async function getRandomLevels(
     amount: number,
     type: number,
     featured: boolean,
-    mod: string | undefined
+    mod: string
 ) {
+    const db = type ? levelpacks : levels;
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = `modded = "${mod}"`;
-    const db = type ? levelpacks : levels;
 
     // TODO: Do this function without getting every level in the database.
     const everyRecord = await db.getList<Level | Levelpack>(0, amount, {
@@ -76,16 +77,17 @@ export async function getLevelpacks(
     page: number,
     sortCode: number,
     featured: boolean,
-    mod: string | undefined,
+    mod: string,
+    amount: number,
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = mod ? `modded = "${mod}"` : `modded = ""`;
+    const modFilter = `modded = "${mod}"`;
 
     return toPOJO(
         (
-            await levelpacks.getList<Levelpack>(page, 8, {
+            await levelpacks.getList<Levelpack>(page, amount, {
                 expand: "creator",
                 sort,
                 filter: featuredFilter + modFilter,
@@ -138,13 +140,17 @@ export async function addPlayLevelpack(id: string) {
     return result;
 }
 
-// TODO: Fulltext search?
-export async function getSearch(text: string, page: number, mod: string | undefined) {
+export async function getSearch(
+    text: string,
+    page: number,
+    amount: number,
+    mod: string | undefined
+) {
     const filter = `title ~ "${text}" && modded = "${mod}"`;
 
     return toPOJO(
         (
-            await levels.getList<Level>(page, 12, {
+            await levels.getList<Level>(page, amount, {
                 expand: "creator",
                 filter
             })
@@ -178,25 +184,26 @@ export async function getUserLevels(
     page: number,
     sortCode: number,
     featured: boolean,
+    amount: number,
     mod: string | undefined,
     options?: RecordListOptions
 ) {
-    // const levels = query(collection(db, "users", id, "levels"), limit(amount));
-    // return await getDocs(levels);
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
-    const modFilter = `modded = "${mod}"`;
+    const modFilter = mod ? `modded = "${mod}"` : "";
+    let filter = featuredFilter + modFilter;
+    if (filter.length > 0) filter = " && " + filter;
 
-    // TODO: We dont need to get the user, we probably already got it... (new property in getLevels needed)
-    const userLevels = toPOJO(
-        await users.getOne<PocketbaseUser>(id, {
-            sort,
-            filter: featuredFilter + modFilter,
-            ...options
-        })
-    ).levels;
-
-    return toPOJO((await getListIdPage<Level>(levels, page, 4, userLevels, "creator")).items);
+    return toPOJO(
+        (
+            await levels.getList<Level>(page, amount, {
+                expand: "creator",
+                filter: `creator = "${id}" ${filter}`,
+                sort,
+                ...options
+            })
+        ).items
+    );
 }
 
 export async function getUserLevelpacks(
@@ -204,23 +211,25 @@ export async function getUserLevelpacks(
     page: number,
     sortCode: number,
     featured: boolean,
+    amount: number,
     mod: string | undefined,
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
-    const modFilter = `modded = "${mod}"`;
-
-    const userLevelpacks = toPOJO(
-        await users.getOne<PocketbaseUser>(id, {
-            sort,
-            filter: featuredFilter + modFilter,
-            ...options
-        })
-    ).levelpacks;
+    const modFilter = mod ? `modded = "${mod}"` : "";
+    let filter = featuredFilter + modFilter;
+    if (filter.length > 0) filter = " && " + filter;
 
     return toPOJO(
-        (await getListIdPage<Levelpack>(levelpacks, page, 4, userLevelpacks, "creator")).items
+        (
+            await levelpacks.getList<Levelpack>(page, amount, {
+                expand: "creator",
+                filter: `creator = "${id}" ${filter}`,
+                sort,
+                ...options
+            })
+        ).items
     );
 }
 
@@ -309,19 +318,6 @@ export async function updateFetchFormData<T>(
     );
 
     return (await result.json()) as Promise<T>;
-}
-
-function getListIdPage<T>(
-    collection: RecordService,
-    page: number,
-    amount: number,
-    ids: string[],
-    expand: string
-) {
-    return collection.getList<T>(page, amount, {
-        filter: ids.map((id) => `id="${id}"`).join("||"),
-        expand
-    });
 }
 
 function getSort(sortCode: number) {

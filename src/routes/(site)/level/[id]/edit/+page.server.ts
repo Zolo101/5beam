@@ -1,4 +1,4 @@
-import type { PageServerLoad } from "../../../../../../.svelte-kit/types/src/routes";
+import type { PageServerLoad } from "./$types";
 import { getLevelById } from "../../../../../talk/get";
 
 export const load = (async ({ params, cookies }) => {

@@ -14,11 +14,11 @@ export const primitives = {
     discordId: z.string(),
 
     // page
-    page: z.coerce.number().int().min(0).default(0),
+    page: z.coerce.number().int().min(1).default(1),
     type: z.coerce.number().int().min(0).max(1).default(0),
     sort: z.coerce.number().int().min(0).max(2).default(0),
-    featured: z.coerce.boolean().default(false),
-    mod: z.string().optional(),
+    featured: z.stringbool().default(false),
+    mod: z.string().default(""),
 
     // random
     amount: z.coerce.number().int().min(1).max(16).default(8),
@@ -31,7 +31,7 @@ export const primitives = {
     title: z.string().max(64),
     description: z.string().max(1024),
     data: z.instanceof(File),
-    modded: z.coerce.boolean(),
+    modded: z.stringbool(),
 
     // auth/refresh
     refresh_token: z.string()

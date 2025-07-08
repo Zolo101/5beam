@@ -77,7 +77,7 @@ export function to5bLevelFormat(number: number) {
 }
 
 // Only sets if the param isn't undefined
-export function URLParamSet(url: URL, prop: string, param: number | string | undefined) {
+export function URLParamSet(url: URL, prop: string, param: number | string | boolean | undefined) {
     if (param !== undefined) {
         url.searchParams.set(prop, param.toString());
     }
@@ -161,7 +161,7 @@ export function NOT_FOUND() {
     return new Response(null, { status: 404 });
 }
 // All good
-export const OK = (body?: any) => new Response(JSON.stringify(body), { status: 200 });
+export const OK = (body?: unknown) => new Response(JSON.stringify(body), { status: 200 });
 
 // User error
 export const BAD = (message?: string) => new Response(message, { status: 400 });
