@@ -150,15 +150,11 @@
 <Pagination
     bind:page={featuredLevelPage}
     bind:output={$featuredLevels}
-    callback={(page, sort, featured) => getLevelPageClient(page, 0, 0, 1)}
+    callback={({ page, type, sort, amount }) => getLevelPageClient(page, type, sort, true, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $featuredLevels as featuredLevel}
-            <LevelComponent level={featuredLevel} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelComponent}
+/>
 
 <section
     class="mx-auto mb-4 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
@@ -176,41 +172,31 @@
 <Pagination
     bind:page={recentLevelPage}
     bind:output={$recentLevels}
-    callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+    callback={({ page, sort, amount, featured }) =>
+        getLevelPageClient(page, 0, sort, featured, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $recentLevels as level}
-            <LevelComponent {level} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelComponent}
+/>
 
 <!-- TODO: Replace with Trending -->
 <h2>Most Popular Levels</h2>
 <Pagination
     bind:page={mostPopularLevelPage}
     bind:output={$mostPopularLevels}
-    callback={(page, sort, featured) => getLevelPageClient(page, 0, 2, featured)}
+    callback={({ page, amount, featured }) => getLevelPageClient(page, 0, 2, featured, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $mostPopularLevels as mostPopularLevel}
-            <LevelComponent level={mostPopularLevel} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelComponent}
+/>
 
 <h2>Recent Levelpacks</h2>
 <Pagination
     bind:page={levelpackPage}
     bind:output={$levelpacks}
-    callback={(page, sort, featured) => getLevelPageClient(page, 1, sort, featured)}
+    callback={({ page, sort, amount, featured }) =>
+        getLevelPageClient(page, 1, sort, featured, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $levelpacks as levelpack}
-            <LevelpackComponent {levelpack} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelpackComponent}
+/>

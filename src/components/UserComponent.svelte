@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PocketbaseUser } from "$lib/types";
-    let { creator, prefix }: { creator: PocketbaseUser; prefix: string } = $props();
-    const { id, username } = creator;
+    const { creator = $bindable(), prefix }: { creator: PocketbaseUser; prefix: string } = $props();
+    let { id, username } = $derived(creator);
 </script>
 
 <span class="font-normal">{prefix}</span><a

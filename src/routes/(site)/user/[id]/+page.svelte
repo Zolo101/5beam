@@ -4,26 +4,24 @@
     import { getUserLevelPageClient } from "../../../../client/ClientSideAPI";
     import Pagination from "../../../../components/Pagination.svelte";
     import LevelpackComponent from "../../../../components/browse/LevelpackComponent.svelte";
-    import type { PageData } from "../../../../../.svelte-kit/types/src/routes";
+    import type { PageData } from "./$types";
 
     interface Props {
         data: PageData;
     }
 
     let { data }: Props = $props();
+    let { levels, levelpacks } = $derived(data);
 
     let user = data.creator;
-    const levels = writable(data.levels);
-    const levelpacks = writable(data.levelpacks);
 
     let date = new Date(user.created);
     let month = (date.getMonth() + 1).toString().padStart(2, "0");
     let year = date.getFullYear();
 
     let levelPage = $state(1);
-    
+
     let levelpackPage = $state(1);
-    
 </script>
 
 <svelte:head>
@@ -41,16 +39,12 @@
     {#if user.levels.length}
         <Pagination
             bind:page={levelPage}
-            bind:output={$levels}
-            callback={(page, sort, featured) =>
-                getUserLevelPageClient(user.id, page, 0, sort, featured)}
-        >
-            <div class="m-auto flex flex-wrap gap-4">
-                {#each $levels as level}
-                    <LevelComponent {level} />
-                {/each}
-            </div>
-        </Pagination>
+            bind:output={levels}
+            callback={({ page, sort, featured, amount }) =>
+                getUserLevelPageClient(user.id, page, 0, sort, featured, amount)}
+            columns={2}
+            PageComponent={LevelComponent}
+        />
     {:else}
         <p>User has no levels!</p>
     {/if}
@@ -59,16 +53,12 @@
     {#if user.levelpacks.length}
         <Pagination
             bind:page={levelpackPage}
-            bind:output={$levelpacks}
-            callback={(page, sort, featured) =>
-                getUserLevelPageClient(user.id, page, 1, sort, featured)}
-        >
-            <div class="m-auto flex flex-wrap gap-4">
-                {#each $levelpacks as levelpack}
-                    <LevelpackComponent {levelpack} />
-                {/each}
-            </div>
-        </Pagination>
+            bind:output={levelpacks}
+            callback={({ page, sort, featured, amount }) =>
+                getUserLevelPageClient(user.id, page, 1, sort, featured, amount)}
+            columns={2}
+            PageComponent={LevelpackComponent}
+        />
     {:else}
         <p>User has no levelpacks!</p>
     {/if}

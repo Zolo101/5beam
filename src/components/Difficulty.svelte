@@ -3,15 +3,15 @@
     import { difficultyColorMap, difficultyImages, difficultyMap } from "../misc";
 
     interface Props {
-        difficulty?: number;
+        difficulty: number;
         includeText?: boolean;
         includeImage?: boolean;
     }
 
-    let { difficulty = 0, includeText = false, includeImage = true }: Props = $props();
-    const name = difficultyMap.get(difficulty) ?? "unknown";
-    const filename = name.toLowerCase();
-    const image = difficultyImages[`/src/lib/assets/difficulty/${filename}.png`].default;
+    const { difficulty = $bindable(), includeText = false, includeImage = true }: Props = $props();
+    const name = $derived(difficultyMap.get(difficulty) ?? "unknown");
+    const filename = $derived(name.toLowerCase());
+    const image = $derived(difficultyImages[`/src/lib/assets/difficulty/${filename}.png`].default);
 </script>
 
 <section>
