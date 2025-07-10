@@ -4,29 +4,19 @@ import { ClientResponseError, type RecordListOptions, type RecordService } from 
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
 export async function getDaily() {
-    const daily = toPOJO(
-        await dailyies.getList<Daily>(1, 1, {
-            expand: "level,level.creator",
-            filter: "featured = false"
-        })
-    ).items;
+    const daily = await dailyies.getList<Daily>(1, 1, {
+        filter: "featured = false",
+        expand: "level,level.creator"
+    });
 
-    if (daily.length === 0) {
-        return null;
-    } else {
-        return daily;
-    }
+    return daily;
 }
 
 export async function getWeeklyChallenge() {
-    return toPOJO(
-        (
-            await weeklies.getList<WeeklyChallenge>(1, 1, {
-                expand: "creator",
-                sort: "-created"
-            })
-        ).items
-    );
+    return await weeklies.getList<WeeklyChallenge>(1, 1, {
+        expand: "creator",
+        sort: "-created"
+    });
 }
 
 export async function getLevels(
@@ -41,16 +31,12 @@ export async function getLevels(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = `modded = "${mod}"`;
 
-    return toPOJO(
-        (
-            await levels.getList<Level>(page, amount, {
-                expand: "creator",
-                sort,
-                filter: featuredFilter + modFilter,
-                ...options
-            })
-        ).items
-    );
+    return await levels.getList<Level>(page, amount, {
+        expand: "creator",
+        sort,
+        filter: featuredFilter + modFilter,
+        ...options
+    });
 }
 
 export async function getRandomLevels(
@@ -64,13 +50,11 @@ export async function getRandomLevels(
     const modFilter = `modded = "${mod}"`;
 
     // TODO: Do this function without getting every level in the database.
-    const everyRecord = await db.getList<Level | Levelpack>(0, amount, {
+    return await db.getList<Level | Levelpack>(0, amount, {
         expand: "creator",
         filter: "unlisted = false && " + featuredFilter + modFilter,
         sort: "@random"
     });
-
-    return toPOJO(everyRecord.items);
 }
 
 export async function getLevelpacks(
@@ -85,45 +69,33 @@ export async function getLevelpacks(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = `modded = "${mod}"`;
 
-    return toPOJO(
-        (
-            await levelpacks.getList<Levelpack>(page, amount, {
-                expand: "creator",
-                sort,
-                filter: featuredFilter + modFilter,
-                ...options
-            })
-        ).items
-    );
+    return await levelpacks.getList<Levelpack>(page, amount, {
+        expand: "creator",
+        sort,
+        filter: featuredFilter + modFilter,
+        ...options
+    });
 }
 
 // TODO: Merge with getLevelpackById
 export async function getLevelpackByIdWithLevels(id: string) {
-    return toPOJO(await levelpacks.getOne<Levelpack>(id, { expand: "creator, levels.creator" }));
+    return await levelpacks.getOne<Levelpack>(id, { expand: "creator, levels.creator" });
 }
 
 export async function getLevelById(id: string) {
-    try {
-        return toPOJO(await levels.getOne<Level>(id, { expand: "creator" }));
-    } catch (e) {
-        // 404 -- Not found
-        if (e instanceof ClientResponseError && e.status === 404) {
-            return null;
-        }
-        throw e;
-    }
+    return await levels.getOne<Level>(id, { expand: "creator" });
 }
 
 export async function getLevelpackById(id: string) {
-    try {
-        return toPOJO(await levelpacks.getOne<Levelpack>(id, { expand: "creator" }));
-    } catch (e) {
-        // 404 -- Not found
-        if (e instanceof ClientResponseError && e.status === 404) {
-            return null;
-        }
-        throw e;
-    }
+    return await levelpacks.getOne<Levelpack>(id, { expand: "creator" });
+}
+
+export async function getRelatedLevels(level: Level) {
+    return await levels.getList<Level>(1, 4, {
+        filter: `id != "${level.id}" && modded = "${level.modded}" && difficulty = ${level.difficulty}`,
+        expand: "creator",
+        sort: "@random"
+    });
 }
 
 export async function addPlayLevel(id: string) {
@@ -148,21 +120,17 @@ export async function getSearch(
 ) {
     const filter = `title ~ "${text}" && modded = "${mod}"`;
 
-    return toPOJO(
-        (
-            await levels.getList<Level>(page, amount, {
-                expand: "creator",
-                filter
-            })
-        ).items
-    );
+    return await levels.getList<Level>(page, amount, {
+        expand: "creator",
+        filter
+    });
 }
 
 export async function getUserById(id: string) {
     // return await getDoc(doc(collection(db, "users"), id))
 
     try {
-        return toPOJO(await users.getOne<PocketbaseUser>(id));
+        return await users.getOne<PocketbaseUser>(id);
     } catch (e) {
         // 404 -- Not found
         if (e instanceof ClientResponseError && e.status === 404) {
@@ -175,7 +143,7 @@ export async function getUserById(id: string) {
 export async function getUserByDiscordId(discordId: string) {
     // return await getDoc(doc(collection(db, "users"), id))
 
-    return toPOJO(await users.getFirstListItem<PocketbaseUser>(`discordId = "${discordId}"`));
+    return await users.getFirstListItem<PocketbaseUser>(`discordId = "${discordId}"`);
 }
 
 // TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
@@ -194,16 +162,12 @@ export async function getUserLevels(
     let filter = featuredFilter + modFilter;
     if (filter.length > 0) filter = " && " + filter;
 
-    return toPOJO(
-        (
-            await levels.getList<Level>(page, amount, {
-                expand: "creator",
-                filter: `creator = "${id}" ${filter}`,
-                sort,
-                ...options
-            })
-        ).items
-    );
+    return await levels.getList<Level>(page, amount, {
+        expand: "creator",
+        filter: `creator = "${id}" ${filter}`,
+        sort,
+        ...options
+    });
 }
 
 export async function getUserLevelpacks(
@@ -221,16 +185,12 @@ export async function getUserLevelpacks(
     let filter = featuredFilter + modFilter;
     if (filter.length > 0) filter = " && " + filter;
 
-    return toPOJO(
-        (
-            await levelpacks.getList<Levelpack>(page, amount, {
-                expand: "creator",
-                filter: `creator = "${id}" ${filter}`,
-                sort,
-                ...options
-            })
-        ).items
-    );
+    return await levelpacks.getList<Levelpack>(page, amount, {
+        expand: "creator",
+        filter: `creator = "${id}" ${filter}`,
+        sort,
+        ...options
+    });
 }
 
 // Pocketbase gives results in a weird format,
@@ -238,15 +198,16 @@ export async function getUserLevelpacks(
 // so sveltekit won't complain
 // TODO: ...also, this does more than just "toPOJO"... see cleanObject
 // moveExpandsInline from pocketbase-expandless does not work...
-export function toPOJO<T extends Record<string, unknown> | Record<string, unknown>[]>(
+export function clean<T extends Record<string, unknown> | Record<string, unknown>[]>(
     obj: T
 ): T | null {
     if (obj === undefined || obj === null) return null;
-
-    const result = Array.isArray(obj)
-        ? structuredClone(obj.map(cleanObject))
-        : structuredClone(cleanObject(obj));
-    return result as T;
+    // console.log(obj);
+    if (obj.items) {
+        return obj.items.map(cleanObject) as T;
+    } else {
+        return cleanObject(obj) as T;
+    }
 }
 
 // removes the weird "expand" properties

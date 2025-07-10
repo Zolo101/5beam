@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { BAD, DENIED, isAdmin, OK, PostLevelSchema, NOT_FOUND, MY_BAD } from "../../../../../misc";
-import { getLevelById, toPOJO, updateFetchFormData } from "../../../../../talk/get";
+import { getLevelById, updateFetchFormData } from "../../../../../talk/get";
 import { tryGettingUser } from "../../../../../talk/admin";
 import { levels } from "$lib/pocketbase";
 import type { Level } from "$lib/types";
@@ -82,7 +82,7 @@ export const POST: RequestHandler = async ({ url, cookies, request }) => {
                 }
 
                 const updatedLevel = await updateFetchFormData<Level>(levels, id, payloadFormData);
-                return OK(toPOJO(updatedLevel));
+                return OK(updatedLevel);
             } else {
                 return DENIED();
             }

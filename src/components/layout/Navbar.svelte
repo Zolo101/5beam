@@ -7,7 +7,6 @@
     import FiveBStyle from "../FiveBStyle.svelte";
     import { usersV2 } from "$lib/pocketbase";
     import type { PocketbaseUser } from "$lib/types";
-    import { toPOJO } from "../../talk/get";
 
     interface Props {
         user: PocketbaseUser;
@@ -43,7 +42,7 @@
             // The response contains auth data and user info
             if (res) {
                 // Convert the record to a plain object and update the user state
-                const userData = toPOJO(res.record) as unknown as PocketbaseUser;
+                const userData = res.record as unknown as PocketbaseUser;
                 user = userData;
                 loggedIn = true;
                 // Redirect to the callback URL if needed

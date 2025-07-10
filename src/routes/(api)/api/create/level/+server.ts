@@ -1,7 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { BAD, DENIED, MY_BAD, OK, PostLevelSchema } from "../../../../../misc";
 import { createLevel } from "../../../../../talk/create";
-import { toPOJO } from "../../../../../talk/get";
 import { tryGettingUser } from "../../../../../talk/admin";
 import { createObjectSchema } from "$lib/parse";
 
@@ -38,7 +37,7 @@ export const POST: RequestHandler = async ({ cookies, request }) => {
                 modded: payload.modded
             });
 
-            return OK(toPOJO(level));
+            return OK(level);
         } catch {
             return MY_BAD();
         }
