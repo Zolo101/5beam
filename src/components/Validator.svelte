@@ -4,18 +4,15 @@
     import type { DetectedLevel, ValidateResult } from "../client/FileValidator";
     import Log from "./Log.svelte";
     import LevelInfo from "./LevelInfo.svelte";
+    import Dialog from "./Dialog.svelte";
 
     interface Props {
         result: ValidateResult | undefined;
     }
 
     let { result }: Props = $props();
-    let selectedLevel: DetectedLevel | undefined = $state();
-    let levelDifficulties = $derived(new Array(result?.levels.length).fill(0));
-
-    const selectLevel = (level: DetectedLevel) => {
-        selectedLevel = level;
-    };
+    let selectedLevel: DetectedLevel | null = $state(null);
+    let levelDifficulties = $state(new Array(result?.levels.length).fill(0));
 </script>
 
 <div class="flex flex-wrap justify-center gap-3">
@@ -25,11 +22,13 @@
         {/each}
         {#each result.levels as level, i}
             <section>
-                <button in:fly={{ y: 200, duration: 100 * i }} onclick={() => selectLevel(level)}>
-                    <ValidatedLevel {level} {levelDifficulties} />
+                <button in:fly={{ y: 200, duration: 100 * i }}>
+                    <ValidatedLevel bind:selectedLevel {level} bind:levelDifficulties />
                 </button>
             </section>
         {/each}
     {/if}
 </div>
-<LevelInfo {selectedLevel} />
+<Dialog open={selectedLevel !== null}>
+    <LevelInfo bind:selectedLevel />
+</Dialog>

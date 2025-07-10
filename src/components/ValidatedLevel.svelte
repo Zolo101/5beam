@@ -4,61 +4,54 @@
     import Difficulty from "./Difficulty.svelte";
 
     interface Props {
+        selectedLevel: DetectedLevel | null;
         level: DetectedLevel;
         levelDifficulties: number[];
     }
 
-    let { level, levelDifficulties = $bindable() }: Props = $props();
-    let opened = $state(false);
-    
+    let { level, selectedLevel = $bindable(), levelDifficulties = $bindable() }: Props = $props();
+    let openDifficulties = $state(false);
 
     // TODO: Find a better way to get the log level of a validation
     const warningLog = level.logs.find((l) => l.level === "warning") !== undefined;
     const errorLog = level.logs.find((l) => l.level === "error") !== undefined;
 
     const getBackground = (background: number) =>
-        backgrounds[`/src/lib/assets/backgrounds/${background}.png`];
+        backgrounds[`/src/lib/assets/backgrounds/${background}.png`].default;
+
+    const difficultyIndex = level.id - 1;
 </script>
 
-<!--    TODO: Is the "button" role appropriate for this? -->
-<button
-    class="
-    h-[128px] w-[128px] transform cursor-pointer rounded-[10px] bg-cover shadow-xl
-    duration-200 ease-in-out select-none hover:scale-105 hover:shadow-2xl hover:outline hover:outline-4 hover:outline-white/10
-"
+<div
+    class="h-[128px] w-[128px] rounded-lg bg-cover shadow-xl hover:shadow-2xl hover:outline-4 hover:outline-white/10"
     class:warningLog
     class:errorLog
     style="background-image: url({getBackground(level.background)});"
-    onclick={() => (opened = !opened)}
+    onpointerleave={() => (openDifficulties = false)}
 >
-    <span
-        class="absolute right-0 bottom-0 z-0 px-1.5 text-4xl font-bold text-white mix-blend-overlay select-none"
+    <span class="relative top-9 text-4xl font-bold text-white select-none"
         >{to5bLevelFormat(level.id)}</span
     >
-    <div class="absolute bottom-0 z-10 w-[35px]">
-        <Difficulty difficulty={levelDifficulties[level.id]} />
+    <div class="relative top-13 w-[35px]" onpointerover={() => (openDifficulties = true)}>
+        <Difficulty difficulty={levelDifficulties[difficultyIndex]} />
     </div>
-</button>
-{#if opened}
-    <div class="flex w-full rounded-[10px] bg-black/50 shadow-2xl">
-        <div class="m-auto p-2 text-center">
-            <!-- <span class="rounded-sm bg-red-600 p-1 text-xl font-black">BETA</span> -->
-            <span class="text-center text-xl font-bold">Select a difficulty for </span><span
-                class="text-xl">{to5bLevelFormat(level.id)}</span
-            >
-            <!-- <p>
-                    Check out this page if your unsure on what difficulty your level should be!
-                </p> -->
-        </div>
-        <div class="inline-grid w-3/4 grid-cols-3 justify-items-center p-5">
+    <button
+        class="relative top-5 left-6 cursor-pointer rounded bg-neutral-600 px-3 py-1 text-xs hover:bg-neutral-500"
+        onclick={() => (selectedLevel = level)}>Inspect</button
+    >
+
+    {#if openDifficulties}
+        <div
+            class="relative bottom-[100px] z-10 inline-grid h-[90px] w-[128px] grid-cols-3 justify-items-center rounded bg-black/50 p-1"
+        >
             {#each [1, 2, 3, 4, 5, 6] as j}
                 <button
-                    class="cursor-pointer rounded-sm p-1 transition hover:scale-110 hover:bg-white/20"
-                    onclick={() => (levelDifficulties[level.id] = j)}
+                    class="cursor-pointer transition hover:scale-110 hover:bg-white/20"
+                    onclick={() => (levelDifficulties[difficultyIndex] = j)}
                 >
                     <Difficulty difficulty={j} />
                 </button>
             {/each}
         </div>
-    </div>
-{/if}
+    {/if}
+</div>
