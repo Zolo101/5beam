@@ -69,7 +69,7 @@
                 placeholder="Search..."
                 bind:value={searchText}
             />
-            <a href="/upload">Upload</a>
+            <a href="/upload" class="rainbow-outline">Upload!</a>
             <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
                 <a href="/user">Profile</a>
@@ -120,3 +120,50 @@
         </div>
     </div>
 {/if}
+
+<style>
+    /* TODO: Inset rainbow? */
+    .rainbow-outline {
+        animation: rainbow-outline 10s linear infinite;
+        --rainbow-outline-width: 2px;
+        --rainbow-outline-blur: 5px;
+    }
+
+    @keyframes rainbow-outline {
+        0% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #ff0000,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #ff0000;
+        }
+        16% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #ff9900,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #ff9900;
+        }
+        33% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #ffee00,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #ffee00;
+        }
+        50% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #33ff00,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #33ff00;
+        }
+        66% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #00aaff,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #00aaff;
+        }
+        83% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #6600ff,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #6600ff;
+        }
+        100% {
+            box-shadow:
+                0 0 0 var(--rainbow-outline-width) #ff0000,
+                0 0 var(--rainbow-outline-blur) var(--rainbow-outline-width) #ff0000;
+        }
+    }
+</style>
