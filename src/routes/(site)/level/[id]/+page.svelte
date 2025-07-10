@@ -5,6 +5,7 @@
     import Difficulty from "../../../../components/Difficulty.svelte";
     import { apiURL, formatDate_Day, getLevelThumbnailURL } from "../../../../misc";
     import Icon from "../../../../components/Icon.svelte";
+    import LevelComponent from "../../../../components/browse/LevelComponent.svelte";
 
     interface Props {
         data: PageData;
@@ -12,12 +13,22 @@
 
     let { data }: Props = $props();
 
-    let { level, user: clientUser } = data;
-    let { creator } = level;
+    let { level, relatedLevels, user: clientUser } = $derived(data);
+    let {
+        id,
+        title,
+        description,
+        thumbnail,
+        difficulty,
+        plays,
+        featured,
+        creator,
+        modded,
+        created
+    } = $derived(level);
+    const thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail));
 
     let isOwner = creator.discordId === clientUser?.id;
-
-    const thumbnailUrl = getLevelThumbnailURL(level.id, level.thumbnail);
 
     const downloadLevel = () => {
         const a = document.createElement("a");
@@ -43,9 +54,9 @@
 </script>
 
 <svelte:head>
-    <title>{level.title} - 5beam</title>
-    <meta property="og:title" content={level.title + " by " + level.creator.username} />
-    <meta property="og:description" content={level.description} />
+    <title>{title} - 5beam</title>
+    <meta property="og:title" content={title + " by " + creator.username} />
+    <meta property="og:description" content={description} />
     <meta property="og:image" content={thumbnailUrl} />
     <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
@@ -53,23 +64,21 @@
 <section class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48">
     <p
         class="mb-1 text-6xl font-bold max-sm:text-center"
-        style:color={level.featured ? "#ffea65" : "#f5f5f5"}
+        style:color={featured ? "#ffea65" : "#f5f5f5"}
     >
         <Icon name="starred" width="56" height="56" />
-        {level.title}
+        {title}
     </p>
     <!--    TODO: Add star icon for featured levels? -->
     <section class="flex text-xl max-md:flex-col max-md:text-xs">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
         <span class="px-1">::</span>
-        <span class="font-black"
-            ><Difficulty includeText includeImage={false} difficulty={level.difficulty} /></span
-        >
+        <span class="font-black"><Difficulty includeText includeImage={false} {difficulty} /></span>
         <span class="px-1">::</span>
-        <span class="pr-1 font-black text-green-500">{level.plays}</span>
+        <span class="pr-1 font-black text-green-500">{plays}</span>
         <span class="text-green-500">plays</span>
         <span class="px-1">::</span>
-        <span class="font-black text-amber-500">{formatDate_Day(level.created)}</span>
+        <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
     </section>
 </section>
 <div class="flex flex-col items-center py-6">
@@ -84,16 +93,23 @@
         <Button
             text="Play"
             bg="#4bff5d"
-            href="https://coppersalts.github.io/HTML5b?level={level.id}"
+            href="https://coppersalts.github.io/HTML5b?level={id}"
             event="play-level"
-            disabled={!!level.modded}
+            disabled={!!modded}
         />
         <Button text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
         {#if isOwner || data.admin}
-            <Button text="Edit Level" bg="#a8e000" href="{level.id}/edit" event="edit-level" />
+            <Button text="Edit Level" bg="#a8e000" href="{id}/edit" event="edit-level" />
         {/if}
     </div>
 </div>
 
-<p class="pl-2.5 text-4xl font-bold text-neutral-300">Description</p>
-<p class="p-5 text-2xl">{level.description}</p>
+<p class="pl-2.5 text-4xl font-bold">Description</p>
+<p class="p-5 text-2xl">{description}</p>
+
+<p class="pl-2.5 text-4xl font-bold">Similar Levels</p>
+<div class="flex flex-wrap gap-5 p-3">
+    {#each relatedLevels as level}
+        <LevelComponent data={level} />
+    {/each}
+</div>
