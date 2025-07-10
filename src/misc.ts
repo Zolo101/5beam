@@ -32,8 +32,6 @@ export const Icons: Glob = import.meta.glob("$lib/assets/icons/*.svg", {
     query: "?raw"
 });
 
-console.log(Icons);
-
 export const Sprites: Glob = import.meta.glob("$lib/assets/sprites/*.svg", {
     eager: true,
     query: "?raw"

@@ -6,7 +6,7 @@
     import { getLevelPageClient } from "../../client/ClientSideAPI";
     import { writable } from "svelte/store";
     import homepageVideo from "$lib/assets/5beam_homepage_video.webm";
-    import type { PageData } from "../../../.svelte-kit/types/src/routes";
+    import type { PageData } from "./$types";
     import UserComponent from "../../components/UserComponent.svelte";
     import { getLevelThumbnailURL, getPlaysString } from "../../misc";
     import Icon from "../../components/Icon.svelte";
@@ -24,17 +24,13 @@
 
     let levelpackPage = $state(1);
 
-    const recentLevels = writable(data.recentLevels);
-    const featuredLevels = writable(data.featuredLevels);
-    const mostPopularLevels = writable(data.mostPopularLevels);
-    const levelpacks = writable(data.levelpacks);
-    const { level: dailyLevel } = data.daily[0].expand;
-    const dailyLevelCreator = dailyLevel.expand.creator;
-    // console.log(dailyLevel, dailyLevelCreator);
+    let { daily, recentLevels, featuredLevels, mostPopularLevels, levelpacks } = $derived(data);
+
+    const dailyLevel = daily[0].level;
+    const dailyLevelCreator = dailyLevel.creator;
+    const dailyLevelThumbnail = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
 
     const description = "Play, share and upload BFDIA 5b levels!";
-
-    const b = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
 </script>
 
 <svelte:head>
@@ -98,7 +94,7 @@
         class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-500/70 to-green-700/50 p-3 outline-2 outline-green-400/90"
     >
         <a class="w-full" href="/level/{dailyLevel.id}">
-            <img class="rounded-sm object-cover" src={b} alt="Level Thumbnail" />
+            <img class="rounded-sm object-cover" src={dailyLevelThumbnail} alt="Level Thumbnail" />
         </a>
         <div class="flex w-full flex-col gap-2 p-2">
             <div>
@@ -149,7 +145,7 @@
 <h2>Featured Levels</h2>
 <Pagination
     bind:page={featuredLevelPage}
-    bind:output={$featuredLevels}
+    bind:output={featuredLevels}
     callback={({ page, type, sort, amount }) => getLevelPageClient(page, type, sort, true, amount)}
     removeOptions
     columns={2}
@@ -171,7 +167,7 @@
 <h2>Recent Levels</h2>
 <Pagination
     bind:page={recentLevelPage}
-    bind:output={$recentLevels}
+    bind:output={recentLevels}
     callback={({ page, sort, amount, featured }) =>
         getLevelPageClient(page, 0, sort, featured, amount)}
     removeOptions
@@ -183,7 +179,7 @@
 <h2>Most Popular Levels</h2>
 <Pagination
     bind:page={mostPopularLevelPage}
-    bind:output={$mostPopularLevels}
+    bind:output={mostPopularLevels}
     callback={({ page, amount, featured }) => getLevelPageClient(page, 0, 2, featured, amount)}
     removeOptions
     columns={2}
@@ -193,7 +189,7 @@
 <h2>Recent Levelpacks</h2>
 <Pagination
     bind:page={levelpackPage}
-    bind:output={$levelpacks}
+    bind:output={levelpacks}
     callback={({ page, sort, amount, featured }) =>
         getLevelPageClient(page, 1, sort, featured, amount)}
     removeOptions

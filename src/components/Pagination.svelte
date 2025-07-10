@@ -14,7 +14,6 @@
         if (page + by < 1) return;
 
         const newOutput = await callback({ page: page + by, type, sort, featured, amount });
-        console.log(newOutput);
 
         if (newOutput && newOutput.length > 0) {
             page += by;
@@ -62,14 +61,12 @@
     }: Props<unknown> = $props();
 
     let windowWidth = $state(0);
-    let amount = $derived(Math.min(columns * Math.floor((windowWidth - 100) / 340), 8));
-    $inspect(amount);
+    let amount = $derived(Math.min(columns * Math.floor((windowWidth - 100) / 340), 16));
 
     // Run updateFilters when amount changes
     // TODO: Bug where if you to go page 4 on small screens then resize, you can get softlocked
     $effect(() => {
         if (amount > 0) {
-            console.log(amount);
             callback({ page, type, sort, featured, amount }).then((newOutput) => {
                 if (newOutput) {
                     output = newOutput;
@@ -80,6 +77,7 @@
 
     // Must always be amount length
     const viewOutput = $derived.by(() => {
+        // console.log(output[0]);
         const arr = output?.slice(0, amount) ?? [];
         while (arr.length < amount) arr.push(null);
         return arr;

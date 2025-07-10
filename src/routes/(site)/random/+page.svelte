@@ -28,6 +28,6 @@
     callback={() => getRandomLevelPageClient(16, 0, false)}
     removeOptions
     removeMovement
-    columns={2}
+    columns={3}
     PageComponent={LevelComponent}
 />
