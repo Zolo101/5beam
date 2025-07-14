@@ -1,4 +1,4 @@
-import { dailyies, levelpacks, levels, users, weeklies } from "$lib/pocketbase";
+import { dailyies, levelpacks, levels, pb, users, weeklies } from "$lib/pocketbase";
 import type { Daily, Level, Levelpack, PocketbaseUser, WeeklyChallenge } from "$lib/types";
 import { ClientResponseError, type RecordListOptions, type RecordService } from "pocketbase";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
@@ -29,7 +29,7 @@ export async function getLevels(
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = `modded = "${mod}"`;
+    const modFilter = pb.filter(`modded = {:mod}`, { mod });
 
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
@@ -52,7 +52,10 @@ export async function getRandomLevels(
     // TODO: Do this function without getting every level in the database.
     return await db.getList<Level | Levelpack>(0, amount, {
         expand: "creator",
-        filter: "unlisted = false && " + featuredFilter + modFilter,
+        filter: pb.filter(`unlisted = false && {:featured} {:mod}`, {
+            featured: featuredFilter,
+            mod: modFilter
+        }),
         sort: "@random"
     });
 }
@@ -67,7 +70,7 @@ export async function getLevelpacks(
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = `modded = "${mod}"`;
+    const modFilter = pb.filter(`modded = {:mod}`, { mod });
 
     return await levelpacks.getList<Levelpack>(page, amount, {
         expand: "creator",
@@ -79,7 +82,11 @@ export async function getLevelpacks(
 
 // TODO: Merge with getLevelpackById
 export async function getLevelpackByIdWithLevels(id: string) {
-    return await levelpacks.getOne<Levelpack>(id, { expand: "creator, levels.creator" });
+    return await levelpacks.getOne<
+        Omit<Levelpack, "levels"> & {
+            levels: Level[];
+        }
+    >(id, { expand: "creator, levels.creator" });
 }
 
 export async function getLevelById(id: string) {
@@ -92,7 +99,11 @@ export async function getLevelpackById(id: string) {
 
 export async function getRelatedLevels(level: Level) {
     return await levels.getList<Level>(1, 4, {
-        filter: `id != "${level.id}" && modded = "${level.modded}" && difficulty = ${level.difficulty}`,
+        filter: pb.filter(`id != {:id} && modded = {:modded} && difficulty = {:difficulty}`, {
+            id: level.id,
+            modded: level.modded,
+            difficulty: level.difficulty
+        }),
         expand: "creator",
         sort: "@random"
     });
@@ -137,17 +148,13 @@ export async function getSearch(
     amount: number,
     mod: string | undefined
 ) {
-    const filter = `title ~ "${text}" && modded = "${mod}"`;
-
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
-        filter
+        filter: pb.filter(`title ~ {:text} && modded = {:mod}`, { text, mod })
     });
 }
 
 export async function getUserById(id: string) {
-    // return await getDoc(doc(collection(db, "users"), id))
-
     try {
         return await users.getOne<PocketbaseUser>(id);
     } catch (e) {
@@ -160,9 +167,9 @@ export async function getUserById(id: string) {
 }
 
 export async function getUserByDiscordId(discordId: string) {
-    // return await getDoc(doc(collection(db, "users"), id))
-
-    return await users.getFirstListItem<PocketbaseUser>(`discordId = "${discordId}"`);
+    return await users.getFirstListItem<PocketbaseUser>(
+        pb.filter(`discordId = {:discordId}`, { discordId })
+    );
 }
 
 // TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
@@ -183,7 +190,7 @@ export async function getUserLevels(
 
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
-        filter: `creator = "${id}" ${filter}`,
+        filter: pb.filter(`creator = {:id} {:filter}`, { id, filter }),
         sort,
         ...options
     });
@@ -206,7 +213,7 @@ export async function getUserLevelpacks(
 
     return await levelpacks.getList<Levelpack>(page, amount, {
         expand: "creator",
-        filter: `creator = "${id}" ${filter}`,
+        filter: pb.filter(`creator = {:id} {:filter}`, { id, filter }),
         sort,
         ...options
     });
@@ -259,6 +266,7 @@ function cleanObject(obj: Record<string, any>) {
     return obj;
 }
 
+/** @deprecated Unsecure, use `Collection.update` */
 export async function updateFetch<T>(
     collection: RecordService,
     id: string,
