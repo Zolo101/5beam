@@ -34,7 +34,11 @@ export const primitives = {
     modded: z.stringbool(),
 
     // auth/refresh
-    refresh_token: z.string()
+    refresh_token: z.string(),
+
+    // login/redirect
+    code: z.string(),
+    state: z.string()
 };
 
 export function createObjectSchema<T extends keyof typeof primitives>(...keys: T[]) {

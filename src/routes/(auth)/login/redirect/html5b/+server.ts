@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { requestTokenLogIn } from "$lib/auth";
-import { redirectURL_html5b } from "../../../../../../misc";
+import { redirectURL_html5b } from "../../../../../misc";
 
 export const GET: RequestHandler = async ({ request }) => {
     const url = new URL(request.url);

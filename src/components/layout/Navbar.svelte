@@ -5,14 +5,9 @@
     import LevelComponent from "../browse/LevelComponent.svelte";
     import Pagination from "../Pagination.svelte";
     import FiveBStyle from "../FiveBStyle.svelte";
-    import { usersV2 } from "$lib/pocketbase";
     import type { PocketbaseUser } from "$lib/types";
 
-    interface Props {
-        user: PocketbaseUser;
-    }
-
-    let { user = $bindable() }: Props = $props();
+    let { user = $bindable() }: { user: PocketbaseUser } = $props();
 
     let loggedIn = $state(!!user);
 
@@ -35,25 +30,6 @@
             });
         }
     });
-
-    const logIn = async () => {
-        try {
-            const res = await usersV2.authWithOAuth2({ provider: "discord", scopes: ["identify"] });
-            // The response contains auth data and user info
-            if (res) {
-                // Convert the record to a plain object and update the user state
-                const userData = res.record as unknown as PocketbaseUser;
-                user = userData;
-                loggedIn = true;
-                // Redirect to the callback URL if needed
-                if (res.meta?.redirectUrl) {
-                    window.location.href = res.meta.redirectUrl;
-                }
-            }
-        } catch (error) {
-            console.error("Login failed:", error);
-        }
-    };
 </script>
 
 <nav>
@@ -69,13 +45,20 @@
                 placeholder="Search..."
                 bind:value={searchText}
             />
+            <!-- TODO: Maybe make this green with a plus?  -->
             <a href="/upload" class="rainbow-outline">Upload!</a>
             <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
-                <a href="/user">Profile</a>
-                <a href="/api/auth/signout/discord">Log Out</a>
+                <a href="/user" class="p-0!"
+                    ><img src={user.avatar} alt="Profile" class="h-9 w-9" /></a
+                >
+                <form method="POST" action="/logout">
+                    <button type="submit">Log Out</button>
+                </form>
             {:else}
-                <a href="/" onclick={logIn}>Log In</a>
+                <form method="POST" action="/login">
+                    <button type="submit">Log In</button>
+                </form>
             {/if}
             <span>•</span>
             <a href="/discord">Discord</a>
@@ -126,7 +109,7 @@
     .rainbow-outline {
         animation: rainbow-outline 10s linear infinite;
         --rainbow-outline-width: 2px;
-        --rainbow-outline-blur: 5px;
+        --rainbow-outline-blur: 0px;
     }
 
     @keyframes rainbow-outline {

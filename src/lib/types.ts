@@ -78,14 +78,46 @@ export type CreateLevelpack = {
     modded: string;
 };
 
-export type PocketbaseUser = BaseUser & DiscordUser;
-export type DiscordUser = {
-    type: "discord";
-    discordId: string;
-    global_name: string;
+export type PocketbaseUser = BaseUserV2;
+
+export type BaseUserV2 = {
+    collectionId: string;
+    collectionName: string;
+    id: string;
+    username: string;
     avatar: string;
+    stars: string[]; // soon(tm)
+    created: Date;
 };
 
+export type PrivateBaseUserV2 = {
+    collectionId: string;
+    collectionName: string;
+    id: string;
+    email: string;
+    emailVisibility: boolean;
+    created: Date;
+    updated: Date;
+    username: string;
+    avatar: string;
+    roles: string;
+    stars: string[]; // soon(tm)
+    verified: boolean;
+};
+
+export type DiscordMeta = {
+    accessToken: string;
+    refreshToken: string;
+    avatarURL: string;
+    email: string;
+    expiry: string; // Date
+    id: string;
+    isNew: boolean;
+    name: string;
+    username: string;
+};
+
+/** @deprecated Use `BaseUserV2` */
 export type BaseUser = {
     id: string;
     type: string;

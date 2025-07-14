@@ -13,16 +13,3 @@ export const GET: RequestHandler = async ({ request }) => {
         }
     });
 };
-
-// async function checkUser(request: Request) {
-//     const user = (await getSession({request})).user
-//     if (user === false) return // not logged in
-//
-//     const userData = await getUserByProps({discordId: user.id})
-//     if (userData === null) { // not in database
-//         await createUser({
-//             discordId: user.id,
-//             name: user.username
-//         }) // create user
-//     }
-// }
