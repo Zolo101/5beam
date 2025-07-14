@@ -57,6 +57,13 @@ export async function getLevelPageClient(
     return callAPI(url);
 }
 
+export async function getTrendingLevelPageClient(page: number, amount?: number) {
+    const url = new URL(`${apiURL}/api/page/trending`);
+    URLParamSet(url, "page", page);
+    URLParamSet(url, "amount", amount);
+    return callAPI(url);
+}
+
 export async function getRandomLevelPageClient(
     amount: number,
     type?: number,

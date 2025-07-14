@@ -98,6 +98,25 @@ export async function getRelatedLevels(level: Level) {
     });
 }
 
+export async function getTrendingLevels(
+    page: number,
+    amount: number,
+    mod: string,
+    options?: RecordListOptions
+) {
+    const modFilter = pb.filter(`modded = {:mod}`, { mod });
+    const range = 1000 * 60 * 60 * 24 * 14; // 2 weeks
+    const date = new Date(Date.now() - range).toISOString().replace("T", " ").substring(0, 19);
+    const filter = pb.filter(modFilter + " && created >= {:date}", { date });
+
+    return await levels.getList<Level>(page, amount, {
+        expand: "creator",
+        sort: "-plays",
+        filter,
+        ...options
+    });
+}
+
 export async function addPlayLevel(id: string) {
     const result = await getLevelById(id);
     await updateFetch<Level>(levels, id, { plays: result.plays + 1 });

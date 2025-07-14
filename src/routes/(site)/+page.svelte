@@ -3,8 +3,7 @@
     import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
     import Button from "../../components/Button.svelte";
     import Pagination from "../../components/Pagination.svelte";
-    import { getLevelPageClient } from "../../client/ClientSideAPI";
-    import { writable } from "svelte/store";
+    import { getLevelPageClient, getTrendingLevelPageClient } from "../../client/ClientSideAPI";
     import homepageVideo from "$lib/assets/5beam_homepage_video.webm";
     import type { PageData } from "./$types";
     import UserComponent from "../../components/UserComponent.svelte";
@@ -14,20 +13,18 @@
     import BigButton from "../../components/BigButton.svelte";
 
     let { data }: { data: PageData } = $props();
-    let user = data.user;
 
     let recentLevelPage = $state(1);
 
     let featuredLevelPage = $state(1);
 
-    let mostPopularLevelPage = $state(1);
+    let trendingLevelPage = $state(1);
 
     let levelpackPage = $state(1);
 
-    let { daily, recentLevels, featuredLevels, mostPopularLevels, levelpacks } = $derived(data);
+    let { daily, recentLevels, featuredLevels, trendingLevels, levelpacks } = $derived(data);
 
-    const dailyLevel = daily[0].level;
-    const dailyLevelCreator = dailyLevel.creator;
+    const dailyLevel = $derived(daily[0].level);
     const dailyLevelThumbnail = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
 
     const description = "Play, share and upload BFDIA 5b levels!";
@@ -63,7 +60,7 @@
             </div>
         </div>
     </section>
-    <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
+    <!-- <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
         <video
             width="960"
             height="540"
@@ -81,17 +78,15 @@
                 creator={{ id: "6cmdcntll4sgnzz", username: "coppersalts" }}
             />
         </section>
-    </aside>
+    </aside> -->
 </section>
 
 <div class="m-2 flex items-center gap-2 pl-10 text-4xl font-black">
-    <p class="bg-gradient-to-b from-orange-300 to-yellow-200 bg-clip-text p-2 text-transparent">
-        Daily Level
-    </p>
+    <p class="featured p-2">Daily Level</p>
 </div>
 <section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
     <section
-        class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-500/70 to-green-700/50 p-3 outline-2 outline-green-400/90"
+        class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-700/50 to-green-900/50 p-3 outline-2 outline-green-400/90 backdrop-blur-md"
     >
         <a class="w-full" href="/level/{dailyLevel.id}">
             <img class="rounded-sm object-cover" src={dailyLevelThumbnail} alt="Level Thumbnail" />
@@ -101,7 +96,7 @@
                 <a href="/level/{dailyLevel.id}">
                     <span class="text-center text-4xl font-bold">{dailyLevel.title}</span>
                 </a>
-                <UserComponent prefix="by" creator={dailyLevelCreator} />
+                <UserComponent prefix="by" creator={dailyLevel.creator} />
             </div>
             <p class="grow">{dailyLevel.description}</p>
             <div class="flex w-full justify-around gap-2 text-3xl">
@@ -126,21 +121,25 @@
         </div>
     </section>
     <section
-        class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90"
+        class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90 backdrop-blur-md"
     >
         <p>Weekly challenges coming soon!</p>
     </section>
 </section>
 
-<section
+<!-- <section
     class="mx-auto mb-4 flex max-w-[900px] items-center justify-evenly rounded-sm bg-indigo-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
 >
-    <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
+    <p
+        class="text-opacity-50 absolute top-[85px] -z-10 text-7xl font-extrabold text-blue-500 italic"
+    >
+        ?
+    </p>
     <span class="text-3xl font-bold text-indigo-300">Did you know about 5b mods?</span>
     <a href="/mods" class="text-center text-xl text-indigo-100 hover:cursor-pointer hover:underline"
         >Click here to browse and play them!</a
     >
-</section>
+</section> -->
 
 <h2>Featured Levels</h2>
 <Pagination
@@ -164,23 +163,22 @@
     >
 </section>
 
+<h2>Trending Levels</h2>
+<Pagination
+    bind:page={trendingLevelPage}
+    bind:output={trendingLevels}
+    callback={({ page, amount }) => getTrendingLevelPageClient(page, amount)}
+    removeOptions
+    columns={2}
+    PageComponent={LevelComponent}
+/>
+
 <h2>Recent Levels</h2>
 <Pagination
     bind:page={recentLevelPage}
     bind:output={recentLevels}
     callback={({ page, sort, amount, featured }) =>
         getLevelPageClient(page, 0, sort, featured, amount)}
-    removeOptions
-    columns={2}
-    PageComponent={LevelComponent}
-/>
-
-<!-- TODO: Replace with Trending -->
-<h2>Most Popular Levels</h2>
-<Pagination
-    bind:page={mostPopularLevelPage}
-    bind:output={mostPopularLevels}
-    callback={({ page, amount, featured }) => getLevelPageClient(page, 0, 2, featured, amount)}
     removeOptions
     columns={2}
     PageComponent={LevelComponent}
