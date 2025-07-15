@@ -66,7 +66,7 @@
                         <a
                             href="/level/{id}"
                             class="overflow-hidden text-xl text-ellipsis whitespace-nowrap drop-shadow-lg"
-                            style:color={featured ? "#ffea65" : "#f5f5f5"}
+                            class:featured
                         >
                             {#if featured}
                                 <Icon name="starred" width="20" height="20" />

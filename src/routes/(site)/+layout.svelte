@@ -43,7 +43,8 @@
 <style>
     .background {
         background-image: url("$lib/assets/backgrounds/2.png");
-        animation: hue-rotate 10s linear infinite;
+        /* This is heavy on the CPU so I'm disabling */
+        /* animation: hue-rotate 10s linear infinite; */
     }
 
     @keyframes hue-rotate {

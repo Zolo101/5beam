@@ -75,14 +75,43 @@ svg {
     @apply flex h-full flex-col;
 }
 
+.featured {
+    /* Animated yellow repeated gradient text color */
+    background: repeating-linear-gradient(
+        45deg,
+        #feb900 0%,
+        #ffed7a 20%,
+        #feb900 40%,
+        #ffed7a 60%,
+        #feb900 80%,
+        #ffed7a 100%
+    );
+    background-size: 200% auto;
+    /* animation: featured-gradient-move 2s linear infinite; */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes featured-gradient-move {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
 /* TODO: Eventually we want to get rid of all below */
 /* Navbar */
 
-.list a {
-    @apply rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors;
+.list a,
+.list button {
+    @apply cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors;
 }
 
-.list a:hover {
+.list a:hover,
+.list button:hover {
     @apply bg-neutral-900;
 }
 
