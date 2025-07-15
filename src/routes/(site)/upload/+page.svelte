@@ -1,71 +1,65 @@
 <script lang="ts">
-    import { preventDefault } from 'svelte/legacy';
-
     import languageEncoding from "detect-file-encoding-and-language";
-    import { derived, writable } from "svelte/store";
-    import { fly } from "svelte/transition";
     import {
         postCreateLevelClient,
         postCreateLevelpackClient
     } from "../../../client/ClientSideAPI";
     import Validator from "../../../components/Validator.svelte";
     import { validateFile, type ValidateResult } from "../../../client/FileValidator";
-    import type { PageData } from "../../../../.svelte-kit/types/src/routes";
     import type { Level, Levelpack } from "$lib/types";
     import { readBlobInANSI } from "../../../misc";
     import Dropzone from "svelte-file-dropzone";
+    import FiveBStyle from "../../../components/FiveBStyle.svelte";
+    import Dialog from "../../../components/Dialog.svelte";
+    import type { PageData } from "./$types";
+    import Button from "../../../components/Button.svelte";
+    // import dummyLevelData from "$lib/assets/level.txt?raw";
+    import dummyLevelData from "$lib/assets/levels.txt?raw";
 
-    interface Props {
-        data: PageData;
-    }
-
-    let { data }: Props = $props();
+    let { data }: { data: PageData } = $props();
     let user = data.user;
 
     const loggedIn = !!user;
-    let page = $state(1);
-    const result = writable<ValidateResult | undefined>();
-    const valid = derived(result, (r) => r?.valid);
-    let eventStore = writable<Event>();
-    // TODO: Allow multiple files?
-    let file = derived(
-        eventStore,
-        (e) => (e as CustomEvent<{ acceptedFiles: File[] }>)?.detail?.acceptedFiles[0]
-    );
-    let title = writable("");
-    let description = writable("");
-    let modded = writable("");
+    let uploading = $state(false);
+    let eventStore = $state<CustomEvent<{ acceptedFiles: File[] }>>();
 
-    valid.subscribe((v) => {
-        if (v && page === 1) page = 2;
+    function createDummyFile() {
+        return new File([dummyLevelData], "levels.txt", { type: "text/plain" });
+    }
+    let file = $state(createDummyFile());
+    let result = $derived.by(async () => {
+        if (!file) return;
+        return validateFile(file);
     });
 
-    modded.subscribe((m) => {
-        if (m && page === 1) page = 2;
-        if (!m && !$valid && page >= 2) page = 1;
-    });
+    let levelDifficulties = $state(new Array<number>(200).fill(0));
 
-    async function onSubmit(event: any) {
-        if ($result === undefined) return;
+    let title = $state("easy");
+    let description = $state("level");
+    let modded = $state("");
 
-        if ($valid || $modded) {
+    async function onSubmit(result: ValidateResult | undefined) {
+        if (result === undefined) return;
+
+        if (result.valid || modded) {
+            uploading = true;
+
             // 5b levels can either be ANSI (flash) or UTF-8 (HTML5), so we need to support both.
             // We need to support ANSI to preserve the wood blocks (€) in flash levels.
-            let encoding = (await languageEncoding($file!)).encoding;
-            let isANSI = encoding === "CP1252";
-
-            let text = isANSI ? await readBlobInANSI($file!) : await $file!.text();
+            const encoding = (await languageEncoding(file!)).encoding;
+            const isANSI = encoding === "CP1252";
+            const text = isANSI ? await readBlobInANSI(file!) : await file!.text();
 
             const payload = {
                 access_token: data.access_token,
-                title: $title,
-                description: $description,
-                modded: $modded,
+                title: title,
+                description: description,
+                difficulty: levelDifficulties.slice(0, result.levels.length),
+                modded: modded,
                 file: text
             };
 
-            page = 4;
-            const type = $result.levels.length === 1;
+            const type = result.levels.length === 1;
             const typeName = type ? "level" : "levelpack";
             const func = type ? postCreateLevelClient : postCreateLevelpackClient;
 
@@ -89,145 +83,127 @@
         }
     }
 
-    // function onFileUpload(event: any) {
-    //     page = "description"
-    // }
-
-    function onTitleChange(event: any) {
-        page = $title.length > 0 && ($valid || $modded) ? 3 : 2;
-    }
-
-    file.subscribe((f) => validateFile(result, f));
+    let guestWarning = $state(!loggedIn);
 </script>
 
 <!-- "Changes may not be saved" -->
 <svelte:window onbeforeunload={() => true} />
 
-<!--TODO: Add close (X) button at top right -->
-{#if !loggedIn}
-    <aside
-        transition:fly={{ y: -200 }}
-        class="mx-auto mb-2 max-w-[800px] rounded-sm bg-amber-400/20 p-2 backdrop-blur-lg"
-    >
-        <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
-        <p class="text-2xl font-bold text-amber-300">Warning</p>
-        <p class="text-center text-lg text-amber-100">
+<Dialog bind:open={guestWarning}>
+    <div class="z-200 flex max-w-[500px] flex-col gap-4 p-5">
+        <div class="text-center text-5xl">
+            <FiveBStyle text="Warning" />
+        </div>
+        <p class="mx-5 text-center text-lg">
             You are uploading as a guest. You will not be able to edit or delete your level after!
         </p>
-    </aside>
-{/if}
-<!-- <aside
-    transition:fly={{ y: -200 }}
-    class="mx-auto mb-2 max-w-[700px] rounded-sm bg-blue-400/20 p-2 backdrop-blur-lg"
->
-    <p class="text-2xl font-bold text-blue-300">Did you know?</p>
-    <p class="text-center text-lg text-blue-100">
-        You can directly create and upload levels & levelpacks in HTML5b!
-    </p>
-</aside> -->
-<section class="m-auto flex max-w-[1400px] items-start gap-2">
-    <div class="w-full rounded-lg bg-neutral-900/40 p-4 text-neutral-100 shadow-lg">
-        {#if page >= 1 && page !== 4}
-            <div transition:fly={{ x: -200 }}>
-                <div class="flex flex-col gap-2 text-xl">
-                    <Dropzone
-                        accept="text/plain"
-                        multiple={false}
-                        maxSize={1000000}
-                        required={true}
-                        disableDefaultStyles={true}
-                        containerClasses="flex flex-col items-center bg-black/50 rounded-sm outline-2 outline-dashed outline-white/75 cursor-pointer py-2"
-                        on:drop={(e) => ($eventStore = e)}
-                    >
-                        {#if $file}
-                            <p>{$file.name} ({($file.size / 1000).toFixed(2)}KB)</p>
-                        {:else}
-                            <div class="py-25">
-                                <p>Drag and drop your file here, or click to select a file!</p>
-                                <p class="text-center text-sm">
-                                    Levelpacks with more than 200 levels will not be accepted
-                                </p>
-                            </div>
-                        {/if}
-                    </Dropzone>
-                    <p class="pt-6 text-neutral-50">Is this for a 5b mod?</p>
-                    {#if $modded}
-                        <p class="text-sm text-neutral-50">
-                            Be aware, levels for 5b mods cannot be played on HTML5b, and will only
-                            show up in the "Mods" section of this site.
-                        </p>
-                    {/if}
-                    <select bind:value={$modded} name="modded" class="rounded-sm bg-black/50 p-2.5">
-                        <option value={""}>No</option>
-                        <option value={"golden5"}>Golden 5</option>
-                        <option value={"5*"}>5*30</option>
-                    </select>
-                </div>
-            </div>
-        {/if}
-        {#if page >= 2 && page !== 4}
-            <div transition:fly={{ x: -200 }} class="py-5">
-                <div class="mx-auto my-2 flex w-4/5 flex-col gap-2 text-xl">
-                    <p class="text-neutral-50">Title:</p>
-                    <input
-                        bind:value={$title}
-                        oninput={onTitleChange}
-                        class="rounded-sm bg-black/50 p-2.5"
-                        type="text"
-                        name="title"
-                        maxlength="64"
-                        placeholder="My 5b level (max 64 chars)"
-                        required
-                    />
-                    <br />
-                    <p class="text-neutral-50">Description:</p>
-                    <textarea
-                        bind:value={$description}
-                        class="rounded-sm bg-black/50 p-2.5"
-                        name="description"
-                        rows="5"
-                        cols="33"
-                        maxlength="1024"
-                        placeholder="Level description (max 1024 chars)"
-                        required
-                    ></textarea>
-                </div>
-            </div>
-        {/if}
-        {#if page >= 3 && page !== 4}
-            <div transition:fly={{ x: -200 }}>
-                <form class="m-auto flex w-2/5 flex-col" onsubmit={preventDefault(onSubmit)}>
-                    <input
-                        type="submit"
-                        value="Upload!"
-                        class="cursor-pointer rounded-sm bg-green-400 p-2 text-xl text-green-800 transition-colors disabled:cursor-not-allowed disabled:bg-green-500 disabled:opacity-25"
-                    />
-                </form>
-            </div>
-        {/if}
-        {#if page === 4}
-            <div transition:fly={{ x: -200 }}>
-                <p class="text-2xl">Thank you for uploading to 5beam!</p>
-                <p class="w-4/5">
-                    You'll be redirected to your level after we generate the thumbnails. This should
-                    take at most 10 seconds.
-                </p>
-            </div>
-        {/if}
-    </div>
-    {#if page > 1 && page < 4}
-        <div transition:fly={{ x: -200 }} class="w-full rounded-sm bg-neutral-500/25 p-2 font-bold">
-            {#if $modded}
-                <p class="p-5 text-center">
-                    Levels for mods cannot be automatically validated yet. For now, check that your
-                    level file works in the 5b mod before uploading!
-                </p>
-            {:else if $result}
-                <p class="p-5 text-center">Click on a level for more details!</p>
-                <Validator result={$result} />
-            {:else}
-                <p class="animate-pulse p-5 text-center">Waiting for levels...</p>
-            {/if}
+        <div class="flex justify-end gap-2 *:grow *:rounded *:text-center">
+            <Button text="Log In" href="/login" bg="#aaaaaa" />
+            <Button text="OK" bg="#5555ff" onclick={() => (guestWarning = false)} />
         </div>
-    {/if}
+    </div>
+</Dialog>
+
+<section class="m-auto flex items-start gap-2">
+    <div class="w-full rounded-lg bg-neutral-950/70 p-4 text-neutral-100 shadow-lg">
+        <div>
+            <div class="flex h-[75vh] flex-col gap-2 text-xl">
+                <Dropzone
+                    accept="text/plain"
+                    multiple={false}
+                    maxSize={1000000}
+                    required={true}
+                    disableDefaultStyles={true}
+                    containerClasses="h-full flex flex-col items-center rounded-sm outline-4 outline-dashed outline-white/75 cursor-pointer py-2"
+                    on:drop={(e) => (eventStore = e)}
+                >
+                    <div class="m-auto text-4xl">
+                        <p class="font-bold">
+                            Drag and drop your file here, or click to select a file!
+                        </p>
+                        <p class="text-center text-xl">
+                            Levelpacks with more than 200 levels will not be accepted
+                        </p>
+                    </div>
+                </Dropzone>
+            </div>
+        </div>
+
+        {#await result then response}
+            <Dialog open={!!response}>
+                <div class="flex max-h-[90vh] gap-2 text-xl">
+                    <div class="sticky top-0 flex flex-col gap-2 p-5">
+                        <label for="title" class="font-bold">Title:</label>
+                        <input
+                            bind:value={title}
+                            class="rounded-lg bg-black/30 p-2.5"
+                            type="text"
+                            name="title"
+                            maxlength="64"
+                            placeholder="My 5b level (max 64 chars)"
+                            required
+                        />
+                        <br />
+                        <label for="description" class="font-bold">Description:</label>
+                        <textarea
+                            bind:value={description}
+                            class="rounded-lg bg-black/30 p-2.5"
+                            name="description"
+                            rows="5"
+                            cols="33"
+                            maxlength="1024"
+                            placeholder="Level description (max 1024 chars)"
+                            required
+                        ></textarea>
+                        <p class="pt-6 font-bold">Is this for a 5b mod?</p>
+                        {#if modded}
+                            <p class="text-sm">
+                                Be aware, levels for 5b mods cannot be played on HTML5b, and will
+                                only show up on your profile and in the "Mods" section of this site.
+                            </p>
+                        {/if}
+                        <select
+                            bind:value={modded}
+                            name="modded"
+                            class="rounded-lg bg-black/30 p-2.5"
+                        >
+                            <option value={""}>No</option>
+                            <option value={"golden5"}>Golden 5</option>
+                            <option value={"5*"}>5*30</option>
+                        </select>
+                        <br class="my-10" />
+                        <div class="flex gap-2 *:grow">
+                            <Button
+                                text={uploading ? "Uploading... Please wait!" : "Upload!"}
+                                bg="#55ff55"
+                                disabled={!(response?.valid ?? false) || uploading}
+                                onclick={() => onSubmit(response)}
+                            />
+                            <Button
+                                text="Cancel"
+                                bg="#cccccc"
+                                onclick={() => (result = undefined)}
+                            />
+                        </div>
+                    </div>
+                    <div class="overflow-y-auto rounded-r-lg bg-neutral-700 p-2 font-bold">
+                        {#if modded}
+                            <p class="p-5 text-center">
+                                Levels for mods cannot be automatically validated yet. For now,
+                                check that your level file works in the 5b mod before uploading!
+                            </p>
+                        {:else if response}
+                            {#if levelDifficulties}
+                                <p class="p-5 text-center">Click on a level for more details!</p>
+                                <Validator
+                                    result={response}
+                                    bind:difficulties={levelDifficulties}
+                                />
+                            {/if}
+                        {/if}
+                    </div>
+                </div>
+            </Dialog>
+        {/await}
+    </div>
 </section>

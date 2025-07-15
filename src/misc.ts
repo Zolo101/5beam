@@ -117,13 +117,40 @@ export const getPlaysString = (plays: number) => {
     return `${plays.toFixed(prefixIndex ? 2 : 0)}${prefixes[prefixIndex]}`;
 };
 
+// Level (singular)
 export const PostLevelSchema = z.object({
     title: z.string().min(1).max(64),
     description: z.string().max(1024),
-    difficulty: z.number().int().min(0).max(7).optional(), // TODO: Remove when you can select difficulties for levels and levelpacks in /upload
+    difficulty: z
+        .array(z.number().int().min(0).max(7))
+        .length(1)
+        .transform((arr) => arr[0]),
     modded: z.string().max(64),
-    file: z.string().max(1024 * 1024 * 5) // 5 MB Limit
+    file: z
+        .string()
+        .max(1024 * 1024 * 5) // 5 MB Limit
+        .trim()
+        .transform((file) => newlineSplitter(file)[0])
 });
+export type PostLevelType = z.infer<typeof PostLevelSchema>;
+
+// Levelpack (multiple)
+export const PostLevelpackSchema = z.object({
+    title: z.string().min(1).max(64),
+    description: z.string().max(1024),
+    difficulty: z.array(z.number().int().min(0).max(7)).min(2).max(200),
+    modded: z.string().max(64),
+    file: z
+        .string()
+        .max(1024 * 1024 * 5) // 5 MB Limit
+        .trim()
+        .transform((file) => newlineSplitter(file))
+        .refine((file) => file.length > 1, { message: "Levelpack must contain at least 2 levels" })
+        .refine((file) => file.length <= 200, {
+            message: "Levelpack must contain at most 200 levels"
+        })
+});
+export type PostLevelpackType = z.infer<typeof PostLevelpackSchema>;
 
 export function generateDiff(oldText: string, newText: string) {
     const diffs = Diff.diffLines(oldText, newText, { newlineIsToken: true });
@@ -149,10 +176,16 @@ export function generateDiff(oldText: string, newText: string) {
     return result;
 }
 
+export function newlineSplitter(file: string) {
+    return file
+        .replaceAll(/\r\n|\r|\n/g, "\r\n") // convert to windows linebreaks (HTML5b requires this)
+        .split("\r\n\r\n");
+}
+
 export const isLoggedIn = (user: User | undefined) => !!user;
 
-// checks are done server-side as well
-export const isAdmin = (user: User | undefined) => user?.id === "189004032600309760";
+/** For client-side use only */
+export const isAdmin = (user: User | undefined) => user?.roles === "admin";
 
 // Cant find
 export function NOT_FOUND() {
@@ -176,4 +209,4 @@ export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev";
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default";
 export const redirectURL = `${apiURL}/login/redirect/discord`;
 export const redirectURL_html5b = `${apiURL}/login/redirect/html5b`;
-export const fallbackThumbnailURL = `${apiURL}/placeholder.png`;
+export const fallbackThumbnailURL = `${apiURL}/placeholder.png`; // Normalize newlines to CRLF (level array)

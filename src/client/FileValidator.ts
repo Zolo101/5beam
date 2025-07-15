@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { Writable } from "svelte/store";
 
 export type ValidateLog = z.infer<typeof validateLogSchema>;
 
@@ -17,14 +16,11 @@ export const validateLogSchema = z.object({
     level: z.union([z.literal("info"), z.literal("warning"), z.literal("error")])
 });
 
-export async function validateFile(r: Writable<ValidateResult | undefined>, f: File | undefined) {
-    if (f) {
-        console.log(f);
-        if (f.size > 1_000_000) return alert("File too big! (1MB MAX)");
-        if (f.type !== "text/plain") return alert("File must be a .txt file!");
+export async function validateFile(f: File) {
+    if (f.size > 1_000_000) throw new Error("File too big! (1MB MAX)");
+    if (f.type !== "text/plain") throw new Error("File must be a .txt file!");
 
-        r.set(validate(await f.text()));
-    }
+    return validate(await f.text());
 }
 
 const spriteSchema = z.object({
@@ -64,13 +60,20 @@ export const validateResultSchema = z.object({
     valid: z.boolean()
 });
 
-function validate(file: string) {
+function noErrors(result: ValidateResult) {
+    return (
+        result.levels.every((l) => l.logs.every((l) => l.level !== "error")) &&
+        result.globalLogs.every((l) => l.level !== "error")
+    );
+}
+
+function validate(levelData: string): ValidateResult {
     const result: ValidateResult = {
         levels: [],
         globalLogs: [],
         valid: true
     };
-    const data = file.trim().replaceAll("\r\n", "\n").split("\n");
+    const data = levelData.trim().replaceAll("\r\n", "\n").split("\n");
 
     try {
         // Remove first line if its just "loadedLevels="
@@ -90,7 +93,7 @@ function validate(file: string) {
         }
 
         // Invalidate if any level has an error log
-        result.valid = !result.levels.some((l) => l.logs.some((l) => l.level === "error"));
+        result.valid = noErrors(result);
     } catch (e) {
         result.globalLogs.push(
             createError(

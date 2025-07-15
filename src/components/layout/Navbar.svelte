@@ -6,6 +6,7 @@
     import Pagination from "../Pagination.svelte";
     import FiveBStyle from "../FiveBStyle.svelte";
     import type { PocketbaseUser } from "$lib/types";
+    import { enhance } from "$app/forms";
 
     let { user = $bindable() }: { user: PocketbaseUser } = $props();
 
@@ -35,7 +36,7 @@
 <nav>
     <div class="mx-5 flex h-24 grow justify-between pt-2">
         <Logo />
-        <div class="list mb-1 flex flex-row items-center gap-2 text-xl">
+        <div class="list mb-1 flex flex-row items-center gap-3 text-xl">
             <input
                 type="text"
                 id="search"
@@ -45,8 +46,7 @@
                 placeholder="Search..."
                 bind:value={searchText}
             />
-            <!-- TODO: Maybe make this green with a plus?  -->
-            <a href="/upload" class="rainbow-outline">Upload!</a>
+            <a href="/upload" class="rainbow-outline">Upload</a>
             <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
                 <a href="/user" class="p-0!"
@@ -56,7 +56,7 @@
                     <button type="submit">Log Out</button>
                 </form>
             {:else}
-                <form method="POST" action="/login">
+                <form use:enhance method="POST" action="/login">
                     <button type="submit">Log In</button>
                 </form>
             {/if}

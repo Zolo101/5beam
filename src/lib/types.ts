@@ -2,7 +2,7 @@ import type { User } from "$lib/DiscordOauth2";
 
 export type Level = {
     id: string;
-    creator: PocketbaseUser;
+    creator: PocketbaseUser | null;
     created: string;
     updated: string;
 
@@ -22,7 +22,7 @@ export type Level = {
 
 export type Levelpack = {
     id: string;
-    creator: PocketbaseUser;
+    creator: PocketbaseUser | null;
     created: string;
     updated: string;
 

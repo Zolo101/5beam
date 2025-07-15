@@ -1,47 +1,52 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, DENIED, MY_BAD, OK, PostLevelSchema } from "../../../../../misc";
-import { createLevel } from "../../../../../talk/create";
-import { tryGettingUser } from "../../../../../talk/admin";
-import { createObjectSchema } from "$lib/parse";
+import { BAD, MY_BAD, OK, PostLevelSchema, type PostLevelType } from "../../../../../misc";
+import { generateThumbnail, validateLevel } from "../../../../../talk/create";
+import { levels } from "$lib/pocketbase";
+import type { Level, PrivateBaseUserV2 } from "$lib/types";
+import { NewLevelWebhook } from "$lib/webhook";
 
-const cookiesSchema = createObjectSchema("access_token", "refresh_token");
-export const POST: RequestHandler = async ({ cookies, request }) => {
+async function createLevel(level: PostLevelType, user: PrivateBaseUserV2 | null) {
+    // If it's not modded, validate again, and if so throw error
+    if (!level.modded && !(await validateLevel(level.file))) throw new Error("Invalid level");
+
+    const thumbnail = await generateThumbnail(level.file);
+    const successful = thumbnail?.headers.get("Content-Type") === "image/png";
+
+    const levelFormData = new FormData();
+    if (user) levelFormData.append("creator", user.id);
+    levelFormData.append("title", level.title);
+    levelFormData.append("description", level.description);
+    levelFormData.append("data", level.file);
+    if (thumbnail && successful) levelFormData.append("thumbnail", await thumbnail.blob());
+    levelFormData.append("modded", level.modded);
+    levelFormData.append("difficulty", level.difficulty.toString());
+
+    const levelReference = await levels.create<Level>(levelFormData);
+
+    // TODO: This wont send if you are in local and the thumbnail fails to generate!
+
+    await NewLevelWebhook.send(levelReference);
+    return levelReference;
+}
+
+export const POST: RequestHandler = async ({ request, locals }) => {
     try {
         const json = await request.json();
         const payload = PostLevelSchema.parse(json);
 
-        const { success, data } = cookiesSchema.safeParse(cookies);
-
-        let access_token: string;
-        let refresh_token: string;
-
-        if (success) {
-            access_token = data.access_token;
-            refresh_token = data.refresh_token;
-        } else {
-            // Attempt to get tokens from request body (from other website etc)
-            access_token = json.access_token;
-            refresh_token = json.refresh_token;
-        }
-
-        // Get user from access token
-        const user = await tryGettingUser(access_token, refresh_token, cookies);
-        if (!user) return DENIED();
-
         try {
-            const level = await createLevel({
-                creator: user,
-                title: payload.title,
-                description: payload.description,
-                level: payload.file,
-                modded: payload.modded
-            });
+            const level = await createLevel(payload, locals.user);
 
             return OK(level);
-        } catch {
-            return MY_BAD();
+        } catch (e) {
+            // console.error(e);
+
+            // TODO: It's not always "My Bad in this instance (see validateLevel)
+            return MY_BAD(e instanceof Error ? e.message : "Unknown error");
         }
     } catch {
+        // console.error(e);
+
         return BAD();
     }
 };

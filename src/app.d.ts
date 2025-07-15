@@ -5,13 +5,13 @@
 // https://github.com/sveltejs/kit/issues/3766
 
 declare namespace App {
-    import type { DiscordUser } from "$lib/types";
+    import type { PrivateBaseUserV2 } from "$lib/types";
     interface Locals {
-        user: DiscordUser;
+        user: PrivateBaseUserV2 | null;
         pb: Pocketbase;
     }
     interface PageData {
-        user: DiscordUser;
+        user: PrivateBaseUserV2 | null;
         admin: boolean;
         loggedIn: boolean;
     }
