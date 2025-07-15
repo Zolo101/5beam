@@ -12,6 +12,7 @@
     import validate from "../../../../client/FileValidator";
     import BigButton from "../../../../components/BigButton.svelte";
     import Icon from "../../../../components/Icon.svelte";
+    import Carousel from "../../../../components/Carousel.svelte";
 
     const { data }: { data: PageData } = $props();
 
@@ -19,6 +20,7 @@
 
     let { id, title, description, plays, featured, creator, modded, created, levels } =
         $derived(levelpack);
+
     const creatorName = $derived(creator?.username ?? "Guest");
     const originalLevelpackFileData = $derived(levels.map((level) => level.data).join("\n\n"));
 
@@ -87,14 +89,7 @@
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6">
-    <!-- TODO: Slideshow -->
-    <img
-        class="rounded-sm object-cover shadow-xl"
-        width="960"
-        height="540"
-        src={"https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/2m6594l8xk9cscu/blob_rjf6m4dosm.png"}
-        alt="Placeholder Thumbnail"
-    />
+    <Carousel {levels} showIndex autoPlay />
     <div class="flex w-1/5 flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"

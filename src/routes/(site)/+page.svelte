@@ -11,6 +11,7 @@
     import Icon from "../../components/Icon.svelte";
     import Difficulty from "../../components/Difficulty.svelte";
     import BigButton from "../../components/BigButton.svelte";
+    import Carousel from "../../components/Carousel.svelte";
 
     let { data }: { data: PageData } = $props();
 
@@ -60,6 +61,9 @@
             </div>
         </div>
     </section>
+    <aside>
+        <Carousel levels={featuredLevels} autoPlay details />
+    </aside>
     <!-- <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
         <video
             width="960"
