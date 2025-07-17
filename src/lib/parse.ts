@@ -1,6 +1,6 @@
 // idk why the zod devs thought /v4 was a good idea now i have to
 // remove it when they go back to main
-import z, { ZodObject } from "zod/v4";
+import z, { type ZodObject } from "zod/v4";
 import { newlineSplitter } from "../misc";
 
 // schema primitives

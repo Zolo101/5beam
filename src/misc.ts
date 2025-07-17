@@ -1,4 +1,4 @@
-import * as Diff from "diff";
+import { diffLines } from "diff";
 import { dev } from "$app/environment";
 import type { PrivateBaseUserV2 } from "$lib/types";
 
@@ -65,10 +65,6 @@ export function sample<T>(array: T[], amount: number) {
     return result;
 }
 
-// export function formatDate_Full(date: Timestamp) {
-//     return new Date(date._seconds * 1000).toString()
-// }
-
 export function to5bLevelFormat(number: number) {
     return number.toString().padStart(3, "0");
 }
@@ -117,7 +113,7 @@ export const getPlaysString = (plays: number) => {
 };
 
 export function generateDiff(oldText: string, newText: string) {
-    const diffs = Diff.diffLines(oldText, newText, { newlineIsToken: true });
+    const diffs = diffLines(oldText, newText, { newlineIsToken: true });
     let result = "";
     for (const change of diffs) {
         const color = change.added ? "green" : change.removed ? "red" : "grey";

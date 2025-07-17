@@ -4,7 +4,6 @@
     import Button from "../../components/Button.svelte";
     import Pagination from "../../components/Pagination.svelte";
     import { getLevelPageClient, getTrendingLevelPageClient } from "../../client/ClientSideAPI";
-    import homepageVideo from "$lib/assets/5beam_homepage_video.webm";
     import type { PageData } from "./$types";
     import UserComponent from "../../components/UserComponent.svelte";
     import { getLevelThumbnailURL, getPlaysString } from "../../misc";
