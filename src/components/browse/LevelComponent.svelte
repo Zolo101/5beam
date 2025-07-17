@@ -74,26 +74,26 @@
                             {title}
                         </a>
                         <div class="my-1 **:h-6 **:text-sm!">
-                            {#if page.data.admin}
-                                <div class="absolute right-2 bottom-15 flex **:px-2!">
-                                    {#if !featured}
-                                        <FunctionButton
-                                            text="Feature"
-                                            bg="#ffae4b"
-                                            onclick={makeFeatured}
-                                            event="add-feature"
-                                            disabled={featured}
-                                        />
-                                    {/if}
+                            <div class="absolute right-2 bottom-15 flex **:px-2!">
+                                {#if !featured}
                                     <FunctionButton
-                                        text="Daily"
-                                        bg="#fff64b"
-                                        onclick={addDaily}
-                                        event="add-daily"
-                                        disabled={false}
+                                        text="Feature"
+                                        action="feature"
+                                        event="add-feature"
+                                        bg="#ffae4b"
+                                        data={{ id }}
+                                        disabled={featured}
                                     />
-                                </div>
-                            {/if}
+                                {/if}
+                                <FunctionButton
+                                    text="Daily"
+                                    action="daily"
+                                    event="add-daily"
+                                    bg="#fff64b"
+                                    data={{ id }}
+                                    disabled={false}
+                                />
+                            </div>
 
                             {#if !modded}
                                 <Button
