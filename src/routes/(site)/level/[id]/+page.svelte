@@ -1,18 +1,18 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import UserComponent from "../../../../components/UserComponent.svelte";
-    import Button from "../../../../components/Button.svelte";
-    import Difficulty from "../../../../components/Difficulty.svelte";
-    import { formatDate_Day, getLevelThumbnailURL } from "../../../../misc";
-    import Icon from "../../../../components/Icon.svelte";
-    import LevelComponent from "../../../../components/browse/LevelComponent.svelte";
-    import Dialog from "../../../../components/Dialog.svelte";
-    import FiveBStyle from "../../../../components/FiveBStyle.svelte";
+    import UserComponent from "$lib/components/UserComponent.svelte";
+    import Button from "$lib/components/Button.svelte";
+    import Difficulty from "$lib/components/Difficulty.svelte";
+    import { formatDate_Day, getLevelThumbnailURL } from "$lib/misc";
+    import Icon from "$lib/components/Icon.svelte";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import Dialog from "$lib/components/Dialog.svelte";
+    import FiveBStyle from "$lib/components/FiveBStyle.svelte";
     import Dropzone from "svelte-file-dropzone";
-    import { generateThumbnail } from "../../../../talk/create";
-    import LevelInfo from "../../../../components/LevelInfo.svelte";
-    import validate from "../../../../client/FileValidator";
-    import BigButton from "../../../../components/BigButton.svelte";
+    import { generateThumbnail } from "$lib/talk/create";
+    import LevelInfo from "$lib/components/LevelInfo.svelte";
+    import validate from "$lib/client/FileValidator";
+    import BigButton from "$lib/components/BigButton.svelte";
 
     interface Props {
         data: PageData;

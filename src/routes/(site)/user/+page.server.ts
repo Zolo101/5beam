@@ -1,5 +1,5 @@
 import type { PageServerLoad } from "./$types";
-import { getUserById } from "../../../talk/get";
+import { getUserById } from "$lib/talk/get";
 import { redirect } from "@sveltejs/kit";
 
 export const load = (async ({ locals }) => {

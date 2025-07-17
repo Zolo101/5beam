@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { DetectedLevel } from "../client/FileValidator";
-    import { backgrounds, to5bLevelFormat } from "../misc";
+    import type { DetectedLevel } from "$lib/client/FileValidator";
+    import { backgrounds, to5bLevelFormat } from "$lib/misc";
     import Difficulty from "./Difficulty.svelte";
 
     interface Props {

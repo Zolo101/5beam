@@ -1,5 +1,5 @@
 import { redirect, type Actions } from "@sveltejs/kit";
-import { redirectURL } from "../../../misc";
+import { redirectURL } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
 const schema = createObjectSchema("redirectURI");

@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from "./$types";
-import { isAdmin, isLoggedIn } from "../../misc";
+import { isAdmin, isLoggedIn } from "$lib/misc";
 
 export const load = (async ({ locals }) => {
     const { record } = locals?.user ?? {};

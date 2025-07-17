@@ -1,4 +1,4 @@
-import { apiURL, URLParamSet } from "../misc";
+import { apiURL, URLParamSet } from "$lib/misc";
 import type { BaseUser } from "$lib/types";
 
 export async function postModifyLevelClient(payload: Record<string, unknown>, id: string) {

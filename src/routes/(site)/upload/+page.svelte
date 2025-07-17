@@ -1,18 +1,15 @@
 <script lang="ts">
     import languageEncoding from "detect-file-encoding-and-language";
-    import {
-        postCreateLevelClient,
-        postCreateLevelpackClient
-    } from "../../../client/ClientSideAPI";
-    import Validator from "../../../components/Validator.svelte";
-    import { validateFile, type ValidateResult } from "../../../client/FileValidator";
+    import { postCreateLevelClient, postCreateLevelpackClient } from "$lib/client/ClientSideAPI";
+    import Validator from "$lib/components/Validator.svelte";
+    import { validateFile, type ValidateResult } from "$lib/client/FileValidator";
     import type { Level, Levelpack } from "$lib/types";
-    import { readBlobInANSI } from "../../../misc";
+    import { readBlobInANSI } from "$lib/misc";
     import Dropzone from "svelte-file-dropzone";
-    import FiveBStyle from "../../../components/FiveBStyle.svelte";
-    import Dialog from "../../../components/Dialog.svelte";
+    import FiveBStyle from "$lib/components/FiveBStyle.svelte";
+    import Dialog from "$lib/components/Dialog.svelte";
     import type { PageData } from "./$types";
-    import Button from "../../../components/Button.svelte";
+    import Button from "$lib/components/Button.svelte";
     // import dummyLevelData from "$lib/assets/level.txt?raw";
     import dummyLevelData from "$lib/assets/levels.txt?raw";
 

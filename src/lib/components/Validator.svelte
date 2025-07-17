@@ -1,6 +1,6 @@
 <script lang="ts">
     import ValidatedLevel from "./ValidatedLevel.svelte";
-    import type { DetectedLevel, ValidateResult } from "../client/FileValidator";
+    import type { DetectedLevel, ValidateResult } from "$lib/client/FileValidator";
     import Log from "./Log.svelte";
     import LevelInfo from "./LevelInfo.svelte";
     import Dialog from "./Dialog.svelte";

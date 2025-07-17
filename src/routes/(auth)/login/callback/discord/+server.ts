@@ -1,9 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
-// import { updateFetch } from "../../../../../talk/get";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import type { DiscordMeta, PocketbaseUser } from "$lib/types";
-import { apiURL } from "../../../../../misc";
+import { apiURL } from "$lib/misc";
 
 const schema = createObjectSchema("code", "state");
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {

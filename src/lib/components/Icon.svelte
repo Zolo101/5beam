@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { Icons } from "../misc";
+    import { Icons } from "$lib/misc";
 
-    
     interface Props {
         // TODO: Make an "unknown" icon
         name: string;

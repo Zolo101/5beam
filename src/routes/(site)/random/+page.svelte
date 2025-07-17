@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { getRandomLevelPageClient } from "../../../client/ClientSideAPI.js";
-    import LevelComponent from "../../../components/browse/LevelComponent.svelte";
-    import Pagination from "../../../components/Pagination.svelte";
+    import { getRandomLevelPageClient } from "$lib/client/ClientSideAPI.js";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
     import type { PageData } from "./$types";
 
     interface Props {

@@ -1,5 +1,5 @@
 import { redirect, type RequestHandler } from "@sveltejs/kit";
-import { apiURL } from "../../../../../misc";
+import { apiURL } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import type { DiscordMeta, PocketbaseUser } from "$lib/types";
 

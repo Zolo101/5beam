@@ -1,7 +1,7 @@
 import type { Level } from "$lib/types";
 import { dailyies, levels } from "$lib/pocketbase";
-import { functionsApiURL } from "../misc";
-import validate from "../client/FileValidator";
+import { functionsApiURL } from "$lib/misc";
+import validate from "$lib/client/FileValidator";
 import { updateFetch } from "./get";
 
 export async function validateLevel(level: string) {

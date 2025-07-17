@@ -1,5 +1,5 @@
-import { DENIED, isAdmin, MY_BAD, BAD, OK } from "../../../misc";
-import { addDailyLevel, featureLevel } from "../../../talk/create";
+import { DENIED, isAdmin, MY_BAD, BAD, OK } from "$lib/misc";
+import { addDailyLevel, featureLevel } from "$lib/talk/create";
 import type { Actions } from "@sveltejs/kit";
 import { createObjectSchema } from "$lib/parse";
 import { NewFeaturedWebhook } from "$lib/webhook";

@@ -1,5 +1,5 @@
-import { BAD, OK } from "../../../../misc";
-import { getUserById } from "../../../../talk/get";
+import { BAD, OK } from "$lib/misc";
+import { getUserById } from "$lib/talk/get";
 import type { RequestHandler } from "./$types";
 
 // This gives the public user not private

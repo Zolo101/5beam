@@ -1,8 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, MY_BAD, OK } from "../../../../../misc";
+import { BAD, MY_BAD, OK } from "$lib/misc";
 import { type PostLevelpackType } from "$lib/parse";
 import { PostLevelpackSchema } from "$lib/parse";
-import { generateThumbnail, validateLevelpack } from "../../../../../talk/create";
+import { generateThumbnail, validateLevelpack } from "$lib/talk/create";
 import type { Levelpack, PrivateBaseUserV2 } from "$lib/types";
 import { levelpacks } from "$lib/pocketbase";
 import { NewLevelpackWebhook } from "$lib/webhook";

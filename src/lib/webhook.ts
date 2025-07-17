@@ -1,5 +1,5 @@
 import type { Level, Levelpack } from "$lib/types";
-import { generateDiff, getLevelThumbnailURL } from "../misc";
+import { generateDiff, getLevelThumbnailURL } from "$lib/misc";
 
 type WebhookObject = {
     username?: string;

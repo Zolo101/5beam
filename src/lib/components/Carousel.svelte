@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Level } from "$lib/types";
     import { fade, fly, slide } from "svelte/transition";
-    import { getLevelThumbnailURL } from "../misc";
+    import { getLevelThumbnailURL } from "$lib/misc";
     import UserComponent from "./UserComponent.svelte";
 
     type Props = {

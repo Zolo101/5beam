@@ -1,5 +1,5 @@
 import { redirect, type RequestHandler } from "@sveltejs/kit";
-import { BAD, isLoggedIn } from "../../../../misc";
+import { BAD, isLoggedIn } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import { actions } from "../+page.server";
 

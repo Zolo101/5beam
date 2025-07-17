@@ -1,16 +1,16 @@
 <script lang="ts">
-    import LevelComponent from "../../components/browse/LevelComponent.svelte";
-    import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
-    import Button from "../../components/Button.svelte";
-    import Pagination from "../../components/Pagination.svelte";
-    import { getLevelPageClient, getTrendingLevelPageClient } from "../../client/ClientSideAPI";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import LevelpackComponent from "$lib/components/browse/LevelpackComponent.svelte";
+    import Button from "$lib/components/Button.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import { getLevelPageClient, getTrendingLevelPageClient } from "$lib/client/ClientSideAPI";
     import type { PageData } from "./$types";
-    import UserComponent from "../../components/UserComponent.svelte";
-    import { getLevelThumbnailURL, getPlaysString } from "../../misc";
-    import Icon from "../../components/Icon.svelte";
-    import Difficulty from "../../components/Difficulty.svelte";
-    import BigButton from "../../components/BigButton.svelte";
-    import Carousel from "../../components/Carousel.svelte";
+    import UserComponent from "$lib/components/UserComponent.svelte";
+    import { getLevelThumbnailURL, getPlaysString } from "$lib/misc";
+    import Icon from "$lib/components/Icon.svelte";
+    import Difficulty from "$lib/components/Difficulty.svelte";
+    import BigButton from "$lib/components/BigButton.svelte";
+    import Carousel from "$lib/components/Carousel.svelte";
 
     let { data }: { data: PageData } = $props();
 

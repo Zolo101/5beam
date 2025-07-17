@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, DENIED, isAdmin, OK, NOT_FOUND, MY_BAD } from "../../../../../misc";
+import { BAD, DENIED, isAdmin, OK, NOT_FOUND, MY_BAD } from "$lib/misc";
 import { ModifyLevelpackSchema } from "$lib/parse";
-import { getLevelpackByIdWithLevels, updateFetch } from "../../../../../talk/get";
+import { getLevelpackByIdWithLevels, updateFetch } from "$lib/talk/get";
 import { levelpacks } from "$lib/pocketbase";
 import type { Levelpack } from "$lib/types";
 import { ChangeDescriptionWebhook, ChangeTitleWebhook } from "$lib/webhook";

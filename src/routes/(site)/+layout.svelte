@@ -1,7 +1,7 @@
 <script lang="ts">
     import "../../app.css";
-    import Navbar from "../../components/layout/Navbar.svelte";
-    import Footer from "../../components/layout/Footer.svelte";
+    import Navbar from "$lib/components/layout/Navbar.svelte";
+    import Footer from "$lib/components/layout/Footer.svelte";
     import type { PageData } from "./$types";
     import type { Snippet } from "svelte";
 

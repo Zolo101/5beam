@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { levelpacks, levels, usersV2 } from "$lib/pocketbase";
-import { apiURL } from "../../../misc";
+import { apiURL } from "$lib/misc";
 
 function formatDate(date: string) {
     // format as YYYY-MM-DD

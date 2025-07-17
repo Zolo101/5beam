@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Table from "../layout/Table.svelte";
+    import Table from "$lib/components/layout/Table.svelte";
     import Filepath from "./Filepath.svelte";
 
     interface Props {

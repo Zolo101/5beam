@@ -2,7 +2,7 @@
     import type { Levelpack } from "$lib/types";
     import Box from "$lib/assets/box.png";
     import Icon from "../Icon.svelte";
-    import { getPlaysString } from "../../misc";
+    import { getPlaysString } from "$lib/misc";
     import Button from "../Button.svelte";
     import UserComponent from "../UserComponent.svelte";
 

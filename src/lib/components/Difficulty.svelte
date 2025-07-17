@@ -1,6 +1,6 @@
 <script lang="ts">
     // 0 to 7
-    import { difficultyColorMap, difficultyImages, difficultyMap } from "../misc";
+    import { difficultyColorMap, difficultyImages, difficultyMap } from "$lib/misc";
 
     interface Props {
         difficulty: number;

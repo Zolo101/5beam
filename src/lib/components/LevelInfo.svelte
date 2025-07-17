@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { DetectedLevel } from "../client/FileValidator";
-    import { backgrounds, to5bLevelFormat } from "../misc";
-    import Table from "./layout/Table.svelte";
+    import type { DetectedLevel } from "$lib/client/FileValidator";
+    import { backgrounds, to5bLevelFormat } from "$lib/misc";
+    import Table from "$lib/components/layout/Table.svelte";
     import Log from "./Log.svelte";
 
     interface Props {

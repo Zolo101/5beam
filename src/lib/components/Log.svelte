@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { ValidateLog } from "../client/FileValidator";
+    import type { ValidateLog } from "$lib/client/FileValidator";
 
     interface Props {
         log: ValidateLog; // console.log(log)
     }
 
     let { log }: Props = $props();
-    
+
     // ℹ️, ⚠️, 🛑
 </script>
 

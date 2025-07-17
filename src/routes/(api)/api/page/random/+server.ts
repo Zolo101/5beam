@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getRandomLevels } from "../../../../../talk/get";
-import { BAD, MY_BAD, OK } from "../../../../../misc";
+import { getRandomLevels } from "$lib/talk/get";
+import { BAD, MY_BAD, OK } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
 const schema = createObjectSchema("amount", "type", "featured", "mod");

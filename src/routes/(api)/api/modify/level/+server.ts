@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, DENIED, isAdmin, OK, NOT_FOUND, MY_BAD, newlineSplitter } from "../../../../../misc";
+import { BAD, DENIED, isAdmin, OK, NOT_FOUND, MY_BAD, newlineSplitter } from "$lib/misc";
 import { ModifyLevelSchema, type ModifyLevelType } from "$lib/parse";
-import { getLevelById, updateFetch } from "../../../../../talk/get";
+import { getLevelById, updateFetch } from "$lib/talk/get";
 import { levels } from "$lib/pocketbase";
 import type { Level, PrivateBaseUserV2 } from "$lib/types";
 import {
@@ -10,7 +10,7 @@ import {
     ChangeLevelWebhook,
     ChangeTitleWebhook
 } from "$lib/webhook";
-import { generateThumbnail, validateLevel } from "../../../../../talk/create";
+import { generateThumbnail, validateLevel } from "$lib/talk/create";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
 export async function _modifyLevel(id: string, payload: ModifyLevelType, user: PrivateBaseUserV2) {

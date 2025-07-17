@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { addPlayLevel, addPlayLevelpack } from "../../../../talk/get";
-import { BAD, MY_BAD, OK } from "../../../../misc";
+import { addPlayLevel, addPlayLevelpack } from "$lib/talk/get";
+import { BAD, MY_BAD, OK } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
 // TODO: Add better ratelimit

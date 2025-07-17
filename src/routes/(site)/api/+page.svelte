@@ -1,7 +1,7 @@
 <script lang="ts">
-    import APIEndpoint from "../../../components/api/APIEndpoint.svelte";
-    import Table from "../../../components/layout/Table.svelte";
-    import APIReference from "../../../components/api/APIReference.svelte";
+    import APIEndpoint from "$lib/components/api/APIEndpoint.svelte";
+    import Table from "$lib/components/layout/Table.svelte";
+    import APIReference from "$lib/components/api/APIReference.svelte";
     const ParamType = {
         STRING: "STRING",
         INTEGER: "INTEGER",

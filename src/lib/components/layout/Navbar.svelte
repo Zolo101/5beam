@@ -1,10 +1,10 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
     import Logo from "./Logo.svelte";
-    import { getSearchClient } from "../../client/ClientSideAPI";
-    import LevelComponent from "../browse/LevelComponent.svelte";
-    import Pagination from "../Pagination.svelte";
-    import FiveBStyle from "../FiveBStyle.svelte";
+    import { getSearchClient } from "$lib/client/ClientSideAPI";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import FiveBStyle from "$lib/components/FiveBStyle.svelte";
     import type { PocketbaseUser } from "$lib/types";
     import { enhance } from "$app/forms";
 

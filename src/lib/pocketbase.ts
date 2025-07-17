@@ -1,5 +1,5 @@
 import Pocketbase from "pocketbase";
-import { clean } from "../talk/get";
+import { clean } from "$lib/talk/get";
 
 // prod
 // TODO: Rename to clientPb

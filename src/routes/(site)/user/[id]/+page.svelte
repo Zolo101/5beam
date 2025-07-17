@@ -1,9 +1,9 @@
 <script lang="ts">
-    import LevelComponent from "../../../../components/browse/LevelComponent.svelte";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import { writable } from "svelte/store";
-    import { getUserLevelPageClient } from "../../../../client/ClientSideAPI";
-    import Pagination from "../../../../components/Pagination.svelte";
-    import LevelpackComponent from "../../../../components/browse/LevelpackComponent.svelte";
+    import { getUserLevelPageClient } from "$lib/client/ClientSideAPI";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import LevelpackComponent from "$lib/components/browse/LevelpackComponent.svelte";
     import type { PageData } from "./$types";
 
     interface Props {

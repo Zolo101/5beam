@@ -1,18 +1,18 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import UserComponent from "../../../../components/UserComponent.svelte";
-    import Button from "../../../../components/Button.svelte";
-    import LevelComponent from "../../../../components/browse/LevelComponent.svelte";
+    import UserComponent from "$lib/components/UserComponent.svelte";
+    import Button from "$lib/components/Button.svelte";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Box from "$lib/assets/box.png";
-    import { formatDate_Day } from "../../../../misc";
-    import Dialog from "../../../../components/Dialog.svelte";
-    import Validator from "../../../../components/Validator.svelte";
-    import FiveBStyle from "../../../../components/FiveBStyle.svelte";
+    import { formatDate_Day } from "$lib/misc";
+    import Dialog from "$lib/components/Dialog.svelte";
+    import Validator from "$lib/components/Validator.svelte";
+    import FiveBStyle from "$lib/components/FiveBStyle.svelte";
     import Dropzone from "svelte-file-dropzone";
-    import validate from "../../../../client/FileValidator";
-    import BigButton from "../../../../components/BigButton.svelte";
-    import Icon from "../../../../components/Icon.svelte";
-    import Carousel from "../../../../components/Carousel.svelte";
+    import validate from "$lib/client/FileValidator";
+    import BigButton from "$lib/components/BigButton.svelte";
+    import Icon from "$lib/components/Icon.svelte";
+    import Carousel from "$lib/components/Carousel.svelte";
 
     const { data }: { data: PageData } = $props();
 

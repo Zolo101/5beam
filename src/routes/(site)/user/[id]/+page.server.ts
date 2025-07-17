@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { getUserById, getUserLevelpacks, getUserLevels } from "../../../../talk/get";
+import { getUserById, getUserLevelpacks, getUserLevels } from "$lib/talk/get";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {

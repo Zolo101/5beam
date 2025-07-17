@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from "../../../components/Button.svelte";
+    import Button from "$lib/components/Button.svelte";
     import type { PageData } from "./$types";
 
     // let { data }: { data: PageData } = $props();
