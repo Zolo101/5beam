@@ -11,7 +11,11 @@
         <!-- Background -->
         <div class="fixed inset-0 bg-black/50 backdrop-blur-xs"></div>
         <!-- Dialog -->
-        <dialog id="myDialog" class="relative static z-10 rounded-lg bg-zinc-800 shadow-lg" open>
+        <dialog
+            class="static z-10 max-h-[90vh] max-w-[90vw] overflow-y-auto rounded-lg bg-zinc-800 shadow-lg"
+            open
+        >
+            <!-- <dialog class="relative z-10 rounded-lg bg-zinc-800 shadow-lg" open> -->
             {@render children?.()}
         </dialog>
     </div>

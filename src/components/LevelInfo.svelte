@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { fly } from "svelte/transition";
     import type { DetectedLevel } from "../client/FileValidator";
     import { backgrounds, to5bLevelFormat } from "../misc";
     import Table from "./layout/Table.svelte";
@@ -10,7 +9,6 @@
     }
 
     let { selectedLevel = $bindable() }: Props = $props();
-
     let tableSprites = $derived(
         selectedLevel?.sprites.map((s) => Object.values(s).filter((v) => v !== undefined))
     );
@@ -38,7 +36,7 @@
                 <span class="font-bold">{selectedLevel.name}</span>
             </div>
             <button
-                class="rounded bg-green-600 px-3 py-1 text-4xl hover:bg-green-500"
+                class="cursor-pointer rounded bg-green-600 px-3 py-1 text-4xl hover:bg-green-500"
                 onclick={() => (selectedLevel = null)}>OK</button
             >
             <!-- <div>

@@ -23,7 +23,7 @@
     }
 </script>
 
-<div class="relative">
+<div class="relative min-h-[540px]">
     {#if showIndex}
         <span
             class="absolute top-5 right-5 z-10 rounded-lg bg-black/80 p-2 text-center text-2xl font-bold text-white"
@@ -48,7 +48,9 @@
     {#if details}
         {#key id}
             <div class="mt-2" transition:slide={{ axis: "y", duration: 1000 }}>
-                <span class:featured class="text-center text-4xl font-bold">{title}</span>
+                <a href={`/level/${id}`} class:featured class="text-center text-4xl font-bold"
+                    >{title}</a
+                >
                 <UserComponent prefix="by" {creator} />
             </div>
         {/key}

@@ -61,7 +61,7 @@
     }: Props<unknown> = $props();
 
     let windowWidth = $state(0);
-    let amount = $derived(Math.min(columns * Math.floor((windowWidth - 100) / 340), 16));
+    let amount = $derived(Math.min(columns * Math.floor(windowWidth / 360), 12));
 
     // Run updateFilters when amount changes
     // TODO: Bug where if you to go page 4 on small screens then resize, you can get softlocked
@@ -101,7 +101,10 @@
         </select>
     </div>
 {/if}
-<div class="m-auto flex flex-wrap justify-center gap-4">
+<div
+    class="m-auto flex flex-wrap justify-center gap-4"
+    style="grid-template-columns: repeat({Math.floor(amount / columns)}, minmax(0, 1fr));"
+>
     {#if viewOutput}
         {#each viewOutput as data}
             <PageComponent {data} />

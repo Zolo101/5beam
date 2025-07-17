@@ -26,7 +26,9 @@
     let { daily, recentLevels, featuredLevels, trendingLevels, levelpacks } = $derived(data);
 
     const dailyLevel = $derived(daily[0].level);
-    const dailyLevelThumbnail = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
+    const dailyLevelThumbnail = $derived(
+        getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false)
+    );
 
     const description = "Play, share and upload BFDIA 5b levels!";
 </script>
@@ -38,10 +40,10 @@
 </svelte:head>
 
 <section class="mx-5 flex pt-2 max-lg:flex-col">
-    <section class="flex w-1/2 flex-col justify-center max-lg:w-full max-lg:pb-2">
+    <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
         <p class="p-5 text-center text-3xl font-bold">{description}</p>
         <div
-            class="mx-10 flex flex-col justify-center gap-4 text-4xl font-bold max-lg:text-2xl max-sm:items-center"
+            class="mx-10 flex flex-col justify-center gap-4 text-3xl font-bold max-sm:items-center"
         >
             <BigButton
                 text="Play BFDIA 5b!"
@@ -49,44 +51,18 @@
                 href="https://coppersalts.github.io/HTML5b/"
                 newWindow
             />
-            <div class="flex justify-between gap-4 text-3xl *:grow max-xl:flex-col max-xl:text-2xl">
+            <div class="flex justify-between gap-4 text-3xl *:grow">
                 <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
-                <!-- <BigButton
-                    text="Join the 5b discord!"
-                    bg="#5865f2"
-                    href="https://discord.gg/qtePFSH"
-                    event="discord-join"
-                    newWindow
-                /> -->
             </div>
         </div>
     </section>
     <aside>
         <Carousel levels={featuredLevels} autoPlay details />
     </aside>
-    <!-- <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
-        <video
-            width="960"
-            height="540"
-            class="rounded-sm shadow-2xl shadow-white/20 outline-4 outline-white/5"
-            src={homepageVideo}
-            autoplay
-            muted
-            loop
-        ></video>
-        <section class="text-2xl">
-            <a class="hover:underline" href="/level/defmxfn312m41c3">Autobook 2</a><span
-                class="pl-1">by</span
-            ><UserComponent
-                prefix=""
-                creator={{ id: "6cmdcntll4sgnzz", username: "coppersalts" }}
-            />
-        </section>
-    </aside> -->
 </section>
 
-<div class="m-2 flex items-center gap-2 pl-10 text-4xl font-black">
-    <p class="featured p-2">Daily Level</p>
+<div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
+    <p class="p-2">Daily Level</p>
 </div>
 <section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
     <section
@@ -119,7 +95,7 @@
                     href="https://coppersalts.github.io/HTML5b?level={dailyLevel.id}"
                     event="play-level-daily"
                     newWindow
-                    disabled={dailyLevel.modded}
+                    disabled={!!dailyLevel.modded}
                 />
             </div>
         </div>

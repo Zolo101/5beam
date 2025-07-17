@@ -41,7 +41,7 @@
                 type="text"
                 id="search"
                 name="search"
-                class="rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200 max-lg:w-40"
+                class="w-full min-w-10 rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200"
                 maxlength="64"
                 placeholder="Search..."
                 bind:value={searchText}
@@ -50,14 +50,14 @@
             <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
                 <a href="/user" class="p-0!"
-                    ><img src={user.avatar} alt="Profile" class="h-9 w-9" /></a
+                    ><img src={user.avatar} alt="Profile" class="max-w-9 min-w-9" /></a
                 >
                 <form method="POST" action="/logout">
-                    <button type="submit">Log Out</button>
+                    <button type="submit" class="w-30">Log Out</button>
                 </form>
             {:else}
                 <form use:enhance method="POST" action="/login">
-                    <button type="submit">Log In</button>
+                    <button type="submit" class="w-30">Log In</button>
                 </form>
             {/if}
             <span>•</span>

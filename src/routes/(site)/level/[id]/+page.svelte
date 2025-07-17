@@ -102,13 +102,11 @@
 </section>
 <div class="flex justify-center gap-5 py-6">
     <img
-        class="rounded-sm object-cover shadow-xl"
-        width="960"
-        height="540"
+        class="rounded-sm object-contain shadow-xl"
         src={thumbnailUrl}
         alt="Placeholder Thumbnail"
     />
-    <div class="flex w-1/5 flex-col justify-center gap-5 text-3xl font-bold">
+    <div class="flex flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"
             bg="#4bff5d"
@@ -134,7 +132,7 @@
 </p>
 
 <p class="pl-2.5 text-4xl font-bold">Similar Levels</p>
-<div class="flex flex-wrap gap-5 p-3">
+<div class="flex flex-wrap justify-center gap-5 p-3">
     {#each relatedLevels as level}
         <LevelComponent data={level} />
     {/each}

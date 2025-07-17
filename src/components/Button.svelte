@@ -7,16 +7,18 @@
         disabled?: boolean;
         newWindow?: boolean;
         onclick?: () => void;
+        rest?: any[];
     }
 
     let {
         text = "(text)",
         bg = "#ffffff",
-        href = "",
+        href = "#",
         event = "",
         disabled = false,
         newWindow = false,
-        onclick = () => {}
+        onclick = () => {},
+        ...rest
     }: Props = $props();
 </script>
 
@@ -25,8 +27,9 @@
         {disabled}
         {onclick}
         data-umami-event={event}
+        {...rest}
         class="
-        button h-[40px] cursor-pointer text-black inset-shadow-xs inset-shadow-black/50 transition-all hover:outline-black/50 hover:brightness-75
+        button h-[40px] w-full cursor-pointer text-black inset-shadow-xs inset-shadow-black/50 transition-all hover:outline-black/50 hover:brightness-75
         disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75
         "
         style="background-color: {bg}"
