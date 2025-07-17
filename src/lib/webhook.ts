@@ -14,8 +14,8 @@ type WebhookEmbed = {
     color: number;
     author: {
         name: string;
-        url: string;
-        icon_url: string;
+        url?: string;
+        icon_url?: string;
     };
     image?: {
         url: string;
@@ -44,8 +44,11 @@ const WebhookChannel = {
 };
 
 // 058. etc ruins the link because of markdown, so replace the dot with a similar unicode character
-const getMarkdownLevelURL = (level: Level) =>
-    `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/level/${level.id}>)`;
+function getMarkdownLevelURL(level: Level | Levelpack) {
+    // TODO: Hardcoded... also WTF
+    const type = "difficulty" in level ? "levelpack" : "level";
+    return `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/${type}/${level.id}>)`;
+}
 
 export default class Webhook<P extends unknown[]> {
     public channel: string[];
@@ -92,15 +95,29 @@ export default class Webhook<P extends unknown[]> {
 //     }
 // })
 
+function getCreatorName(level: Level | Levelpack) {
+    return level.creator?.username || "Guest";
+}
+
+function makeAuthor(level: Level | Levelpack) {
+    return level.creator
+        ? {
+              name: getCreatorName(level),
+              url: `https://5beam.zelo.dev/user/${level.creator.id}`,
+              icon_url: `https://cdn.discordapp.com/avatars/${level.creator.id}/${level.creator.avatar}.png`
+          }
+        : { name: getCreatorName(level) };
+}
+
 export const RemoveLevelWebhook = new Webhook("PrivateLog", (level: Level) => {
     return {
-        content: `\`**${level.title}\` by ${level.creator.username} has been removed!**`
+        content: `\`**${level.title}\` by ${getCreatorName(level)} has been removed!**`
     };
 });
 
 export const RemoveLevelpackWebhook = new Webhook("PrivateLog", (levelpack: Levelpack) => {
     return {
-        content: `\`**${levelpack.title}\` by ${levelpack.creator.username} has been removed!**`
+        content: `\`**${levelpack.title}\` by ${getCreatorName(levelpack)} has been removed!**`
     };
 });
 
@@ -113,17 +130,20 @@ export const ChangeDifficultyWebhook = new Webhook(
     }
 );
 
-export const ChangeTitleWebhook = new Webhook("PublicLog", (newTitle: string, level: Level) => {
-    return {
-        content: `**${getMarkdownLevelURL(level)} has changed title:** \`\`\`diff\n${generateDiff(level.title, newTitle)}\`\`\``
-    };
-});
+export const ChangeTitleWebhook = new Webhook(
+    "PublicLog",
+    (newTitle: string, item: Level | Levelpack) => {
+        return {
+            content: `**${getMarkdownLevelURL(item)} has changed title:** \`\`\`diff\n${generateDiff(item.title, newTitle)}\`\`\``
+        };
+    }
+);
 
 export const ChangeDescriptionWebhook = new Webhook(
     "PublicLog",
-    (newDescription: string, level: Level) => {
+    (newDescription: string, item: Level | Levelpack) => {
         return {
-            content: `**${getMarkdownLevelURL(level)} has changed description:** \`\`\`diff\n${generateDiff(level.description, newDescription)}\`\`\``
+            content: `**${getMarkdownLevelURL(item)} has changed description:** \`\`\`diff\n${generateDiff(item.description, newDescription)}\`\`\``
         };
     }
 );
@@ -143,11 +163,7 @@ export const NewFeaturedWebhook = new Webhook("Featured", (level: Level) => {
                 description: level.description,
                 url: `https://5beam.zelo.dev/level/${level.id}`,
                 color: 65392,
-                author: {
-                    name: level.creator.global_name,
-                    url: `https://5beam.zelo.dev/user/${level.creator.id}`,
-                    icon_url: `https://cdn.discordapp.com/avatars/${level.creator.id}/${level.creator.avatar}.png`
-                },
+                author: makeAuthor(level),
                 image: {
                     url: getLevelThumbnailURL(level.id, level.thumbnail)
                 },
@@ -169,11 +185,7 @@ export const NewLevelWebhook = new Webhook("New", (level: Level) => {
                 description: level.description,
                 url: `https://5beam.zelo.dev/level/${level.id}`,
                 color: 5689629,
-                author: {
-                    name: level.creator.global_name,
-                    url: `https://5beam.zelo.dev/user/${level.creator.id}`,
-                    icon_url: `https://cdn.discordapp.com/avatars/${level.creator.id}/${level.creator.avatar}.png`
-                },
+                author: makeAuthor(level),
                 image: {
                     url: getLevelThumbnailURL(level.id, level.thumbnail)
                 }
@@ -191,11 +203,7 @@ export const NewLevelpackWebhook = new Webhook("New", (levelpack: Levelpack, pre
                 description: levelpack.description,
                 url: `https://5beam.zelo.dev/levelpack/${levelpack.id}`,
                 color: 3461525,
-                author: {
-                    name: levelpack.creator.global_name,
-                    url: `https://5beam.zelo.dev/user/${levelpack.creator.id}`,
-                    icon_url: `https://cdn.discordapp.com/avatars/${levelpack.creator.id}/${levelpack.creator.avatar}.png`
-                },
+                author: makeAuthor(levelpack),
                 image: {
                     url: getLevelThumbnailURL(preview.id, preview.thumbnail)
                 }
@@ -213,11 +221,7 @@ export const NewDailyWebhook = new Webhook("Daily", (level: Level) => {
                 description: level.description,
                 url: `https://5beam.zelo.dev/level/${level.id}`,
                 color: 16761344,
-                author: {
-                    name: level.creator.global_name,
-                    url: `https://5beam.zelo.dev/user/${level.creator.id}`,
-                    icon_url: `https://cdn.discordapp.com/avatars/${level.creator.id}/${level.creator.avatar}.png`
-                },
+                author: makeAuthor(level),
                 image: {
                     url: getLevelThumbnailURL(level.id, level.thumbnail)
                 },

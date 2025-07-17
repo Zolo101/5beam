@@ -1,17 +1,24 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, MY_BAD, OK, PostLevelpackSchema, type PostLevelpackType } from "../../../../../misc";
+import { BAD, MY_BAD, OK } from "../../../../../misc";
+import { type PostLevelpackType } from "$lib/parse";
+import { PostLevelpackSchema } from "$lib/parse";
 import { generateThumbnail, validateLevelpack } from "../../../../../talk/create";
-import type { Level, Levelpack, PrivateBaseUserV2 } from "$lib/types";
-import { levels, levelpacks } from "$lib/pocketbase";
+import type { Levelpack, PrivateBaseUserV2 } from "$lib/types";
+import { levelpacks } from "$lib/pocketbase";
 import { NewLevelpackWebhook } from "$lib/webhook";
+import type PocketBase from "pocketbase";
 
-async function createLevelpack(levelpack: PostLevelpackType, user: PrivateBaseUserV2 | null) {
+async function createLevelpack(
+    levelpack: PostLevelpackType,
+    user: PrivateBaseUserV2 | null,
+    pb: PocketBase
+) {
     // if not valid and not modded, throw error
     if (!(await validateLevelpack(levelpack.file)) && !levelpack.modded)
         throw new Error("Invalid levelpack");
 
     const levelsFormData: FormData[] = [];
-    const levelReferences: Level[] = [];
+    const levelsBatch = pb.createBatch();
 
     // spam amazon servers with thumbnail generation requests 😭
     const thumbnailPromises = levelpack.file.map((l) => generateThumbnail(l));
@@ -40,7 +47,11 @@ async function createLevelpack(levelpack: PostLevelpackType, user: PrivateBaseUs
         levelFormData.append("data", level);
         if (successful) levelFormData.append("thumbnail", await thumbnail.value.blob());
         levelFormData.append("modded", levelpack.modded);
-        levelFormData.append("difficulty", levelpack.difficulty[i].toString());
+        if (levelpack.difficulty) {
+            levelFormData.append("difficulty", levelpack.difficulty[i].toString());
+        } else {
+            levelFormData.append("difficulty", "0");
+        }
         levelFormData.append("unlisted", "true");
 
         levelsFormData.push(levelFormData);
@@ -48,19 +59,23 @@ async function createLevelpack(levelpack: PostLevelpackType, user: PrivateBaseUs
         console.log("Completed level", i + 1, "out of", levelpack.file.length);
     }
 
+    // TODO: for modify/levelpack, upsert looks good, its apparently a combo of update + insert
+
     for (const levelFormData of levelsFormData) {
-        levelReferences.push(await levels.create(levelFormData));
+        levelsBatch.collection("5beam_levels").create(levelFormData);
     }
+
+    const result = await levelsBatch.send();
 
     const levelpackReference = await levelpacks.create<Levelpack>({
         creator: user?.id,
         title: levelpack.title,
         description: levelpack.description,
-        levels: levelReferences.map((l) => l.id),
+        levels: result.map((l) => l.body.id),
         modded: levelpack.modded
     });
 
-    await NewLevelpackWebhook.send(levelpackReference, levelReferences[0]);
+    await NewLevelpackWebhook.send(levelpackReference, result[0].body);
 
     return levelpackReference;
 }
@@ -72,7 +87,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         const payload = PostLevelpackSchema.parse(json);
 
         try {
-            const levelpack = await createLevelpack(payload, locals.user);
+            const levelpack = await createLevelpack(payload, locals.user, locals.pb);
 
             return OK(levelpack);
         } catch (e) {

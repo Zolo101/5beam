@@ -1,5 +1,3 @@
-import type { User } from "$lib/DiscordOauth2";
-
 export type Level = {
     id: string;
     creator: PocketbaseUser | null;
@@ -59,8 +57,7 @@ export type CreateUser = {
 };
 
 export type CreateLevel = {
-    // discord id (ALWAYS get this server-side)
-    creator: User;
+    creator: PrivateBaseUserV2;
     title: string;
     description: string;
     level: string;
@@ -69,8 +66,7 @@ export type CreateLevel = {
 };
 
 export type CreateLevelpack = {
-    // discord id (ALWAYS get this server-side)
-    creator: User;
+    creator: PrivateBaseUserV2;
     title: string;
     description: string;
     level: string;

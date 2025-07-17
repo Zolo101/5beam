@@ -1,7 +1,6 @@
 import * as Diff from "diff";
 import { dev } from "$app/environment";
-import { z } from "zod";
-import type { User } from "$lib/DiscordOauth2";
+import type { PrivateBaseUserV2 } from "$lib/types";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -90,7 +89,7 @@ export function getLevelThumbnailURL(id: string, filename: string, mini: boolean
 // if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
 export function readBlobInANSI(blob: Blob) {
     return new Promise((resolve, reject) => {
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = (event) => {
             const arrayBuffer = event.target!.result as ArrayBuffer;
             const textDecoder = new TextDecoder("windows-1252"); // ANSI
@@ -116,41 +115,6 @@ export const getPlaysString = (plays: number) => {
     // only show 2 decimal places if we're using a prefix
     return `${plays.toFixed(prefixIndex ? 2 : 0)}${prefixes[prefixIndex]}`;
 };
-
-// Level (singular)
-export const PostLevelSchema = z.object({
-    title: z.string().min(1).max(64),
-    description: z.string().max(1024),
-    difficulty: z
-        .array(z.number().int().min(0).max(7))
-        .length(1)
-        .transform((arr) => arr[0]),
-    modded: z.string().max(64),
-    file: z
-        .string()
-        .max(1024 * 1024 * 5) // 5 MB Limit
-        .trim()
-        .transform((file) => newlineSplitter(file)[0])
-});
-export type PostLevelType = z.infer<typeof PostLevelSchema>;
-
-// Levelpack (multiple)
-export const PostLevelpackSchema = z.object({
-    title: z.string().min(1).max(64),
-    description: z.string().max(1024),
-    difficulty: z.array(z.number().int().min(0).max(7)).min(2).max(200),
-    modded: z.string().max(64),
-    file: z
-        .string()
-        .max(1024 * 1024 * 5) // 5 MB Limit
-        .trim()
-        .transform((file) => newlineSplitter(file))
-        .refine((file) => file.length > 1, { message: "Levelpack must contain at least 2 levels" })
-        .refine((file) => file.length <= 200, {
-            message: "Levelpack must contain at most 200 levels"
-        })
-});
-export type PostLevelpackType = z.infer<typeof PostLevelpackSchema>;
 
 export function generateDiff(oldText: string, newText: string) {
     const diffs = Diff.diffLines(oldText, newText, { newlineIsToken: true });
@@ -182,10 +146,10 @@ export function newlineSplitter(file: string) {
         .split("\r\n\r\n");
 }
 
-export const isLoggedIn = (user: User | undefined) => !!user;
+export const isLoggedIn = (user: PrivateBaseUserV2 | undefined) => !!user;
 
 /** For client-side use only */
-export const isAdmin = (user: User | undefined) => user?.roles === "admin";
+export const isAdmin = (user: PrivateBaseUserV2 | undefined) => user?.roles === "admin";
 
 // Cant find
 export function NOT_FOUND() {

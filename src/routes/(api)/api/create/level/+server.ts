@@ -1,5 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, MY_BAD, OK, PostLevelSchema, type PostLevelType } from "../../../../../misc";
+import { BAD, MY_BAD, OK } from "../../../../../misc";
+import { type PostLevelType } from "$lib/parse";
+import { PostLevelSchema } from "$lib/parse";
 import { generateThumbnail, validateLevel } from "../../../../../talk/create";
 import { levels } from "$lib/pocketbase";
 import type { Level, PrivateBaseUserV2 } from "$lib/types";
@@ -19,7 +21,11 @@ async function createLevel(level: PostLevelType, user: PrivateBaseUserV2 | null)
     levelFormData.append("data", level.file);
     if (thumbnail && successful) levelFormData.append("thumbnail", await thumbnail.blob());
     levelFormData.append("modded", level.modded);
-    levelFormData.append("difficulty", level.difficulty.toString());
+    if (level.difficulty) {
+        levelFormData.append("difficulty", level.difficulty.toString());
+    } else {
+        levelFormData.append("difficulty", "0");
+    }
 
     const levelReference = await levels.create<Level>(levelFormData);
 
@@ -39,13 +45,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
             return OK(level);
         } catch (e) {
-            // console.error(e);
+            console.error(e);
 
             // TODO: It's not always "My Bad in this instance (see validateLevel)
             return MY_BAD(e instanceof Error ? e.message : "Unknown error");
         }
-    } catch {
-        // console.error(e);
+    } catch (e) {
+        console.error(e);
 
         return BAD();
     }

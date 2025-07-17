@@ -1,5 +1,5 @@
-import { dailyies, levelpacks, levels, pb, users, weeklies } from "$lib/pocketbase";
-import type { Daily, Level, Levelpack, PocketbaseUser, WeeklyChallenge } from "$lib/types";
+import { dailyies, levelpacks, levels, pb, usersV2, weeklies } from "$lib/pocketbase";
+import type { BaseUserV2, Daily, Level, Levelpack, WeeklyChallenge } from "$lib/types";
 import { ClientResponseError, type RecordListOptions, type RecordService } from "pocketbase";
 // TODO: Create a class (so we dont need to repeat toPOJO everywhere)
 
@@ -156,7 +156,7 @@ export async function getSearch(
 
 export async function getUserById(id: string) {
     try {
-        return await users.getOne<PocketbaseUser>(id);
+        return await usersV2.getOne<BaseUserV2>(id);
     } catch (e) {
         // 404 -- Not found
         if (e instanceof ClientResponseError && e.status === 404) {
@@ -164,12 +164,6 @@ export async function getUserById(id: string) {
         }
         throw e;
     }
-}
-
-export async function getUserByDiscordId(discordId: string) {
-    return await users.getFirstListItem<PocketbaseUser>(
-        pb.filter(`discordId = {:discordId}`, { discordId })
-    );
 }
 
 // TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
@@ -219,6 +213,14 @@ export async function getUserLevelpacks(
     });
 }
 
+export async function updateFetch<T>(
+    collection: RecordService<T>,
+    id: string,
+    body: Partial<T> | FormData
+) {
+    return await collection.update(id, body);
+}
+
 // Pocketbase gives results in a weird format,
 // so we need to convert it to a POJO (plain old javascript object)
 // so sveltekit won't complain
@@ -264,48 +266,6 @@ function cleanObject(obj: Record<string, any>) {
     }
 
     return obj;
-}
-
-/** @deprecated Unsecure, use `Collection.update` */
-export async function updateFetch<T>(
-    collection: RecordService,
-    id: string,
-    body: Record<string, unknown>
-) {
-    const result = await fetch(
-        `https://cdn.zelo.dev/api/collections/${collection.collectionIdOrName}/records/${id}`,
-        {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                // TODO: Stop doing this
-                // no but really stop doing this
-                secret: import.meta.env.VITE_POCKETBASE_USER_SECRET
-            },
-            body: JSON.stringify(body)
-        }
-    );
-
-    return (await result.json()) as Promise<T>;
-}
-
-export async function updateFetchFormData<T>(
-    collection: RecordService,
-    id: string,
-    body: FormData
-) {
-    const result = await fetch(
-        `https://cdn.zelo.dev/api/collections/${collection.collectionIdOrName}/records/${id}`,
-        {
-            method: "PATCH",
-            headers: {
-                secret: import.meta.env.VITE_POCKETBASE_USER_SECRET
-            },
-            body: body
-        }
-    );
-
-    return (await result.json()) as Promise<T>;
 }
 
 function getSort(sortCode: number) {

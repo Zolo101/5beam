@@ -9,7 +9,7 @@ import type { Daily, Level } from "../src/lib/types";
 // import { getLevelById } from "../src/talk/get";
 
 export async function getLevelById(id: string) {
-    return toPOJO(await levels.getOne<Level>(id, { expand: "creator" }));
+    return await levels.getOne<Level>(id, { expand: "creator" });
 }
 
 function cleanObject(obj: Record<string, any>) {
@@ -41,11 +41,16 @@ function cleanObject(obj: Record<string, any>) {
     return obj;
 }
 
-export function toPOJO<T extends Record<string, any> | Record<string, any>[]>(obj: T): T {
-    const result = Array.isArray(obj)
-        ? structuredClone(obj.map(cleanObject))
-        : structuredClone(cleanObject(obj));
-    return result as T;
+export function clean<T extends Record<string, unknown> | Record<string, unknown>[]>(
+    obj: T
+): T | null {
+    if (obj === undefined || obj === null) return null;
+    // console.log(obj);
+    if (obj.items) {
+        return obj.items.map(cleanObject) as T;
+    } else {
+        return cleanObject(obj) as T;
+    }
 }
 
 export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
