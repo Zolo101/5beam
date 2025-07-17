@@ -48,6 +48,10 @@
         color: #5865f2;
     }
 
+    .colour-TOKEN {
+        color: #f2874b;
+    }
+
     .colour-OTHER {
         color: lightslategrey;
     }
