@@ -4,8 +4,6 @@ import { clean } from "../talk/get";
 // prod
 // TODO: Rename to clientPb
 export const pb = new Pocketbase("https://cdn.zelo.dev");
-/** @deprecated Use `usersV2` */
-export const users = pb.collection("5beam_users_discord");
 export const usersV2 = pb.collection("5beam_users_public");
 // TODO: Delete
 export const usersV2Private = pb.collection("5beam_users");

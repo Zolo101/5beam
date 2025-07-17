@@ -10,9 +10,8 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
     const { code } = parseFromUrlSearchParams(schema, url);
     const codeVerifier = cookies.get("discord_code_verifier");
     if (!codeVerifier) return redirect(308, "/");
-    console.log(codeVerifier);
 
-    const { meta, record } = (await locals.pb
+    (await locals.pb
         .collection("5beam_users")
         .authWithOAuth2Code("discord", code, codeVerifier, `${apiURL}/login/redirect/discord`)) as {
         meta: DiscordMeta;
@@ -20,7 +19,10 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
         token: string;
     };
 
+    cookies.delete("discord_code_verifier", { path: "/" });
+
     // TODO: Will need to use sudo for this
+    // I'm gonna do this internally
     // if (meta.username !== record.username) {
     //     // updateFetch(usersV2, record.id, { username: meta.username });
     //     usersV2.update(record.id, {
