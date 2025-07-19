@@ -2,7 +2,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import type { DiscordMeta, PocketbaseUser } from "$lib/types";
-import { apiURL } from "$lib/misc";
+import { redirectURL } from "$lib/misc";
 
 const schema = createObjectSchema("code", "state");
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 
     (await locals.pb
         .collection("5beam_users")
-        .authWithOAuth2Code("discord", code, codeVerifier, `${apiURL}/login/redirect/discord`)) as {
+        .authWithOAuth2Code("discord", code, codeVerifier, redirectURL)) as {
         meta: DiscordMeta;
         record: PocketbaseUser;
         token: string;

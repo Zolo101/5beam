@@ -33,7 +33,7 @@
     });
 </script>
 
-<nav>
+<nav class="flex items-center justify-center p-1.5 text-black backdrop-blur-[4px]">
     <div class="mx-5 flex h-24 grow justify-between pt-2">
         <Logo />
         <div class="list mb-1 flex flex-row items-center gap-3 text-xl">
@@ -50,7 +50,7 @@
             <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
                 <a href="/user" class="p-0!"
-                    ><img src={user.avatar} alt="Profile" class="max-w-9 min-w-9" /></a
+                    ><img src={user.avatar} alt="Profile" class="max-w-9 min-w-9 rounded" /></a
                 >
                 <form method="POST" action="/logout">
                     <button type="submit" class="w-30">Log Out</button>
@@ -105,6 +105,14 @@
 {/if}
 
 <style>
+    nav {
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.2),
+            rgba(233, 233, 233, 0.2) 90%,
+            rgba(255, 255, 255, 0)
+        );
+    }
+
     /* TODO: Inset rainbow? */
     .rainbow-outline {
         animation: rainbow-outline 10s linear infinite;

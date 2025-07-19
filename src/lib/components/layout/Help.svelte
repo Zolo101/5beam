@@ -8,7 +8,7 @@
 
 <div class="help">
     <span class="help-text">?</span>
-    <span class="help-hovertext">> {text}</span>
+    <span class="help-hovertext"> {text}</span>
 </div>
 
 <style>

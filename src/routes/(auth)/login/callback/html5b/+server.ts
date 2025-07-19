@@ -1,5 +1,5 @@
 import { redirect, type RequestHandler } from "@sveltejs/kit";
-import { apiURL } from "$lib/misc";
+import { redirectURL_html5b } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import type { DiscordMeta, PocketbaseUser } from "$lib/types";
 
@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
 
     const { token } = (await locals.pb
         .collection("5beam_users")
-        .authWithOAuth2Code("discord", code, codeVerifier, `${apiURL}/login/callback/html5b`)) as {
+        .authWithOAuth2Code("discord", code, codeVerifier, redirectURL_html5b)) as {
         meta: DiscordMeta;
         record: PocketbaseUser;
         token: string;
@@ -22,8 +22,8 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
     return new Response("", {
         status: 302,
         headers: {
-            // location: `https://coppersalts.github.io/HTML5b/authredirect?5beam_auth=${token}`
-            location: `http://localhost:8080/authredirect.html?5beam_auth=${token}`
+            location: `https://coppersalts.github.io/HTML5b/authredirect?5beam_auth=${token}`
+            // location: `http://localhost:8080/authredirect.html?5beam_auth=${token}`
         }
     });
 };

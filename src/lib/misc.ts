@@ -167,6 +167,6 @@ export const DENIED = () =>
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev";
 // export const apiURL = !dev ? "http://localhost:4173" : "https://5beam.zelo.dev"
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default";
-export const redirectURL = `${apiURL}/login/redirect/discord`;
-export const redirectURL_html5b = `${apiURL}/login/redirect/html5b`;
+export const redirectURL = `${apiURL}/login/callback/discord`;
+export const redirectURL_html5b = `${apiURL}/login/callback/html5b`;
 export const fallbackThumbnailURL = `${apiURL}/placeholder.png`; // Normalize newlines to CRLF (level array)

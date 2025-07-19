@@ -45,16 +45,6 @@ h2 {
     @apply mx-10 p-2 text-4xl font-bold text-neutral-100;
 }
 
-nav {
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.2),
-        rgba(233, 233, 233, 0.2) 90%,
-        rgba(255, 255, 255, 0)
-    );
-    padding: 5px;
-    @apply flex items-center justify-center p-1.5 text-black backdrop-blur-[4px];
-}
-
 .button {
     @apply rounded-lg bg-linear-to-b px-7 shadow-md;
     background: linear-gradient(to bottom, transparent, #00000044);

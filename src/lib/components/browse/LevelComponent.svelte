@@ -21,24 +21,6 @@
         {@const { creator, id, modded, title, featured, difficulty, plays } = data}
         {@const thumbnailUrl = getLevelThumbnailURL(data.id, data.thumbnail, true)}
 
-        {@const makeFeatured = () => {
-            fetch(`/api/feature?id=${data.id}`, {
-                method: "POST"
-            })
-                .then((res) => {
-                    if (res.ok) {
-                        data.featured = true;
-                    }
-                })
-                .catch(alert);
-        }}
-
-        {@const addDaily = () => {
-            fetch(`/api/daily?id=${data.id}`, {
-                method: "POST"
-            }).catch(alert);
-        }}
-
         <div
             class:modded
             class:glow

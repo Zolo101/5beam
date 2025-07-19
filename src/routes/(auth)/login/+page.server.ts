@@ -17,12 +17,15 @@ export const actions = {
             return new Response("Discord OAuth2 provider not found", { status: 500 });
         }
 
+        // I dont want email
+        const authURL = discordAuth.authURL.replace("identify+email", "identify");
+
         cookies.set("discord_code_verifier", discordAuth.codeVerifier, { path: "/" });
 
         // Redirect to the Discord OAuth2 URL
         // redirectURI is the user given redirectURL (5beam oauth)
         // redirectURL is the default redirectURL (5beam oauth)
         // TODO: Change variable names
-        return redirect(302, discordAuth.authURL + (redirectURI ? redirectURI : redirectURL));
+        return redirect(302, authURL + (redirectURI ? redirectURI : redirectURL));
     }
 } satisfies Actions;
