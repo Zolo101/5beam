@@ -6,6 +6,7 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";
     import type { PocketbaseUser } from "$lib/types";
+    import questionIcon from "$lib/assets/question.png";
     import { enhance } from "$app/forms";
 
     let { user = $bindable() }: { user: PocketbaseUser } = $props();
@@ -49,9 +50,14 @@
             <a href="/upload" class="rainbow-outline">Upload</a>
             <!-- <a href="/mods">Mods</a> -->
             {#if loggedIn}
-                <a href="/user" class="p-0!"
-                    ><img src={user.avatar} alt="Profile" class="max-w-9 min-w-9 rounded" /></a
-                >
+                <!-- TODO: Removed temp until we make a pocketbase module that updates 5beam_users upon oauth -->
+                <!-- <a href="/user" class="p-0!">
+                    {#if user.record.avatar}
+                        <img src={user.record.avatar} alt="Profile" class="max-w-9 min-w-9 rounded" />
+                    {:else}
+                        <img src={questionIcon} alt="Profile" class="max-w-9 min-w-9 rounded" />
+                    {/if}
+                </a> -->
                 <form method="POST" action="/logout">
                     <button type="submit" class="w-30">Log Out</button>
                 </form>

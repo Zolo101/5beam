@@ -5,12 +5,17 @@
     const { id, username } = $derived(creator ?? { id: "0", username: "Guest" });
 </script>
 
-<!-- TODO: Add avatar -->
 {#if creator}
-    <span class="font-normal">{prefix}</span><a
+    <span class="font-normal">{prefix}</span>
+    <!-- <img
+        src={creator.avatar || questionIcon}
+        alt="Profile"
+        class="inline max-w-4 min-w-4 rounded-full"
+    /> -->
+    <a
         href="/user/{id}"
         target="_self"
-        class="rounded-sm p-1 font-bold transition-colors hover:bg-neutral-300/50 hover:text-black"
+        class="rounded-sm py-1 font-bold transition-colors hover:bg-neutral-300/50 hover:text-black"
         >{username}</a
     >
 {:else}
