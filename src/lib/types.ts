@@ -126,3 +126,14 @@ export type BaseUser = {
     levelpacks: string[];
     stars: string[];
 };
+
+export type LevelChange = {
+    title: string;
+    action: "create" | "update" | "delete";
+};
+
+export type LevelpackDifficultyChange = {
+    title: string;
+    oldD: number;
+    newD: number;
+};

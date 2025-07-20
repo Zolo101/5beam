@@ -13,6 +13,7 @@
     import LevelInfo from "$lib/components/LevelInfo.svelte";
     import validate from "$lib/client/FileValidator";
     import BigButton from "$lib/components/BigButton.svelte";
+    import { postModifyLevelClient } from "$lib/client/ClientSideAPI";
 
     interface Props {
         data: PageData;
@@ -37,8 +38,13 @@
     const thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail, false));
     let editMode = $state(false);
     let showDifference = $state(false);
+    let sending = $derived(false);
 
-    let isOwner = $derived(creator?.id === user?.id);
+    $effect(() => {
+        if (!editMode) sending = false;
+    });
+
+    let isOwner = $derived(creator?.id === user?.record.id);
 
     function downloadLevel() {
         const a = document.createElement("a");
@@ -55,8 +61,32 @@
         console.log("deleteLevel");
     }
 
-    function saveLevel() {
-        console.log("saveLevel");
+    async function saveLevel() {
+        sending = true;
+
+        const payload = {
+            title: title,
+            description: description,
+            difficulty: [difficulty],
+            modded: modded,
+            file: await file?.text()
+        };
+
+        // @ts-ignore
+        window.umami?.track("edit-level");
+
+        postModifyLevelClient(payload, id)
+            .then(() => (editMode = false))
+            .catch((err) => {
+                console.error(err);
+
+                // @ts-ignore
+                window.umami?.track("edit-level-failed");
+
+                alert(
+                    "Unfortunately your edit has failed. Please contact @zelo101 on discord with your level(s)."
+                );
+            });
     }
 
     let eventStore = $state<CustomEvent<{ acceptedFiles: File[] }>>();
@@ -128,6 +158,7 @@
 
 <p class="pl-2.5 text-4xl font-bold">Description</p>
 <p class="m-2 rounded-lg bg-neutral-800/90 p-3 text-2xl whitespace-pre-wrap backdrop-blur-sm">
+    <!-- TODO: Add "No description in italic if empty" -->
     {description}
 </p>
 
@@ -179,7 +210,13 @@
             </div>
             <div class="flex justify-end gap-2 *:grow">
                 <!-- <button onclick={deleteLevel} class="float-left text-xs opacity-50">Delete</button> -->
-                <Button text="Save" bg="#a8ff00" onclick={saveLevel} event="update-level" />
+                <Button
+                    text={sending ? "Saving..." : "Save"}
+                    bg="#a8ff00"
+                    onclick={saveLevel}
+                    event="update-level"
+                    disabled={sending}
+                />
                 <Button text="Cancel" bg="#cccccc" onclick={() => (editMode = false)} />
             </div>
         </div>

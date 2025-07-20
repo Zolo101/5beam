@@ -1,4 +1,4 @@
-import type { Level, Levelpack } from "$lib/types";
+import type { Level, LevelChange, Levelpack, LevelpackDifficultyChange } from "$lib/types";
 import { generateDiff, getLevelThumbnailURL } from "$lib/misc";
 
 type WebhookObject = {
@@ -100,6 +100,7 @@ function getCreatorName(level: Level | Levelpack) {
 }
 
 function makeAuthor(level: Level | Levelpack) {
+    console.log(level);
     return level.creator
         ? {
               name: getCreatorName(level),
@@ -153,6 +154,50 @@ export const ChangeLevelWebhook = new Webhook("PublicLog", (_, level: Level) => 
         content: `**${getMarkdownLevelURL(level)} has changed its level data!**`
     };
 });
+
+export const ChangeLevelpackWebhook = new Webhook(
+    "PublicLog",
+    (levelChanges: LevelChange[], levelpack: Levelpack) => {
+        const added = levelChanges.filter((change) => change.action === "create");
+        const removed = levelChanges.filter((change) => change.action === "delete");
+        const updated = levelChanges.filter((change) => change.action === "update");
+
+        const lines: string[] = [];
+        if (added.length > 0) {
+            lines.push(`**Added levels:**`);
+            lines.push(`- ${added.map((c) => c.title).join(", ")}`);
+        }
+        if (removed.length > 0) {
+            lines.push(`**Removed levels:**`);
+            lines.push(`- ${removed.map((c) => c.title).join(", ")}`);
+        }
+        if (updated.length > 0) {
+            lines.push(`**Updated levels:**`);
+            lines.push(`- ${updated.map((c) => c.title).join(", ")}`);
+        }
+        if (lines.length === 0) {
+            lines.push("No level changes.");
+        }
+
+        return {
+            content: `**${getMarkdownLevelURL(levelpack)} has changed its levels:**\n${lines.join("\n")}`
+        };
+    }
+);
+
+export const ChangeLevelpackDifficultyWebhook = new Webhook(
+    "PublicLog",
+    (levelChanges: LevelpackDifficultyChange[], levelpack: Levelpack) => {
+        const lines = levelChanges.map(
+            ({ title, oldD, newD }) =>
+                `- **${title}**: ${difficultyEmoji[oldD]} **→** ${difficultyEmoji[newD]}`
+        );
+
+        return {
+            content: `**${getMarkdownLevelURL(levelpack)} has changed level difficulties:**\n${lines.join("\n")}`
+        };
+    }
+);
 
 export const NewFeaturedWebhook = new Webhook("Featured", (level: Level) => {
     return {

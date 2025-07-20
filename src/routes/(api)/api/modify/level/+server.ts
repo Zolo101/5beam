@@ -1,58 +1,70 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { BAD, DENIED, isAdmin, OK, NOT_FOUND, MY_BAD, newlineSplitter } from "$lib/misc";
 import { ModifyLevelSchema, type ModifyLevelType } from "$lib/parse";
-import { getLevelById, updateFetch } from "$lib/talk/get";
-import { levels } from "$lib/pocketbase";
-import type { Level, PrivateBaseUserV2 } from "$lib/types";
+import { getLevelById } from "$lib/talk/get";
+import type { PrivateBaseUserV2 } from "$lib/types";
 import {
     ChangeDescriptionWebhook,
     ChangeDifficultyWebhook,
     ChangeLevelWebhook,
     ChangeTitleWebhook
 } from "$lib/webhook";
-import { generateThumbnail, validateLevel } from "$lib/talk/create";
+import { generateThumbnail, isLevelValid } from "$lib/talk/create";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
+import type Pocketbase from "pocketbase";
 
-export async function _modifyLevel(id: string, payload: ModifyLevelType, user: PrivateBaseUserV2) {
+export async function _modifyLevel(
+    id: string,
+    payload: ModifyLevelType,
+    user: PrivateBaseUserV2,
+    pb: Pocketbase,
+    silent: boolean = false
+) {
     const level = await getLevelById(id);
     if (!level) return NOT_FOUND();
     if (!level.creator) return DENIED(); // A Guest made this
 
-    const allowed = user.id === level.creator.id || isAdmin(user);
+    const allowed = user.record.id === level.creator.id || isAdmin(user);
     if (allowed) {
         const payloadFormData = new FormData();
 
         // Build payload form data
         if (payload.title !== undefined && level.title !== payload.title) {
             payloadFormData.append("title", payload.title);
-            await ChangeTitleWebhook.send(payload.title, level);
+            if (!silent) await ChangeTitleWebhook.send(payload.title, level);
         }
         if (payload.description !== undefined && level.description !== payload.description) {
             payloadFormData.append("description", payload.description);
-            await ChangeDescriptionWebhook.send(payload.description, level);
+            if (!silent) await ChangeDescriptionWebhook.send(payload.description, level);
         }
         if (payload.difficulty !== undefined && level.difficulty !== payload.difficulty) {
             payloadFormData.append("difficulty", payload.difficulty.toString());
-            await ChangeDifficultyWebhook.send(payload.difficulty, level);
+            if (!silent) await ChangeDifficultyWebhook.send(payload.difficulty, level);
         }
         if (payload.modded !== undefined && level.modded !== payload.modded) {
             payloadFormData.append("modded", payload.modded);
         }
         if (payload.file !== undefined) {
             // TODO: Duplicate code (See misc.ts)
-            const trimmedLevel = newlineSplitter(payload.file.trim())[0];
-            if (!(await validateLevel(trimmedLevel))) throw new Error("Invalid level");
+            if (!isLevelValid(payload.file)) throw new Error("Invalid level");
 
-            payloadFormData.append("data", trimmedLevel);
+            payloadFormData.append("data", payload.file);
 
-            if (level.data !== trimmedLevel) {
-                const thumbnail = await generateThumbnail(trimmedLevel);
-                if (thumbnail) payloadFormData.append("thumbnail", await thumbnail.blob());
+            if (level.data !== payload.file) {
+                // Unfortunately sometimes the generateThumbnail can give a 500 in specific cases
+                // in those cases we will simply remove the thumbnail since it is outdated.
+                const thumbnail = await generateThumbnail(payload.file);
+
+                if (thumbnail.ok) {
+                    payloadFormData.append("thumbnail", await thumbnail.blob());
+                } else {
+                    payloadFormData.append("thumbnail", "");
+                }
             }
-            await ChangeLevelWebhook.send(undefined, level);
+            if (!silent) await ChangeLevelWebhook.send(undefined, level);
         }
 
-        return OK(await updateFetch<Level>(levels, id, payloadFormData));
+        return OK(await pb.collection("5beam_levels").update(id, payloadFormData));
     } else {
         return DENIED();
     }
@@ -67,15 +79,16 @@ export const POST: RequestHandler = async ({ url, request, locals }) => {
         const { id } = parseFromUrlSearchParams(urlSchema, url);
 
         // Reminder, this is obtained using pb_auth cookie
-        const { user } = locals;
+        const { pb, user } = locals;
         if (!user) return DENIED();
 
         try {
-            return _modifyLevel(id, payload, user);
+            return _modifyLevel(id, payload, user, pb);
         } catch {
             return MY_BAD();
         }
-    } catch {
+    } catch (e) {
+        console.error(e);
         return BAD();
     }
 };

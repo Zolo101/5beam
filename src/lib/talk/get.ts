@@ -1,7 +1,7 @@
-import { dailyies, levelpacks, levels, pb, usersV2, weeklies } from "$lib/pocketbase";
+// TODO: Remove client pocketbase imports -- Secure but we dont wanna use them
+import { dailyies, levelpacks, levels, clientPb, usersV2, weeklies } from "$lib/clientPocketbase";
 import type { BaseUserV2, Daily, Level, Levelpack, WeeklyChallenge } from "$lib/types";
-import { ClientResponseError, type RecordListOptions, type RecordService } from "pocketbase";
-// TODO: Create a class (so we dont need to repeat toPOJO everywhere)
+import { ClientResponseError, type RecordListOptions } from "pocketbase";
 
 export async function getDaily() {
     const daily = await dailyies.getList<Daily>(1, 1, {
@@ -29,7 +29,7 @@ export async function getLevels(
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = pb.filter(`modded = {:mod}`, { mod });
+    const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
@@ -52,7 +52,7 @@ export async function getRandomLevels(
     // TODO: Do this function without getting every level in the database.
     return await db.getList<Level | Levelpack>(0, amount, {
         expand: "creator",
-        filter: pb.filter(`unlisted = false && {:featured} {:mod}`, {
+        filter: clientPb.filter(`unlisted = false && {:featured} {:mod}`, {
             featured: featuredFilter,
             mod: modFilter
         }),
@@ -70,7 +70,7 @@ export async function getLevelpacks(
 ) {
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = pb.filter(`modded = {:mod}`, { mod });
+    const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
     return await levelpacks.getList<Levelpack>(page, amount, {
         expand: "creator",
@@ -99,7 +99,7 @@ export async function getLevelpackById(id: string) {
 
 export async function getRelatedLevels(level: Level) {
     return await levels.getList<Level>(1, 4, {
-        filter: pb.filter(`id != {:id} && modded = {:modded} && difficulty = {:difficulty}`, {
+        filter: clientPb.filter(`id != {:id} && modded = {:modded} && difficulty = {:difficulty}`, {
             id: level.id,
             modded: level.modded,
             difficulty: level.difficulty
@@ -115,10 +115,10 @@ export async function getTrendingLevels(
     mod: string,
     options?: RecordListOptions
 ) {
-    const modFilter = pb.filter(`modded = {:mod}`, { mod });
+    const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
     const range = 1000 * 60 * 60 * 24 * 14; // 2 weeks
     const date = new Date(Date.now() - range).toISOString().replace("T", " ").substring(0, 19);
-    const filter = pb.filter(modFilter + " && created >= {:date}", { date });
+    const filter = clientPb.filter(modFilter + " && created >= {:date}", { date });
 
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
@@ -150,7 +150,7 @@ export async function getSearch(
 ) {
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
-        filter: pb.filter(`title ~ {:text} && modded = {:mod}`, { text, mod })
+        filter: clientPb.filter(`title ~ {:text} && modded = {:mod}`, { text, mod })
     });
 }
 
@@ -179,12 +179,16 @@ export async function getUserLevels(
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
     const modFilter = mod ? `modded = "${mod}"` : "";
-    let filter = featuredFilter + modFilter;
-    if (filter.length > 0) filter = " && " + filter;
-
+    const combinedFilter = featuredFilter + modFilter;
+    let filter: string;
+    if (combinedFilter.length > 0) {
+        filter = clientPb.filter(`creator = {:id}{:combinedFilter}`, { id, combinedFilter });
+    } else {
+        filter = clientPb.filter(`creator = {:id}`, { id });
+    }
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
-        filter: pb.filter(`creator = {:id} {:filter}`, { id, filter }),
+        filter,
         sort,
         ...options
     });
@@ -202,23 +206,20 @@ export async function getUserLevelpacks(
     const sort = getSort(sortCode);
     const featuredFilter = featured ? "featured = true" : "";
     const modFilter = mod ? `modded = "${mod}"` : "";
-    let filter = featuredFilter + modFilter;
-    if (filter.length > 0) filter = " && " + filter;
+    const combinedFilter = featuredFilter + modFilter;
+    let filter: string;
+    if (combinedFilter.length > 0) {
+        filter = clientPb.filter(`creator = {:id}{:combinedFilter}`, { id, combinedFilter });
+    } else {
+        filter = clientPb.filter(`creator = {:id}`, { id });
+    }
 
     return await levelpacks.getList<Levelpack>(page, amount, {
         expand: "creator",
-        filter: pb.filter(`creator = {:id} {:filter}`, { id, filter }),
+        filter,
         sort,
         ...options
     });
-}
-
-export async function updateFetch<T>(
-    collection: RecordService<T>,
-    id: string,
-    body: Partial<T> | FormData
-) {
-    return await collection.update(id, body);
 }
 
 // Pocketbase gives results in a weird format,

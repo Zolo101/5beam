@@ -2,9 +2,9 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { BAD, MY_BAD, OK } from "$lib/misc";
 import { type PostLevelpackType } from "$lib/parse";
 import { PostLevelpackSchema } from "$lib/parse";
-import { generateThumbnail, validateLevelpack } from "$lib/talk/create";
+import { generateThumbnail, isLevelpackValid } from "$lib/talk/create";
 import type { Levelpack, PrivateBaseUserV2 } from "$lib/types";
-import { levelpacks } from "$lib/pocketbase";
+import { levelpacks } from "$lib/clientPocketbase";
 import { NewLevelpackWebhook } from "$lib/webhook";
 import type PocketBase from "pocketbase";
 
@@ -14,7 +14,7 @@ async function createLevelpack(
     pb: PocketBase
 ) {
     // if not valid and not modded, throw error
-    if (!(await validateLevelpack(levelpack.file)) && !levelpack.modded)
+    if (!(await isLevelpackValid(levelpack.file)) && !levelpack.modded)
         throw new Error("Invalid levelpack");
 
     const levelsFormData: FormData[] = [];
@@ -38,7 +38,7 @@ async function createLevelpack(
         const title = split[0] === "loadedLevels=" ? split[1] : split[0];
 
         const levelFormData = new FormData();
-        if (user) levelFormData.append("creator", user.id);
+        if (user) levelFormData.append("creator", user.record.id);
         levelFormData.append("title", title);
         levelFormData.append(
             "description",
@@ -56,10 +56,8 @@ async function createLevelpack(
 
         levelsFormData.push(levelFormData);
 
-        console.log("Completed level", i + 1, "out of", levelpack.file.length);
+        console.log(`Completed level ${i + 1} (${title}) out of ${levelpack.file.length}`);
     }
-
-    // TODO: for modify/levelpack, upsert looks good, its apparently a combo of update + insert
 
     for (const levelFormData of levelsFormData) {
         levelsBatch.collection("5beam_levels").create(levelFormData);
@@ -67,13 +65,16 @@ async function createLevelpack(
 
     const result = await levelsBatch.send();
 
-    const levelpackReference = await levelpacks.create<Levelpack>({
-        creator: user?.id,
-        title: levelpack.title,
-        description: levelpack.description,
-        levels: result.map((l) => l.body.id),
-        modded: levelpack.modded
-    });
+    const levelpackReference = await levelpacks.create<Levelpack>(
+        {
+            creator: user?.record.id,
+            title: levelpack.title,
+            description: levelpack.description,
+            levels: result.map((l) => l.body.id),
+            modded: levelpack.modded
+        },
+        { expand: "creator" }
+    ); // for the webhook
 
     await NewLevelpackWebhook.send(levelpackReference, result[0].body);
 

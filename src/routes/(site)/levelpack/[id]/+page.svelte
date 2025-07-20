@@ -13,6 +13,7 @@
     import BigButton from "$lib/components/BigButton.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Carousel from "$lib/components/Carousel.svelte";
+    import { postModifyLevelpackClient } from "$lib/client/ClientSideAPI";
 
     const { data }: { data: PageData } = $props();
 
@@ -35,26 +36,93 @@
         a.click();
     }
 
-    function saveLevelpack() {
-        console.log("saveLevelpack");
+    function deleteLevelpack() {
+        console.log("deleteLevelpack");
+    }
+
+    async function saveLevelpack() {
+        sending = true;
+
+        const payload = {
+            title: title,
+            description: description,
+            difficulty: await updatedLevelpackDifficulties,
+            modded: modded,
+            file: await updatedLevelpackData
+        };
+
+        // TODO: Maybe we should just coalesce this into "edit-level"
+        // @ts-ignore
+        window.umami?.track("edit-levelpack");
+
+        postModifyLevelpackClient(payload, id)
+            .then(() => {
+                editMode = false;
+
+                // To update the thumbnails
+                location.reload();
+            })
+            .catch((err) => {
+                console.error(err);
+
+                // @ts-ignore
+                window.umami?.track("edit-levelpack-failed");
+
+                alert(
+                    "Unfortunately your edit has failed. Please contact @zelo101 on discord with your level(s)."
+                );
+            });
+    }
+
+    function createDifficultyArray() {
+        let r = [];
+        for (let i = 0; i < 200; i++) {
+            if (levels[i]) {
+                r.push(levels[i].difficulty);
+            } else {
+                r.push(0);
+            }
+        }
+        return r;
     }
 
     let editMode = $state(false);
-    let isOwner = $derived(creator?.id === user?.id);
+    let sending = $derived(false);
+
+    $effect(() => {
+        if (!editMode) sending = false;
+    });
+
+    let isOwner = $derived(creator?.id === user?.record.id);
     let eventStore = $state<CustomEvent<{ acceptedFiles: File[] }>>();
+
+    let originalLevelpackValidated = $derived(validate(originalLevelpackFileData));
+    let orginialLevelpackDifficulties = $state(createDifficultyArray());
+
     let updatedFile = $derived(eventStore?.detail?.acceptedFiles[0]);
     let updatedLevelpackData = $derived.by(async () => {
         if (!updatedFile) return;
         return await updatedFile.text();
     });
-
-    let originalLevelpackValidated = $derived(validate(originalLevelpackFileData));
-    let orginialLevelpackDifficulties = $derived(levels.map((level) => level.difficulty));
     let updatedLevelpackValidated = $derived.by(async () => {
         let x = await updatedLevelpackData;
-        if (!x) return new Error("No file");
+        if (!x) return { valid: false };
         return validate(x);
     });
+
+    // let updatedLevelpackDifficulties = $derived.by(async () => {
+    //     const oldDifficulties = orginialLevelpackDifficulties;
+    //     const updated = await updatedLevelpackValidated;
+    //     if (!updated.valid) return oldDifficulties;
+    //     const newLength = updated.levels.length;
+
+    //     if (newLength <= oldDifficulties.length) {
+    //         return oldDifficulties.slice(0, newLength);
+    //     } else {
+    //         return [...oldDifficulties, ...Array(newLength - oldDifficulties.length).fill(0)];
+    //     }
+    // });
+    let updatedLevelpackDifficulties = $state(orginialLevelpackDifficulties);
 </script>
 
 <svelte:head>
@@ -116,7 +184,9 @@
 </div>
 
 <p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Description</p>
-<p class="p-5 text-2xl">{levelpack.description}</p>
+<p class="m-2 rounded-lg bg-neutral-800/90 p-3 text-2xl whitespace-pre-wrap backdrop-blur-sm">
+    {levelpack.description}
+</p>
 <p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Levels included</p>
 <div class="flex flex-wrap justify-center gap-4 pt-5">
     {#each levels as level}
@@ -152,12 +222,13 @@
                 {#await updatedLevelpackValidated}
                     <Button text="Loading..." bg="#a8ff00" disabled />
                 {:then data}
-                    {#if data.valid}
+                    {#if data.valid || !updatedFile}
                         <Button
-                            text="Update"
+                            text={sending ? "Saving..." : "Save"}
                             bg="#a8ff00"
                             onclick={saveLevelpack}
                             event="update-level"
+                            disabled={sending}
                         />
                     {:else}
                         <Button text="File not valid!" bg="#a8ff00" disabled />
@@ -201,24 +272,23 @@
                     </div>
                 {/if}
             </Dropzone>
-            {#if updatedFile}
-                <div class="grid max-h-[50vh] grid-cols-2 gap-3 overflow-y-auto">
-                    <p class="text-center">Original</p>
-                    <p class="text-center">Updated</p>
-                    <div class="items-start">
-                        <Validator
-                            result={originalLevelpackValidated}
-                            bind:difficulties={orginialLevelpackDifficulties}
-                        />
-                    </div>
+            <div class="grid max-h-[50vh] grid-cols-2 gap-3 overflow-y-auto">
+                <p class="text-center">Original</p>
+                <p class="text-center">Updated</p>
+                <div class="items-start">
+                    <Validator
+                        result={originalLevelpackValidated}
+                        bind:difficulties={orginialLevelpackDifficulties}
+                    />
+                </div>
+                {#if updatedFile}
                     {#await updatedLevelpackValidated}
                         <div class="m-auto text-sm"><p>Loading...</p></div>
-                    {:then data}
-                        <!-- TODO: Work on this -->
-                        <Validator result={data} />
+                    {:then result}
+                        <Validator {result} bind:difficulties={updatedLevelpackDifficulties} />
                     {/await}
-                </div>
-            {/if}
+                {/if}
+            </div>
         </div>
     </div>
 </Dialog>

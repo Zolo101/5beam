@@ -1,14 +1,12 @@
-import type { Level } from "$lib/types";
-import { dailyies, levels } from "$lib/pocketbase";
+import { dailyies, levels } from "$lib/clientPocketbase";
 import { functionsApiURL } from "$lib/misc";
 import validate from "$lib/client/FileValidator";
-import { updateFetch } from "./get";
 
-export async function validateLevel(level: string) {
+export function isLevelValid(level: string) {
     return validate(level).valid;
 }
 
-export async function validateLevelpack(levels: string[]) {
+export function isLevelpackValid(levels: string[]) {
     return levels.every((level) => validate(level).valid);
 }
 
@@ -22,15 +20,12 @@ export function generateThumbnail(level: string) {
     });
 }
 
+// TODO: Wont work because of client pocketbase being used...
 export async function featureLevel(levelId: string) {
-    return updateFetch<Level>(levels, levelId, { featured: true });
+    return levels.update(levelId, { featured: true });
 }
 
+// TODO: Wont work because of client pocketbase being used...
 export async function addDailyLevel(levelId: string) {
     return dailyies.create({ level: levelId, featured: false });
 }
-
-// TODO: I'll do this via functions
-// export async function createUser(obj: Crewa]) {
-//     return await prisma.user.create({ data: obj })
-// }

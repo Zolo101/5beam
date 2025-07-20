@@ -2,36 +2,43 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { BAD, MY_BAD, OK } from "$lib/misc";
 import { type PostLevelType } from "$lib/parse";
 import { PostLevelSchema } from "$lib/parse";
-import { generateThumbnail, validateLevel } from "$lib/talk/create";
-import { levels } from "$lib/pocketbase";
+import { generateThumbnail, isLevelValid } from "$lib/talk/create";
+import { levels } from "$lib/clientPocketbase";
 import type { Level, PrivateBaseUserV2 } from "$lib/types";
 import { NewLevelWebhook } from "$lib/webhook";
 
-async function createLevel(level: PostLevelType, user: PrivateBaseUserV2 | null) {
+export async function _createLevel(
+    level: PostLevelType,
+    user: PrivateBaseUserV2 | null,
+    silent: boolean = false
+) {
     // If it's not modded, validate again, and if so throw error
-    if (!level.modded && !(await validateLevel(level.file))) throw new Error("Invalid level");
+    if (!level.modded && !isLevelValid(level.file)) throw new Error("Invalid level");
 
     const thumbnail = await generateThumbnail(level.file);
-    const successful = thumbnail?.headers.get("Content-Type") === "image/png";
 
     const levelFormData = new FormData();
-    if (user) levelFormData.append("creator", user.id);
+    if (user) levelFormData.append("creator", user.record.id);
     levelFormData.append("title", level.title);
     levelFormData.append("description", level.description);
     levelFormData.append("data", level.file);
-    if (thumbnail && successful) levelFormData.append("thumbnail", await thumbnail.blob());
+    if (thumbnail && thumbnail.ok) levelFormData.append("thumbnail", await thumbnail.blob());
     levelFormData.append("modded", level.modded);
     if (level.difficulty) {
         levelFormData.append("difficulty", level.difficulty.toString());
     } else {
         levelFormData.append("difficulty", "0");
     }
+    levelFormData.append("unlisted", level.unlisted.toString());
 
-    const levelReference = await levels.create<Level>(levelFormData);
+    const levelReference = await levels.create<Level>(levelFormData, {
+        expand: "creator", // for the webhook
+        requestKey: null
+    });
 
-    // TODO: This wont send if you are in local and the thumbnail fails to generate!
-
-    await NewLevelWebhook.send(levelReference);
+    if (!silent) {
+        await NewLevelWebhook.send(levelReference);
+    }
     return levelReference;
 }
 
@@ -41,7 +48,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         const payload = PostLevelSchema.parse(json);
 
         try {
-            const level = await createLevel(payload, locals.user);
+            const level = await _createLevel(payload, locals.user);
 
             return OK(level);
         } catch (e) {

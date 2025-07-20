@@ -16,6 +16,8 @@
 
     if (defaultDifficulties) {
         difficulties = defaultDifficulties;
+    } else if (result && difficulties.length === 0) {
+        difficulties = new Array(200).fill(0);
     }
 </script>
 
