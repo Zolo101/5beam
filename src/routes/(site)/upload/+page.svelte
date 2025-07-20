@@ -11,7 +11,7 @@
     import type { PageData } from "./$types";
     import Button from "$lib/components/Button.svelte";
     // import dummyLevelData from "$lib/assets/level.txt?raw";
-    import dummyLevelData from "$lib/assets/levels.txt?raw";
+    // import dummyLevelData from "$lib/assets/levels.txt?raw";
 
     let { data }: { data: PageData } = $props();
     let user = data.user;
@@ -19,11 +19,11 @@
     const loggedIn = !!user;
     let uploading = $state(false);
     let eventStore = $state<CustomEvent<{ acceptedFiles: File[] }>>();
-
-    function createDummyFile() {
-        return new File([dummyLevelData], "levels.txt", { type: "text/plain" });
-    }
-    let file = $state(createDummyFile());
+    // function createDummyFile() {
+    //     return new File([dummyLevelData], "levels.txt", { type: "text/plain" });
+    // }
+    // let file = $state(createDummyFile());
+    let file = $derived(eventStore?.detail?.acceptedFiles[0]);
     let result = $derived.by(async () => {
         if (!file) return;
         return validateFile(file);
@@ -31,8 +31,8 @@
 
     let levelDifficulties = $state(new Array<number>(200).fill(0));
 
-    let title = $state("easy");
-    let description = $state("level");
+    let title = $state("");
+    let description = $state("");
     let modded = $state("");
 
     async function onSubmit(result: ValidateResult | undefined) {
@@ -48,7 +48,6 @@
             const text = isANSI ? await readBlobInANSI(file!) : await file!.text();
 
             const payload = {
-                access_token: data.access_token,
                 title: title,
                 description: description,
                 difficulty: levelDifficulties.slice(0, result.levels.length),
@@ -61,7 +60,7 @@
             const func = type ? postCreateLevelClient : postCreateLevelpackClient;
 
             // @ts-ignore
-            window.umami.track("upload-level");
+            window.umami?.track("upload-level");
 
             func(payload)
                 .then((res: Level | Levelpack) => {
@@ -71,7 +70,7 @@
                     console.error(err);
 
                     // @ts-ignore
-                    window.umami.track("upload-level-failed");
+                    window.umami?.track("upload-level-failed");
 
                     alert(
                         "Unfortunately your upload has failed. Please contact @zelo101 on discord with your level(s)."

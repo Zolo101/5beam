@@ -87,18 +87,21 @@ export type BaseUserV2 = {
 };
 
 export type PrivateBaseUserV2 = {
-    collectionId: string;
-    collectionName: string;
-    id: string;
-    email: string;
-    emailVisibility: boolean;
-    created: Date;
-    updated: Date;
-    username: string;
-    avatar: string;
-    roles: string;
-    stars: string[]; // soon(tm)
-    verified: boolean;
+    record: {
+        collectionId: string;
+        collectionName: string;
+        id: string;
+        email: string;
+        emailVisibility: boolean;
+        created: Date;
+        updated: Date;
+        username: string;
+        avatar: string;
+        roles: string;
+        stars: string[]; // soon(tm)
+        verified: boolean;
+    };
+    token: string;
 };
 
 export type DiscordMeta = {

@@ -2,10 +2,10 @@ import type { LayoutServerLoad } from "./$types";
 import { isAdmin, isLoggedIn } from "$lib/misc";
 
 export const load = (async ({ locals }) => {
-    const { record } = locals?.user ?? {};
+    const user = locals?.user ?? undefined;
 
-    const admin = isAdmin(record);
-    const loggedIn = isLoggedIn(record);
+    const admin = isAdmin(user);
+    const loggedIn = isLoggedIn(user);
 
-    return { user: record, admin, loggedIn };
+    return { user, admin, loggedIn };
 }) satisfies LayoutServerLoad;

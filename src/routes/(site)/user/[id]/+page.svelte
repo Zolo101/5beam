@@ -1,6 +1,5 @@
 <script lang="ts">
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
-    import { writable } from "svelte/store";
     import { getUserLevelPageClient } from "$lib/client/ClientSideAPI";
     import Pagination from "$lib/components/Pagination.svelte";
     import LevelpackComponent from "$lib/components/browse/LevelpackComponent.svelte";
@@ -13,7 +12,7 @@
     let { data }: Props = $props();
     let { levels, levelpacks } = $derived(data);
 
-    let user = data.creator;
+    let user = data.creator.record;
 
     let date = new Date(user.created);
     let month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -36,7 +35,7 @@
 
 <div class="flex flex-col items-center">
     <h2>Levels</h2>
-    {#if user.levels.length}
+    {#if levels.length}
         <Pagination
             bind:page={levelPage}
             bind:output={levels}
@@ -50,7 +49,7 @@
     {/if}
     <br />
     <h2>Levelpacks</h2>
-    {#if user.levelpacks.length}
+    {#if levelpacks.length}
         <Pagination
             bind:page={levelpackPage}
             bind:output={levelpacks}

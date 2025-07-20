@@ -145,7 +145,7 @@ export function newlineSplitter(file: string) {
 export const isLoggedIn = (user: PrivateBaseUserV2 | undefined) => !!user;
 
 /** For client-side use only */
-export const isAdmin = (user: PrivateBaseUserV2 | undefined) => user?.roles === "admin";
+export const isAdmin = (user: PrivateBaseUserV2 | undefined) => user?.record.roles === "admin";
 
 // Cant find
 export function NOT_FOUND() {
@@ -162,7 +162,9 @@ export const MY_BAD = (message?: string) => new Response(message, { status: 500 
 
 // Denied
 export const DENIED = () =>
-    new Response("Authentication Denied. Have you given me a valid access_token?", { status: 401 });
+    new Response("Authentication Denied. Make sure you have a valid 'pb_auth' cookie!", {
+        status: 401
+    });
 
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev";
 // export const apiURL = !dev ? "http://localhost:4173" : "https://5beam.zelo.dev"

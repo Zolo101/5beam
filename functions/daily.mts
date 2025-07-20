@@ -1,5 +1,6 @@
 import type { Config } from "@netlify/functions";
-import { dailyies, levels, pb } from "../src/lib/pocketbase";
+import Pocketbase from "pocketbase";
+import { levels } from "../src/lib/clientPocketbase";
 import type { Daily, Level } from "../src/lib/types";
 
 // netlify does not like $app/environment in misc.ts
@@ -105,9 +106,11 @@ const sendWebhook = async (level: Level) => {
 
 export default async () => {
     // Plan A: Get a level thats ready to be a "daily"
-    await pb
+    const pb = new Pocketbase("https://cdn.zelo.dev")
         .collection("_superusers")
         .authWithPassword(Netlify.env.get("ADMIN_EMAIL")!, Netlify.env.get("ADMIN_PASS")!);
+
+    const dailyies = pb.collection("5beam_daily");
 
     const dailyiesList = await dailyies.getFullList<Daily>({
         expand: "level,level.creator",

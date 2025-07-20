@@ -3,7 +3,7 @@ import { getUserById } from "$lib/talk/get";
 import { redirect } from "@sveltejs/kit";
 
 export const load = (async ({ locals }) => {
-    const dbUser = await getUserById(locals.user.id);
+    const dbUser = await getUserById(locals.user.record.id);
 
     const url = dbUser ? `/user/${dbUser.id}` : `/`;
     throw redirect(302, url);

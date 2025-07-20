@@ -1,5 +1,5 @@
 import { apiURL, URLParamSet } from "$lib/misc";
-import type { BaseUser } from "$lib/types";
+import type { BaseUserV2 } from "$lib/types";
 
 export async function postModifyLevelClient(payload: Record<string, unknown>, id: string) {
     const url = new URL(`${apiURL}/api/modify/level`);
@@ -103,7 +103,7 @@ export async function getSearchClient(text: string, amount?: number, mod?: strin
     return callAPI(url);
 }
 
-export async function getUserByIdClient(id: string): Promise<BaseUser> {
+export async function getUserByIdClient(id: string): Promise<BaseUserV2> {
     const url = new URL(`${apiURL}/api/user`);
     URLParamSet(url, "id", id);
 

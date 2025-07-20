@@ -2,6 +2,8 @@
 // remove it when they go back to main
 import z, { type ZodObject } from "zod/v4";
 import { newlineSplitter } from "$lib/misc";
+// import { isLevelValid, isLevelpackValid } from "./talk/create";
+// import validate from "./client/FileValidator";
 
 // schema primitives
 export const primitives = {
@@ -66,6 +68,24 @@ export const primitives = {
         .refine((file) => file.length <= 200, {
             message: "Levelpack must contain at most 200 levels"
         })
+    // levelFile: z
+    //     .string()
+    //     .max(1024 * 1024 * 5) // 5 MB Limit
+    //     .trim()
+    //     .transform((file) => validate(file))
+    //     .refine((file) => file.valid || file.modded, { message: "Level is invalid!" }),
+    // levelpackFile: z
+    //     .string()
+    //     .max(1024 * 1024 * 5) // 5 MB Limit
+    //     .trim()
+    //     .transform((file) => validate(file))
+    //     .refine((file) => file.valid || file.modded, { message: "Levelpack is invalid!" })
+    //     .refine((file) => file.levels.length > 1, {
+    //         message: "Levelpack must contain at least 2 levels"
+    //     })
+    //     .refine((file) => file.levels.length <= 200, {
+    //         message: "Levelpack must contain at most 200 levels"
+    //     })
 };
 
 export function createObjectSchema<T extends keyof typeof primitives>(...keys: T[]) {
@@ -92,7 +112,8 @@ export const PostLevelSchema = z.object({
     description: primitives.description,
     difficulty: primitives.levelDifficulty,
     modded: primitives.modded,
-    file: primitives.levelFile
+    file: primitives.levelFile,
+    unlisted: z.boolean().default(false)
 });
 export type PostLevelType = z.infer<typeof PostLevelSchema>;
 
@@ -109,12 +130,6 @@ export type PostLevelpackType = z.infer<typeof PostLevelpackSchema>;
 export const ModifyLevelSchema = PostLevelSchema.partial();
 export type ModifyLevelType = z.infer<typeof ModifyLevelSchema>;
 
-export const ModifyLevelpackSchema = z
-    .object({
-        title: primitives.title,
-        description: primitives.description,
-        modded: primitives.modded,
-        levels: z.array(ModifyLevelSchema)
-    })
-    .partial();
+/** @todo `difficulty` is actually required! */
+export const ModifyLevelpackSchema = PostLevelpackSchema.partial();
 export type ModifyLevelpackType = z.infer<typeof ModifyLevelpackSchema>;

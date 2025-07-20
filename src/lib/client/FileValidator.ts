@@ -67,7 +67,8 @@ function noErrors(result: ValidateResult) {
     );
 }
 
-function validate(levelData: string): ValidateResult {
+/** Validates and converts a level or levelpack into useable JSON. */
+export default function validate(levelData: string): ValidateResult {
     const result: ValidateResult = {
         levels: [],
         globalLogs: [],
@@ -378,5 +379,3 @@ function processDialogue(logs: ValidateLog[], dialogue: string[], id: number) {
 
     return dialogueArr;
 }
-
-export default validate;
