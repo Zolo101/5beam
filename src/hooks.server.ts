@@ -46,9 +46,10 @@ export const handle = (async ({ event, resolve }) => {
     const response = await resolve(event);
 
     if (protectedDomains.includes(origin)) {
+        response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.headers.set("Access-Control-Allow-Origin", origin);
+
         if (protectedRoutes.includes(event.url.pathname)) {
-            response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            response.headers.set("Access-Control-Allow-Origin", origin);
             response.headers.set("Access-Control-Allow-Headers", "Authorization");
             response.headers.set("Access-Control-Allow-Credentials", "true");
         }
