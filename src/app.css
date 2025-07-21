@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap")
-layer(base);
-
 @import "tailwindcss";
 
 /*
@@ -23,6 +20,7 @@ layer(base);
 
 :root {
     color-scheme: dark;
+    background-color: #000000;
 }
 
 html {
@@ -47,26 +45,11 @@ h2 {
     @apply mx-10 p-2 text-4xl font-bold text-neutral-100;
 }
 
-nav {
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.2),
-        rgba(233, 233, 233, 0.2) 90%,
-        rgba(255, 255, 255, 0)
-    );
-    padding: 5px;
-    @apply flex items-center justify-center p-1.5 text-black backdrop-blur-[4px];
-}
-
-footer {
-    @apply mt-auto flex justify-evenly bg-neutral-100/10 p-5 text-neutral-50;
-}
-
-button {
+.button {
     @apply rounded-lg bg-linear-to-b px-7 shadow-md;
     background: linear-gradient(to bottom, transparent, #00000044);
 }
 
-/* TODO: Is this a good idea? */
 svg {
     @apply inline;
 }
@@ -79,14 +62,43 @@ svg {
     @apply flex h-full flex-col;
 }
 
+.featured {
+    /* Animated yellow repeated gradient text color */
+    background: repeating-linear-gradient(
+        45deg,
+        #feb900 0%,
+        #ffed7a 20%,
+        #feb900 40%,
+        #ffed7a 60%,
+        #feb900 80%,
+        #ffed7a 100%
+    );
+    background-size: 200% auto;
+    /* animation: featured-gradient-move 2s linear infinite; */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes featured-gradient-move {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
 /* TODO: Eventually we want to get rid of all below */
 /* Navbar */
 
-.list a {
-    @apply rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors;
+.list a,
+.list button {
+    @apply cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors;
 }
 
-.list a:hover {
+.list a:hover,
+.list button:hover {
     @apply bg-neutral-900;
 }
 
@@ -106,12 +118,6 @@ svg {
 .moddedLevelpack {
     /* TODO: Too much? */
     @apply bg-purple-900 text-purple-400 outline-purple-400/40;
-}
-
-/* Pagination */
-
-.pagination {
-    @apply m-auto flex flex-wrap justify-center gap-4;
 }
 
 /* API */
@@ -148,56 +154,18 @@ ul {
     color: palevioletred;
 }
 
-/* Table */
-
-table {
-    @apply rounded border-hidden text-neutral-200 outline outline-4 outline-black;
-    background: repeating-linear-gradient(
-        -45deg,
-        #5a5a5a,
-        #5a5a5a 10px,
-        #464646 10px,
-        #464646 20px
-    );
-    /*border: 1px solid black;*/
-}
-
-caption {
-    @apply bg-black p-1 text-sm;
-    /*background-color: black;*/
-    /*padding: 5px;*/
-}
-
-th,
-td {
-    @apply border-2 border-neutral-800 p-2.5;
-}
-
-th {
-    @apply bg-neutral-700;
-    /*background-color: #5a5a5a;*/
-}
-
-td {
-    background-color: #5a5a5a;
-}
-
-.dynamicWidth {
-    width: 100%;
-}
-
 /* Validator */
 
 .code {
-    @apply rounded bg-white/20 px-2 font-black shadow outline outline-2 outline-white/50;
+    @apply rounded bg-white/20 px-2 font-bold shadow outline-3 outline-white/50;
 }
 
 .warningLog {
-    @apply shadow-amber-900 outline outline-4 outline-amber-500;
+    @apply shadow-amber-900 outline-4 outline-amber-500;
 }
 
 .errorLog {
-    @apply shadow-red-900 outline outline-4 outline-red-500;
+    @apply shadow-red-900 outline-4 outline-red-500;
 }
 
 .level-props {
@@ -212,7 +180,7 @@ td {
 /* Log */
 
 .log {
-    @apply my-2 rounded p-2 font-bold shadow drop-shadow;
+    @apply my-2 rounded p-2 font-bold shadow drop-shadow *:gap-2;
 }
 
 .icon {

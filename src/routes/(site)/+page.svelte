@@ -1,36 +1,35 @@
 <script lang="ts">
-    import LevelComponent from "../../components/browse/LevelComponent.svelte";
-    import LevelpackComponent from "../../components/browse/LevelpackComponent.svelte";
-    import Button from "../../components/Button.svelte";
-    import Pagination from "../../components/Pagination.svelte";
-    import { getLevelPageClient } from "../../client/ClientSideAPI";
-    import { writable } from "svelte/store";
-    import homepageVideo from "$lib/assets/5beam_homepage_video.webm";
-    import type { PageData } from "../../../.svelte-kit/types/src/routes";
-    import UserComponent from "../../components/UserComponent.svelte";
-    import { getLevelThumbnailURL, getPlaysString } from "../../misc";
-    import Icon from "../../components/Icon.svelte";
-    import Difficulty from "../../components/Difficulty.svelte";
-    import BigButton from "../../components/BigButton.svelte";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import LevelpackComponent from "$lib/components/browse/LevelpackComponent.svelte";
+    import Button from "$lib/components/Button.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import { getLevelPageClient, getTrendingLevelPageClient } from "$lib/client/ClientSideAPI";
+    import type { PageData } from "./$types";
+    import UserComponent from "$lib/components/UserComponent.svelte";
+    import { getLevelThumbnailURL, getPlaysString } from "$lib/misc";
+    import Icon from "$lib/components/Icon.svelte";
+    import Difficulty from "$lib/components/Difficulty.svelte";
+    import BigButton from "$lib/components/BigButton.svelte";
+    import Carousel from "$lib/components/Carousel.svelte";
 
-    export let data: PageData;
-    let user = data.user;
+    let { data }: { data: PageData } = $props();
 
-    $: recentLevelPage = 1;
-    $: featuredLevelPage = 1;
-    $: mostPopularLevelPage = 1;
-    $: levelpackPage = 1;
-    const recentLevels = writable(data.recentLevels);
-    const featuredLevels = writable(data.featuredLevels);
-    const mostPopularLevels = writable(data.mostPopularLevels);
-    const levelpacks = writable(data.levelpacks);
-    const { level: dailyLevel } = data.daily[0].expand;
-    const dailyLevelCreator = dailyLevel.expand.creator;
-    // console.log(dailyLevel, dailyLevelCreator);
+    let recentLevelPage = $state(1);
+
+    let featuredLevelPage = $state(1);
+
+    let trendingLevelPage = $state(1);
+
+    let levelpackPage = $state(1);
+
+    let { daily, recentLevels, featuredLevels, trendingLevels, levelpacks } = $derived(data);
+
+    const dailyLevel = $derived(daily[0].level);
+    const dailyLevelThumbnail = $derived(
+        getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false)
+    );
 
     const description = "Play, share and upload BFDIA 5b levels!";
-
-    const b = getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false);
 </script>
 
 <svelte:head>
@@ -39,11 +38,11 @@
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
 </svelte:head>
 
-<section class="mx-5 flex pt-2 max-md:flex-col">
-    <section class="flex w-1/2 flex-col justify-center max-md:w-full max-md:pb-2">
+<section class="mx-5 flex pt-2 max-lg:flex-col">
+    <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
         <p class="p-5 text-center text-3xl font-bold">{description}</p>
         <div
-            class="mx-10 flex flex-col justify-center gap-4 text-4xl font-bold max-lg:text-2xl max-sm:items-center"
+            class="mx-10 flex flex-col justify-center gap-4 text-3xl font-bold max-sm:items-center"
         >
             <BigButton
                 text="Play BFDIA 5b!"
@@ -51,57 +50,32 @@
                 href="https://coppersalts.github.io/HTML5b/"
                 newWindow
             />
-            <div class="flex justify-between gap-4 text-4xl *:grow max-xl:flex-col max-xl:text-2xl">
-                {#if data.loggedIn}
-                    <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
-                {/if}
-                <BigButton
-                    text="Join the 5b discord!"
-                    bg="#5865f2"
-                    href="https://discord.gg/qtePFSH"
-                    event="discord-join"
-                    newWindow
-                />
+            <div class="flex justify-between gap-4 text-3xl *:grow">
+                <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
             </div>
         </div>
     </section>
-    <aside class="perspective-near transform-3d *:-translate-x-5 *:-rotate-y-2">
-        <video
-            width="960"
-            height="540"
-            class="rounded-sm shadow-2xl shadow-white/20 outline outline-2 outline-white/5"
-            src={homepageVideo}
-            autoplay
-            muted
-            loop
-        />
-        <section class="text-2xl">
-            <a class="hover:underline" href="/level/defmxfn312m41c3">Autobook 2</a><span
-                class="pl-1">by</span
-            ><UserComponent prefix="" user={{ id: "6cmdcntll4sgnzz", username: "coppersalts" }} />
-        </section>
+    <aside>
+        <Carousel levels={featuredLevels} autoPlay details />
     </aside>
 </section>
 
 <div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
-    <p class=" w-min rounded bg-gradient-to-b from-orange-400 to-yellow-500 p-2 text-black/90">
-        NEW!
-    </p>
-    <p class="">Daily Level</p>
+    <p class="p-2">Daily Level</p>
 </div>
 <section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
     <section
-        class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-500/70 to-green-700/50 p-3 outline-2 outline-green-400/90"
+        class="flex grow gap-2 rounded-sm bg-gradient-to-b from-green-700/50 to-green-900/50 p-3 outline-2 outline-green-400/90 backdrop-blur-md"
     >
         <a class="w-full" href="/level/{dailyLevel.id}">
-            <img class="rounded-sm object-cover" src={b} alt="Level Thumbnail" />
+            <img class="rounded-sm object-cover" src={dailyLevelThumbnail} alt="Level Thumbnail" />
         </a>
         <div class="flex w-full flex-col gap-2 p-2">
             <div>
                 <a href="/level/{dailyLevel.id}">
                     <span class="text-center text-4xl font-bold">{dailyLevel.title}</span>
                 </a>
-                <UserComponent prefix="by" user={dailyLevelCreator} />
+                <UserComponent prefix="by" creator={dailyLevel.creator} />
             </div>
             <p class="grow">{dailyLevel.description}</p>
             <div class="flex w-full justify-around gap-2 text-3xl">
@@ -120,34 +94,44 @@
                     href="https://coppersalts.github.io/HTML5b?level={dailyLevel.id}"
                     event="play-level-daily"
                     newWindow
-                    disabled={dailyLevel.modded}
+                    disabled={!!dailyLevel.modded}
                 />
             </div>
         </div>
     </section>
     <section
-        class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90"
+        class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90 backdrop-blur-md"
     >
         <p>Weekly challenges coming soon!</p>
     </section>
 </section>
 
+<!-- <section
+    class="mx-auto mb-4 flex max-w-[900px] items-center justify-evenly rounded-sm bg-indigo-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
+>
+    <p
+        class="text-opacity-50 absolute top-[85px] -z-10 text-7xl font-extrabold text-blue-500 italic"
+    >
+        ?
+    </p>
+    <span class="text-3xl font-bold text-indigo-300">Did you know about 5b mods?</span>
+    <a href="/mods" class="text-center text-xl text-indigo-100 hover:cursor-pointer hover:underline"
+        >Click here to browse and play them!</a
+    >
+</section> -->
+
 <h2>Featured Levels</h2>
 <Pagination
     bind:page={featuredLevelPage}
-    bind:output={$featuredLevels}
-    callback={(page, sort, featured) => getLevelPageClient(page, 0, 0, 1)}
+    bind:output={featuredLevels}
+    callback={({ page, type, sort, amount }) => getLevelPageClient(page, type, sort, true, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $featuredLevels as featuredLevel}
-            <LevelComponent level={featuredLevel} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelComponent}
+/>
 
 <section
-    class="mx-auto mb-2 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
+    class="mx-auto mb-4 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
 >
     <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
     <span class="text-3xl font-bold text-yellow-300">Bored?</span>
@@ -158,44 +142,34 @@
     >
 </section>
 
+<h2>Trending Levels</h2>
+<Pagination
+    bind:page={trendingLevelPage}
+    bind:output={trendingLevels}
+    callback={({ page, amount }) => getTrendingLevelPageClient(page, amount)}
+    removeOptions
+    columns={2}
+    PageComponent={LevelComponent}
+/>
+
 <h2>Recent Levels</h2>
 <Pagination
     bind:page={recentLevelPage}
-    bind:output={$recentLevels}
-    callback={(page, sort, featured) => getLevelPageClient(page, 0, sort, featured)}
+    bind:output={recentLevels}
+    callback={({ page, sort, amount, featured }) =>
+        getLevelPageClient(page, 0, sort, featured, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $recentLevels as level}
-            <LevelComponent {level} />
-        {/each}
-    </section>
-</Pagination>
-
-<h2>Most Popular Levels</h2>
-<Pagination
-    bind:page={mostPopularLevelPage}
-    bind:output={$mostPopularLevels}
-    callback={(page, sort, featured) => getLevelPageClient(page, 0, 2, featured)}
-    removeOptions
->
-    <section class="pagination">
-        {#each $mostPopularLevels as mostPopularLevel}
-            <LevelComponent level={mostPopularLevel} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelComponent}
+/>
 
 <h2>Recent Levelpacks</h2>
 <Pagination
     bind:page={levelpackPage}
-    bind:output={$levelpacks}
-    callback={(page, sort, featured) => getLevelPageClient(page, 1, sort, featured)}
+    bind:output={levelpacks}
+    callback={({ page, sort, amount, featured }) =>
+        getLevelPageClient(page, 1, sort, featured, amount)}
     removeOptions
->
-    <section class="pagination">
-        {#each $levelpacks as levelpack}
-            <LevelpackComponent {levelpack} />
-        {/each}
-    </section>
-</Pagination>
+    columns={2}
+    PageComponent={LevelpackComponent}
+/>

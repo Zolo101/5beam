@@ -1,16 +1,18 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getRandomLevels } from "../../../../../talk/get";
-import { BAD, OK } from "../../../../../misc";
+import { getRandomLevels } from "$lib/talk/get";
+import { MY_BAD, BAD, OK } from "$lib/server/misc";
+import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
-export const GET: RequestHandler = async ({ request }) => {
-    const url = new URL(request.url);
-    const amount = Number(url.searchParams.get("amount") ?? 8);
-    const type = Number(url.searchParams.get("type") ?? 0);
-    const featured = !!Number(url.searchParams.get("featured")) ?? false;
-    const mod = url.searchParams.get("mod") ?? "";
-
-    if (type < 0 || type >= 2) return BAD("Invalid type");
-    if (amount < 0 || amount > 16) return BAD("Invalid amount");
-
-    return OK(await getRandomLevels(amount, type, featured, mod));
+const schema = createObjectSchema("amount", "type", "featured", "mod");
+export const GET: RequestHandler = async ({ url }) => {
+    try {
+        const { amount, type, featured, mod } = parseFromUrlSearchParams(schema, url);
+        try {
+            return OK(await getRandomLevels(amount, type, featured, mod));
+        } catch {
+            return MY_BAD();
+        }
+    } catch {
+        return BAD();
+    }
 };

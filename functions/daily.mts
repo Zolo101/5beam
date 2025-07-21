@@ -1,6 +1,6 @@
 import type { Config } from "@netlify/functions";
-import { dailyies, levels, pb } from "../src/lib/pocketbase";
 import type { Daily, Level } from "../src/lib/types";
+import { adminPb } from "../src/lib/adminPocketbase";
 
 // netlify does not like $app/environment in misc.ts
 // import { getLevelThumbnailURL, sample } from "../src/misc";
@@ -9,7 +9,7 @@ import type { Daily, Level } from "../src/lib/types";
 // import { getLevelById } from "../src/talk/get";
 
 export async function getLevelById(id: string) {
-    return toPOJO(await levels.getOne<Level>(id, { expand: "creator" }));
+    return await adminPb.collection("5beam_levels").getOne<Level>(id, { expand: "creator" });
 }
 
 function cleanObject(obj: Record<string, any>) {
@@ -41,11 +41,16 @@ function cleanObject(obj: Record<string, any>) {
     return obj;
 }
 
-export function toPOJO<T extends Record<string, any> | Record<string, any>[]>(obj: T): T {
-    const result = Array.isArray(obj)
-        ? structuredClone(obj.map(cleanObject))
-        : structuredClone(cleanObject(obj));
-    return result as T;
+export function clean<T extends Record<string, unknown> | Record<string, unknown>[]>(
+    obj: T
+): T | null {
+    if (obj === undefined || obj === null) return null;
+    // console.log(obj);
+    if (obj.items) {
+        return obj.items.map(cleanObject) as T;
+    } else {
+        return cleanObject(obj) as T;
+    }
 }
 
 export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
@@ -100,9 +105,8 @@ const sendWebhook = async (level: Level) => {
 
 export default async () => {
     // Plan A: Get a level thats ready to be a "daily"
-    await pb
-        .collection("_superusers")
-        .authWithPassword(Netlify.env.get("ADMIN_EMAIL")!, Netlify.env.get("ADMIN_PASS")!);
+
+    const dailyies = adminPb.collection("5beam_daily");
 
     const dailyiesList = await dailyies.getFullList<Daily>({
         expand: "level,level.creator",
@@ -114,10 +118,9 @@ export default async () => {
         featured: true
     });
 
-    // Add a random level (last resort!!)
-    // BUT THIS SHOULD ONLY HAPPEN AS A LAST RESORT OBVS...
+    // Plan B: Add a random level (lazy...)
     if (dailyiesList.length <= 1) {
-        const randomLevels = await levels.getList<Level>(0, 1, {
+        const randomLevels = await adminPb.collection("5beam_levels").getList<Level>(0, 1, {
             expand: "creator",
             filter: "plays > 100 && featured = false && difficulty > 0 && difficulty < 7",
             sort: "@random"

@@ -1,14 +1,17 @@
 <script lang="ts">
-    import { getRandomLevelPageClient } from "../../../client/ClientSideAPI.js";
-    import LevelComponent from "../../../components/browse/LevelComponent.svelte";
-    import Pagination from "../../../components/Pagination.svelte";
-    import { writable } from "svelte/store";
-    import type { PageData } from "../../../../.svelte-kit/types/src/routes";
+    import { getRandomLevelPageClient } from "$lib/client/ClientSideAPI.js";
+    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import Pagination from "$lib/components/Pagination.svelte";
+    import type { PageData } from "./$types";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
 
-    $: randomLevelPage = 1;
-    const randomLevels = writable(data.randomLevels);
+    let { data }: Props = $props();
+
+    let randomLevelPage = $state(1);
+    let randomLevels = $state(data.randomLevels);
 </script>
 
 <svelte:head>
@@ -21,14 +24,10 @@
 <p class="p-5 text-center text-3xl">Refresh for new random levels!</p>
 <Pagination
     bind:page={randomLevelPage}
-    bind:output={$randomLevels}
-    callback={(page, sort, featured) => getRandomLevelPageClient(16, 0, 0)}
+    bind:output={randomLevels}
+    callback={() => getRandomLevelPageClient(16, 0, false)}
     removeOptions
     removeMovement
->
-    <div class="m-auto flex flex-wrap justify-center gap-4">
-        {#each $randomLevels as randomLevel}
-            <LevelComponent level={randomLevel} />
-        {/each}
-    </div>
-</Pagination>
+    columns={3}
+    PageComponent={LevelComponent}
+/>

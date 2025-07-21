@@ -1,17 +1,12 @@
 <script lang="ts">
-    import APIEndpoint from "../../../components/api/APIEndpoint.svelte";
-    import Table from "../../../components/layout/Table.svelte";
-    import APIReference from "../../../components/api/APIReference.svelte";
-    // const ratelimits = [
-    //     ["GET", 1000, 10],
-    //     ["POST", 5, 1],
-    // ]
-
-    enum ParamType {
-        STRING = "STRING",
-        INTEGER = "INTEGER",
-        BOOLEAN = "BOOLEAN"
-    }
+    import APIEndpoint from "$lib/components/api/APIEndpoint.svelte";
+    import Table from "$lib/components/layout/Table.svelte";
+    import APIReference from "$lib/components/api/APIReference.svelte";
+    const ParamType = {
+        STRING: "STRING",
+        INTEGER: "INTEGER",
+        BOOLEAN: "BOOLEAN"
+    };
 </script>
 
 <svelte:head>
@@ -46,27 +41,36 @@
         type="STRUCT"
         code={`
 {
-  "created": "2023-08-02 20:00:29.848Z",
+  "created": "2023-11-23 18:31:45.013Z",
   "creator": {
-    "created": "2023-08-02 19:58:58.849Z",
-    "discordId": "1032069168419319849",
-    "id": "bo4wdr6syac901u",
+    "created": "2022-07-08 01:10:53.329Z",
+    "discordId": "189004032600309760",
+    "id": "m44nvxs3tjoqor0",
+    "levelpacks": [],
     "levels": [
-      "h2o60d2dqklmwdz"
+      "1fck6fch07q3m0i",
+      "lhdwlewjfdvzlhn",
+      "kj6wocd60vau9tr",
+      "40wv5qcjy4atsfy",
+      "bmvssr912h6w4if",
+      "wg3deog6vh02lm6",
+      "2v67vvttg13tdkz"
     ],
     "stars": [],
-    "updated": "2023-08-02 20:00:29.916Z",
-    "username": "orangemario2009"
+    "updated": "2025-05-31 00:14:11.512Z",
+    "username": "zelo.dev"
   },
-  "data": "(levels.txt)",
-  "description": "\\"I want revenge!\\"",
-  "difficulty": 0,
-  "featured": false,
-  "id": "h2o60d2dqklmwdz",
-  "title": "Ice Cube's Revenge!",
-  "updated": "2023-08-02 20:00:29.848Z",
-  "plays": 0,
-  "unlisted": false
+  "data": "no chill\r\n32,18,04,02,L\r\n_qqqqqqqqqq_qqqqqqqqqqqqqqqqqqq_\r\nqffffffffffqf=zzzzzzzzzz=@@=zz=q\r\nqf........<qfC.................q\r\nqf........yqfC......m..........q\r\nqf........yqfC.......Q....p....q\r\nq.........yqfC...........|xqq..q\r\n..........yqfC...........qqAA..q\r\n..........yqfC..¥........qq....q\r\n.p....B...yqfC..=====....qq....q\r\nEE...DqC..yxq_.£.........qq....q\r\nGI....A...yq........=....Eq....q\r\nF.........AA........n....Fq...Bq\r\nF..................¡....hFq...qq\r\nF.......................£qq.....\r\nF.......................|qq.....\r\nI.......>..Q............|qq.....\r\n¹¹¹¹¹¹¹¹¹¹¹;............|qq=\`..4\r\n¸¸¸¸¸¸¸¸¸¸¸=............|xqqqqqq\r\n02,01.00,09.00,10\r\n45,06.50,10.00,05\r\n37,19.50,12.00,06\r\n41,21.00,03.00,06\r\n00\r\n000000",
+  "description": "one must imagine ice cube happy",
+  "difficulty": 6,
+  "featured": true,
+  "id": "bmvssr912h6w4if",
+  "modded": "",
+  "plays": 1713,
+  "thumbnail": "blob_raB0sFKfDn.png",
+  "title": "no chill",
+  "unlisted": false,
+  "updated": "2025-07-15 06:54:10.540Z"
 }
             `}
     />
@@ -126,41 +130,18 @@
         type="STRUCT"
         code={`
 {
-  "created": "2023-08-02 19:58:58.929Z",
-  "discordId": "1128443643221508187",
-  "id": "buve7iifzkz8kzz",
-  "levels": [
-    "oayu8nm22wg3qyj",
-    "986ycm3dw75g00t"
-  ],
+  "avatar": "https://cdn.discordapp.com/avatars/189004032600309760/7112b5c2b8c31cad5fc6988b80a85eb9.png",
+  "created": "2025-07-14 03:46:47.025Z",
+  "id": "3i99jv0tw8t7awf",
   "stars": [],
-  "updated": "2023-08-02 20:00:30.089Z",
-  "username": "ue"
+  "username": "zelo.dev"
 }
             `}
-    >
-        <p>
-            There is a parameter in most endpoints that let you expand the levels property to
-            actually include the levels.
-        </p>
-    </APIEndpoint>
+    />
 
     <APIEndpoint endpoint={["api", "level"]} params={[["id", "Level ID", ParamType.INTEGER]]}>
-        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
         <p>Returns a <APIReference type={"STRUCT"} reference={"Level"} />.</p>
     </APIEndpoint>
-
-    <!--    <APIEndpoint-->
-    <!--            endpoint={["api", "level", "vote"]}-->
-    <!--            params={[-->
-    <!--                ["id", "Level ID", ParamType.INTEGER],-->
-    <!--                ["difficulty", "1 - 7 (easiest to hardest)", ParamType.INTEGER],-->
-    <!--            ]}-->
-    <!--            wip-->
-    <!--            token_required-->
-    <!--    >-->
-    <!--        <p>Lets a user give a difficulty for a level. This will be used to calculate the final difficulty of the level.</p>-->
-    <!--    </APIEndpoint>-->
 
     <!--    <APIEndpoint-->
     <!--            endpoint={["api", "level", "star"]}-->
@@ -206,15 +187,56 @@
     <!--        <p>Stars a levelpack.</p>-->
     <!--    </APIEndpoint>-->
 
+    <APIEndpoint endpoint={["api", "user"]} params={[["id", "User ID", ParamType.STRING]]}>
+        <p>Returns a <APIReference type={"STRUCT"} reference={"User"} />.</p>
+    </APIEndpoint>
+
     <APIEndpoint
-        endpoint={["api", "user"]}
+        endpoint={["api", "user", "page"]}
         params={[
-            ["id", "User ID", ParamType.STRING],
-            ["discordId", "User's Discord ID", ParamType.STRING]
+            ["id", "User ID", ParamType.INTEGER],
+            ["page", "Page number", ParamType.INTEGER],
+            ["type", "Type of", ParamType.INTEGER, 0],
+            ["sort", "Sort by", ParamType.INTEGER, 0],
+            [
+                "mod",
+                "Only show levels / levelpacks that are for a specific 5b mod",
+                ParamType.STRING
+            ]
         ]}
     >
-        <p>Returns a <APIReference type={"STRUCT"} reference={"User"} />.</p>
-        <p>You can use either "id" or "discordId", but if you use both, only "id" will be used.</p>
+        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
+        <p>
+            Returns a list of <APIReference type={"STRUCT"} reference={"Level"} /> created by the user.
+        </p>
+        <p>Type codes:</p>
+        <Table
+            title="Type Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Levels"],
+                ["1", "Levelpacks"]
+            ]}
+        />
+        <p>Sort codes:</p>
+        <Table
+            title="Filter Codes"
+            heads={["Code", "Meaning"]}
+            content={[
+                ["0", "Age (newest)"],
+                ["1", "Age (oldest)"],
+                ["2", "Plays (descending)"]
+            ]}
+        />
+    </APIEndpoint>
+
+    <APIEndpoint endpoint={["api", "profile"]}>
+        <p>Returns your <APIReference type={"STRUCT"} reference={"User"} />.</p>
+        <br />
+        <p>
+            To authenticate, include your <APIReference type={"TOKEN"} reference={"5beam_auth"} />
+            in the "Authorization" header of your request. Example: "Authorization: Bearer (TOKEN HERE)".
+        </p>
     </APIEndpoint>
 
     <APIEndpoint
@@ -260,11 +282,11 @@
         </p>
     </APIEndpoint>
 
-    <APIEndpoint endpoint={["api", "weekly"]} type="GET">
+    <!-- <APIEndpoint endpoint={["api", "weekly"]} type="GET">
         <p>
             Returns the weekly <APIReference type={"STRUCT"} reference={"Levelpack"} /> challenge.
         </p>
-    </APIEndpoint>
+    </APIEndpoint> -->
 
     <APIEndpoint
         endpoint={["api", "search"]}
@@ -281,56 +303,17 @@
         </p>
     </APIEndpoint>
 
-    <APIEndpoint
-        endpoint={["api", "user", "page"]}
-        params={[
-            ["id", "User ID", ParamType.INTEGER],
-            ["page", "Page number", ParamType.INTEGER],
-            ["type", "Type of", ParamType.INTEGER, 0],
-            ["sort", "Sort by", ParamType.INTEGER, 0],
-            [
-                "mod",
-                "Only show levels / levelpacks that are for a specific 5b mod",
-                ParamType.STRING
-            ]
-        ]}
-    >
-        <!--["data", "Include the level data (the actual level)", ParamType.BOOLEAN, false],-->
+    <APIEndpoint endpoint={["api", "create", "level"]} type="POST">
         <p>
-            Returns a list of <APIReference type={"STRUCT"} reference={"Level"} /> created by the user.
-        </p>
-        <p>Type codes:</p>
-        <Table
-            title="Type Codes"
-            heads={["Code", "Meaning"]}
-            content={[
-                ["0", "Levels"],
-                ["1", "Levelpacks"]
-            ]}
-        />
-        <p>Sort codes:</p>
-        <Table
-            title="Filter Codes"
-            heads={["Code", "Meaning"]}
-            content={[
-                ["0", "Age (newest)"],
-                ["1", "Age (oldest)"],
-                ["2", "Plays (descending)"]
-            ]}
-        />
-    </APIEndpoint>
-
-    <APIEndpoint endpoint={["api", "create", "level"]} type="POST" game_only token_required>
-        <p>
-            Create a <APIReference type={"STRUCT"} reference={"Level"} />. Make sure access_token is
-            valid before posting! You will need to give 5beam the following using a FormData object:
+            Create a <APIReference type={"STRUCT"} reference={"Level"} />. You will need to give
+            5beam the following using a FormData object:
         </p>
         <Table
             heads={["Property", "Meaning", "Type"]}
             content={[
-                ["access_token", "User's discord access token.", ParamType.STRING],
                 ["title", "Level title", ParamType.STRING],
                 ["description", "Level description", ParamType.STRING],
+                ["difficulty", "Level difficulty (0 - 7)", ParamType.INTEGER],
                 ["data", "Level file", "File"],
                 [
                     "modded",
@@ -339,20 +322,24 @@
                 ]
             ]}
         ></Table>
+        <br />
+        <p>
+            To authenticate, include your <APIReference type={"TOKEN"} reference={"5beam_auth"} />
+            in the "Authorization" header of your request. Example: "Authorization: Bearer (TOKEN HERE)".
+        </p>
     </APIEndpoint>
 
-    <APIEndpoint endpoint={["api", "create", "levelpack"]} type="POST" game_only token_required>
+    <APIEndpoint endpoint={["api", "create", "levelpack"]} type="POST">
         <p>
-            Create a <APIReference type={"STRUCT"} reference={"Levelpack"} />. Make sure
-            access_token is valid before posting! You will need to give 5beam the following using a
-            FormData object:
+            Create a <APIReference type={"STRUCT"} reference={"Levelpack"} />. You will need to give
+            5beam the following using a FormData object:
         </p>
         <Table
             heads={["Property", "Meaning", "Type"]}
             content={[
-                ["access_token", "User's discord access token.", ParamType.STRING],
                 ["title", "Levelpack title", ParamType.STRING],
                 ["description", "Levelpack description", ParamType.STRING],
+                ["difficulty", "Levelpack difficulty (0 - 7)", "Array of INTEGERS"],
                 ["data", "Levelpack file", "File"],
                 [
                     "modded",
@@ -361,13 +348,40 @@
                 ]
             ]}
         ></Table>
+
+        <br />
+        <p>
+            To authenticate, include your <APIReference type={"TOKEN"} reference={"5beam_auth"} />
+            in the "Authorization" header of your request. Example: "Authorization: Bearer (TOKEN HERE)".
+        </p>
     </APIEndpoint>
 
-    <APIEndpoint endpoint={["api", "auth", "discord"]} type="GET" game_only>
-        <p>Endpoint for logging into 5beam discord oauth, returns an access & refresh token.</p>
+    <!-- <APIEndpoint endpoint={["Supported Mods"]} type="INFO">
+        <div class="text-3xl">
+            <ul>
+                <li>Mawilite's "5*30"</li>
+                <li>The Golden Guard's "Golden 5"</li>
+            </ul>
+        </div>
+        <p>
+            Contact <APIReference type={"DISCORD"} reference={["zelo101"]} /> if you'd like to have your
+            5b mod supported!
+        </p>
+    </APIEndpoint> -->
+
+    <APIEndpoint
+        endpoint={["api", "login", "oauth"]}
+        params={[["redirectURI", "Redirect URI", ParamType.STRING]]}
+    >
+        <p>
+            Public endpoint for logging into 5beam discord OAuth, returns an <APIReference
+                type={"TOKEN"}
+                reference={"5beam_auth"}
+            /> on successful login.
+        </p>
     </APIEndpoint>
 
-    <APIEndpoint endpoint={["api", "auth", "refresh"]} type="POST" game_only token_required>
+    <!-- <APIEndpoint endpoint={["api", "auth", "refresh"]} type="POST" game_only token_required>
         <p>
             Gives you a new access_token. If this returns 400, it means your refresh_token is bad
             and you'll have to login again.
@@ -376,5 +390,5 @@
             heads={["Property", "Meaning", "Type"]}
             content={[["refresh_token", "User's discord refresh token.", ParamType.STRING]]}
         ></Table>
-    </APIEndpoint>
+    </APIEndpoint> -->
 </div>

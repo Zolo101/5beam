@@ -1,22 +1,23 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserByDiscordId, getUserById } from "../../../../talk/get";
-import { OK, NOT_FOUND } from "../../../../misc";
+import { getUserById } from "$lib/talk/get";
+import { MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
+import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
+const schema = createObjectSchema("id");
 export const GET: RequestHandler = async ({ url }) => {
-    const id = url.searchParams.get("id");
-    const discordId = url.searchParams.get("discordId");
-
-    if (id === null) {
-        if (discordId !== null) {
-            // use discordId
-            let body = await getUserByDiscordId(discordId);
-            return OK(body);
-        } else {
-            return NOT_FOUND();
+    try {
+        const { id } = parseFromUrlSearchParams(schema, url);
+        try {
+            const user = await getUserById(id);
+            if (user === null) {
+                return NOT_FOUND();
+            } else {
+                return OK(user);
+            }
+        } catch {
+            return MY_BAD();
         }
-    } else if (discordId === null) {
-        // use id
-        let body = await getUserById(id);
-        return OK(body);
+    } catch {
+        return BAD();
     }
 };

@@ -1,31 +1,65 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, DENIED, OK, PostLevelSchema } from "../../../../../misc";
-import { createLevel } from "../../../../../talk/create";
-import { toPOJO } from "../../../../../talk/get";
-import { tryGettingUser } from "../../../../../talk/admin";
+import { MY_BAD, BAD, OK } from "$lib/server/misc";
+import { type PostLevelType } from "$lib/parse";
+import { PostLevelSchema } from "$lib/parse";
+import { generateThumbnail, isLevelValid } from "$lib/talk/create";
+import { levels } from "$lib/clientPocketbase";
+import type { Level, PrivateBaseUserV2 } from "$lib/types";
+import { NewLevelWebhook } from "$lib/webhook";
 
-export const POST: RequestHandler = async ({ cookies, request }) => {
-    const json = await request.json();
-    const payload = PostLevelSchema.parse(json);
+export async function _createLevel(
+    level: PostLevelType,
+    user: PrivateBaseUserV2 | null,
+    silent: boolean = false
+) {
+    // If it's not modded, validate again, and if so throw error
+    if (!level.modded && !isLevelValid(level.file)) throw new Error("Invalid level");
 
-    const access_token = cookies.get("access_token") ?? json.access_token;
-    const refresh_token = cookies.get("refresh_token") ?? json.refresh_token;
+    const thumbnail = await generateThumbnail(level.file);
 
-    // Get user from access token
-    let user = await tryGettingUser(access_token, refresh_token, cookies);
-    if (!user) return DENIED();
+    const levelFormData = new FormData();
+    if (user) levelFormData.append("creator", user.record.id);
+    levelFormData.append("title", level.title);
+    levelFormData.append("description", level.description);
+    levelFormData.append("data", level.file);
+    if (thumbnail && thumbnail.ok) levelFormData.append("thumbnail", await thumbnail.blob());
+    levelFormData.append("modded", level.modded);
+    if (level.difficulty) {
+        levelFormData.append("difficulty", level.difficulty.toString());
+    } else {
+        levelFormData.append("difficulty", "0");
+    }
+    levelFormData.append("unlisted", level.unlisted.toString());
 
+    const levelReference = await levels.create<Level>(levelFormData, {
+        expand: "creator", // for the webhook
+        requestKey: null
+    });
+
+    if (!silent) {
+        await NewLevelWebhook.send(levelReference);
+    }
+    return levelReference;
+}
+
+export const POST: RequestHandler = async ({ request, locals }) => {
     try {
-        const level = await createLevel({
-            creator: user,
-            title: payload.title,
-            description: payload.description,
-            level: payload.file,
-            modded: payload.modded
-        });
+        const json = await request.json();
+        const payload = PostLevelSchema.parse(json);
 
-        return OK(toPOJO(level));
+        try {
+            const level = await _createLevel(payload, locals.user);
+
+            return OK(level);
+        } catch (e) {
+            console.error(e);
+
+            // TODO: It's not always "My Bad in this instance (see validateLevel)
+            return MY_BAD(e instanceof Error ? e.message : "Unknown error");
+        }
     } catch (e) {
-        return BAD("Invalid Payload: " + e);
+        console.error(e);
+
+        return BAD();
     }
 };

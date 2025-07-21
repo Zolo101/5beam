@@ -1,7 +1,11 @@
-import type { PageServerLoad } from "../../../../../.svelte-kit/types/src/routes";
-import { getLevelpackById } from "../../../../talk/get";
+import { error } from "@sveltejs/kit";
+import { getLevelpackByIdWithLevels } from "$lib/talk/get";
+import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ params }) => {
-    const levelpack = await getLevelpackById(params.id);
+export const load: PageServerLoad = async ({ params }) => {
+    const levelpack = await getLevelpackByIdWithLevels(params.id);
+    if (!levelpack) {
+        throw error(404, "Levelpack not found");
+    }
     return { levelpack };
-}) satisfies PageServerLoad;
+};

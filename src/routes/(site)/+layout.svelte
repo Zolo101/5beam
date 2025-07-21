@@ -1,28 +1,24 @@
 <script lang="ts">
     import "../../app.css";
-    import Navbar from "../../components/layout/Navbar.svelte";
-    import Footer from "../../components/layout/Footer.svelte";
-    // import background from "$lib/assets/backgrounds/2.png";
-    import type { PageData } from "../../../.svelte-kit/types/src/routes";
+    import Navbar from "$lib/components/layout/Navbar.svelte";
+    import Footer from "$lib/components/layout/Footer.svelte";
+    import type { PageData } from "./$types";
+    import type { Snippet } from "svelte";
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+        children?: Snippet;
+    }
+
+    let { data, children }: Props = $props();
 
     let user = data.user;
+
+    let scrollY = $state(0);
 </script>
 
 <svelte:head>
     <meta name="theme-color" content="#d10000" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QDE04Q52S"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "G-8QDE04Q52S");
-    </script>
-    <!--    TODO: After a month, remove the google analytics -->
     <script
         defer
         src="https://analytics.zelo.dev/script.js"
@@ -30,50 +26,33 @@
     ></script>
 </svelte:head>
 
-<div class="m blur-sm">
-    <!--    <div></div>-->
-    <!--    <img src={background} alt=""/>-->
-</div>
+<svelte:window bind:scrollY />
+
+<div
+    class="background fixed -z-10 h-screen w-screen bg-cover"
+    style="transform: translateY({100 - scrollY / 40}px)"
+></div>
 <Navbar {user} />
-<!--<div class="w-full backdrop-blur-[3px]">-->
-<div class="w-full">
+<div class="main w-full">
     <div class="m-auto max-w-[1600px] grow py-2">
-        <slot></slot>
+        {@render children?.()}
     </div>
 </div>
 <Footer />
 
 <style>
-    /* parallel */
-    .m {
+    .background {
         background-image: url("$lib/assets/backgrounds/2.png");
-        background-size: cover;
-        position: fixed;
-        left: -5px;
-        top: -5px;
-        width: 105%;
-        height: 105%;
-        z-index: -1;
-
-        overflow-x: hidden;
-
-        perspective: 1px;
+        /* This is heavy on the CPU so I'm disabling */
+        /* animation: hue-rotate 10s linear infinite; */
     }
 
-    /*.m {*/
-    /*    height: 100vh;*/
-    /*    overflow-x: hidden;*/
-    /*    perspective: 1px;*/
-    /*    z-index: -1;*/
-    /*}*/
-
-    /*img {*/
-    /*    position: absolute;*/
-    /*    top: 0;*/
-    /*    right: 0;*/
-    /*    bottom: 0;*/
-    /*    left: 0;*/
-
-    /*    transform: translateZ(0);*/
-    /*}*/
+    @keyframes hue-rotate {
+        0% {
+            filter: blur(2px) hue-rotate(0deg);
+        }
+        100% {
+            filter: blur(2px) hue-rotate(360deg);
+        }
+    }
 </style>

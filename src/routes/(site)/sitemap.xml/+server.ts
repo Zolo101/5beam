@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { levelpacks, levels, users } from "$lib/pocketbase";
-import { apiURL } from "../../../misc";
+import { levelpacks, levels, usersV2 } from "$lib/clientPocketbase";
+import { apiURL } from "$lib/misc";
 
 function formatDate(date: string) {
     // format as YYYY-MM-DD
@@ -30,10 +30,10 @@ async function createLevelpackSitemap() {
 }
 
 async function createUserSitemap() {
-    return (await users.getFullList()).map(
+    return (await usersV2.getFullList()).map(
         (user) => `<url>
-    <loc>${apiURL}/user/${user.id}</loc>
-    <lastmod>${formatDate(user.updated)}</lastmod>
+    <loc>${apiURL}/user/${user.record.id}</loc>
+    <lastmod>${formatDate(user.record.updated)}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
 </url>`
