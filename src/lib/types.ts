@@ -84,7 +84,7 @@ export type BaseUserV2 = {
     username: string;
     avatar: string;
     stars: string[]; // soon(tm)
-    created: Date;
+    created: string; // Date
 };
 
 /** Not really private, email is blanked */
@@ -95,8 +95,8 @@ export type PrivateBaseUserV2 = {
         id: string;
         email: string;
         emailVisibility: boolean;
-        created: Date;
-        updated: Date;
+        created: string; // Date
+        updated: string; // Date
         username: string;
         avatar: string;
         roles: string;

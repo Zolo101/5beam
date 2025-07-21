@@ -4,32 +4,27 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import LevelpackComponent from "$lib/components/browse/LevelpackComponent.svelte";
     import type { PageData } from "./$types";
+    import { formatDate_Day } from "$lib/misc";
 
     interface Props {
         data: PageData;
     }
 
     let { data }: Props = $props();
-    // TODO: We should probably rename to creator on this specific page
-    let { levels, levelpacks, creator: user } = $derived(data);
-
-    let date = new Date(user.created);
-    let month = (date.getMonth() + 1).toString().padStart(2, "0");
-    let year = date.getFullYear();
+    let { levels, levelpacks, creator } = $derived(data);
 
     let levelPage = $state(1);
-
     let levelpackPage = $state(1);
 </script>
 
 <svelte:head>
-    <meta property="og:title" content={user.username} />
-    <meta property="og:description" content="Check out {user.username}'s levels on 5beam!" />
+    <meta property="og:title" content={creator.username} />
+    <meta property="og:description" content="Check out {creator.username}'s levels on 5beam!" />
 </svelte:head>
 
-<section class="font-bold">
-    <p class="text-7xl">{user.username}</p>
-    <p class="text-4xl text-amber-500">Joined on {month}-{year}</p>
+<section class="mx-auto max-w-1/2 font-bold">
+    <p class="text-7xl">{creator.username}</p>
+    <p class="text-4xl text-amber-500">Joined on {formatDate_Day(creator.created)}</p>
 </section>
 
 <div class="flex flex-col items-center">
@@ -39,7 +34,7 @@
             bind:page={levelPage}
             bind:output={levels}
             callback={({ page, sort, featured, amount }) =>
-                getUserLevelPageClient(user.id, page, 0, sort, featured, amount)}
+                getUserLevelPageClient(creator.id, page, 0, sort, featured, amount)}
             columns={2}
             PageComponent={LevelComponent}
         />
@@ -53,7 +48,7 @@
             bind:page={levelpackPage}
             bind:output={levelpacks}
             callback={({ page, sort, featured, amount }) =>
-                getUserLevelPageClient(user.id, page, 1, sort, featured, amount)}
+                getUserLevelPageClient(creator.id, page, 1, sort, featured, amount)}
             columns={2}
             PageComponent={LevelpackComponent}
         />

@@ -163,19 +163,14 @@ export async function getUserLevels(
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
-    const featuredFilter = featured ? "featured = true" : "";
-    const modFilter = mod ? `modded = "${mod}"` : "";
-    const combinedFilter = featuredFilter + modFilter;
-    let filter: string;
-    if (combinedFilter.length > 0) {
-        filter = clientPb.filter(`creator = {:id}{:combinedFilter}`, { id, combinedFilter });
-    } else {
-        filter = clientPb.filter(`creator = {:id}`, { id });
-    }
+    const creatorFilter = clientPb.filter(`creator = {:id} && `, { id });
+    const featuredFilter = featured ? "featured = true && " : "";
+    const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
+
     return await levels.getList<Level>(page, amount, {
         expand: "creator",
-        filter,
         sort,
+        filter: creatorFilter + featuredFilter + modFilter,
         ...options
     });
 }
@@ -190,20 +185,14 @@ export async function getUserLevelpacks(
     options?: RecordListOptions
 ) {
     const sort = getSort(sortCode);
-    const featuredFilter = featured ? "featured = true" : "";
-    const modFilter = mod ? `modded = "${mod}"` : "";
-    const combinedFilter = featuredFilter + modFilter;
-    let filter: string;
-    if (combinedFilter.length > 0) {
-        filter = clientPb.filter(`creator = {:id}{:combinedFilter}`, { id, combinedFilter });
-    } else {
-        filter = clientPb.filter(`creator = {:id}`, { id });
-    }
+    const creatorFilter = clientPb.filter(`creator = {:id} && `, { id });
+    const featuredFilter = featured ? "featured = true && " : "";
+    const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
     return await levelpacks.getList<Levelpack>(page, amount, {
         expand: "creator",
-        filter,
         sort,
+        filter: creatorFilter + featuredFilter + modFilter,
         ...options
     });
 }

@@ -61,7 +61,7 @@
     }: Props<unknown> = $props();
 
     let windowWidth = $state(0);
-    let amount = $derived(Math.min(columns * Math.floor(windowWidth / 360), 12));
+    let amount = $derived(Math.min(columns * Math.floor(windowWidth / 360), 8));
 
     // Run updateFilters when amount changes
     // TODO: Bug where if you to go page 4 on small screens then resize, you can get softlocked
