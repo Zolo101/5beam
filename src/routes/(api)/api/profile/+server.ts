@@ -1,4 +1,4 @@
-import { BAD, OK } from "$lib/misc";
+import { BAD, OK } from "$lib/server/misc";
 import { getUserById } from "$lib/talk/get";
 import type { RequestHandler } from "./$types";
 

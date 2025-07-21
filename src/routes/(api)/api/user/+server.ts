@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { getUserById } from "$lib/talk/get";
-import { OK, NOT_FOUND, BAD, MY_BAD } from "$lib/misc";
+import { MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
 const schema = createObjectSchema("id");

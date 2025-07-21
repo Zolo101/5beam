@@ -1,7 +1,22 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { addPlayLevel, addPlayLevelpack } from "$lib/talk/get";
-import { BAD, MY_BAD, OK } from "$lib/misc";
+import { getLevelById, getLevelpackById } from "$lib/talk/get";
+import { MY_BAD, BAD, OK } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
+import { adminPb } from "$lib/adminPocketbase";
+
+async function addPlayLevel(id: string) {
+    const result = await getLevelById(id);
+    await adminPb.collection("5beam_levels").update(id, { plays: result.plays + 1 });
+
+    return result;
+}
+
+async function addPlayLevelpack(id: string) {
+    const result = await getLevelpackById(id);
+    await adminPb.collection("5beam_levelpacks").update(id, { plays: result.plays + 1 });
+
+    return result;
+}
 
 // TODO: Add better ratelimit
 // pocketbase now has ratelimit so we *could* do this

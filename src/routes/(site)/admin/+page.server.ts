@@ -1,4 +1,5 @@
-import { DENIED, isAdmin, MY_BAD, BAD, OK } from "$lib/misc";
+import { isAdmin } from "$lib/misc";
+import { DENIED, MY_BAD, BAD, OK } from "$lib/server/misc";
 import { addDailyLevel, featureLevel } from "$lib/talk/create";
 import type { Actions } from "@sveltejs/kit";
 import { createObjectSchema } from "$lib/parse";

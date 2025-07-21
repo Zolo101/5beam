@@ -147,25 +147,6 @@ export const isLoggedIn = (user: PrivateBaseUserV2 | undefined) => !!user;
 /** For client-side use only */
 export const isAdmin = (user: PrivateBaseUserV2 | undefined) => user?.record.roles === "admin";
 
-// Cant find
-export function NOT_FOUND() {
-    return new Response(null, { status: 404 });
-}
-// All good
-export const OK = (body?: unknown) => new Response(JSON.stringify(body), { status: 200 });
-
-// User error
-export const BAD = (message?: string) => new Response(message, { status: 400 });
-
-// Server error
-export const MY_BAD = (message?: string) => new Response(message, { status: 500 });
-
-// Denied
-export const DENIED = () =>
-    new Response("Authentication Denied. Make sure you have a valid 'pb_auth' cookie!", {
-        status: 401
-    });
-
 export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev";
 // export const apiURL = !dev ? "http://localhost:4173" : "https://5beam.zelo.dev"
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default";

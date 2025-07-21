@@ -1,4 +1,4 @@
-import { OK } from "$lib/misc";
+import { OK } from "$lib/server/misc";
 import { getDaily } from "$lib/talk/get";
 import type { RequestHandler } from "./$types";
 

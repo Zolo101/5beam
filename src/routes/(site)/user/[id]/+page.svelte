@@ -10,9 +10,8 @@
     }
 
     let { data }: Props = $props();
-    let { levels, levelpacks } = $derived(data);
-
-    let user = data.creator.record;
+    // TODO: We should probably rename to creator on this specific page
+    let { levels, levelpacks, creator: user } = $derived(data);
 
     let date = new Date(user.created);
     let month = (date.getMonth() + 1).toString().padStart(2, "0");

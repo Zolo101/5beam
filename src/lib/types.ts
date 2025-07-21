@@ -74,8 +74,9 @@ export type CreateLevelpack = {
     modded: string;
 };
 
-export type PocketbaseUser = BaseUserV2;
+export type PocketbaseUser = PrivateBaseUserV2["record"];
 
+/** @deprecated we are just gonna use the "private" one now */
 export type BaseUserV2 = {
     collectionId: string;
     collectionName: string;
@@ -86,6 +87,7 @@ export type BaseUserV2 = {
     created: Date;
 };
 
+/** Not really private, email is blanked */
 export type PrivateBaseUserV2 = {
     record: {
         collectionId: string;

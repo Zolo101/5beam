@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, MY_BAD, OK } from "$lib/misc";
+import { BAD, MY_BAD, OK } from "$lib/server/misc";
 import { type PostLevelpackType } from "$lib/parse";
 import { PostLevelpackSchema } from "$lib/parse";
 import { generateThumbnail, isLevelpackValid } from "$lib/talk/create";

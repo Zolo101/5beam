@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, MY_BAD, OK } from "$lib/misc";
+import { MY_BAD, BAD, OK } from "$lib/server/misc";
 import { type PostLevelType } from "$lib/parse";
 import { PostLevelSchema } from "$lib/parse";
 import { generateThumbnail, isLevelValid } from "$lib/talk/create";

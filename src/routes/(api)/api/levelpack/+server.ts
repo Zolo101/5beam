@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { OK, NOT_FOUND } from "$lib/misc";
+import { OK, NOT_FOUND } from "$lib/server/misc";
 import { getLevelpackById, getLevelpackByIdWithLevels } from "$lib/talk/get";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 

@@ -1,5 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, DENIED, isAdmin, OK, NOT_FOUND, MY_BAD, newlineSplitter } from "$lib/misc";
+import { isAdmin } from "$lib/misc";
+import { DENIED, MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
 import { ModifyLevelSchema, type ModifyLevelType } from "$lib/parse";
 import { getLevelById } from "$lib/talk/get";
 import type { PrivateBaseUserV2 } from "$lib/types";

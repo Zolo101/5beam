@@ -1,6 +1,6 @@
 // TODO: Remove client pocketbase imports -- Secure but we dont wanna use them
 import { dailyies, levelpacks, levels, clientPb, usersV2, weeklies } from "$lib/clientPocketbase";
-import type { BaseUserV2, Daily, Level, Levelpack, WeeklyChallenge } from "$lib/types";
+import type { Daily, Level, Levelpack, PrivateBaseUserV2, WeeklyChallenge } from "$lib/types";
 import { ClientResponseError, type RecordListOptions } from "pocketbase";
 
 export async function getDaily() {
@@ -128,20 +128,6 @@ export async function getTrendingLevels(
     });
 }
 
-export async function addPlayLevel(id: string) {
-    const result = await getLevelById(id);
-    await updateFetch<Level>(levels, id, { plays: result.plays + 1 });
-
-    return result;
-}
-
-export async function addPlayLevelpack(id: string) {
-    const result = await getLevelpackById(id);
-    await updateFetch<Levelpack>(levelpacks, id, { plays: result.plays + 1 });
-
-    return result;
-}
-
 export async function getSearch(
     text: string,
     page: number,
@@ -156,7 +142,7 @@ export async function getSearch(
 
 export async function getUserById(id: string) {
     try {
-        return await usersV2.getOne<BaseUserV2>(id);
+        return await usersV2.getOne<PrivateBaseUserV2["record"]>(id);
     } catch (e) {
         // 404 -- Not found
         if (e instanceof ClientResponseError && e.status === 404) {
