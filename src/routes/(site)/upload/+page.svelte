@@ -10,6 +10,7 @@
     import Dialog from "$lib/components/Dialog.svelte";
     import type { PageData } from "./$types";
     import Button from "$lib/components/Button.svelte";
+    import { enhance } from "$app/forms";
     // import dummyLevelData from "$lib/assets/level.txt?raw";
     // import dummyLevelData from "$lib/assets/levels.txt?raw";
 
@@ -88,14 +89,14 @@
 <Dialog bind:open={guestWarning}>
     <div class="z-200 flex max-w-[500px] flex-col gap-4 p-5">
         <div class="text-center text-5xl">
-            <FiveBStyle text="Warning" />
+            <FiveBStyle text="Important" />
         </div>
-        <p class="mx-5 text-center text-lg">
-            You are uploading as a guest. You will not be able to edit or delete your level after!
-        </p>
+        <p class="text-l mx-5 p-10 text-center">You must Log In to upload levels.</p>
         <div class="flex justify-end gap-2 *:grow *:rounded *:text-center">
-            <Button text="Log In" href="/login" bg="#aaaaaa" />
-            <Button text="OK" bg="#5555ff" onclick={() => (guestWarning = false)} />
+            <form use:enhance method="POST" action="/login">
+                <Button text="Log In" href="/login" bg="#5555ff" />
+            </form>
+            <!-- <Button text="OK" bg="#5555ff" onclick={() => (guestWarning = false)} /> -->
         </div>
     </div>
 </Dialog>

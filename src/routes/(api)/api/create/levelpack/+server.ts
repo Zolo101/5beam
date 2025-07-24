@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { BAD, MY_BAD, OK } from "$lib/server/misc";
+import { BAD, DENIED, MY_BAD, OK } from "$lib/server/misc";
 import { type PostLevelpackType } from "$lib/parse";
 import { PostLevelpackSchema } from "$lib/parse";
 import { generateThumbnail, isLevelpackValid } from "$lib/talk/create";
@@ -10,7 +10,7 @@ import type PocketBase from "pocketbase";
 
 async function createLevelpack(
     levelpack: PostLevelpackType,
-    user: PrivateBaseUserV2 | null,
+    user: PrivateBaseUserV2,
     pb: PocketBase
 ) {
     // if not valid and not modded, throw error
@@ -38,7 +38,7 @@ async function createLevelpack(
         const title = split[0] === "loadedLevels=" ? split[1] : split[0];
 
         const levelFormData = new FormData();
-        if (user) levelFormData.append("creator", user.record.id);
+        levelFormData.append("creator", user.record.id);
         levelFormData.append("title", title);
         levelFormData.append(
             "description",
@@ -86,6 +86,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     try {
         const json = await request.json();
         const payload = PostLevelpackSchema.parse(json);
+
+        if (!locals.user) return DENIED();
 
         try {
             const levelpack = await createLevelpack(payload, locals.user, locals.pb);

@@ -100,7 +100,6 @@ function getCreatorName(level: Level | Levelpack) {
 }
 
 function makeAuthor(level: Level | Levelpack) {
-    console.log(level);
     return level.creator
         ? {
               name: getCreatorName(level),

@@ -109,19 +109,6 @@
         if (!x) return { valid: false };
         return validate(x);
     });
-
-    // let updatedLevelpackDifficulties = $derived.by(async () => {
-    //     const oldDifficulties = orginialLevelpackDifficulties;
-    //     const updated = await updatedLevelpackValidated;
-    //     if (!updated.valid) return oldDifficulties;
-    //     const newLength = updated.levels.length;
-
-    //     if (newLength <= oldDifficulties.length) {
-    //         return oldDifficulties.slice(0, newLength);
-    //     } else {
-    //         return [...oldDifficulties, ...Array(newLength - oldDifficulties.length).fill(0)];
-    //     }
-    // });
     let updatedLevelpackDifficulties = $state(orginialLevelpackDifficulties);
 </script>
 
@@ -142,11 +129,9 @@
             {title}
         </span>
     </div>
-    <section class="flex text-xl max-md:flex-col max-md:text-xs">
+    <section class="flex text-xl">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
         <span class="px-1">::</span>
-        <!-- <span class="font-black"><Difficulty includeText includeImage={false} {difficulty} /></span> -->
-        <!-- <span class="px-1">::</span> -->
         <span class="pr-1 font-black text-purple-500">{levels.length}</span>
         <span class="text-purple-500">levels</span>
         <span class="px-1">::</span>

@@ -119,7 +119,7 @@
             {title}
         </span>
     </div>
-    <section class="flex text-xl max-md:flex-col max-md:text-xs">
+    <section class="flex text-xl">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
         <span class="px-1">::</span>
         <span class="font-black"><Difficulty includeText includeImage={false} {difficulty} /></span>
@@ -130,7 +130,7 @@
         <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
     </section>
 </section>
-<div class="flex justify-center gap-5 py-6">
+<div class="flex justify-center gap-5 py-6 max-md:flex-col">
     <img
         class="rounded-sm object-contain shadow-xl"
         src={thumbnailUrl}

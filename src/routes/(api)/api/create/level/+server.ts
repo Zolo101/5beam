@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { MY_BAD, BAD, OK } from "$lib/server/misc";
+import { MY_BAD, BAD, OK, DENIED } from "$lib/server/misc";
 import { type PostLevelType } from "$lib/parse";
 import { PostLevelSchema } from "$lib/parse";
 import { generateThumbnail, isLevelValid } from "$lib/talk/create";
@@ -9,7 +9,7 @@ import { NewLevelWebhook } from "$lib/webhook";
 
 export async function _createLevel(
     level: PostLevelType,
-    user: PrivateBaseUserV2 | null,
+    user: PrivateBaseUserV2,
     silent: boolean = false
 ) {
     // If it's not modded, validate again, and if so throw error
@@ -18,7 +18,7 @@ export async function _createLevel(
     const thumbnail = await generateThumbnail(level.file);
 
     const levelFormData = new FormData();
-    if (user) levelFormData.append("creator", user.record.id);
+    levelFormData.append("creator", user.record.id);
     levelFormData.append("title", level.title);
     levelFormData.append("description", level.description);
     levelFormData.append("data", level.file);
@@ -46,6 +46,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     try {
         const json = await request.json();
         const payload = PostLevelSchema.parse(json);
+
+        if (!locals.user) return DENIED();
 
         try {
             const level = await _createLevel(payload, locals.user);
