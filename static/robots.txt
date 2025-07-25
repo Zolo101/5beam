@@ -1,4 +1,3 @@
 User-agent: *
-Disallow: /api/auth/
 
 Sitemap: https://5beam.zelo.dev/sitemap.xml
