@@ -33,10 +33,8 @@
     style="transform: translateY({100 - scrollY / 40}px)"
 ></div>
 <Navbar {user} />
-<div class="main w-full">
-    <div class="m-auto max-w-[1600px] grow py-2">
-        {@render children?.()}
-    </div>
+<div class="container m-auto w-full">
+    {@render children?.()}
 </div>
 <Footer />
 
