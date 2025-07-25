@@ -1,4 +1,4 @@
-import type { Level, LevelChange, Levelpack, LevelpackDifficultyChange } from "$lib/types";
+import type { Level, LevelChange, Levelpack, LevelpackDifficultyChange, Report } from "$lib/types";
 import { generateDiff, getLevelThumbnailURL } from "$lib/misc";
 
 type WebhookObject = {
@@ -12,7 +12,7 @@ type WebhookEmbed = {
     description: string;
     url: string;
     color: number;
-    author: {
+    author?: {
         name: string;
         url?: string;
         icon_url?: string;
@@ -39,6 +39,7 @@ const WebhookChannel = {
     New: [import.meta.env.VITE_WEBHOOK_NEW, import.meta.env.VITE_WEBHOOK_NEW_5BCENTRAL],
     PublicLog: [import.meta.env.VITE_WEBHOOK_PUBLIC_LOG],
     PrivateLog: [import.meta.env.VITE_WEBHOOK_PRIVATE_LOG],
+    Report: [import.meta.env.VITE_WEBHOOK_REPORT],
     Featured: [import.meta.env.VITE_WEBHOOK_FEATURED],
     Daily: [import.meta.env.VITE_WEBHOOK_DAILYIES]
 };
@@ -49,6 +50,8 @@ function getMarkdownLevelURL(level: Level | Levelpack) {
     const type = "difficulty" in level ? "levelpack" : "level";
     return `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/${type}/${level.id}>)`;
 }
+
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default class Webhook<P extends unknown[]> {
     public channel: string[];
@@ -74,26 +77,7 @@ export default class Webhook<P extends unknown[]> {
             body: JSON.stringify(body)
         });
     }
-
-    // async sendWithCustomFetch(customFetch: CustomFetch,...params: P) {
-    //     const response = await customFetch(this.channel, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(params)
-    //     })
-    //
-    //     console.log(this.channel, await response.json())
-    //     return response.text()
-    // }
 }
-
-// export const UpdatedLevelWebhook = new Webhook("PublicLog", (level: Level) => {
-//     return {
-//         content: `\`**${getMarkdownLevelURL(level)}\` has been updated!**`,
-//     }
-// })
 
 function getCreatorName(level: Level | Levelpack) {
     return level.creator?.username || "Guest";
@@ -273,6 +257,23 @@ export const NewDailyWebhook = new Webhook("Daily", (level: Level) => {
                     text: `${level.plays} plays`
                 },
                 timestamp: level.created
+            }
+        ]
+    };
+});
+
+export const ReportWebhook = new Webhook("Report", (report: Report) => {
+    const reportDescription = report.description ? `\n${report.description}` : "";
+    return {
+        username: "New Report",
+        content: "<@262343010916892673>",
+        embeds: [
+            {
+                title: `${capitalize(report.reason)} ${capitalize(report.kind)}`,
+                description: `**Link:** <https://5beam.zelo.dev/${report.kind}/${report.reportedId}>${reportDescription}`,
+                url: `https://5beam.zelo.dev/reports/`,
+                color: 16711930,
+                timestamp: report.created
             }
         ]
     };

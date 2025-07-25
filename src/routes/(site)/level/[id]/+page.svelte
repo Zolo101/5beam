@@ -14,6 +14,7 @@
     import validate from "$lib/client/FileValidator";
     import BigButton from "$lib/components/BigButton.svelte";
     import { postModifyLevelClient } from "$lib/client/ClientSideAPI";
+    import ReportDialog from "$lib/components/ReportDialog.svelte";
 
     interface Props {
         data: PageData;
@@ -37,11 +38,14 @@
     const creatorName = $derived(creator?.username ?? "Guest");
     const thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail, false));
     let editMode = $state(false);
+    let editSending = $derived(false);
     let showDifference = $state(false);
-    let sending = $derived(false);
+
+    let reportMode = $state(false);
+    let reportSending = $state(false);
 
     $effect(() => {
-        if (!editMode) sending = false;
+        if (!editMode) editSending = false;
     });
 
     let isOwner = $derived(creator?.id === user?.record.id);
@@ -61,8 +65,8 @@
         console.log("deleteLevel");
     }
 
-    async function saveLevel() {
-        sending = true;
+    async function editLevel() {
+        editSending = true;
 
         const payload = {
             title: title,
@@ -153,6 +157,12 @@
             />
         {/if}
         <BigButton text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
+        <BigButton
+            text={reportSending ? "Reported" : "Report"}
+            bg="#ff5555"
+            onclick={() => (reportMode = !reportMode)}
+            disabled={reportSending}
+        />
     </div>
 </div>
 
@@ -168,6 +178,8 @@
         <LevelComponent data={level} />
     {/each}
 </div>
+
+<ReportDialog bind:open={reportMode} bind:reportSending kind="level" />
 
 <Dialog bind:open={editMode}>
     <div class="relative flex gap-5 overflow-hidden rounded-lg p-5 text-xl">
@@ -211,11 +223,11 @@
             <div class="flex justify-end gap-2 *:grow">
                 <!-- <button onclick={deleteLevel} class="float-left text-xs opacity-50">Delete</button> -->
                 <Button
-                    text={sending ? "Saving..." : "Save"}
+                    text={editSending ? "Saving..." : "Save"}
                     bg="#a8ff00"
-                    onclick={saveLevel}
+                    onclick={editLevel}
                     event="update-level"
-                    disabled={sending}
+                    disabled={editSending}
                 />
                 <Button text="Cancel" bg="#cccccc" onclick={() => (editMode = false)} />
             </div>

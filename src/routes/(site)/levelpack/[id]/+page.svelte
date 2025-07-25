@@ -14,6 +14,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import Carousel from "$lib/components/Carousel.svelte";
     import { postModifyLevelpackClient } from "$lib/client/ClientSideAPI";
+    import ReportDialog from "$lib/components/ReportDialog.svelte";
 
     const { data }: { data: PageData } = $props();
 
@@ -41,7 +42,7 @@
     }
 
     async function saveLevelpack() {
-        sending = true;
+        editSending = true;
 
         const payload = {
             title: title,
@@ -87,10 +88,13 @@
     }
 
     let editMode = $state(false);
-    let sending = $derived(false);
+    let editSending = $derived(false);
+
+    let reportMode = $state(false);
+    let reportSending = $state(false);
 
     $effect(() => {
-        if (!editMode) sending = false;
+        if (!editMode) editSending = false;
     });
 
     let isOwner = $derived(creator?.id === user?.record.id);
@@ -165,6 +169,12 @@
             onclick={downloadLevelpack}
             event="download-level"
         />
+        <BigButton
+            text={reportSending ? "Reported" : "Report"}
+            bg="#ff5555"
+            onclick={() => (reportMode = !reportMode)}
+            disabled={reportSending}
+        />
     </div>
 </div>
 
@@ -178,6 +188,8 @@
         <LevelComponent data={level} />
     {/each}
 </div>
+
+<ReportDialog bind:open={reportMode} bind:reportSending kind="levelpack" />
 
 <Dialog bind:open={editMode}>
     <div class="relative flex gap-5 overflow-hidden rounded-lg p-5 text-xl">
@@ -209,11 +221,11 @@
                 {:then data}
                     {#if data.valid || !updatedFile}
                         <Button
-                            text={sending ? "Saving..." : "Save"}
+                            text={editSending ? "Saving..." : "Save"}
                             bg="#a8ff00"
                             onclick={saveLevelpack}
                             event="update-level"
-                            disabled={sending}
+                            disabled={editSending}
                         />
                     {:else}
                         <Button text="File not valid!" bg="#a8ff00" disabled />

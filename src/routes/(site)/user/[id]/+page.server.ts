@@ -1,6 +1,7 @@
-import { error } from "@sveltejs/kit";
+import { error, type Actions } from "@sveltejs/kit";
 import { getUserById, getUserLevelpacks, getUserLevels } from "$lib/talk/get";
 import type { PageServerLoad } from "./$types";
+import { actions as levelActions } from "../../level/[id]/+page.server";
 
 export const load: PageServerLoad = async ({ params }) => {
     const [creator, levels, levelpacks] = await Promise.all([
@@ -13,3 +14,9 @@ export const load: PageServerLoad = async ({ params }) => {
     }
     return { creator, levels, levelpacks };
 };
+
+export const actions = {
+    report: async (request) => {
+        return levelActions.report(request);
+    }
+} satisfies Actions;

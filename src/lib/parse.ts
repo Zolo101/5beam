@@ -67,7 +67,7 @@ export const primitives = {
         .refine((file) => file.length > 1, { message: "Levelpack must contain at least 2 levels" })
         .refine((file) => file.length <= 200, {
             message: "Levelpack must contain at most 200 levels"
-        })
+        }),
     // levelFile: z
     //     .string()
     //     .max(1024 * 1024 * 5) // 5 MB Limit
@@ -86,6 +86,11 @@ export const primitives = {
     //     .refine((file) => file.levels.length <= 200, {
     //         message: "Levelpack must contain at most 200 levels"
     //     })
+
+    // report
+    reportKind: z.enum(["level", "levelpack", "user"]),
+    reportReason: z.enum(["inappropriate", "spam", "other"]),
+    reportDesc: z.string().max(1024).optional()
 };
 
 export function createObjectSchema<T extends keyof typeof primitives>(...keys: T[]) {

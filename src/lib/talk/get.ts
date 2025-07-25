@@ -1,7 +1,15 @@
 // TODO: Remove client pocketbase imports -- Secure but we dont wanna use them
 import { dailyies, levelpacks, levels, clientPb, usersV2, weeklies } from "$lib/clientPocketbase";
-import type { Daily, Level, Levelpack, PrivateBaseUserV2, WeeklyChallenge } from "$lib/types";
-import { ClientResponseError, type RecordListOptions } from "pocketbase";
+import type {
+    Daily,
+    Level,
+    Levelpack,
+    PrivateBaseUserV2,
+    Report,
+    WeeklyChallenge
+} from "$lib/types";
+import { ReportWebhook } from "$lib/webhook";
+import { type RecordListOptions } from "pocketbase";
 
 export async function getDaily() {
     const daily = await dailyies.getList<Daily>(1, 1, {
@@ -141,15 +149,7 @@ export async function getSearch(
 }
 
 export async function getUserById(id: string) {
-    try {
-        return await usersV2.getOne<PrivateBaseUserV2["record"]>(id);
-    } catch (e) {
-        // 404 -- Not found
-        if (e instanceof ClientResponseError && e.status === 404) {
-            return null;
-        }
-        throw e;
-    }
+    return await usersV2.getOne<PrivateBaseUserV2["record"]>(id);
 }
 
 // TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
@@ -195,6 +195,25 @@ export async function getUserLevelpacks(
         filter: creatorFilter + featuredFilter + modFilter,
         ...options
     });
+}
+
+// TODO: Make sure modules are server-side https://svelte.dev/docs/kit/server-only-modules
+// They are but I wanna guarantee it
+export async function reportKindById(
+    id: string,
+    reportKind: string,
+    reportReason: string,
+    reportDesc: string | undefined
+) {
+    const report: Report = await clientPb.collection("5beam_reports").create({
+        reportedId: id,
+        kind: reportKind,
+        reason: reportReason,
+        description: reportDesc
+    });
+
+    await ReportWebhook.send(report);
+    return report;
 }
 
 // Pocketbase gives results in a weird format,

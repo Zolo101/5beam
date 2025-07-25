@@ -45,6 +45,18 @@ export type Daily = {
     featured: boolean;
 };
 
+export type Report = {
+    id: string;
+    created: string;
+    updated: string;
+
+    reportedId: string;
+    kind: "level" | "levelpack" | "user";
+    reason: string;
+    description: string;
+    resolved: boolean;
+};
+
 export type WeeklyChallenge = {
     /** levelpack id */
     id: string;
