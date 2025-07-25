@@ -30,7 +30,7 @@ export const handle = (async ({ event, resolve }) => {
     }
 
     const hostname = event.url.hostname;
-    const origin = event.request.headers.get("origin") || "";
+    const origin = event.url.origin;
 
     // CORS preflight (Auth)
     if (event.request.method === "OPTIONS" && event.url.pathname.startsWith("/api")) {
