@@ -8,10 +8,10 @@
     import type { PocketbaseUser } from "$lib/types";
     import questionIcon from "$lib/assets/question.png";
     import { enhance } from "$app/forms";
+    import { page } from "$app/state";
 
     let { user = $bindable() }: { user: PocketbaseUser } = $props();
-
-    let loggedIn = $state(!!user);
+    let { admin, loggedIn } = $derived(page.data);
 
     let searchFocused = $state(false);
     let searchPage = $state(0);
@@ -49,15 +49,21 @@
             />
             <a href="/upload" class="rainbow-outline">Upload</a>
             <!-- <a href="/mods">Mods</a> -->
+
+            {#if admin}
+                <a href="/reports">Reports</a>
+            {/if}
             {#if loggedIn}
                 <!-- TODO: Removed temp until we make a pocketbase module that updates 5beam_users upon oauth -->
-                <!-- <a href="/user" class="p-0!">
-                    {#if user.record.avatar}
+                <!-- <a href="/user" class="p-0!" -->
+                <a href="/user"
+                    >Profile
+                    <!-- {#if user.record.avatar}
                         <img src={user.record.avatar} alt="Profile" class="max-w-9 min-w-9 rounded" />
                     {:else}
                         <img src={questionIcon} alt="Profile" class="max-w-9 min-w-9 rounded" />
-                    {/if}
-                </a> -->
+                    {/if} -->
+                </a>
                 <form method="POST" action="/logout">
                     <button type="submit" class="w-30">Log Out</button>
                 </form>
@@ -67,7 +73,7 @@
                 </form>
             {/if}
             <span>•</span>
-            <a href="/discord">Discord</a>
+            <a href="https://discord.gg/Xm8xzhEFjy" target="_blank">Discord</a>
         </div>
     </div>
 </nav>
