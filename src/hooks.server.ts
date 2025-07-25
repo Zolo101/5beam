@@ -31,8 +31,8 @@ export const handle = (async ({ event, resolve }) => {
 
     const origin = event.request.headers.get("origin") || "";
 
-    // CORS preflight (Auth)
-    if (event.request.method === "OPTIONS" && event.url.pathname.startsWith("/api")) {
+    // CORS preflight (Auth) - only for protected routes
+    if (event.request.method === "OPTIONS" && protectedRoutes.includes(event.url.pathname)) {
         return new Response(null, {
             headers: {
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -47,9 +47,9 @@ export const handle = (async ({ event, resolve }) => {
 
     if (protectedDomains.includes(origin)) {
         response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.headers.set("Access-Control-Allow-Origin", origin);
 
         if (protectedRoutes.includes(event.url.pathname)) {
-            response.headers.set("Access-Control-Allow-Origin", origin);
             response.headers.set("Access-Control-Allow-Headers", "Authorization");
             response.headers.set("Access-Control-Allow-Credentials", "true");
         }
