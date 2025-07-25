@@ -29,7 +29,8 @@ export const handle = (async ({ event, resolve }) => {
         event.locals.pb.authStore.clear();
     }
 
-    const origin = event.url.hostname;
+    const hostname = event.url.hostname;
+    const origin = event.request.headers.get("origin") || "";
 
     // CORS preflight (Auth)
     if (event.request.method === "OPTIONS" && event.url.pathname.startsWith("/api")) {
@@ -45,7 +46,7 @@ export const handle = (async ({ event, resolve }) => {
 
     const response = await resolve(event);
 
-    if (protectedDomains.includes(origin)) {
+    if (protectedDomains.includes(hostname)) {
         response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.headers.set("Access-Control-Allow-Origin", origin);
 
