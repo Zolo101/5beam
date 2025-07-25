@@ -2,13 +2,13 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { isAdmin } from "$lib/misc";
 import { DENIED, MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
 import { ModifyLevelpackSchema } from "$lib/parse";
-import { getLevelpackByIdWithLevels } from "$lib/talk/get";
+import { getLevelpackByIdWithLevels } from "$lib/server/get";
 import {
     ChangeDescriptionWebhook,
     ChangeLevelpackDifficultyWebhook,
     ChangeLevelpackWebhook,
     ChangeTitleWebhook
-} from "$lib/webhook";
+} from "$lib/server/webhook";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import { _createLevel } from "../../create/level/+server";
 import type { LevelChange, LevelpackDifficultyChange } from "$lib/types";

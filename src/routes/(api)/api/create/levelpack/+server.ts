@@ -5,7 +5,7 @@ import { PostLevelpackSchema } from "$lib/parse";
 import { generateThumbnail, isLevelpackValid } from "$lib/talk/create";
 import type { Levelpack, PrivateBaseUserV2 } from "$lib/types";
 import { levelpacks } from "$lib/clientPocketbase";
-import { NewLevelpackWebhook } from "$lib/webhook";
+import { NewLevelpackWebhook } from "$lib/server/webhook";
 import type PocketBase from "pocketbase";
 
 async function createLevelpack(

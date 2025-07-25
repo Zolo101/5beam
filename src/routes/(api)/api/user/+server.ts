@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserById } from "$lib/talk/get";
+import { getUserById } from "$lib/server/get";
 import { MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 

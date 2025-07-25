@@ -1,4 +1,4 @@
-import { adminPb } from "$lib/adminPocketbase";
+import { adminPb } from "$lib/server/adminPocketbase";
 import { isAdmin } from "$lib/misc";
 import { DENIED } from "$lib/server/misc";
 import type { PageServerLoad } from "./$types";

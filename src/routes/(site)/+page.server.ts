@@ -1,4 +1,4 @@
-import { getDaily, getLevelpacks, getLevels, getTrendingLevels } from "$lib/talk/get";
+import { getDaily, getLevelpacks, getLevels, getTrendingLevels } from "$lib/server/get";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async () => {

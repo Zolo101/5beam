@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { MY_BAD, BAD, OK } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
-import { adminPb } from "$lib/adminPocketbase";
+import { adminPb } from "$lib/server/adminPocketbase";
 
 async function addPlayLevel(id: string) {
     return await adminPb.collection("5beam_levels").update(id, { "plays+": 1 });

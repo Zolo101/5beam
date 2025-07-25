@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { levelpacks, levels, usersV2 } from "$lib/clientPocketbase";
 import { apiURL } from "$lib/misc";
+import { adminPb } from "$lib/server/adminPocketbase";
 
 function formatDate(date: string) {
     // format as YYYY-MM-DD
@@ -8,7 +8,7 @@ function formatDate(date: string) {
 }
 
 async function createLevelSitemap() {
-    return (await levels.getFullList({ requestKey: null })).map(
+    return (await adminPb.collection("5beam_levels").getFullList({ requestKey: null })).map(
         (level) => `<url>
     <loc>${apiURL}/level/${level.id}</loc>
     <lastmod>${formatDate(level.updated)}</lastmod>
@@ -19,7 +19,7 @@ async function createLevelSitemap() {
 }
 
 async function createLevelpackSitemap() {
-    return (await levelpacks.getFullList()).map(
+    return (await adminPb.collection("5beam_levelpacks").getFullList()).map(
         (levelpack) => `<url>
     <loc>${apiURL}/levelpack/${levelpack.id}</loc>
     <lastmod>${formatDate(levelpack.updated)}</lastmod>
@@ -30,10 +30,10 @@ async function createLevelpackSitemap() {
 }
 
 async function createUserSitemap() {
-    return (await usersV2.getFullList()).map(
+    return (await adminPb.collection("5beam_users").getFullList()).map(
         (user) => `<url>
-    <loc>${apiURL}/user/${user.record.id}</loc>
-    <lastmod>${formatDate(user.record.updated)}</lastmod>
+    <loc>${apiURL}/user/${user.id}</loc>
+    <lastmod>${formatDate(user.updated)}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
 </url>`
@@ -41,7 +41,9 @@ async function createUserSitemap() {
 }
 
 async function mainSitemap() {
-    const lastUpdate = await levels.getFullList({ sort: "-created", limit: 1, requestKey: null });
+    const lastUpdate = await adminPb
+        .collection("5beam_levels")
+        .getFullList({ sort: "-created", limit: 1, requestKey: null });
     return `<url>
     <loc>${apiURL}</loc>
     <lastmod>${formatDate(lastUpdate[0].updated)}</lastmod>

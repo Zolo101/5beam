@@ -1,6 +1,6 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { OK, NOT_FOUND } from "$lib/server/misc";
-import { getLevelpackById, getLevelpackByIdWithLevels } from "$lib/talk/get";
+import { getLevelpackById, getLevelpackByIdWithLevels } from "$lib/server/get";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
 const schema = createObjectSchema("id", "levels");

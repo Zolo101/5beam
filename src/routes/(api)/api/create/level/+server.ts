@@ -5,7 +5,7 @@ import { PostLevelSchema } from "$lib/parse";
 import { generateThumbnail, isLevelValid } from "$lib/talk/create";
 import { levels } from "$lib/clientPocketbase";
 import type { Level, PrivateBaseUserV2 } from "$lib/types";
-import { NewLevelWebhook } from "$lib/webhook";
+import { NewLevelWebhook } from "$lib/server/webhook";
 
 export async function _createLevel(
     level: PostLevelType,

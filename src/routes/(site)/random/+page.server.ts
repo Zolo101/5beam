@@ -1,5 +1,5 @@
 import type { PageServerLoad } from "./$types";
-import { getRandomLevels } from "$lib/talk/get";
+import { getRandomLevels } from "$lib/server/get";
 import { error } from "@sveltejs/kit";
 import type { Level } from "$lib/types";
 

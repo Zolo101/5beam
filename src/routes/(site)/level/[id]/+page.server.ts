@@ -1,5 +1,5 @@
 import { error, type Actions } from "@sveltejs/kit";
-import { getLevelById, getRelatedLevels, reportKindById } from "$lib/talk/get";
+import { getLevelById, getRelatedLevels, reportKindById } from "$lib/server/get";
 import type { PageServerLoad } from "./$types";
 import { createObjectSchema } from "$lib/parse";
 

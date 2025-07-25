@@ -8,7 +8,7 @@ import type {
     Report,
     WeeklyChallenge
 } from "$lib/types";
-import { ReportWebhook } from "$lib/webhook";
+import { ReportWebhook } from "$lib/server/webhook";
 import { type RecordListOptions } from "pocketbase";
 
 export async function getDaily() {
@@ -57,7 +57,6 @@ export async function getRandomLevels(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = `modded = "${mod}"`;
 
-    // TODO: Do this function without getting every level in the database.
     return await db.getList<Level | Levelpack>(0, amount, {
         expand: "creator",
         filter: clientPb.filter(`unlisted = false && {:featured} {:mod}`, {
@@ -197,8 +196,6 @@ export async function getUserLevelpacks(
     });
 }
 
-// TODO: Make sure modules are server-side https://svelte.dev/docs/kit/server-only-modules
-// They are but I wanna guarantee it
 export async function reportKindById(
     id: string,
     reportKind: string,

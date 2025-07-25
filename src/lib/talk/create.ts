@@ -1,4 +1,3 @@
-import { dailyies, levels } from "$lib/clientPocketbase";
 import { functionsApiURL } from "$lib/misc";
 import validate from "$lib/client/FileValidator";
 
@@ -18,14 +17,4 @@ export function generateThumbnail(level: string) {
         },
         body: level
     });
-}
-
-// TODO: Wont work because of client pocketbase being used...
-export async function featureLevel(levelId: string) {
-    return levels.update(levelId, { featured: true });
-}
-
-// TODO: Wont work because of client pocketbase being used...
-export async function addDailyLevel(levelId: string) {
-    return dailyies.create({ level: levelId, featured: false });
 }

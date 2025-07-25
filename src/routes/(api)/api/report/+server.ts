@@ -1,6 +1,6 @@
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import { NOT_FOUND, OK } from "$lib/server/misc";
-import { reportKindById } from "$lib/talk/get";
+import { reportKindById } from "$lib/server/get";
 import type { RequestHandler } from "./$types";
 
 const schema = createObjectSchema("id", "reportKind", "reportReason", "reportDesc");

@@ -3,7 +3,16 @@ import { DENIED, MY_BAD, BAD, OK } from "$lib/server/misc";
 import { addDailyLevel, featureLevel } from "$lib/talk/create";
 import type { Actions } from "@sveltejs/kit";
 import { createObjectSchema } from "$lib/parse";
-import { NewFeaturedWebhook } from "$lib/webhook";
+import { NewFeaturedWebhook } from "$lib/server/webhook";
+import { adminPb } from "$lib/server/adminPocketbase";
+
+async function featureLevel(levelId: string) {
+    return adminPb.collection("5beam_levels").update(levelId, { featured: true });
+}
+
+async function addDailyLevel(levelId: string) {
+    return adminPb.collection("5beam_dailyies").create({ level: levelId, featured: false });
+}
 
 const formSchema = createObjectSchema("id");
 export const actions = {

@@ -1,5 +1,5 @@
 import { error, type Actions } from "@sveltejs/kit";
-import { getLevelpackByIdWithLevels } from "$lib/talk/get";
+import { getLevelpackByIdWithLevels } from "$lib/server/get";
 import type { PageServerLoad } from "./$types";
 import { actions as levelActions } from "../../level/[id]/+page.server";
 
