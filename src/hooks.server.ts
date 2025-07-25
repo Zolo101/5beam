@@ -3,7 +3,7 @@ import type { Handle } from "@sveltejs/kit";
 import Pocketbase from "pocketbase";
 
 // This is required for accessing protected routes, DM me if you have a site that uses 5beam and you want to be added!
-const protectedDomains = ["http://localhost:8080", "https://coppersalts.github.io"];
+const protectedDomains = ["localhost", "127.0.0.1", "coppersalts.github.io"];
 const protectedRoutes = [
     "/api/create/level",
     "/api/create/levelpack",
@@ -29,7 +29,7 @@ export const handle = (async ({ event, resolve }) => {
         event.locals.pb.authStore.clear();
     }
 
-    const origin = event.request.headers.get("origin") || "";
+    const origin = event.url.hostname;
 
     // CORS preflight (Auth)
     if (event.request.method === "OPTIONS" && event.url.pathname.startsWith("/api")) {
