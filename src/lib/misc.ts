@@ -53,6 +53,10 @@ export function formatDate_Day(date: string) {
     });
 }
 
+export function clamp(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(value, max));
+}
+
 export function sample<T>(array: T[], amount: number) {
     if (amount > array.length) throw new Error("Amount is greater than array length.");
 
@@ -144,6 +148,7 @@ export function newlineSplitter(file: string) {
 
 export const isLoggedIn = (user: PrivateBaseUserV2 | undefined) => !!user;
 
+// TODO: Why is it client side only...? This is fine lol
 /** For client-side use only */
 export const isAdmin = (user: PrivateBaseUserV2 | undefined) => user?.record.roles === "admin";
 
@@ -152,4 +157,4 @@ export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev";
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default";
 export const redirectURL = `${apiURL}/login/callback/discord`;
 export const redirectURL_html5b = `${apiURL}/login/callback/html5b`;
-export const fallbackThumbnailURL = `${apiURL}/placeholder.png`; // Normalize newlines to CRLF (level array)
+export const fallbackThumbnailURL = `${apiURL}/placeholder.png`;

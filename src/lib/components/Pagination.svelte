@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { clamp } from "$lib/misc";
     import type { Component } from "svelte";
 
     type PaginationObject = {
@@ -61,7 +62,7 @@
     }: Props<unknown> = $props();
 
     let windowWidth = $state(0);
-    let amount = $derived(Math.min(columns * Math.floor(windowWidth / 360), 8));
+    let amount = $derived(clamp(columns * Math.floor((windowWidth - 512) / 256), 1, 8));
 
     // Run updateFilters when amount changes
     // TODO: Bug where if you to go page 4 on small screens then resize, you can get softlocked
