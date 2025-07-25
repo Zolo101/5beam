@@ -1,6 +1,6 @@
 import type { Config } from "@netlify/functions";
 import type { Daily, Level } from "../src/lib/types";
-import { adminPb } from "../src/lib/adminPocketbase";
+import { adminPb } from "../src/lib/server/adminPocketbase";
 
 // netlify does not like $app/environment in misc.ts
 // import { getLevelThumbnailURL, sample } from "../src/misc";
