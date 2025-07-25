@@ -10,7 +10,6 @@ const protectedRoutes = [
     "/api/modify/level",
     "/api/modify/levelpack",
     "/api/profile",
-    "/api/login/oauth",
     "/login",
     "/logout"
 ];
@@ -45,21 +44,27 @@ export const handle = (async ({ event, resolve }) => {
 
     const response = await resolve(event);
 
-    if (protectedDomains.includes(origin)) {
-        response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-        response.headers.set("Access-Control-Allow-Origin", origin);
-
-        if (protectedRoutes.includes(event.url.pathname)) {
+    if (protectedRoutes.includes(event.url.pathname)) {
+        // Protected routes: only allow access from protected domains
+        if (protectedDomains.includes(origin)) {
+            response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            response.headers.set("Access-Control-Allow-Origin", origin);
             response.headers.set("Access-Control-Allow-Headers", "Authorization");
             response.headers.set("Access-Control-Allow-Credentials", "true");
         }
+    } else if (event.url.pathname.startsWith("/api")) {
+        // Non-protected API routes: allow access from any origin
+        response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.headers.set("Access-Control-Allow-Origin", "*");
     }
 
+    // TODO: Make this only set when origin is 5beam.zelo.dev
     response.headers.append(
         "set-cookie",
         event.locals.pb.authStore.exportToCookie({
             secure: !dev,
             httpOnly: true,
+            // TODO: Make this strict since we arent going the third party cookie route
             // its OK to use in this instance but be careful https://web.dev/articles/samesite-cookies-explained
             sameSite: "lax"
         })
