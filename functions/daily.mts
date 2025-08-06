@@ -103,40 +103,59 @@ const sendWebhook = async (level: Level) => {
     });
 };
 
-export default async () => {
-    // Plan A: Get a level thats ready to be a "daily"
-
+const attemptToCreateDaily = async () => {
     const dailyies = adminPb.collection("5beam_daily");
-
-    const dailyiesList = await dailyies.getFullList<Daily>({
-        expand: "level,level.creator",
-        filter: "featured = false"
+    const randomLevels = await adminPb.collection("5beam_levels").getList<Level>(0, 1, {
+        expand: "creator",
+        filter: "plays > 100 && featured = false && difficulty > 0 && difficulty < 7",
+        sort: "@random"
     });
 
-    const nextUp = dailyiesList[0].id;
-    await dailyies.update(nextUp, {
-        featured: true
+    const randomLevel = randomLevels.items[0];
+
+    return dailyies.create({
+        level: randomLevel.id
     });
+};
 
-    // Plan B: Add a random level (lazy...)
-    if (dailyiesList.length <= 1) {
-        const randomLevels = await adminPb.collection("5beam_levels").getList<Level>(0, 1, {
-            expand: "creator",
-            filter: "plays > 100 && featured = false && difficulty > 0 && difficulty < 7",
-            sort: "@random"
+export default async () => {
+    try {
+        // Plan A: Get a level thats ready to be a "daily"
+
+        const dailyies = adminPb.collection("5beam_daily");
+
+        const dailyiesList = await dailyies.getFullList<Daily>({
+            expand: "level,level.creator",
+            filter: "featured = false"
         });
 
-        const randomLevel = randomLevels.items[0];
-
-        await dailyies.create({
-            level: randomLevel.id
+        const nextUp = dailyiesList[0].id;
+        await dailyies.update(nextUp, {
+            featured: true
         });
 
-        // console.log(nextUp);
+        // Plan B: Add a random level (lazy...)
+        if (dailyiesList.length <= 1) {
+            // console.log(nextUp);
 
-        await sendWebhook(randomLevel);
-    } else {
-        await sendWebhook(dailyiesList[1].expand.level);
+            for (let i = 0; i < 10; i++) {
+                try {
+                    const randomLevel = await attemptToCreateDaily();
+                    if (randomLevel) {
+                        await sendWebhook(randomLevel);
+                        break;
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            console.log("Failed to create daily");
+        } else {
+            await sendWebhook(dailyiesList[1].expand.level);
+        }
+    } catch (e) {
+        console.log(e);
     }
 };
 
