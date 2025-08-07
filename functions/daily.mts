@@ -1,16 +1,6 @@
 import type { Config } from "@netlify/functions";
 import type { Daily, Level } from "../src/lib/types";
-import { adminPb } from "../src/lib/server/adminPocketbase";
-
-// netlify does not like $app/environment in misc.ts
-// import { getLevelThumbnailURL, sample } from "../src/misc";
-
-// get.ts imports misc.ts so it also has to go...
-// import { getLevelById } from "../src/talk/get";
-
-export async function getLevelById(id: string) {
-    return await adminPb.collection("5beam_levels").getOne<Level>(id, { expand: "creator" });
-}
+import Pocketbase from "pocketbase";
 
 function cleanObject(obj: Record<string, any>) {
     // TODO: Figure out why getUserLevelpacks & getUserByDiscordId gives undefined objects
@@ -103,7 +93,7 @@ const sendWebhook = async (level: Level) => {
     });
 };
 
-const attemptToCreateDaily = async () => {
+const attemptToCreateDaily = async (adminPb: Pocketbase) => {
     const dailyies = adminPb.collection("5beam_daily");
     const randomLevels = await adminPb.collection("5beam_levels").getList<Level>(0, 1, {
         expand: "creator",
@@ -121,6 +111,11 @@ const attemptToCreateDaily = async () => {
 export default async () => {
     try {
         // Plan A: Get a level thats ready to be a "daily"
+
+        const adminPb = new Pocketbase("https://cdn.zelo.dev");
+        await adminPb
+            .collection("_superusers")
+            .authWithPassword(Netlify.env.get("ADMIN_EMAIL")!, Netlify.env.get("ADMIN_PASS")!);
 
         const dailyies = adminPb.collection("5beam_daily");
 
@@ -140,7 +135,7 @@ export default async () => {
 
             for (let i = 0; i < 10; i++) {
                 try {
-                    const randomLevel = await attemptToCreateDaily();
+                    const randomLevel = await attemptToCreateDaily(adminPb);
                     if (randomLevel) {
                         await sendWebhook(randomLevel);
                         break;
