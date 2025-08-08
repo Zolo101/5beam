@@ -31,9 +31,7 @@ function cleanObject(obj: Record<string, any>) {
     return obj;
 }
 
-export function clean<T extends Record<string, unknown> | Record<string, unknown>[]>(
-    obj: T
-): T | null {
+function clean<T extends Record<string, unknown> | Record<string, unknown>[]>(obj: T): T | null {
     if (obj === undefined || obj === null) return null;
     // console.log(obj);
     if (obj.items) {
@@ -43,13 +41,27 @@ export function clean<T extends Record<string, unknown> | Record<string, unknown
     }
 }
 
-export function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
+function getCreatorName(level: Level) {
+    return level.expand.creator?.username || "Guest";
+}
+
+function makeAuthor(level: Level) {
+    return level.expand.creator
+        ? {
+              name: getCreatorName(level),
+              url: `https://5beam.zelo.dev/user/${level.expand.creator.id}`,
+              icon_url: `https://cdn.discordapp.com/avatars/${level.expand.creator.id}/${level.expand.creator.avatar}.png`
+          }
+        : { name: getCreatorName(level) };
+}
+
+function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
     return filename
         ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=335x184" : ""}`
         : `https://5beam.zelo.dev/placeholder.png`;
 }
 
-export function sample<T>(array: T[], amount: number) {
+function sample<T>(array: T[], amount: number) {
     if (amount > array.length) throw new Error("Amount is greater than array length.");
 
     const result: T[] = [];
@@ -75,16 +87,12 @@ const sendWebhook = async (level: Level) => {
                     description: level.description,
                     url: `https://5beam.zelo.dev/level/${level.id}`,
                     color: 16761344,
-                    author: {
-                        name: level.creator.global_name,
-                        url: `https://5beam.zelo.dev/user/${level.creator.id}`,
-                        icon_url: `https://cdn.discordapp.com/avatars/${level.creator.id}/${level.creator.avatar}.png`
-                    },
+                    author: makeAuthor(level),
                     image: {
                         url: getLevelThumbnailURL(level.id, level.thumbnail)
                     },
                     footer: {
-                        text: `By ${level.expand.creator.username}, ${level.plays} plays`
+                        text: `By ${getCreatorName(level)}, ${level.plays} plays`
                     },
                     timestamp: level.created
                 }
@@ -103,9 +111,14 @@ const attemptToCreateDaily = async (adminPb: Pocketbase) => {
 
     const randomLevel = randomLevels.items[0];
 
-    return dailyies.create({
-        level: randomLevel.id
-    });
+    return dailyies.create(
+        {
+            level: randomLevel.id
+        },
+        {
+            expand: "level,level.creator"
+        }
+    );
 };
 
 export default async () => {
@@ -115,7 +128,10 @@ export default async () => {
         const adminPb = new Pocketbase("https://cdn.zelo.dev");
         await adminPb
             .collection("_superusers")
-            .authWithPassword(Netlify.env.get("ADMIN_EMAIL")!, Netlify.env.get("ADMIN_PASS")!);
+            .authWithPassword(
+                Netlify.env.get("ADMIN_EMAIL_PB")!,
+                Netlify.env.get("ADMIN_PASSWORD_PB")!
+            );
 
         const dailyies = adminPb.collection("5beam_daily");
 
@@ -124,6 +140,7 @@ export default async () => {
             filter: "featured = false"
         });
 
+        // Warning: Assumes newest daily is "featured = false"
         const nextUp = dailyiesList[0].id;
         await dailyies.update(nextUp, {
             featured: true
@@ -133,19 +150,22 @@ export default async () => {
         if (dailyiesList.length <= 1) {
             // console.log(nextUp);
 
+            let randomLevel: Level | null = null;
             for (let i = 0; i < 10; i++) {
                 try {
-                    const randomLevel = await attemptToCreateDaily(adminPb);
-                    if (randomLevel) {
-                        await sendWebhook(randomLevel);
-                        break;
+                    if (!randomLevel) {
+                        randomLevel = await attemptToCreateDaily(adminPb);
                     }
                 } catch (e) {
                     console.log(e);
                 }
             }
 
-            console.log("Failed to create daily");
+            if (randomLevel) {
+                await sendWebhook(randomLevel.expand.level);
+            } else {
+                console.log("Failed to create daily");
+            }
         } else {
             await sendWebhook(dailyiesList[1].expand.level);
         }
