@@ -17,7 +17,7 @@ export const primitives = {
     discordId: z.string(),
 
     // page
-    page: z.coerce.number().int().min(1).default(1),
+    page: z.coerce.number().int().min(0).default(0),
     type: z.coerce.number().int().min(0).max(1).default(0),
     sort: z.coerce.number().int().min(0).max(2).default(0),
     featured: z.stringbool().default(false),
