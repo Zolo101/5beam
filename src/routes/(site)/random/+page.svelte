@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getRandomLevelPageClient } from "$lib/client/ClientSideAPI.js";
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
+    import Button from "$lib/components/Button.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
     import type { PageData } from "./$types";
 
@@ -12,6 +13,10 @@
 
     let randomLevelPage = $state(1);
     let randomLevels = $state(data.randomLevels);
+
+    const getMoreLevels = async () => {
+        randomLevels = await getRandomLevelPageClient(16, 0, false);
+    };
 </script>
 
 <svelte:head>
@@ -21,7 +26,10 @@
     <meta name="theme-color" content="#d10000" />
 </svelte:head>
 
-<p class="p-5 text-center text-3xl">Refresh for new random levels!</p>
+<div class="flex items-center justify-center">
+    <p class="p-5 text-center text-5xl">Random levels!</p>
+    <Button onclick={getMoreLevels} text="MORE!!" bg="#ffff00" />
+</div>
 <Pagination
     bind:page={randomLevelPage}
     bind:output={randomLevels}

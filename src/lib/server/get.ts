@@ -54,14 +54,12 @@ export async function getRandomLevels(
     mod: string
 ) {
     const db = type ? levelpacks : levels;
-    const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = `modded = "${mod}"`;
 
     return await db.getList<Level | Levelpack>(0, amount, {
         expand: "creator",
-        filter: clientPb.filter(`unlisted = false && {:featured} {:mod}`, {
-            featured: featuredFilter,
-            mod: modFilter
+        filter: clientPb.filter(`unlisted = false && featured = {:featured} && modded = {:mod}`, {
+            featured,
+            mod
         }),
         sort: "@random"
     });
