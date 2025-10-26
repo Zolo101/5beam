@@ -5,6 +5,11 @@
     import type { PageData } from "./$types";
     import type { Snippet } from "svelte";
 
+    import clouds from "$lib/assets/background_homepage/clouds.svg";
+    import moon from "$lib/assets/background_homepage/moon.svg";
+    import platforms from "$lib/assets/background_homepage/platforms.svg";
+    import stars from "$lib/assets/background_homepage/stars.svg";
+
     interface Props {
         data: PageData;
         children?: Snippet;
@@ -28,10 +33,12 @@
 
 <svelte:window bind:scrollY />
 
-<div
-    class="background fixed -z-10 h-screen w-screen bg-cover"
-    style="transform: translateY({100 - scrollY / 40}px)"
-></div>
+<div class="background fixed -z-10 h-screen w-screen bg-cover">
+    <img src={moon} alt="" />
+    <img src={stars} alt="" />
+    <img src={platforms} alt="" />
+    <img src={clouds} alt="" />
+</div>
 <Navbar {user} />
 <div class="container m-auto w-full">
     {@render children?.()}
@@ -40,9 +47,17 @@
 
 <style>
     .background {
-        background-image: url("$lib/assets/backgrounds/2.png");
+        background: linear-gradient(in oklab, #000000 100px, #777777 80%);
+        /* background-image: url("$lib/assets/backgrounds/2.png"); */
         /* This is heavy on the CPU so I'm disabling */
         /* animation: hue-rotate 10s linear infinite; */
+
+        & img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     @keyframes hue-rotate {
