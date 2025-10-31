@@ -29,7 +29,7 @@
 
 <section class="flex flex-col items-center gap-2 font-bold">
     <div class="flex items-center gap-5">
-        <span class="text-7xl">{creator.username}</span>
+        <span class="papyrus text-7xl">{creator.username}</span>
         <!-- TODO: Make this a component? -->
         <Button
             text={reportSending ? "Reported" : "Report"}
@@ -44,7 +44,7 @@
 <ReportDialog bind:open={reportMode} bind:reportSending kind="user" />
 
 <div class="flex flex-col items-center">
-    <h2>Levels</h2>
+    <h2>Spooky Levels</h2>
     {#if levels.length}
         <Pagination
             bind:page={levelPage}
@@ -58,7 +58,7 @@
         <p>User has no levels!</p>
     {/if}
     <br />
-    <h2>Levelpacks</h2>
+    <h2>Scary Levelpacks</h2>
     {#if levelpacks.length}
         <Pagination
             bind:page={levelpackPage}

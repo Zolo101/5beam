@@ -137,10 +137,10 @@
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
         <span class="px-1">::</span>
         <span class="pr-1 font-black text-purple-500">{levels.length}</span>
-        <span class="text-purple-500">levels</span>
+        <span class="text-purple-500">Spooky Levels</span>
         <span class="px-1">::</span>
-        <span class="pr-1 font-black text-green-500">{plays}</span>
-        <span class="text-green-500">plays</span>
+        <span class="pr-1 font-black text-red-500">{plays}</span>
+        <span class="text-red-500">treats collected</span>
         <span class="px-1">::</span>
         <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
     </section>
@@ -150,7 +150,7 @@
     <div class="flex w-1/5 flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"
-            bg="#4bff5d"
+            bg="#ffff5d"
             href="https://coppersalts.github.io/HTML5b?levelpack={id}"
             event="play-level"
             disabled={!!modded}

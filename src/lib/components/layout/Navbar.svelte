@@ -44,7 +44,7 @@
                 name="search"
                 class="w-full min-w-10 rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200"
                 maxlength="64"
-                placeholder="Search..."
+                placeholder="Search... if you dare..."
                 bind:value={searchText}
             />
             <a href="/upload" class="rainbow-outline">Upload</a>

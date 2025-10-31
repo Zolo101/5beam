@@ -24,9 +24,9 @@
                     velit ullamcorper faucibus. Duis ut facilisis lacus. Integer semper tincidunt
                     finibus. Morbi lacinia in ligula vel consequat.
                 </p>
-                <Button text="Play {mod}" bg="#4bff5d" href="#" event="visit-mod" />
-                <h2>Recent Levels</h2>
-                <h2>Recent Levelpacks</h2>
+                <Button text="Play {mod}" bg="#ffff5d" href="#" event="visit-mod" />
+                <h2>Recent Spooky Levels</h2>
+                <h2>Recent Scary Levelpacks</h2>
             </div>
         {/each}
     </section> -->

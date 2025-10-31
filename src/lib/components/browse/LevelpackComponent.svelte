@@ -12,7 +12,7 @@
 {#if data === null}
     <div
         class:glow
-        class="h-[192px] w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
+        class="h-[192px] w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-red-500"
     ></div>
 {:else}
     {#snippet levelpackContent()}
@@ -21,14 +21,14 @@
         <div
             class:moddedLevelpack={modded}
             class:glow
-            class="w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
+            class="w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-red-500"
         >
             <div class="flex w-full justify-center">
                 <a href="/levelpack/{id}">
                     <img
                         width="128"
                         height="128"
-                        class="rounded-xs"
+                        class="rounded-xs sepia"
                         src={Box}
                         alt="Placeholder Thumbnail"
                     />
@@ -42,7 +42,7 @@
                     {#if !modded}
                         <Button
                             text="Play"
-                            bg="#4bff5d"
+                            bg="#ffff5d"
                             href="https://coppersalts.github.io/HTML5b?levelpack={id}"
                             event="play-level"
                         />
@@ -62,7 +62,7 @@
                     </div>
                     <div class="flex items-end">
                         <Icon name="plays" width="13" height="13" />
-                        <p class="h-[15px] font-bold text-green-500">
+                        <p class="h-[15px] font-bold text-red-500">
                             {getPlaysString(plays)}
                         </p>
                     </div>

@@ -14,7 +14,7 @@
 {#if data === null}
     <div
         class:glow
-        class="flex h-[248px] w-[350px] flex-col items-center justify-center rounded-lg bg-zinc-800/70 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
+        class="flex h-[248px] w-[350px] flex-col items-center justify-center rounded-lg bg-zinc-800/70 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-red-500"
     ></div>
 {:else}
     {#snippet levelContent()}
@@ -24,7 +24,7 @@
         <div
             class:modded
             class:glow
-            class="flex h-[248px] w-[350px] flex-col items-start justify-start rounded-lg bg-zinc-800/70 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
+            class="flex h-[248px] w-[350px] flex-col items-start justify-start rounded-lg bg-zinc-800/70 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-2 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-red-500"
         >
             <div class="inline-flex h-full w-full">
                 {#key thumbnailUrl}
@@ -78,7 +78,7 @@
                             {#if !modded}
                                 <Button
                                     text="Play"
-                                    bg="#4bff5d"
+                                    bg="#ffff5d"
                                     href="https://coppersalts.github.io/HTML5b?level={id}"
                                     event="play-level"
                                     newWindow
@@ -92,7 +92,7 @@
                         </div>
                         <div class="flex items-end">
                             <Icon name="plays" width="13" height="13" />
-                            <p class="h-[15px] pl-1 font-bold text-green-500">
+                            <p class="h-[15px] pl-1 font-bold text-red-500">
                                 {getPlaysString(plays)}
                             </p>
                         </div>

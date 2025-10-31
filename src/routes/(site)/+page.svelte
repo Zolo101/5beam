@@ -46,12 +46,12 @@
         >
             <BigButton
                 text="Play BFDIA 5b!"
-                bg="#4ade80"
+                bg="#ffaa80"
                 href="https://coppersalts.github.io/HTML5b/"
                 newWindow
             />
             <div class="flex justify-between gap-4 text-3xl *:grow">
-                <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" newWindow />
+                <BigButton text="Upload a level!" bg="#ffffa8" href="/upload" newWindow />
             </div>
         </div>
     </section>
@@ -61,7 +61,7 @@
 </section>
 
 <div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
-    <p class="p-2">Daily Level</p>
+    <p class="p-2">Daily Level (not spooky)</p>
 </div>
 <section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
     <section
@@ -82,7 +82,7 @@
                 <div class="font-bold">
                     <Difficulty difficulty={dailyLevel.difficulty} includeText />
                 </div>
-                <div class="inline font-bold text-green-500">
+                <div class="inline font-bold text-red-500">
                     <Icon name="plays" width="26" height="26" />
                     <span class="drop-shadow-sm">{getPlaysString(dailyLevel.plays)}</span>
                 </div>
@@ -90,7 +90,7 @@
             <div class="**:w-full **:text-2xl">
                 <Button
                     text="Play!"
-                    bg="#4bff5d"
+                    bg="#ffff5d"
                     href="https://coppersalts.github.io/HTML5b?level={dailyLevel.id}"
                     event="play-level-daily"
                     newWindow
@@ -99,11 +99,11 @@
             </div>
         </div>
     </section>
-    <section
+    <!-- <section
         class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90 backdrop-blur-md"
     >
         <p>Weekly challenges coming soon!</p>
-    </section>
+    </section> -->
 </section>
 
 <!-- <section
@@ -120,7 +120,7 @@
     >
 </section> -->
 
-<h2>Featured Levels</h2>
+<h2>Featured Spooky Levels</h2>
 <Pagination
     bind:page={featuredLevelPage}
     bind:output={featuredLevels}
@@ -134,7 +134,7 @@
     class="mx-auto mb-4 flex max-w-[700px] items-center justify-evenly rounded-sm bg-yellow-400/20 p-3 backdrop-blur-lg backdrop-saturate-200"
 >
     <!--                    <p class="text-7xl text-blue-500 top-[85px] absolute -z-10 text-opacity-50 italic font-extrabold">?</p>-->
-    <span class="text-3xl font-bold text-yellow-300">Bored?</span>
+    <span class="text-3xl font-bold text-yellow-300">Bored to death?</span>
     <a
         href="/random"
         class="text-center text-xl text-yellow-100 hover:cursor-pointer hover:underline"
@@ -142,7 +142,7 @@
     >
 </section>
 
-<h2>Trending Levels</h2>
+<h2>Trending Spooky Levels</h2>
 <Pagination
     bind:page={trendingLevelPage}
     bind:output={trendingLevels}
@@ -152,7 +152,7 @@
     PageComponent={LevelComponent}
 />
 
-<h2>Recent Levels</h2>
+<h2>Recent Spooky Levels</h2>
 <Pagination
     bind:page={recentLevelPage}
     bind:output={recentLevels}
@@ -163,7 +163,7 @@
     PageComponent={LevelComponent}
 />
 
-<h2>Recent Levelpacks</h2>
+<h2>Recent Scary Levelpacks</h2>
 <Pagination
     bind:page={levelpackPage}
     bind:output={levelpacks}

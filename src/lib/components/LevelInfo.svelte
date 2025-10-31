@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     {#if selectedLevel.levelType === "L"}
-                        <span class="code bg-green-500/50! text-green-300 outline-green-500/80!"
+                        <span class="code bg-green-500/50! text-red-300 outline-green-500/80!"
                             >L</span
                         >
                     {:else}

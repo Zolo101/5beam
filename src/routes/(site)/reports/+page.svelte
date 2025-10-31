@@ -31,7 +31,7 @@
             <Button
                 text="Resolve"
                 event="resolve-report"
-                bg="#4bff5d"
+                bg="#ffff5d"
                 onclick={() => disableReport(report)}
                 formAction="?/resolve"
             />

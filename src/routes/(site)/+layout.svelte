@@ -47,7 +47,7 @@
 
 <style>
     .background {
-        background: linear-gradient(in oklab, #000000 100px, #777777 80%);
+        background: linear-gradient(in oklab, #0e0000 100px, #745656 80%);
         /* background-image: url("$lib/assets/backgrounds/2.png"); */
         /* This is heavy on the CPU so I'm disabling */
         /* animation: hue-rotate 10s linear infinite; */
@@ -57,6 +57,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: sepia() hue-rotate(-25deg);
         }
     }
 

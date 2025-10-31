@@ -115,11 +115,11 @@
 </svelte:head>
 
 <section class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48">
-    <div class="flex items-center gap-2">
+    <div class="flex gap-2">
         {#if featured}
             <Icon name="starred" width="56" height="56" />
         {/if}
-        <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
+        <span class="papyrus mb-2 p-2 text-6xl font-bold max-sm:text-center" class:featured>
             {title}
         </span>
     </div>
@@ -128,8 +128,8 @@
         <span class="px-1">::</span>
         <span class="font-black"><Difficulty includeText includeImage={false} {difficulty} /></span>
         <span class="px-1">::</span>
-        <span class="pr-1 font-black text-green-500">{plays}</span>
-        <span class="text-green-500">plays</span>
+        <span class="pr-1 font-black text-red-500">{plays}</span>
+        <span class="text-red-500">treats collected</span>
         <span class="px-1">::</span>
         <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
     </section>
@@ -143,7 +143,7 @@
     <div class="flex flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"
-            bg="#4bff5d"
+            bg="#ffff5d"
             href="https://coppersalts.github.io/HTML5b?level={id}"
             event="play-level"
             disabled={!!modded}
@@ -172,7 +172,7 @@
     {description}
 </p>
 
-<p class="pl-2.5 text-4xl font-bold">Similar Levels</p>
+<p class="pl-2.5 text-4xl font-bold">Similar Spooky Levels</p>
 <div class="flex flex-wrap justify-center gap-5 p-3">
     {#each relatedLevels as level}
         <LevelComponent data={level} />

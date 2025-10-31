@@ -45,6 +45,15 @@ h2 {
     @apply mx-10 p-2 text-4xl font-bold text-neutral-100;
 }
 
+@font-face {
+    font-family: "Papyrus";
+    src: url("$lib/assets/fonts/papyrus.ttf");
+}
+
+.papyrus {
+    font-family: "Papyrus", fantasy;
+}
+
 .button {
     @apply rounded-lg bg-linear-to-b px-7 shadow-md;
     background: linear-gradient(to bottom, transparent, #00000044);
@@ -66,12 +75,12 @@ svg {
     /* Animated yellow repeated gradient text color */
     background: repeating-linear-gradient(
         45deg,
-        #feb900 0%,
-        #ffed7a 20%,
-        #feb900 40%,
-        #ffed7a 60%,
-        #feb900 80%,
-        #ffed7a 100%
+        #949494 0%,
+        #ffffff 20%,
+        #949494 40%,
+        #ffffff 60%,
+        #949494 80%,
+        #ffffff 100%
     );
     background-size: 200% auto;
     /* animation: featured-gradient-move 2s linear infinite; */

@@ -24,6 +24,11 @@
 </section>
 
 <style>
+    span,
+    img {
+        filter: hue-rotate(180deg);
+    }
+
     img {
         width: 35px;
         height: 35px;

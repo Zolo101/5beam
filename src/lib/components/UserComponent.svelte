@@ -15,8 +15,8 @@
     <a
         href="/user/{id}"
         target="_self"
-        class="rounded-sm py-1 font-bold transition-colors hover:bg-neutral-300/50 hover:text-black"
-        >{username}</a
+        class="rounded-sm py-1 font-bold transition-colors hover:bg-red-300/50 hover:text-black"
+        ><span>scary</span> {username}</a
     >
 {:else}
     <span class="font-normal">{prefix}</span>
