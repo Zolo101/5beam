@@ -23,6 +23,7 @@
 </script>
 
 <svelte:head>
+    <title>5beam - Play, share and upload BFDIA 5b levels!</title>
     <meta property="og:title" content={creator.username} />
     <meta property="og:description" content="Check out {creator.username}'s levels on 5beam!" />
 </svelte:head>
