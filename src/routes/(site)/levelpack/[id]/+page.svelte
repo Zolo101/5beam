@@ -4,7 +4,7 @@
     import Button from "$lib/components/Button.svelte";
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Box from "$lib/assets/box.png";
-    import { formatDate_Day } from "$lib/misc";
+    import { formatDate_Day, getLevelThumbnailURL } from "$lib/misc";
     import Dialog from "$lib/components/Dialog.svelte";
     import Validator from "$lib/components/Validator.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";
@@ -20,7 +20,7 @@
 
     const { levelpack, user } = data;
 
-    let { id, title, description, plays, featured, creator, modded, created, levels } =
+    let { id, title, description, plays, featured, creator, modded, created, updated, levels } =
         $derived(levelpack);
 
     const creatorName = $derived(creator?.username ?? "Guest");
@@ -124,7 +124,21 @@
     <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
-<section class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48">
+<section
+    itemscope
+    itemtype="https://schema.org/CreativeWork"
+    class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48"
+>
+    <meta itemprop="author" content={creatorName} />
+    <meta itemprop="name" content={title} />
+    <meta itemprop="description" content={description} />
+    <!-- <meta itemprop="image" content={thumbnailUrl} /> -->
+    <meta itemprop="dateCreated" content={created} />
+    <meta itemprop="dateModified" content={updated} />
+    <div itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
+        <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
+        <meta itemprop="userInteractionCount" content={plays.toString()} />
+    </div>
     <div class="flex items-center gap-2">
         {#if featured}
             <Icon name="starred" width="56" height="56" />
@@ -178,14 +192,42 @@
     </div>
 </div>
 
-<p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Description</p>
-<p class="m-2 rounded-lg bg-neutral-800/90 p-3 text-2xl whitespace-pre-wrap backdrop-blur-sm">
-    {levelpack.description}
-</p>
+{#if description}
+    <p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Description</p>
+    <p class="m-2 rounded-lg bg-neutral-800/90 p-3 text-2xl whitespace-pre-wrap backdrop-blur-sm">
+        {levelpack.description}
+    </p>
+{/if}
 <p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Levels included</p>
-<div class="flex flex-wrap justify-center gap-4 pt-5">
-    {#each levels as level}
-        <LevelComponent data={level} />
+<div
+    itemscope
+    itemtype="https://schema.org/ItemList"
+    class="flex flex-wrap justify-center gap-4 pt-5"
+>
+    <meta itemprop="name" content="Levels" />
+    {#each levels as level, i}
+        <div itemprop="itemListElement" itemscope itemtype="https://schema.org/CreativeWork">
+            <meta itemprop="author" content={creatorName} />
+            <meta itemprop="name" content={level.title} />
+            <!-- This is usually just "This level is a part of..." -->
+            <!-- <meta itemprop="description" content={level.description} /> -->
+            <meta itemprop="position" content={i.toString()} />
+            <meta
+                itemprop="image"
+                content={getLevelThumbnailURL(level.id, level.thumbnail, false)}
+            />
+            <meta itemprop="dateCreated" content={level.created} />
+            <meta itemprop="dateModified" content={level.updated} />
+            <div
+                itemprop="interactionStatistic"
+                itemscope
+                itemtype="https://schema.org/InteractionCounter"
+            >
+                <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
+                <meta itemprop="userInteractionCount" content={level.plays.toString()} />
+            </div>
+            <LevelComponent data={level} />
+        </div>
     {/each}
 </div>
 
