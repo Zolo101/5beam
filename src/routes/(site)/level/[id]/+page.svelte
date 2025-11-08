@@ -33,7 +33,8 @@
         featured,
         creator,
         modded,
-        created
+        created,
+        updated
     } = $derived(level);
     const creatorName = $derived(creator?.username ?? "Guest");
     const thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail, false));
@@ -114,7 +115,21 @@
     <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
-<section class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48">
+<section
+    itemscope
+    itemtype="https://schema.org/CreativeWork"
+    class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48"
+>
+    <meta itemprop="author" content={creatorName} />
+    <meta itemprop="name" content={title} />
+    <meta itemprop="description" content={description} />
+    <meta itemprop="image" content={thumbnailUrl} />
+    <meta itemprop="dateCreated" content={created} />
+    <meta itemprop="dateModified" content={updated} />
+    <div itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
+        <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
+        <meta itemprop="userInteractionCount" content={plays.toString()} />
+    </div>
     <div class="flex items-center gap-2">
         {#if featured}
             <Icon name="starred" width="56" height="56" />
@@ -135,11 +150,7 @@
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6 max-md:flex-col">
-    <img
-        class="rounded-sm object-contain shadow-xl"
-        src={thumbnailUrl}
-        alt="Placeholder Thumbnail"
-    />
+    <img class="rounded-sm object-contain shadow-xl" src={thumbnailUrl} alt="Level thumbnail" />
     <div class="flex flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"
@@ -166,11 +177,12 @@
     </div>
 </div>
 
-<p class="pl-2.5 text-4xl font-bold">Description</p>
-<p class="m-2 rounded-lg bg-neutral-800/90 p-3 text-2xl whitespace-pre-wrap backdrop-blur-sm">
-    <!-- TODO: Add "No description in italic if empty" -->
-    {description}
-</p>
+{#if description}
+    <p class="pl-2.5 text-4xl font-bold">Description</p>
+    <p class="m-2 rounded-lg bg-neutral-800/90 p-3 text-2xl whitespace-pre-wrap backdrop-blur-sm">
+        {description}
+    </p>
+{/if}
 
 <p class="pl-2.5 text-4xl font-bold">Similar Levels</p>
 <div class="flex flex-wrap justify-center gap-5 p-3">
