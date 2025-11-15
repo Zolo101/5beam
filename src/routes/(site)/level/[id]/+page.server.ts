@@ -1,16 +1,11 @@
-import { error, type Actions } from "@sveltejs/kit";
+import { type Actions } from "@sveltejs/kit";
 import { getLevelById, getRelatedLevels, reportKindById } from "$lib/server/get";
 import type { PageServerLoad } from "./$types";
 import { createObjectSchema } from "$lib/parse";
 
 export const load: PageServerLoad = async ({ params }) => {
     const level = await getLevelById(params.id);
-
     const relatedLevels = await getRelatedLevels(level);
-
-    if (!level) {
-        throw error(404, "Level not found");
-    }
     return { level, relatedLevels };
 };
 
