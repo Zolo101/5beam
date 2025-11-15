@@ -1,18 +1,11 @@
-// TODO: Remove client pocketbase imports -- Secure but we dont wanna use them
 import { dailyies, levelpacks, levels, clientPb, usersV2, weeklies } from "$lib/clientPocketbase";
-import type {
-    Daily,
-    Level,
-    Levelpack,
-    PrivateBaseUserV2,
-    Report,
-    WeeklyChallenge
-} from "$lib/types";
+import type { Level, Levelpack, Report } from "$lib/types";
 import { ReportWebhook } from "$lib/server/webhook";
-import { type RecordListOptions } from "pocketbase";
+import { ClientResponseError, type RecordListOptions } from "pocketbase";
+import { error } from "@sveltejs/kit";
 
 export async function getDaily() {
-    const daily = await dailyies.getList<Daily>(1, 1, {
+    const daily = await dailyies.getList(1, 1, {
         filter: "featured = false",
         expand: "level,level.creator"
     });
@@ -21,7 +14,7 @@ export async function getDaily() {
 }
 
 export async function getWeeklyChallenge() {
-    return await weeklies.getList<WeeklyChallenge>(1, 1, {
+    return await weeklies.getList(1, 1, {
         expand: "creator",
         sort: "-created"
     });
@@ -39,7 +32,7 @@ export async function getLevels(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
-    return await levels.getList<Level>(page, amount, {
+    return await levels.getList(page, amount, {
         expand: "creator",
         sort,
         filter: featuredFilter + modFilter,
@@ -55,14 +48,23 @@ export async function getRandomLevels(
 ) {
     const db = type ? levelpacks : levels;
 
-    return await db.getList<Level | Levelpack>(0, amount, {
-        expand: "creator",
-        filter: clientPb.filter(`unlisted = false && featured = {:featured} && modded = {:mod}`, {
-            featured,
-            mod
-        }),
-        sort: "@random"
-    });
+    return query(
+        () =>
+            db.getList<Level | Levelpack>(0, amount, {
+                expand: "creator",
+                filter: clientPb.filter(
+                    `unlisted = false && featured = {:featured} && modded = {:mod}`,
+                    {
+                        featured,
+                        mod
+                    }
+                ),
+                sort: "@random"
+            }),
+        {
+            404: "Could not get random levels"
+        }
+    );
 }
 
 export async function getLevelpacks(
@@ -77,7 +79,7 @@ export async function getLevelpacks(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
-    return await levelpacks.getList<Levelpack>(page, amount, {
+    return await levelpacks.getList(page, amount, {
         expand: "creator",
         sort,
         filter: featuredFilter + modFilter,
@@ -87,23 +89,33 @@ export async function getLevelpacks(
 
 // TODO: Merge with getLevelpackById
 export async function getLevelpackByIdWithLevels(id: string) {
-    return await levelpacks.getOne<
-        Omit<Levelpack, "levels"> & {
-            levels: Level[];
+    return query(
+        () =>
+            levelpacks.getOne<
+                Omit<Levelpack, "levels"> & {
+                    levels: Level[];
+                }
+            >(id, { expand: "creator, levels.creator" }),
+        {
+            404: "Levelpack not found"
         }
-    >(id, { expand: "creator, levels.creator" });
+    );
 }
 
 export async function getLevelById(id: string) {
-    return await levels.getOne<Level>(id, { expand: "creator" });
+    return query(() => levels.getOne<Level>(id, { expand: "creator" }), {
+        404: "Level not found"
+    });
 }
 
 export async function getLevelpackById(id: string) {
-    return await levelpacks.getOne<Levelpack>(id, { expand: "creator" });
+    return query(() => levelpacks.getOne(id, { expand: "creator" }), {
+        404: "Levelpack not found"
+    });
 }
 
 export async function getRelatedLevels(level: Level) {
-    return await levels.getList<Level>(1, 4, {
+    return await levels.getList(1, 4, {
         filter: clientPb.filter(`id != {:id} && modded = {:modded} && difficulty = {:difficulty}`, {
             id: level.id,
             modded: level.modded,
@@ -125,7 +137,7 @@ export async function getTrendingLevels(
     const date = new Date(Date.now() - range).toISOString().replace("T", " ").substring(0, 19);
     const filter = clientPb.filter(modFilter + " && created >= {:date}", { date });
 
-    return await levels.getList<Level>(page, amount, {
+    return await levels.getList(page, amount, {
         expand: "creator",
         sort: "-plays",
         filter,
@@ -139,14 +151,16 @@ export async function getSearch(
     amount: number,
     mod: string | undefined
 ) {
-    return await levels.getList<Level>(page, amount, {
+    return await levels.getList(page, amount, {
         expand: "creator",
         filter: clientPb.filter(`title ~ {:text} && modded = {:mod}`, { text, mod })
     });
 }
 
 export async function getUserById(id: string) {
-    return await usersV2.getOne<PrivateBaseUserV2["record"]>(id);
+    return query(() => usersV2.getOne(id), {
+        404: "User not found"
+    });
 }
 
 // TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
@@ -164,7 +178,7 @@ export async function getUserLevels(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
-    return await levels.getList<Level>(page, amount, {
+    return await levels.getList(page, amount, {
         expand: "creator",
         sort,
         filter: creatorFilter + featuredFilter + modFilter,
@@ -186,7 +200,7 @@ export async function getUserLevelpacks(
     const featuredFilter = featured ? "featured = true && " : "";
     const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
-    return await levelpacks.getList<Levelpack>(page, amount, {
+    return await levelpacks.getList(page, amount, {
         expand: "creator",
         sort,
         filter: creatorFilter + featuredFilter + modFilter,
@@ -209,6 +223,18 @@ export async function reportKindById(
 
     await ReportWebhook.send(report);
     return report;
+}
+
+export async function query<T>(func: () => Promise<T>, r: Record<number, string>) {
+    try {
+        return await func();
+    } catch (e) {
+        const {
+            response: { status }
+        } = e as ClientResponseError;
+
+        throw error(status, r[status] || "An unknown error occurred");
+    }
 }
 
 // Pocketbase gives results in a weird format,
