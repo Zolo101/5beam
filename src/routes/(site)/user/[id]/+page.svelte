@@ -23,9 +23,12 @@
 </script>
 
 <svelte:head>
+    <!-- TODO: temp for now, decide whether or not we should have the username on the title -->
+    <!-- if we do it, their username may appear on google search page which people might not want -->
     <title>5beam - Play, share and upload BFDIA 5b levels!</title>
     <meta property="og:title" content={creator.username} />
     <meta property="og:description" content="Check out {creator.username}'s levels on 5beam!" />
+    <meta property="description" content="Check out {creator.username}'s levels on 5beam!" />
 </svelte:head>
 
 <section class="flex flex-col items-center gap-2 font-bold">

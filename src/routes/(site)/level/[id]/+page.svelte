@@ -112,6 +112,7 @@
     <meta property="og:title" content={title + " by " + creatorName} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={thumbnailUrl} />
+    <meta property="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 

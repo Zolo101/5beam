@@ -89,6 +89,7 @@
 
 {#if !removeOptions}
     <div
+        data-nosnippet
         class="mb-3 ml-5 *:mx-1 *:cursor-pointer *:rounded *:bg-neutral-800 *:p-2 *:text-neutral-50 *:shadow *:transition-colors *:hover:bg-neutral-700"
     >
         <select name="filter" bind:value={featured} onchange={resetPage}>

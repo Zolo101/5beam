@@ -13,7 +13,7 @@
         <span>•</span>
         <a class="hover:underline" href="/api"><FiveBStyle text="5beam API" /></a>
     </div>
-    <div>
+    <div data-nosnippet>
         <FiveBStyle text="5beam is not affiliated with Jacknjellify." />
     </div>
 </footer>
