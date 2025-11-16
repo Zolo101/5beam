@@ -23,7 +23,6 @@
 </script>
 
 <svelte:head>
-    <title>5beam - Play, share and upload BFDIA 5b levels!</title>
     <meta name="theme-color" content="#d10000" />
     <script
         defer
