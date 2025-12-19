@@ -6,14 +6,20 @@ import { generateThumbnail, isLevelValid } from "$lib/talk/create";
 import { levels } from "$lib/clientPocketbase";
 import type { Level, PrivateBaseUserV2 } from "$lib/types";
 import { NewLevelWebhook } from "$lib/server/webhook";
+import { getLevelDataHash, isLevelUniqueToUser } from "$lib/server/hash";
+import { DuplicateError, InvalidError } from "$lib/server/errors";
 
 export async function _createLevel(
     level: PostLevelType,
     user: PrivateBaseUserV2,
     silent: boolean = false
 ) {
+    // If the level is a duplicate, throw an error
+    const duplicateLevels = await isLevelUniqueToUser(level.file, user.record.id);
+    if (duplicateLevels.length > 0) throw new DuplicateError(duplicateLevels![0].id);
+
     // If it's not modded, validate again, and if so throw error
-    if (!level.modded && !isLevelValid(level.file)) throw new Error("Invalid level");
+    if (!level.modded && !isLevelValid(level.file)) throw new InvalidError();
 
     const thumbnail = await generateThumbnail(level.file);
 
@@ -22,6 +28,7 @@ export async function _createLevel(
     levelFormData.append("title", level.title);
     levelFormData.append("description", level.description);
     levelFormData.append("data", level.file);
+    levelFormData.append("dataHash", await getLevelDataHash(level.file));
     if (thumbnail && thumbnail.ok) levelFormData.append("thumbnail", await thumbnail.blob());
     levelFormData.append("modded", level.modded);
     if (level.difficulty) {
@@ -56,8 +63,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
         } catch (e) {
             console.error(e);
 
-            // TODO: It's not always "My Bad in this instance (see validateLevel)
-            return MY_BAD(e instanceof Error ? e.message : "Unknown error");
+            if (e instanceof DuplicateError) {
+                return BAD("You've already uploaded this level!");
+            } else if (e instanceof InvalidError) {
+                return BAD("The level data is invalid or corrupted.");
+            } else {
+                return MY_BAD(e instanceof Error ? e.message : "Unknown error");
+            }
         }
     } catch (e) {
         console.error(e);
