@@ -57,6 +57,10 @@ export function clamp(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max));
 }
 
+export function snap(value: number, gridSize: number) {
+    return Math.round(value / gridSize) * gridSize;
+}
+
 export function sample<T>(array: T[], amount: number) {
     if (amount > array.length) throw new Error("Amount is greater than array length.");
 

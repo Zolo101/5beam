@@ -1,6 +1,9 @@
 import { apiURL, URLParamSet } from "$lib/misc";
 import type { PocketbaseUser } from "$lib/types";
 
+// TODO: Remove all of these (use sveltekit stuff)
+
+/** @deprecated */
 export async function postModifyLevelClient(payload: Record<string, unknown>, id: string) {
     const url = new URL(`${apiURL}/api/modify/level`);
     URLParamSet(url, "id", id);
@@ -11,6 +14,7 @@ export async function postModifyLevelClient(payload: Record<string, unknown>, id
     return call.json();
 }
 
+/** @deprecated */
 export async function postModifyLevelpackClient(payload: Record<string, unknown>, id: string) {
     const url = new URL(`${apiURL}/api/modify/levelpack`);
     URLParamSet(url, "id", id);
@@ -21,6 +25,7 @@ export async function postModifyLevelpackClient(payload: Record<string, unknown>
     return call.json();
 }
 
+/** @deprecated */
 export async function postCreateLevelClient(payload: Record<string, unknown>) {
     const url = new URL(`${apiURL}/api/create/level`);
     const call = await fetch(url.toString(), {
@@ -30,6 +35,7 @@ export async function postCreateLevelClient(payload: Record<string, unknown>) {
     return call.json();
 }
 
+/** @deprecated */
 export async function postCreateLevelpackClient(payload: Record<string, unknown>) {
     const url = new URL(`${apiURL}/api/create/levelpack`);
     const call = await fetch(url.toString(), {
@@ -39,6 +45,7 @@ export async function postCreateLevelpackClient(payload: Record<string, unknown>
     return call.json();
 }
 
+/** @deprecated */
 export async function getLevelPageClient(
     page: number,
     type?: number,
@@ -57,6 +64,7 @@ export async function getLevelPageClient(
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getTrendingLevelPageClient(page: number, amount?: number) {
     const url = new URL(`${apiURL}/api/page/trending`);
     URLParamSet(url, "page", page);
@@ -64,6 +72,7 @@ export async function getTrendingLevelPageClient(page: number, amount?: number) 
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getRandomLevelPageClient(
     amount: number,
     type?: number,
@@ -79,6 +88,7 @@ export async function getRandomLevelPageClient(
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getLevelClient(id: string) {
     const url = new URL(`${apiURL}/api/level`);
     URLParamSet(url, "id", id);
@@ -86,6 +96,7 @@ export async function getLevelClient(id: string) {
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getLevelpackClient(id: string, levels: number) {
     const url = new URL(`${apiURL}/api/levelpack`);
     URLParamSet(url, "id", id);
@@ -94,6 +105,7 @@ export async function getLevelpackClient(id: string, levels: number) {
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getSearchClient(text: string, amount?: number, mod?: string) {
     const url = new URL(`${apiURL}/api/search`);
     URLParamSet(url, "text", text);
@@ -103,6 +115,7 @@ export async function getSearchClient(text: string, amount?: number, mod?: strin
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getUserByIdClient(id: string): Promise<PocketbaseUser> {
     const url = new URL(`${apiURL}/api/user`);
     URLParamSet(url, "id", id);
@@ -110,6 +123,7 @@ export async function getUserByIdClient(id: string): Promise<PocketbaseUser> {
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getUserByDiscordIdClient(discordId: number) {
     const url = new URL(`${apiURL}/api/user`);
     URLParamSet(url, "discordId", discordId);
@@ -117,6 +131,7 @@ export async function getUserByDiscordIdClient(discordId: number) {
     return callAPI(url);
 }
 
+/** @deprecated */
 export async function getUserLevelPageClient(
     id: string,
     page: number,
@@ -138,6 +153,7 @@ export async function getUserLevelPageClient(
     return callAPI(url);
 }
 
+/** @deprecated */
 async function callAPI(url: URL) {
     const call = await fetch(url.toString(), {
         method: "GET"

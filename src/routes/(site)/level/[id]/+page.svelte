@@ -3,18 +3,19 @@
     import UserComponent from "$lib/components/UserComponent.svelte";
     import Button from "$lib/components/Button.svelte";
     import Difficulty from "$lib/components/Difficulty.svelte";
-    import { formatDate_Day, getLevelThumbnailURL } from "$lib/misc";
+    import { clamp, formatDate_Day, getLevelThumbnailURL, snap } from "$lib/misc";
     import Icon from "$lib/components/Icon.svelte";
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";
     import Dropzone from "svelte-file-dropzone";
-    import { generateThumbnail } from "$lib/talk/create";
+    import { generateThumbnail, generateThumbnailFull } from "$lib/talk/create";
     import LevelInfo from "$lib/components/LevelInfo.svelte";
     import validate from "$lib/client/FileValidator";
     import BigButton from "$lib/components/BigButton.svelte";
     import { postModifyLevelClient } from "$lib/client/ClientSideAPI";
     import ReportDialog from "$lib/components/ReportDialog.svelte";
+    import { editThumbnail } from "$lib/thumbnail.remote";
 
     interface Props {
         data: PageData;
@@ -37,10 +38,119 @@
         updated
     } = $derived(level);
     const creatorName = $derived(creator?.username ?? "Guest");
-    const thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail, false));
+    let thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail, false));
     let editMode = $state(false);
     let editSending = $derived(false);
     let showDifference = $state(false);
+
+    let showThumbnailDialog = $state(false);
+    let cropX = $state(0);
+    let cropY = $state(0);
+    let isDragging = $state(false);
+    let dragStartX = $state(0);
+    let dragStartY = $state(0);
+    let initialCropX = $state(0);
+    let initialCropY = $state(0);
+    let fullThumbnailSize = $state({ width: 0, height: 0 });
+    let displayedSize = $state({ width: 0, height: 0, offsetX: 0, offsetY: 0 });
+
+    const CROP_WIDTH = 960;
+    const CROP_HEIGHT = 540;
+
+    // Scale factor between displayed and natural image size
+    let scale = $derived(
+        fullThumbnailSize.width > 0 ? displayedSize.width / fullThumbnailSize.width : 1
+    );
+    let scaledCropWidth = $derived(CROP_WIDTH * scale);
+    let scaledCropHeight = $derived(CROP_HEIGHT * scale);
+
+    function handleMouseDown(e: MouseEvent) {
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+
+        // Check if click is within the actual image area (accounting for object-contain)
+        if (
+            clickX >= displayedSize.offsetX &&
+            clickX <= displayedSize.offsetX + displayedSize.width &&
+            clickY >= displayedSize.offsetY &&
+            clickY <= displayedSize.offsetY + displayedSize.height
+        ) {
+            // Convert click position to natural image coordinates
+            const imageClickX = (clickX - displayedSize.offsetX) / scale;
+            const imageClickY = (clickY - displayedSize.offsetY) / scale;
+
+            // Center the crop rectangle at the click position
+            const maxX = Math.max(0, fullThumbnailSize.width - CROP_WIDTH);
+            const maxY = Math.max(0, fullThumbnailSize.height - CROP_HEIGHT);
+
+            cropX = snap(clamp(imageClickX - CROP_WIDTH / 2, 0, maxX), 30);
+            cropY = snap(clamp(imageClickY - CROP_HEIGHT / 2, 0, maxY), 30);
+        }
+
+        isDragging = true;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        initialCropX = cropX;
+        initialCropY = cropY;
+
+        // Attach global listeners for dragging outside the container
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
+    }
+
+    function handleMouseMove(e: MouseEvent) {
+        if (!isDragging) return;
+
+        const deltaX = (e.clientX - dragStartX) / scale;
+        const deltaY = (e.clientY - dragStartY) / scale;
+
+        const maxX = Math.max(0, fullThumbnailSize.width - CROP_WIDTH);
+        const maxY = Math.max(0, fullThumbnailSize.height - CROP_HEIGHT);
+
+        cropX = snap(clamp(initialCropX + deltaX, 0, maxX), 30);
+        cropY = snap(clamp(initialCropY + deltaY, 0, maxY), 30);
+    }
+
+    function handleMouseUp() {
+        isDragging = false;
+
+        // Remove global listeners
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    function handleImageLoad(e: Event) {
+        const img = e.target as HTMLImageElement;
+        fullThumbnailSize = { width: img.naturalWidth, height: img.naturalHeight };
+
+        // Calculate displayed size accounting for object-contain
+        const containerWidth = img.clientWidth;
+        const containerHeight = img.clientHeight;
+        const imgAspect = img.naturalWidth / img.naturalHeight;
+        const containerAspect = containerWidth / containerHeight;
+
+        let displayWidth, displayHeight, offsetX, offsetY;
+        if (imgAspect > containerAspect) {
+            // Image is wider - fits width, letterboxed vertically
+            displayWidth = containerWidth;
+            displayHeight = containerWidth / imgAspect;
+            offsetX = 0;
+            offsetY = (containerHeight - displayHeight) / 2;
+        } else {
+            // Image is taller - fits height, pillarboxed horizontally
+            displayHeight = containerHeight;
+            displayWidth = containerHeight * imgAspect;
+            offsetX = (containerWidth - displayWidth) / 2;
+            offsetY = 0;
+        }
+
+        displayedSize = { width: displayWidth, height: displayHeight, offsetX, offsetY };
+
+        // Center the crop initially
+        cropX = Math.max(0, (img.naturalWidth - CROP_WIDTH) / 2);
+        cropY = Math.max(0, (img.naturalHeight - CROP_HEIGHT) / 2);
+    }
 
     let reportMode = $state(false);
     let reportSending = $state(false);
@@ -94,6 +204,34 @@
             });
     }
 
+    async function editLevelThumbnail() {
+        // @ts-ignore
+        window.umami?.track("edit-level-thumbnail");
+
+        try {
+            // for the server
+            const newThumbnailURL = await editThumbnail({
+                id,
+                data: level.data,
+                x: cropX,
+                y: cropY
+            });
+
+            // for the client
+            thumbnailUrl = getLevelThumbnailURL(id, newThumbnailURL);
+            showThumbnailDialog = false;
+        } catch (err) {
+            console.error(err);
+
+            // @ts-ignore
+            window.umami?.track("edit-level-thumbnail-failed");
+
+            alert(
+                "Unfortunately your thumbnail update has failed. Please contact @zelo101 on discord with your level(s)."
+            );
+        }
+    }
+
     let eventStore = $state<CustomEvent<{ acceptedFiles: File[] }>>();
     let file = $derived(eventStore?.detail?.acceptedFiles[0]);
     let levelDataJSON = $derived.by(async () => {
@@ -112,6 +250,7 @@
     <meta property="og:title" content={title + " by " + creatorName} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={thumbnailUrl} />
+    <meta property="description" content={description} />
     <meta property="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
@@ -151,7 +290,17 @@
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6 max-md:flex-col">
-    <img class="rounded-sm object-contain shadow-xl" src={thumbnailUrl} alt="Level thumbnail" />
+    <div class="relative">
+        <img class="rounded-sm object-contain shadow-xl" src={thumbnailUrl} alt="Level thumbnail" />
+        {#if isOwner || data.admin}
+            <button
+                onclick={() => (showThumbnailDialog = true)}
+                class="absolute top-2 right-2 cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors hover:bg-neutral-900"
+            >
+                Change thumbnail
+            </button>
+        {/if}
+    </div>
     <div class="flex flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"
@@ -193,6 +342,71 @@
 </div>
 
 <ReportDialog bind:open={reportMode} bind:reportSending kind="level" />
+
+<Dialog bind:open={showThumbnailDialog}>
+    <div class="relative flex w-full flex-col items-center gap-5 rounded-lg p-5 text-xl">
+        <div class="flex text-5xl">
+            <FiveBStyle text="Change Thumbnail" />
+        </div>
+        <p class="text-sm text-neutral-400">Drag the selection box to choose the thumbnail area</p>
+        {#await generateThumbnailFull(level.data)}
+            <div class="m-auto flex h-[60vh] w-[50vw] items-center justify-center">
+                <p>Loading full thumbnail...</p>
+            </div>
+        {:then fullThumbnail}
+            {#await fullThumbnail.blob()}
+                <div class="m-auto flex h-[60vh] w-[50vw] items-center justify-center">
+                    <p>Loading full thumbnail...</p>
+                </div>
+            {:then fullThumbnailBlob}
+                <!-- svelte-ignore a11y_no_static_element_interactions -->
+                <div class="relative overflow-hidden select-none" onmousedown={handleMouseDown}>
+                    <img
+                        src={URL.createObjectURL(fullThumbnailBlob)}
+                        alt="Full Level Thumbnail"
+                        class="block max-h-[60vh] max-w-full object-contain"
+                        onload={handleImageLoad}
+                        draggable="false"
+                    />
+                    <!-- Darkened overlay (only over the image area) -->
+                    <div
+                        class="pointer-events-none absolute bg-black/60"
+                        style="
+                            left: {displayedSize.offsetX}px;
+                            top: {displayedSize.offsetY}px;
+                            width: {displayedSize.width}px;
+                            height: {displayedSize.height}px;
+                        "
+                    ></div>
+                    <!-- Selection rectangle (cutout) -->
+                    <div
+                        class="pointer-events-none absolute border-2 border-white shadow-lg"
+                        style="
+                            left: {displayedSize.offsetX + cropX * scale}px;
+                            top: {displayedSize.offsetY + cropY * scale}px;
+                            width: {scaledCropWidth}px;
+                            height: {scaledCropHeight}px;
+                            background: url({URL.createObjectURL(fullThumbnailBlob)});
+                            background-size: {displayedSize.width}px {displayedSize.height}px;
+                            background-position: -{cropX * scale}px -{cropY * scale}px;
+                            cursor: move;
+                        "
+                    ></div>
+                </div>
+                <p class="text-sm text-neutral-400">
+                    Selection: ({Math.round(cropX / 30)}, {Math.round(cropY / 30)})
+                </p>
+            {/await}
+        {:catch error}
+            <div class="m-auto text-sm">Unable to load full thumbnail...</div>
+        {/await}
+
+        <div class="flex justify-end gap-2">
+            <Button text="Save" bg="#a8ff00" onclick={editLevelThumbnail} />
+            <Button text="Close" bg="#cccccc" onclick={() => (showThumbnailDialog = false)} />
+        </div>
+    </div>
+</Dialog>
 
 <Dialog bind:open={editMode}>
     <div class="relative flex gap-5 overflow-hidden rounded-lg p-5 text-xl">

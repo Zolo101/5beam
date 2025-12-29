@@ -1,9 +1,13 @@
 import { adminPb } from "./adminPocketbase";
 
+// Note: we cannot use Buffer, thats node.js only, also
+// we cannot use .toHex() as its too new
 export async function getLevelDataHash(levelData: string) {
     const levelDataUint8 = new TextEncoder().encode(levelData);
     const hashBuffer = await crypto.subtle.digest("SHA-256", levelDataUint8);
-    const hash = Buffer.from(hashBuffer).toString("hex");
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hash = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+
     return hash;
 }
 
