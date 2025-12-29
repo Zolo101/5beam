@@ -55,7 +55,7 @@
     let displayedSize = $state({ width: 0, height: 0, offsetX: 0, offsetY: 0 });
 
     const CROP_WIDTH = 960;
-    const CROP_HEIGHT = 640;
+    const CROP_HEIGHT = 540;
 
     // Scale factor between displayed and natural image size
     let scale = $derived(
