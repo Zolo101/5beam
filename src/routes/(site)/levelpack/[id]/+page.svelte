@@ -161,7 +161,7 @@
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6">
-    <Carousel {levels} showIndex autoPlay />
+    <Carousel height={540} width={960} {levels} showIndex autoPlay />
     <div class="flex w-1/5 flex-col justify-center gap-5 text-3xl font-bold">
         <BigButton
             text="Play"

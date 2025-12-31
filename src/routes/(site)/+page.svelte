@@ -57,7 +57,7 @@
         </div>
     </section>
     <aside>
-        <Carousel levels={featuredLevels} autoPlay details />
+        <Carousel height={450} width={800} levels={featuredLevels} autoPlay details />
     </aside>
 </section>
 
