@@ -15,6 +15,7 @@ export type Level = {
 
     thumbnail: string;
 
+    unlisted: boolean;
     modded: string;
 };
 
@@ -33,6 +34,8 @@ export type Levelpack = {
     featured: boolean;
 
     modded: string;
+
+    unlisted: boolean;
 
     // TODO: thumbnail property?
 };

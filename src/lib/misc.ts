@@ -73,6 +73,15 @@ export function sample<T>(array: T[], amount: number) {
     return result;
 }
 
+export function zip<T, U>(a: T[], b: U[]): [T, U][] {
+    const length = Math.min(a.length, b.length);
+    const result: [T, U][] = [];
+    for (let i = 0; i < length; i++) {
+        result.push([a[i], b[i]]);
+    }
+    return result;
+}
+
 export function to5bLevelFormat(number: number) {
     return number.toString().padStart(3, "0");
 }
@@ -91,7 +100,7 @@ export function getLevelThumbnailURL(id: string, filename: string, mini: boolean
 }
 
 // if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
-export function readBlobInANSI(blob: Blob) {
+export function readBlobInANSI(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (event) => {
