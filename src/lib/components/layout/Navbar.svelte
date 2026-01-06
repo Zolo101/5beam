@@ -1,7 +1,6 @@
 <script lang="ts">
     import { fade } from "svelte/transition";
     import Logo from "./Logo.svelte";
-    import { getSearchClient } from "$lib/client/ClientSideAPI";
     import type { PocketbaseUser } from "$lib/types";
     import { enhance } from "$app/forms";
     import { page } from "$app/state";
@@ -12,25 +11,14 @@
     let { user = $bindable() }: { user: PocketbaseUser } = $props();
     let { admin, loggedIn } = $derived(page.data);
 
-    let searchFocused = $state(false);
     let dropdownOpen = $state(false);
-
-    let searchResults = $state([]);
-    let searchText = $state("");
-
-    $effect(() => {
-        searchFocused = searchText.length > 0;
-        if (searchFocused) {
-            getSearchClient(searchText).then((results) => {
-                searchResults = results;
-            });
-        }
-    });
 </script>
 
 <nav class="flex items-center justify-center bg-black p-1.5 text-neutral-200">
-    <div class="container m-auto mx-5 flex h-24 grow justify-between pt-2">
-        <Logo />
+    <div class="container m-auto mx-5 flex h-24 grow pt-2">
+        <div class="flex flex-1 items-center justify-start">
+            <Logo />
+        </div>
         <section class="flex items-center gap-5 text-3xl font-medium">
             <a href="/discover">Discover</a>
             <span>•</span>
@@ -38,7 +26,7 @@
             <span>•</span>
             <a href="https://discord.gg/Xm8xzhEFjy" target="_blank">Discuss</a>
         </section>
-        <div class="list mb-1 flex flex-row items-center gap-3 text-xl">
+        <div class="list mb-1 flex flex-1 flex-row items-center justify-end gap-3 text-xl">
             {#if loggedIn}
                 <div class="relative flex items-center gap-2">
                     <button
@@ -63,7 +51,7 @@
                     {#if dropdownOpen}
                         <div
                             transition:fade={{ duration: 100 }}
-                            class="dropdown absolute top-full right-0 z-10 mt-1 flex w-48 flex-col gap-1 rounded-sm bg-stone-800 py-2 shadow-lg"
+                            class="dropdown absolute top-full right-0 z-10 mt-1 flex w-48 flex-col gap-1 rounded-sm bg-zinc-800 py-2 shadow-lg"
                         >
                             <span class="text-center text-sm">{user?.record.username}</span>
                             <a
@@ -115,45 +103,6 @@
     </div>
 </nav>
 
-<!-- {#if uploadDialogOpen}
-    <UploadDialog {loggedIn} />
-{/if} -->
-
-<!-- {#if searchFocused}
-    <div
-        transition:fly={{ y: 500 }}
-        class="absolute top-24 z-20 w-full bg-black/80 py-10 shadow-2xl backdrop-blur-md"
-    >
-        <div class="flex flex-col gap-5">
-            <div
-                class="mx-10 flex justify-between text-6xl transition-colors"
-                style:color={!searchResults.length ? "#ff7b7b" : "#e5e5e5"}
-            >
-                <div>
-                    <FiveBStyle text={searchText} />
-                </div>
-                <button
-                    class="font-black transition-transform hover:scale-120"
-                    onclick={() => (searchText = "")}>✕</button
-                >
-            </div>
-            {#if searchResults.length}
-                <div class="flex w-full flex-wrap justify-center gap-4">
-                    <Pagination
-                        callback={({ amount }) => getSearchClient(searchText, amount)}
-                        columns={2}
-                        removeOptions
-                        removeMovement
-                        PageComponent={LevelComponent}
-                    />
-                </div>
-            {:else}
-                <p class="w-full text-center text-4xl">No results...</p>
-            {/if}
-        </div>
-    </div>
-{/if} -->
-
 <style>
     /* nav {
         background: linear-gradient(
@@ -168,7 +117,7 @@
         :global(button) {
             cursor: pointer;
             border-radius: 0.375rem;
-            background: var(--color-stone-800);
+            background: var(--color-zinc-800);
             color: var(--color-neutral-200);
             /* box-shadow: var(--tw-drop-shadow-2xl); */
             transition:
@@ -179,7 +128,7 @@
 
         a:hover,
         :global(button):hover {
-            background: var(--color-stone-700);
+            background: var(--color-zinc-700);
             /* @apply bg-neutral-900; */
         }
     }
