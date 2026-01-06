@@ -177,12 +177,6 @@ ul {
     padding: 10px;
 }
 
-/* Log */
-
-.log {
-    @apply my-2 rounded p-2 font-bold shadow drop-shadow *:gap-2;
-}
-
-.icon {
-    @apply text-2xl;
+.glow {
+    filter: drop-shadow(0 0 4px rgba(255, 223, 82, 0.7));
 }
