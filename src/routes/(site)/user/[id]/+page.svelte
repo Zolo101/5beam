@@ -7,6 +7,7 @@
     import { formatDate_Day } from "$lib/misc";
     import ReportDialog from "$lib/components/ReportDialog.svelte";
     import Button from "$lib/components/Button.svelte";
+    import { getUserLevelpacks, getUserLevels } from "$lib/get.remote";
 
     interface Props {
         data: PageData;
@@ -14,9 +15,6 @@
 
     let { data }: Props = $props();
     let { levels, levelpacks, creator } = $derived(data);
-
-    let levelPage = $state(1);
-    let levelpackPage = $state(1);
 
     let reportMode = $state(false);
     let reportSending = $state(false);
@@ -47,14 +45,12 @@
 
 <ReportDialog bind:open={reportMode} bind:reportSending kind="user" />
 
+<h2>Levels</h2>
 <div class="flex flex-col items-center">
-    <h2>Levels</h2>
     {#if levels.length}
         <Pagination
-            bind:page={levelPage}
-            bind:output={levels}
-            callback={({ page, sort, featured, amount }) =>
-                getUserLevelPageClient(creator.id, page, 0, sort, featured, amount)}
+            query={getUserLevels}
+            id={creator.id}
             columns={2}
             PageComponent={LevelComponent}
         />
@@ -62,13 +58,13 @@
         <p>User has no levels!</p>
     {/if}
     <br />
-    <h2>Levelpacks</h2>
+</div>
+<h2>Levelpacks</h2>
+<div class="flex flex-col items-center">
     {#if levelpacks.length}
         <Pagination
-            bind:page={levelpackPage}
-            bind:output={levelpacks}
-            callback={({ page, sort, featured, amount }) =>
-                getUserLevelPageClient(creator.id, page, 1, sort, featured, amount)}
+            query={getUserLevelpacks}
+            id={creator.id}
             columns={2}
             PageComponent={LevelpackComponent}
         />

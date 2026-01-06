@@ -66,7 +66,7 @@
                 in:fly={{ x: width, duration: duration / 1.5, opacity: 1 }}
                 out:fly={{ x: -width, duration, opacity: 1 }}
             >
-                <div class="absolute bottom-0 rounded-tr-3xl bg-stone-950/75 px-4 py-2">
+                <div class="absolute bottom-0 rounded-tr-3xl bg-zinc-950/75 px-4 py-2">
                     <a
                         href={`/level/${id}`}
                         class:featured

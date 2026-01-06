@@ -31,8 +31,6 @@
     <Button onclick={getMoreLevels} text="MORE!!" bg="#ffff00" />
 </div>
 <Pagination
-    bind:page={randomLevelPage}
-    bind:output={randomLevels}
     callback={() => getRandomLevelPageClient(16, 0, false)}
     removeOptions
     removeMovement

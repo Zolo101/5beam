@@ -4,7 +4,7 @@
     import Button from "$lib/components/Button.svelte";
     import Difficulty from "$lib/components/Difficulty.svelte";
     import { clamp, formatDate_Day, getLevelThumbnailURL, snap } from "$lib/misc";
-    import Icon from "$lib/components/Icon.svelte";
+
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";
@@ -16,6 +16,8 @@
     import { postModifyLevelClient } from "$lib/client/ClientSideAPI";
     import ReportDialog from "$lib/components/ReportDialog.svelte";
     import { editThumbnail } from "$lib/thumbnail.remote";
+    import Featured from "$lib/assets/icons/featured.svg?component";
+    import Star from "$lib/components/Star.svelte";
 
     interface Props {
         data: PageData;
@@ -272,11 +274,12 @@
     </div>
     <div class="flex items-center gap-2">
         {#if featured}
-            <Icon name="starred" width="56" height="56" />
+            <Featured width="56" height="56" />
         {/if}
         <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
             {title}
         </span>
+        <Star width="48" height="48" starred={data!.starred > 0} />
     </div>
     <section class="flex text-xl">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
@@ -508,11 +511,11 @@
     </div>
     <Dialog bind:open={showDifference}>
         <div class="grid grid-cols-2 gap-3 px-5 pt-5">
-            <LevelInfo selectedLevel={validate(level.data).levels[0]} />
+            <LevelInfo level={validate(level.data).levels[0]} />
             {#await levelDataJSON}
                 <div class="m-auto text-sm"><p>Loading...</p></div>
             {:then dataJSON}
-                <LevelInfo selectedLevel={dataJSON} />
+                <LevelInfo level={dataJSON} />
             {/await}
         </div>
         <div class="flex justify-center p-5 text-xl">

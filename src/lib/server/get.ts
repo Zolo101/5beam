@@ -1,4 +1,13 @@
-import { dailyies, levelpacks, levels, clientPb, usersV2, weeklies } from "$lib/clientPocketbase";
+import {
+    dailyies,
+    levelpacks,
+    levels,
+    clientPb,
+    usersV2,
+    weeklies,
+    levelpackStars,
+    levelStars
+} from "$lib/clientPocketbase";
 import type { Level, Levelpack, Report } from "$lib/types";
 import { ReportWebhook } from "$lib/server/webhook";
 import { ClientResponseError, type RecordListOptions } from "pocketbase";
@@ -20,25 +29,25 @@ export async function getWeeklyChallenge() {
     });
 }
 
-export async function getLevels(
-    page: number,
-    sortCode: number,
-    featured: boolean,
-    mod: string,
-    amount: number,
-    options?: RecordListOptions
-) {
-    const sort = getSort(sortCode);
-    const featuredFilter = featured ? "featured = true && " : "";
-    const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
+// export async function getLevels(
+//     page: number,
+//     sortCode: number,
+//     featured: boolean,
+//     mod: string,
+//     amount: number,
+//     options?: RecordListOptions
+// ) {
+//     const sort = getSort(sortCode);
+//     const featuredFilter = featured ? "featured = true && " : "";
+//     const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
 
-    return await levels.getList(page, amount, {
-        expand: "creator",
-        sort,
-        filter: featuredFilter + modFilter,
-        ...options
-    });
-}
+//     return await levels.getList(page, amount, {
+//         expand: "creator",
+//         sort,
+//         filter: featuredFilter + modFilter,
+//         ...options
+//     });
+// }
 
 export async function getRandomLevels(
     amount: number,
@@ -48,7 +57,7 @@ export async function getRandomLevels(
 ) {
     const db = type ? levelpacks : levels;
 
-    return query(
+    return weirdAhhQuery(
         () =>
             db.getList<Level | Levelpack>(0, amount, {
                 expand: "creator",
@@ -89,7 +98,7 @@ export async function getLevelpacks(
 
 // TODO: Merge with getLevelpackById
 export async function getLevelpackByIdWithLevels(id: string) {
-    return query(
+    return weirdAhhQuery(
         () =>
             levelpacks.getOne<
                 Omit<Levelpack, "levels"> & {
@@ -103,13 +112,13 @@ export async function getLevelpackByIdWithLevels(id: string) {
 }
 
 export async function getLevelById(id: string) {
-    return query(() => levels.getOne<Level>(id, { expand: "creator" }), {
+    return weirdAhhQuery(() => levels.getOne<Level>(id, { expand: "creator" }), {
         404: "Level not found"
     });
 }
 
 export async function getLevelpackById(id: string) {
-    return query(() => levelpacks.getOne(id, { expand: "creator" }), {
+    return weirdAhhQuery(() => levelpacks.getOne(id, { expand: "creator" }), {
         404: "Levelpack not found"
     });
 }
@@ -158,12 +167,52 @@ export async function getSearch(
 }
 
 export async function getUserById(id: string) {
-    return query(() => usersV2.getOne(id), {
+    return weirdAhhQuery(() => usersV2.getOne(id), {
         404: "User not found"
     });
 }
 
-// TODO: Why do we need requestKey: null when requesting both getUserLevels and getUserLevelpacks?
+/** Gets ALL starred items based on type. */
+export async function getUserAllStarredItems(
+    id: string,
+    type: number,
+    options?: RecordListOptions
+) {
+    const collection = type ? levelpackStars : levelStars;
+    const filter = clientPb.filter(`user = {:id}`, { id });
+
+    // I think there's a bug with getFullList, it... just doesn't work unless your admin??
+    return (
+        await collection.getList(1, 9999, { expand: "item,item.creator", filter, ...options })
+    ).map((v) => v.item);
+}
+
+export async function getUserStarredItems(
+    id: string,
+    page: number,
+    type: number,
+    sortCode: number,
+    featured: boolean,
+    amount: number,
+    mod: string | undefined,
+    options?: RecordListOptions
+) {
+    const collection = type ? levelpackStars : levelStars;
+    const sort = getSort(sortCode);
+    const creatorFilter = clientPb.filter(`user = {:id} && `, { id });
+    const featuredFilter = featured ? "item.featured = true && " : "";
+    const modFilter = clientPb.filter(`item.modded = {:mod}`, { mod });
+
+    return (
+        await collection.getList(page, amount, {
+            expand: "item,item.creator",
+            sort,
+            filter: creatorFilter + featuredFilter + modFilter,
+            ...options
+        })
+    ).map((v) => v.item);
+}
+
 export async function getUserLevels(
     id: string,
     page: number,
@@ -225,7 +274,9 @@ export async function reportKindById(
     return report;
 }
 
-export async function query<T>(func: () => Promise<T>, r: Record<number, string>) {
+// TODO: Can we please use remote functions instead??
+/** @deprecated */
+export async function weirdAhhQuery<T>(func: () => Promise<T>, r: Record<number, string>) {
     try {
         return await func();
     } catch (e) {
