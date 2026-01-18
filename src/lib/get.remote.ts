@@ -1,6 +1,6 @@
 import { query } from "$app/server";
 import z from "zod";
-import { clientPb, dailyies, levelpacks, levels } from "./clientPocketbase";
+import { clientPb, dailyies, levelpacks, levels, levelStars } from "./clientPocketbase";
 
 const pageSchema = z.object({
     page: z.number().min(1),
@@ -131,6 +131,31 @@ export const getUserLevelpacks = query(
             filter: creatorFilter + featuredFilter + modFilter,
             ...options
         });
+    }
+);
+
+// TODO: We cant filter here
+export const getUserStars = query(
+    z.object({ ...pageSchema.shape, id: z.string() }),
+    async ({ id, page, sortCode, featured, amount, mod, options }) => {
+        const sort = getSort(sortCode);
+        // const creatorFilter = clientPb.filter(`user = {:id} && `, { id });
+
+        // TODO: Put in API docs: creator of the star, NOT the level/levelpack.
+        const creatorFilter = clientPb.filter(`creator = {:id}`, { id });
+
+        // const featuredFilter = featured ? "featured = true && " : "";
+        // const modFilter = clientPb.filter(`modded = {:mod}`, { mod });
+
+        const starred = await levelStars.getList(page, amount, {
+            expand: "item",
+            sort,
+            // filter: creatorFilter + featuredFilter + modFilter,
+            filter: creatorFilter,
+            ...options
+        });
+
+        return starred.map((r) => r.item);
     }
 );
 
