@@ -1,9 +1,11 @@
 import { form, getRequestEvent } from "$app/server";
 import z, { ZodType } from "zod";
-import { primitives } from "./parse";
+import { createObjectSchema, primitives } from "./parse";
 import { DENIED } from "./server/misc";
 import { _createLevel } from "../routes/(api)/api/create/level/+server";
 import { redirect } from "@sveltejs/kit";
+import { ReportWebhook } from "./server/webhook";
+import type { Report } from "./types";
 
 /** Svelte forms dont allow objects or arrays */
 function formParse<O, I>(type: ZodType<O, I>) {
@@ -37,6 +39,8 @@ const ModifyLevelpackSchemaV2 = z.object({
     unlisted: z.boolean().default(false)
 });
 
+const reportSchema = createObjectSchema("reportKind", "reportReason", "reportDesc");
+
 // This is NOT /api/modify/*
 export const updateLevelpackV2 = form(ModifyLevelpackSchemaV2, async (data) => {
     const {
@@ -55,7 +59,6 @@ export const updateLevelpackV2 = form(ModifyLevelpackSchemaV2, async (data) => {
                     description: `This level is a part of levelpack "${data.title}"`,
                     difficulty: level.difficulty,
                     modded: level.modded,
-                    // TODO: Make it so it doesn't have to be a file...
                     file: level.raw,
                     unlisted: true
                 },
@@ -80,4 +83,22 @@ export const updateLevelpackV2 = form(ModifyLevelpackSchemaV2, async (data) => {
     });
 
     redirect(303, `/levelpack/${data.id}`);
+});
+
+export const reportKindById = form(reportSchema, async (data) => {
+    const {
+        locals: { user, pb },
+        params: { id }
+    } = getRequestEvent();
+    if (!user) return DENIED();
+
+    const report = await pb.collection<Report>("5beam_reports").create({
+        reportedId: id,
+        kind: data.reportKind,
+        reason: data.reportReason,
+        description: data.reportDesc
+    });
+
+    await ReportWebhook.send(report);
+    return { report, success: true };
 });
