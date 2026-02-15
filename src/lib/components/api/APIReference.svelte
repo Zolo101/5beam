@@ -9,7 +9,7 @@
     let { type = "OTHER", reference }: Props = $props();
 </script>
 
-<div class="reference">
+<span class="reference">
     <span class="type colour-{type}">{type}</span>
     <span class="text">
         {#if Array.isArray(reference)}
@@ -18,7 +18,7 @@
             {reference}
         {/if}
     </span>
-</div>
+</span>
 
 <style>
     .reference {
@@ -46,6 +46,10 @@
 
     .colour-DISCORD {
         color: #5865f2;
+    }
+
+    .colour-ZELO\.DEV {
+        color: #f24bec;
     }
 
     .colour-TOKEN {
