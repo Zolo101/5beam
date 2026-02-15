@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ url }) => {
         const { id, type } = parseFromUrlSearchParams(schema, url);
 
         try {
-            return OK(await getUserAllStarredItems(id, type));
+            return OK(await getUserAllStarredItems({ id, type }));
         } catch {
             return MY_BAD();
         }

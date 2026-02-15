@@ -91,6 +91,16 @@
         </p>
     </APIEndpoint>
 
+    <APIEndpoint open endpoint={["CORS"]} type="WARNING">
+        <p>
+            To prevent abuse, endpoints that require authentication only work for allowed domains.
+            If you want to use these endpoints for a site, please contact Contact <APIReference
+                type={"DISCORD"}
+                reference={["zelo101"]}
+            /> with your domain.
+        </p>
+    </APIEndpoint>
+
     <APIEndpoint open endpoint={["Supported Mods"]} type="INFO">
         <div class="text-3xl">
             <ul>
@@ -130,13 +140,10 @@
     <APIEndpoint
         type="POST"
         endpoint={["api", "level", "star"]}
-        params={[
-            ["id", "Level ID", ParamType.INTEGER],
-            ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN]
-        ]}
+        params={[["id", "Level ID", ParamType.INTEGER]]}
         token_required
     >
-        <p>Stars a level.</p>
+        <p>Stars or unstars a level.</p>
     </APIEndpoint>
 
     <APIEndpoint
@@ -167,13 +174,10 @@
     <APIEndpoint
         type="POST"
         endpoint={["api", "levelpack", "star"]}
-        params={[
-            ["id", "Levelpack ID", ParamType.INTEGER],
-            ["bool", "Star(1) or Un-star(0)", ParamType.BOOLEAN]
-        ]}
+        params={[["id", "Levelpack ID", ParamType.INTEGER]]}
         token_required
     >
-        <p>Stars a levelpack.</p>
+        <p>Stars or unstars a levelpack.</p>
     </APIEndpoint>
 
     <APIEndpoint endpoint={["api", "user"]} params={[["id", "User ID", ParamType.STRING]]}>

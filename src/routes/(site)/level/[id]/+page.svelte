@@ -35,6 +35,7 @@
         description,
         thumbnail,
         difficulty,
+        unlisted,
         plays,
         stars,
         featured,
@@ -49,6 +50,8 @@
     let editSending = $derived(false);
     let showDifference = $state(false);
 
+    // TODO: Can we put this thumbnail moving thing SOMEWHERE ELSE??
+    // TODO: Only for 5beam, I need the thumbnail mover to show in HTML5b aswell
     let showThumbnailDialog = $state(false);
     let cropX = $state(0);
     let cropY = $state(0);
@@ -158,9 +161,6 @@
         cropY = Math.max(0, (img.naturalHeight - CROP_HEIGHT) / 2);
     }
 
-    let reportMode = $state(false);
-    let reportSending = $state(false);
-
     $effect(() => {
         if (!editMode) editSending = false;
     });
@@ -264,7 +264,7 @@
 <section
     itemscope
     itemtype="https://schema.org/CreativeWork"
-    class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48"
+    class="mt-2 flex flex-col max-xl:items-center xl:mx-48"
 >
     <meta itemprop="author" content={creatorName} />
     <meta itemprop="name" content={title} />
@@ -314,7 +314,7 @@
         {#if isOwner || data.admin}
             <button
                 onclick={() => (showThumbnailDialog = true)}
-                class="absolute top-2 right-2 cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors hover:bg-neutral-900"
+                class="absolute top-2 right-2 cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-100 drop-shadow-2xl transition-colors hover:bg-neutral-900"
             >
                 Change thumbnail
             </button>
@@ -337,12 +337,6 @@
             />
         {/if}
         <BigButton text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
-        <BigButton
-            text={reportSending ? "Reported" : "Report"}
-            bg="#ff5555"
-            onclick={() => (reportMode = !reportMode)}
-            disabled={reportSending}
-        />
     </div>
 </div>
 
@@ -359,8 +353,6 @@
         <LevelComponent data={level} />
     {/each}
 </div>
-
-<ReportDialog bind:open={reportMode} bind:reportSending kind="level" />
 
 <Dialog bind:open={showThumbnailDialog}>
     <div class="relative flex w-full flex-col items-center gap-5 rounded-lg p-5 text-xl">
@@ -466,6 +458,14 @@
                 />
                 {#key difficulty}<Difficulty {difficulty} includeText />{/key}
             </div>
+            <!-- TODO: Inline this (somehow) -->
+            <!-- <label for="unlisted" class="text-2xl font-bold">Unlisted</label>
+            <input
+                name="unlisted"
+                type="checkbox"
+                bind:checked={unlisted}
+                class="h-6 w-6 rounded border-neutral-600 bg-neutral-800 accent-neutral-500"
+            /> -->
             <div class="flex justify-end gap-2 *:grow">
                 <!-- <button onclick={deleteLevel} class="float-left text-xs opacity-50">Delete</button> -->
                 <Button

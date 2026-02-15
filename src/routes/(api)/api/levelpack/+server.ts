@@ -3,6 +3,7 @@ import { OK, NOT_FOUND } from "$lib/server/misc";
 import { getLevelpackById, getLevelpackByIdWithLevels } from "$lib/get.remote";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
+// TODO: If user is logged in, include starred as well
 const schema = createObjectSchema("id", "levels");
 export const GET: RequestHandler = async ({ url }) => {
     try {

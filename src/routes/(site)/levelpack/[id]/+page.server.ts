@@ -18,9 +18,3 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
     return { levelpack, starred };
 };
-
-export const actions = {
-    report: async (request) => {
-        return levelActions.report(request);
-    }
-} satisfies Actions;

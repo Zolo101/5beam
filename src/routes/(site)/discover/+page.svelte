@@ -59,9 +59,6 @@
     let amount = $derived(boardType ? 36 : 12);
 </script>
 
-<!-- "Changes may not be saved" -->
-<svelte:window onbeforeunload={() => true} />
-
 <section class="full-width flex">
     <div
         class="flex min-w-64 flex-col gap-1 rounded-l-xl bg-zinc-800 p-5 text-xl shadow-lg [&_label]:pt-6 [&_label]:font-bold"
@@ -86,8 +83,14 @@
             <option value={"golden5"}>Golden 5</option>
             <option value={"5*"}>5*30</option>
         </select>
+        <!-- TODO: Reset to defaults if disabled -->
         <label for="size">Size</label>
-        <select bind:value={area} name="size" class="rounded-lg bg-black/30 p-2.5">
+        <select
+            bind:value={area}
+            name="size"
+            disabled={!!modded}
+            class="rounded-lg bg-black/30 p-2.5 disabled:cursor-not-allowed disabled:opacity-50"
+        >
             <option value={0}>Any</option>
             <option value={1}>Small</option>
             <option value={2}>Medium</option>
@@ -105,9 +108,10 @@
                             selectedCharacters = [...selectedCharacters, char.name];
                         }
                     }}
+                    disabled={!!modded}
                     class={[
                         selectedCharacters.includes(char.name) ? "bg-blue-900" : "bg-black/30",
-                        "rounded-lg p-2 ring-2 ring-transparent transition hover:ring-blue-500 active:scale-95"
+                        "rounded-lg p-2 ring-2 ring-transparent transition hover:ring-blue-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
                     ]}
                     title={char.name}
                 >

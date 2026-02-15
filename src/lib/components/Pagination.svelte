@@ -11,6 +11,8 @@
         mod: string;
         text?: string;
         id?: string;
+        areaCode: number;
+        characters: string[];
         options?: Record<string, unknown>;
     };
 
@@ -27,9 +29,12 @@
         mod?: string;
         text?: string;
         id?: string;
+        areaCode?: number;
+        characters?: string[];
         removeOptions?: boolean;
         removeMovement?: boolean;
-        PageComponent?: Component;
+        // TODO: 'any' alternative?
+        PageComponent?: Component<any, {}, any>;
     }
 
     let {
@@ -43,6 +48,8 @@
         mod = "",
         text = "",
         id = "",
+        areaCode = 0,
+        characters = [],
         removeOptions = false,
         removeMovement = false,
         PageComponent
@@ -64,6 +71,8 @@
             featured,
             amount,
             mod,
+            areaCode,
+            characters,
             text: internalText,
             id,
             options: { requestKey: null }

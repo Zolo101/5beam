@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ url }) => {
         const { page, type, sort, featured, mod, amount } = parseFromUrlSearchParams(schema, url);
         try {
             const getFunc = type === 0 ? getLevels : getLevelpacks;
-            return OK(await getFunc({ page, sort, featured, mod, amount }));
+            return OK(await getFunc({ page, sortCode: sort, featured, mod, amount }));
         } catch {
             return MY_BAD();
         }

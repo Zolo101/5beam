@@ -64,7 +64,7 @@
         </div>
     </section>
     <aside>
-        {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5 } ) then featuredLevels}
+        {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5, options: { requestKey: null } } ) then featuredLevels}
             <Carousel height={450} width={800} levels={featuredLevels} autoPlay details />
         {/await}
     </aside>
@@ -87,7 +87,7 @@
                 </a>
                 <UserComponent prefix="by" creator={dailyLevel.creator} />
             </div>
-            <p class="text-2xl">{dailyLevel.description}</p>
+            <p class="grow text-2xl">{dailyLevel.description}</p>
             <div class="flex w-full justify-around gap-2 text-3xl">
                 <div class="font-bold">
                     <Difficulty difficulty={dailyLevel.difficulty} includeText />

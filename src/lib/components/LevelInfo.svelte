@@ -90,7 +90,7 @@
         {/if}
         {#if level.logs.length > 0}
             <div class="info">
-                <div class="rounded-sm bg-neutral-700/50 p-2.5 text-neutral-200">
+                <div class="rounded-sm bg-neutral-700/50 p-2.5 text-neutral-100">
                     {#each level.logs as log}
                         <Log {log} />
                     {/each}

@@ -8,18 +8,18 @@
     import DefaultPFP from "$lib/assets/icons/defaultPFP.svg?component";
     import Dropdown from "$lib/assets/icons/dropdown.svg?component";
 
-    let { user = $bindable() }: { user: PocketbaseUser } = $props();
+    let { user = $bindable() }: { user: PocketbaseUser | undefined } = $props();
     let { admin, loggedIn } = $derived(page.data);
 
     let dropdownOpen = $state(false);
 </script>
 
-<nav class="flex items-center justify-center bg-black p-1.5 text-neutral-200">
+<nav class="flex items-center justify-center bg-black p-1.5 text-neutral-100">
     <div class="container m-auto mx-5 flex h-24 grow pt-2">
         <div class="flex flex-1 items-center justify-start">
             <Logo />
         </div>
-        <section class="flex items-center gap-5 text-3xl font-medium">
+        <section class="flex items-center gap-5 text-3xl font-medium max-lg:text-lg">
             <a href="/discover">Discover</a>
             <span>•</span>
             <a href="/upload">Upload</a>
@@ -57,32 +57,32 @@
                             <a
                                 href="/user"
                                 onclick={() => (dropdownOpen = false)}
-                                class="px-4 py-2 text-neutral-200 transition-colors hover:bg-neutral-700"
+                                class="px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-700"
                             >
                                 Profile
                             </a>
-                            <a
+                            <!-- <a
                                 href="/stars"
                                 onclick={() => (dropdownOpen = false)}
-                                class="px-4 py-2 text-neutral-200 transition-colors hover:bg-neutral-700"
+                                class="px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-700"
                             >
                                 My Starred
-                            </a>
+                            </a> -->
                             {#if admin}
                                 <a href="/reports" class="px-4 py-2">Reports</a>
                             {/if}
-                            <a
+                            <!-- <a
                                 href="/user/settings"
                                 onclick={() => (dropdownOpen = false)}
-                                class="px-4 py-2 text-neutral-200 transition-colors hover:bg-neutral-700"
+                                class="px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-700"
                             >
                                 Settings
-                            </a>
+                            </a> -->
                             <form method="POST" action="/logout" class="w-full">
                                 <button
                                     type="submit"
                                     onclick={() => (dropdownOpen = false)}
-                                    class="w-full px-4 py-2 text-left text-neutral-200 transition-colors hover:bg-neutral-700"
+                                    class="w-full px-4 py-2 text-left text-neutral-100 transition-colors hover:bg-neutral-700"
                                 >
                                     Log Out
                                 </button>
@@ -94,7 +94,7 @@
                 <form use:enhance method="POST" action="/login">
                     <button
                         type="submit"
-                        class="w-30 px-4 py-1 text-neutral-200 transition-colors hover:bg-neutral-700"
+                        class="w-30 px-4 py-1 text-neutral-100 transition-colors hover:bg-neutral-700"
                         >Log In</button
                     >
                 </form>
@@ -118,12 +118,12 @@
             cursor: pointer;
             border-radius: 0.375rem;
             background: var(--color-zinc-800);
-            color: var(--color-neutral-200);
+            color: var(--color-neutral-100);
             /* box-shadow: var(--tw-drop-shadow-2xl); */
             transition:
                 color 0.2s,
                 background-color 0.2s;
-            /* @apply cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors; */
+            /* @apply cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-100 drop-shadow-2xl transition-colors; */
         }
 
         a:hover,
@@ -134,11 +134,11 @@
     }
 
     /* TODO: Inset rainbow? */
-    .rainbow-outline {
+    /* .rainbow-outline {
         animation: rainbow-outline 10s linear infinite;
         --rainbow-outline-width: 3px;
         --rainbow-outline-blur: 0px;
-    }
+    } */
 
     @keyframes rainbow-outline {
         0% {

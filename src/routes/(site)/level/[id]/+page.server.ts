@@ -20,15 +20,3 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
     return { level, starred, relatedLevels };
 };
-
-const schema = createObjectSchema("reportKind", "reportReason", "reportDesc");
-export const actions = {
-    report: async ({ request, params }) => {
-        const form = await request.formData();
-        const { id } = params;
-        const { reportKind, reportReason, reportDesc } = schema.parse(Object.fromEntries(form));
-
-        await reportKindById(id!, reportKind, reportReason, reportDesc);
-        return { success: true };
-    }
-} satisfies Actions;

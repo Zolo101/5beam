@@ -105,7 +105,7 @@ export type CreateLevelpack = {
     modded: string;
 };
 
-export type PocketbaseUser = PrivateBaseUserV2["record"];
+export type PocketbaseUser = PrivateBaseUserV2; //["record"];
 
 /** @deprecated we are just gonna use the "private" one now */
 export type BaseUserV2 = {

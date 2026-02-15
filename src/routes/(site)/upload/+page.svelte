@@ -36,7 +36,8 @@
 
     async function onUpload(e: CustomEvent<{ acceptedFiles: File[] }>) {
         manipulator.addFiles("new", ...e?.detail?.acceptedFiles);
-        results = await manipulator.computeValidations();
+        // results = await manipulator.computeValidations();
+        results = await manipulator.gatherAndComputeValidations();
     }
 
     async function onSubmit() {
@@ -70,7 +71,12 @@
 </script>
 
 <!-- "Changes may not be saved" -->
-<svelte:window onbeforeunload={() => true} />
+<svelte:window
+    onbeforeunload={(e) => {
+        e.preventDefault();
+        e.returnValue = true;
+    }}
+/>
 
 <section class="flex items-start">
     <div
@@ -149,7 +155,7 @@
         {/if}
         <Dropzone
             accept="text/plain"
-            multiple={false}
+            multiple={true}
             maxSize={1000000}
             required={true}
             disableDefaultStyles={true}

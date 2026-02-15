@@ -28,9 +28,3 @@ export const load: PageServerLoad = async ({ params }) => {
     }
     return { creator, levels, levelpacks };
 };
-
-export const actions = {
-    report: async (request) => {
-        return levelActions.report(request);
-    }
-} satisfies Actions;

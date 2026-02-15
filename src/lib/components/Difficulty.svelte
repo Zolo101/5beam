@@ -14,7 +14,7 @@
     const image = $derived(difficultyImages[`/src/lib/assets/difficulty/${filename}.png`].default);
 </script>
 
-<section>
+<section class="flex items-center gap-1">
     {#if includeText}
         <span style:color={difficultyColorMap.get(difficulty)}>{name}</span>
     {/if}

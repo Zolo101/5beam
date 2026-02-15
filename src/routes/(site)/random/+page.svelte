@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { getRandomLevelPageClient } from "$lib/client/ClientSideAPI.js";
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
-    import Button from "$lib/components/Button.svelte";
     import Pagination from "$lib/components/Pagination.svelte";
+    import { getRandomLevels } from "$lib/get.remote";
     import type { PageData } from "./$types";
 
     interface Props {
@@ -10,13 +9,6 @@
     }
 
     let { data }: Props = $props();
-
-    let randomLevelPage = $state(1);
-    let randomLevels = $state(data.randomLevels);
-
-    const getMoreLevels = async () => {
-        randomLevels = await getRandomLevelPageClient(16, 0, false);
-    };
 </script>
 
 <svelte:head>
@@ -28,10 +20,9 @@
 
 <div class="flex items-center justify-center">
     <p class="p-5 text-center text-5xl">Random levels!</p>
-    <Button onclick={getMoreLevels} text="MORE!!" bg="#ffff00" />
 </div>
 <Pagination
-    callback={() => getRandomLevelPageClient(16, 0, false)}
+    query={getRandomLevels}
     removeOptions
     removeMovement
     columns={3}

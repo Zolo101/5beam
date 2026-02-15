@@ -139,7 +139,7 @@ export const getRelatedLevels = query(relatedSchema, async ({ id, modded, diffic
     });
 });
 
-const trendingSchema = pageSchema.pick({ page: true, amount: true, mod: true });
+const trendingSchema = pageSchema.pick({ page: true, amount: true, mod: true, options: true });
 export const getTrendingLevels = query(trendingSchema, async ({ page, amount, mod, options }) => {
     const range = 1000 * 60 * 60 * 24 * 14; // 2 weeks
     const date = new Date(Date.now() - range).toISOString().replace("T", " ").substring(0, 19);
@@ -277,6 +277,20 @@ export const getUserLevelpackStars = query(
             sort,
             // filter: creatorFilter + featuredFilter + modFilter,
             filter,
+            ...options
+        });
+
+        return starred.map((r) => r.item);
+    }
+);
+
+// TODO: private func so we can use getFullList? (/server)
+export const getUserAllStarredItems = query(
+    z.object({ id: z.string(), type: z.number(), options: z.record(z.any(), z.any()).optional() }),
+    async ({ id, type, options }) => {
+        const collection = type === 0 ? levelStars : levelpackStars;
+        const starred = await collection.getList(1, 9999, {
+            filter: pbf.stringify(creatorFilter(id)),
             ...options
         });
 

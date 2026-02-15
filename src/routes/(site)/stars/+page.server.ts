@@ -8,8 +8,8 @@ export const load: PageServerLoad = async ({ locals: { user } }) => {
     }
 
     const [starredLevels, starredLevelpacks] = await Promise.all([
-        getUserAllStarredItems(user?.record.id, 0, { requestKey: null }),
-        getUserAllStarredItems(user?.record.id, 1, { requestKey: null })
+        getUserAllStarredItems({ id: user?.record.id, type: 0, options: { requestKey: null } }),
+        getUserAllStarredItems({ id: user?.record.id, type: 1, options: { requestKey: null } })
     ]);
 
     return { starredLevels, starredLevelpacks };

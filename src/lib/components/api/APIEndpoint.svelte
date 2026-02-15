@@ -6,6 +6,7 @@
         endpoint: string[];
         deprecated?: boolean;
         wip?: boolean;
+        // protected endpoints
         game_only?: boolean;
         token_required?: boolean;
         type?: "INFO" | "GET" | "POST" | "STRUCT" | "WARNING";

@@ -20,6 +20,10 @@
         try {
             const result = await operateStar({ id, type });
             starred = result.starred;
+
+            // @ts-ignore
+            if (starred) window.umami?.track("star");
+
             starred ? stars++ : stars--;
         } catch (err) {
             console.error("Failed to star/unstar level:", err);

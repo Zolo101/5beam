@@ -70,7 +70,8 @@
         manipulator.getLevelsByTag(newTag).map((l) => {
             return {
                 title: l.name,
-                difficulty: l.meta.difficulty,
+                // TODO: It should be l.meta.difficulty, but apparently its here?
+                difficulty: l.difficulty ?? 0,
                 modded: thing.item.modded,
                 raw: l.raw
             };
@@ -100,7 +101,12 @@
 </script>
 
 <!-- "Changes may not be saved" -->
-<svelte:window onbeforeunload={() => true} />
+<svelte:window
+    onbeforeunload={(e) => {
+        e.preventDefault();
+        e.returnValue = true;
+    }}
+/>
 
 <section class="flex items-start">
     <form
@@ -135,7 +141,6 @@
             rows="5"
             cols="33"
             placeholder="Level description (max 1024 chars)"
-            required
         ></textarea>
         <br />
         <!-- <label for="unlisted">Unlisted:</label> -->
@@ -161,7 +166,7 @@
         {#if thing.type === "levelpack"}
             <Dropzone
                 accept="text/plain"
-                multiple={false}
+                multiple={true}
                 maxSize={1000000}
                 required={true}
                 disableDefaultStyles={true}
@@ -177,14 +182,14 @@
                 </div>
             </Dropzone>
             {#if !manipulator.isEmpty()}
-                <section class="flex gap-2">
+                <!-- <section class="flex gap-2">
                     <div class="w-6 rounded-lg bg-green-500"></div>
-                    <span>= From an uploaded file</span>
+                    <span>= New level</span>
                     <div class="w-6 rounded-lg bg-amber-500"></div>
                     <span>= Warning</span>
                     <div class="w-6 rounded-lg bg-red-500"></div>
                     <span>= Error</span>
-                </section>
+                </section> -->
                 <div class="w-full">
                     {#if manipulator.mod}
                         <p class="p-5 text-center">Levelpacks for mods cannot yet be updated.</p>
