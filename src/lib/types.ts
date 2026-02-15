@@ -17,6 +17,10 @@ export type Level = {
 
     unlisted: boolean;
     modded: string;
+
+    area: number;
+    background: number;
+    characters: string[];
 };
 
 export type Levelpack = {
@@ -165,4 +169,12 @@ export type LevelpackDifficultyChange = {
     title: string;
     oldD: number;
     newD: number;
+};
+
+export type Character = {
+    id: string;
+    name: string;
+    image: string;
+    created: string;
+    updated: string;
 };
