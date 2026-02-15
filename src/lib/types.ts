@@ -66,6 +66,18 @@ export type WeeklyChallenge = {
     attempts: number;
 };
 
+export type LevelStarred = {
+    user: string;
+    /** level id */
+    item: string;
+};
+
+export type LevelpackStarred = {
+    user: string;
+    /** levelpack id */
+    item: string;
+};
+
 export type CreateUser = {
     discordId: string;
     username: string;

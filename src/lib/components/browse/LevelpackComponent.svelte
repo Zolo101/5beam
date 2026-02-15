@@ -7,7 +7,7 @@
     import UserComponent from "../UserComponent.svelte";
     import Levels from "$lib/assets/icons/Levels.svg?component";
     import Plays from "$lib/assets/icons/Plays.svg?component";
-    import Star from "../Star.svelte";
+    import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
 
     const { data, glow = false }: { data: Levelpack | null; glow?: boolean } = $props();
 </script>
@@ -57,12 +57,14 @@
                     <UserComponent prefix="by" {creator} />
                 </div>
                 <div class="flex items-end gap-4 *:gap-1">
-                    <div class="flex items-end gap-1">
-                        <Levels width="13" height="13" />
-                        <p class="h-[15px] font-bold text-purple-400">
-                            {getPlaysString(levels.length)}
-                        </p>
-                    </div>
+                    {#if levels}
+                        <div class="flex items-end gap-1">
+                            <Levels width="13" height="13" />
+                            <p class="h-[15px] font-bold text-purple-400">
+                                {getPlaysString(levels.length)}
+                            </p>
+                        </div>
+                    {/if}
                     <div class="flex items-end gap-1">
                         <Plays width="13" height="13" />
                         <p class="h-[15px] font-bold text-green-500">
@@ -70,7 +72,7 @@
                         </p>
                     </div>
                     <div class="flex items-end gap-1">
-                        <Star width="15" height="15" />
+                        <StarEnabled width="15" height="15" />
                         <p class="h-[15px] font-bold text-yellow-500">
                             {getPlaysString(stars)}
                         </p>

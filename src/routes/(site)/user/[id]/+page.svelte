@@ -5,8 +5,14 @@
     import type { PageData } from "./$types";
     import { formatDate_Day } from "$lib/misc";
     import Report from "$lib/components/Report.svelte";
-    import { getUserLevelpacks, getUserLevels, getUserStars } from "$lib/get.remote";
+    import {
+        getUserLevelpacks,
+        getUserLevelpackStars,
+        getUserLevels,
+        getUserLevelStars
+    } from "$lib/get.remote";
     import Toggle from "$lib/components/Toggle.svelte";
+    getUserLevelStars;
 
     interface Props {
         data: PageData;
@@ -16,6 +22,7 @@
     let { levels, levelpacks, creator } = $derived(data);
 
     let pageType = $state("Levels");
+    let starPageType = $state("Levels");
     let query = $derived.by(() => {
         switch (pageType) {
             case "Levels":
@@ -23,16 +30,27 @@
             case "Levelpacks":
                 return getUserLevelpacks;
             case "Stars":
-                return getUserStars;
+                switch (starPageType) {
+                    case "Levels":
+                        return getUserLevelStars;
+                    case "Levelpacks":
+                        return getUserLevelpackStars;
+                }
         }
     });
     let PageComponent = $derived.by(() => {
         switch (pageType) {
             case "Levels":
-            case "Stars":
                 return LevelComponent;
             case "Levelpacks":
                 return LevelpackComponent;
+            case "Stars":
+                switch (starPageType) {
+                    case "Levels":
+                        return LevelComponent;
+                    case "Levelpacks":
+                        return LevelpackComponent;
+                }
         }
     });
 </script>
@@ -59,5 +77,8 @@
     </div>
 </section>
 <Toggle bind:value={pageType} toggles={["Levels", "Levelpacks", "Stars"]} />
+{#if pageType === "Stars"}
+    <Toggle bind:value={starPageType} toggles={["Levels", "Levelpacks"]} />
+{/if}
 <br />
 <Pagination {query} id={creator.id} columns={2} {PageComponent} />

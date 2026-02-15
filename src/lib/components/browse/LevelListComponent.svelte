@@ -7,7 +7,7 @@
     import FunctionButton from "../FunctionButton.svelte";
     import UserComponent from "../UserComponent.svelte";
     import { fade } from "svelte/transition";
-    import Featured from "$lib/assets/icons/featured.svg?component";
+    import Featured from "$lib/assets/icons/Featured.svg?component";
     import Plays from "$lib/assets/icons/Plays.svg?component";
     import Star from "../Star.svelte";
     import { operateStar } from "$lib/stars.remote";

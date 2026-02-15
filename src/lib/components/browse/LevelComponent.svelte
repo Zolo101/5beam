@@ -7,19 +7,20 @@
     import FunctionButton from "../FunctionButton.svelte";
     import UserComponent from "../UserComponent.svelte";
     import { fade } from "svelte/transition";
-    import Featured from "$lib/assets/icons/featured.svg?component";
+    import Featured from "$lib/assets/icons/Featured.svg?component";
     import Plays from "$lib/assets/icons/Plays.svg?component";
-    import Star from "../Star.svelte";
-    import { operateStar } from "$lib/stars.remote";
+    import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
+    // import Star from "../Star.svelte";
+    // import { operateStar } from "$lib/stars.remote";
 
     const { data = $bindable(), glow = false }: { data: Level | null; glow?: boolean } = $props();
 
-    let starred = $state(false);
+    // let starred = $state(false);
 
-    async function clickStar() {
-        const { starred: isStarred } = await operateStar({ id: data!.id, type: 0 });
-        starred = isStarred;
-    }
+    // async function clickStar() {
+    //     const { starred: isStarred } = await operateStar({ id: data!.id, type: 0 });
+    //     starred = isStarred;
+    // }
 </script>
 
 {#if data === null}
@@ -37,9 +38,9 @@
             class:glow
             class={[
                 featured && "bg-cyan-950/70! outline-cyan-800! hover:outline-cyan-500!",
-                starred &&
-                    !featured &&
-                    "bg-yellow-950/70! outline-yellow-600! hover:outline-yellow-300!",
+                // starred &&
+                //     !featured &&
+                //     "bg-yellow-950/70! outline-yellow-600! hover:outline-yellow-300!",
                 "flex h-[248px] w-[350px] flex-col items-start justify-start rounded-lg bg-zinc-800/70 p-2 text-neutral-50 shadow-2xl shadow-black/10 outline-3 outline-white/10 backdrop-blur-xl backdrop-brightness-125 backdrop-contrast-150 transition-all hover:outline-white/40"
             ]}
         >
@@ -55,13 +56,14 @@
                             <Difficulty {difficulty} />
                         </div>
                     </a>
-                    <button
+                    <!-- TODO: Hide if user not logged in -->
+                    <!-- <button
                         onclick={clickStar}
                         class="absolute top-3 right-3 cursor-pointer transition-transform hover:scale-110"
                         aria-label="Star level"
                     >
                         <Star bind:starred width="32" height="32" class="glow" />
-                    </button>
+                    </button> -->
                 {/key}
             </div>
             <div class="flex w-full items-center justify-start">
@@ -124,9 +126,10 @@
                                 </p>
                             </div>
                             <div class="flex items-end gap-1">
-                                <Star width="15" height="15" />
+                                <StarEnabled width="15" height="15" />
                                 <p class="h-[15px] font-bold text-yellow-500">
-                                    {getPlaysString(stars + +starred)}
+                                    <!-- {getPlaysString(stars + +starred)} -->
+                                    {getPlaysString(stars)}
                                 </p>
                             </div>
                         </div>

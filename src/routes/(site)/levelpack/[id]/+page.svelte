@@ -2,20 +2,36 @@
     import type { PageData } from "./$types";
     import UserComponent from "$lib/components/UserComponent.svelte";
     import Box from "$lib/assets/box.png";
-    import { formatDate_Day, getLevelThumbnailURL } from "$lib/misc";
+    import { formatDate_Day, getLevelThumbnailURL, getPlaysString } from "$lib/misc";
     import BigButton from "$lib/components/BigButton.svelte";
 
     import Carousel from "$lib/components/Carousel.svelte";
-    import ReportDialog from "$lib/components/ReportDialog.svelte";
-    import Featured from "$lib/assets/icons/featured.svg?component";
+    import Featured from "$lib/assets/icons/Featured.svg?component";
     import LevelListComponent from "$lib/components/browse/LevelListComponent.svelte";
+    import Report from "$lib/components/Report.svelte";
+    import Star from "$lib/components/Star.svelte";
+
+    import Levels from "$lib/assets/icons/Levels.svg?component";
+    import Plays from "$lib/assets/icons/Plays.svg?component";
+    import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
 
     const { data }: { data: PageData } = $props();
 
-    const { levelpack, user } = data;
+    let { levelpack, user, starred } = $derived(data);
 
-    let { id, title, description, plays, featured, creator, modded, created, updated, levels } =
-        $derived(levelpack);
+    let {
+        id,
+        title,
+        description,
+        plays,
+        featured,
+        creator,
+        modded,
+        created,
+        updated,
+        levels,
+        stars
+    } = $derived(levelpack);
 
     const creatorName = $derived(creator?.username ?? "Guest");
     const originalLevelpackFileData = $derived(levels.map((level) => level.data).join("\n\n"));
@@ -35,9 +51,6 @@
         console.log("deleteLevelpack");
     }
 
-    let reportMode = $state(false);
-    let reportSending = $state(false);
-
     let isOwner = $derived(creator?.id === user?.record.id);
 </script>
 
@@ -53,7 +66,7 @@
 <section
     itemscope
     itemtype="https://schema.org/CreativeWork"
-    class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48"
+    class="mt-2 flex flex-col max-xl:items-center xl:mx-48"
 >
     <meta itemprop="author" content={creatorName} />
     <meta itemprop="name" content={title} />
@@ -65,24 +78,42 @@
         <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
         <meta itemprop="userInteractionCount" content={plays.toString()} />
     </div>
-    <div class="flex items-center gap-2">
-        {#if featured}
-            <Featured width="56" height="56" />
-        {/if}
-        <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
-            {title}
-        </span>
+    <div class="flex items-baseline justify-between gap-2">
+        <div class="flex items-baseline gap-3">
+            {#if featured}
+                <Featured width="56" height="56" />
+            {/if}
+            <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
+                {title}
+            </span>
+            {#if user}
+                <Star bind:stars bind:starred width="48" height="48" {id} type="1" />
+            {/if}
+        </div>
+        <Report kind="levelpack" />
     </div>
-    <section class="flex text-xl">
+    <section class="flex items-baseline gap-10 text-xl font-bold">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
-        <span class="px-1">::</span>
-        <span class="pr-1 font-black text-purple-500">{levels.length}</span>
-        <span class="text-purple-500">levels</span>
-        <span class="px-1">::</span>
-        <span class="pr-1 font-black text-green-500">{plays}</span>
-        <span class="text-green-500">plays</span>
-        <span class="px-1">::</span>
-        <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
+
+        <span>
+            <Levels width="13" height="13" />
+            <span class="text-purple-500">
+                {levels.length}
+            </span>
+        </span>
+        <span>
+            <Plays width="13" height="13" />
+            <span class="text-green-500">
+                {getPlaysString(plays)}
+            </span>
+        </span>
+        <span>
+            <StarEnabled width="15" height="15" />
+            <span class="text-yellow-500">
+                {getPlaysString(stars)}
+            </span>
+        </span>
+        <span>{formatDate_Day(created)}</span>
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6">
@@ -103,12 +134,6 @@
             bg="#4bffff"
             onclick={downloadLevelpack}
             event="download-level"
-        />
-        <BigButton
-            text={reportSending ? "Reported" : "Report"}
-            bg="#ff5555"
-            onclick={() => (reportMode = !reportMode)}
-            disabled={reportSending}
         />
     </div>
 </div>
@@ -151,5 +176,3 @@
         </div>
     {/each}
 </div>
-
-<ReportDialog bind:open={reportMode} bind:reportSending kind="levelpack" />

@@ -3,7 +3,7 @@
     import UserComponent from "$lib/components/UserComponent.svelte";
     import Button from "$lib/components/Button.svelte";
     import Difficulty from "$lib/components/Difficulty.svelte";
-    import { clamp, formatDate_Day, getLevelThumbnailURL, snap } from "$lib/misc";
+    import { clamp, formatDate_Day, getLevelThumbnailURL, getPlaysString, snap } from "$lib/misc";
 
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
@@ -14,10 +14,13 @@
     import validate from "$lib/client/FileValidator";
     import BigButton from "$lib/components/BigButton.svelte";
     import { postModifyLevelClient } from "$lib/client/ClientSideAPI";
-    import ReportDialog from "$lib/components/ReportDialog.svelte";
     import { editThumbnail } from "$lib/thumbnail.remote";
-    import Featured from "$lib/assets/icons/featured.svg?component";
+    import Featured from "$lib/assets/icons/Featured.svg?component";
     import Star from "$lib/components/Star.svelte";
+    import Report from "$lib/components/Report.svelte";
+
+    import Plays from "$lib/assets/icons/Plays.svg?component";
+    import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
 
     interface Props {
         data: PageData;
@@ -25,7 +28,7 @@
 
     let { data }: Props = $props();
 
-    let { level, relatedLevels, user } = $derived(data);
+    let { level, relatedLevels, user, starred } = $derived(data);
     let {
         id,
         title,
@@ -33,6 +36,7 @@
         thumbnail,
         difficulty,
         plays,
+        stars,
         featured,
         creator,
         modded,
@@ -272,24 +276,36 @@
         <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
         <meta itemprop="userInteractionCount" content={plays.toString()} />
     </div>
-    <div class="flex items-center gap-2">
-        {#if featured}
-            <Featured width="56" height="56" />
-        {/if}
-        <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
-            {title}
-        </span>
-        <Star width="48" height="48" starred={data!.starred > 0} />
+    <div class="flex items-baseline justify-between gap-2">
+        <div class="flex items-baseline gap-3">
+            {#if featured}
+                <Featured width="56" height="56" />
+            {/if}
+            <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
+                {title}
+            </span>
+            {#if user}
+                <Star bind:stars bind:starred width="48" height="48" {id} type="0" />
+            {/if}
+        </div>
+        <Report kind="level" />
     </div>
-    <section class="flex text-xl">
+    <section class="flex items-baseline gap-10 text-xl font-bold">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
-        <span class="px-1">::</span>
-        <span class="font-black"><Difficulty includeText includeImage={false} {difficulty} /></span>
-        <span class="px-1">::</span>
-        <span class="pr-1 font-black text-green-500">{plays}</span>
-        <span class="text-green-500">plays</span>
-        <span class="px-1">::</span>
-        <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
+        <span>
+            <Plays width="13" height="13" />
+            <span class="text-green-500">
+                {getPlaysString(plays)}
+            </span>
+        </span>
+        <span>
+            <StarEnabled width="15" height="15" />
+            <span class="text-yellow-500">
+                {getPlaysString(stars)}
+            </span>
+        </span>
+        <span><Difficulty includeText {difficulty} /></span>
+        <span>{formatDate_Day(created)}</span>
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6 max-md:flex-col">

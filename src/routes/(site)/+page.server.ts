@@ -11,8 +11,7 @@ import type { PageServerLoad } from "./$types";
 export const load = (async ({ locals }) => {
     const { user } = locals;
 
-    // { requestKey: null } to prevent autocancellation
-    // TODO: Why do we need to requestKey null?
+    // { requestKey: null } to prevent autocancellation with paging
     // const [featuredLevels, trendingLevels, recentLevels, levelpacks, daily] = await Promise.all([
     // const [trendingLevels, levelpacks] = await Promise.all([
     // getLevels({
@@ -37,28 +36,28 @@ export const load = (async ({ locals }) => {
     // ]);
     // const weekly = await getWeeklyChallenge();
 
-    if (user) {
-        const [starredLevels, starredLevelpacks] = await Promise.all([
-            getUserAllStarredItems(user?.record.id, 0),
-            getUserAllStarredItems(user?.record.id, 1)
-        ]);
+    // if (user) {
+    //     const [starredLevels, starredLevelpacks] = await Promise.all([
+    //         getUserAllStarredItems(user?.record.id, 0),
+    //         getUserAllStarredItems(user?.record.id, 1)
+    //     ]);
 
-        return {
-            // recentLevels,
-            // featuredLevels,
-            // trendingLevels,
-            // levelpacks,
-            // daily,
-            starredLevels,
-            starredLevelpacks
-        };
-    }
+    //     return {
+    //         // recentLevels,
+    //         // featuredLevels,
+    //         // trendingLevels,
+    //         // levelpacks,
+    //         // daily,
+    //         starredLevels,
+    //         starredLevelpacks
+    //     };
+    // }
 
-    return {
-        // recentLevels,
-        // featuredLevels,
-        // trendingLevels,
-        // levelpacks,
-        // daily
-    };
+    // return {
+    //     // recentLevels,
+    //     // featuredLevels,
+    //     // trendingLevels,
+    //     // levelpacks,
+    //     // daily
+    // };
 }) satisfies PageServerLoad;

@@ -15,6 +15,11 @@ export const usersV2 = clientPb.collection<PrivateBaseUserV2["record"]>("5beam_u
 export const levels = clientPb.collection<Level>("5beam_levels");
 export const levelpacks = clientPb.collection<Levelpack>("5beam_levelpacks");
 
+/** @deprecated We should be using the API instead */
+export const levelStars = clientPb.collection<LevelStarred>("5beam_level_stars");
+/** @deprecated We should be using the API instead */
+export const levelpackStars = clientPb.collection<LevelpackStarred>("5beam_levelpack_stars");
+
 export const dailyies = clientPb.collection<Daily>("5beam_daily");
 export const weeklies = clientPb.collection<WeeklyChallenge>("5beam_weekly_challenges");
 
