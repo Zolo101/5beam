@@ -1,4 +1,4 @@
-import { getLevelById, getLevelpackByIdWithLevels } from "$lib/server/get";
+import { getLevelById, getLevelpackByIdWithLevels } from "$lib/get.remote";
 import type { Level, Levelpack } from "$lib/types";
 import type { PageServerLoad } from "./$types";
 

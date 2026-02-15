@@ -2,7 +2,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { isAdmin } from "$lib/misc";
 import { DENIED, MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
 import { ModifyLevelpackSchema } from "$lib/parse";
-import { getLevelpackByIdWithLevels } from "$lib/server/get";
+import { getLevelpackByIdWithLevels } from "$lib/get.remote";
 import {
     ChangeDescriptionWebhook,
     ChangeLevelpackDifficultyWebhook,

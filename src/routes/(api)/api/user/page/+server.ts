@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getUserLevelpacks, getUserLevels } from "$lib/server/get";
+import { getUserLevelpacks, getUserLevels } from "$lib/get.remote";
 import { MY_BAD, BAD, OK } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 

@@ -1,8 +1,10 @@
 import { type Actions } from "@sveltejs/kit";
-import { getLevelById, getRelatedLevels, reportKindById } from "$lib/server/get";
 import type { PageServerLoad } from "./$types";
 import { createObjectSchema } from "$lib/parse";
 
+import { hasUserStarred } from "$lib/stars.remote";
+import { getLevelById, getRelatedLevels } from "$lib/get.remote";
+import { reportKindById } from "$lib/create.remote";
 export const load: PageServerLoad = async ({ params }) => {
     const level = await getLevelById(params.id);
     const relatedLevels = await getRelatedLevels(level);

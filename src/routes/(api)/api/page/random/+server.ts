@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getRandomLevels } from "$lib/server/get";
+import { getRandomLevels } from "$lib/get.remote";
 import { MY_BAD, BAD, OK } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 

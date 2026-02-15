@@ -4,7 +4,7 @@ import {
     getLevels,
     getTrendingLevels,
     getUserAllStarredItems
-} from "$lib/server/get";
+} from "$lib/get.remote";
 import type { PageServerLoad } from "./$types";
 
 // TODO: Revamp this whole function to use remote functions namely query.batch
