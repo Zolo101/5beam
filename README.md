@@ -20,4 +20,4 @@
 
 5beam is being actively developed by me, so if you have any suggestions, security concerns or find any bugs, feel free to open an issue or tell me in the [5beam discord](https://discord.gg/um5KWabefm). Issues regarding accessibility are especially welcome!
 
-![alt text](website.png)
+![image of the website](website.png)

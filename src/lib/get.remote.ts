@@ -16,8 +16,7 @@ import { primitives } from "./parse";
 const creatorFilter = (v: string) => pbf.eq("creator", v);
 /** Be aware: If `v` is false or undefined, it means we don't care */
 const optionalFeaturedOnly = (v?: boolean) => pbf.eq.maybe("featured", v);
-/** Be aware: If `v` is false or undefined, it means we don't care */
-const modFilter = (v?: string) => pbf.eq.maybe("modded", v);
+const modFilter = (v: string) => pbf.eq("modded", v);
 const titleFilter = (v?: string) => pbf.like.maybe("title", v);
 /** Be aware: If `v` is false, it means we don't care */
 const charactersFilter = (v?: string[]) =>
