@@ -74,7 +74,7 @@ export const handle = (async ({ event, resolve }) => {
             httpOnly: true,
             // TODO: Make this strict since we arent going the third party cookie route
             // its OK to use in this instance but be careful https://web.dev/articles/samesite-cookies-explained
-            sameSite: "strict"
+            sameSite: "lax"
         })
     );
 
