@@ -1,15 +1,20 @@
 import { type Actions } from "@sveltejs/kit";
-import { getLevelpackByIdWithLevels } from "$lib/server/get";
 import type { PageServerLoad } from "./$types";
 import { actions as levelActions } from "../../level/[id]/+page.server";
+import { hasUserStarred } from "$lib/stars.remote";
+import { getLevelpackByIdWithLevels } from "$lib/get.remote";
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
     const levelpack = await getLevelpackByIdWithLevels(params.id);
-    return { levelpack };
-};
 
-export const actions = {
-    report: async (request) => {
-        return levelActions.report(request);
+    let starred = false;
+    if (locals.user) {
+        try {
+            starred = await hasUserStarred({ id: params.id, type: 1 });
+        } catch {
+            // Not starred
+        }
     }
-} satisfies Actions;
+
+    return { levelpack, starred };
+};

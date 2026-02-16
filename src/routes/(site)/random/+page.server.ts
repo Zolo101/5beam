@@ -1,5 +1,5 @@
 import type { PageServerLoad } from "./$types";
-import { getRandomLevels } from "$lib/server/get";
+import { getRandomLevels } from "$lib/get.remote";
 import type { Level } from "$lib/types";
 
 export const load = (async () => {

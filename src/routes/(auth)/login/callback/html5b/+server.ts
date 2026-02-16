@@ -27,7 +27,7 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
         status: 302,
         headers: {
             location: `https://coppersalts.github.io/HTML5b/authredirect?5beam_auth=${fivebeam_auth}`
-            // location: `http://localhost:8080/authredirect.html?5beam_auth=${fivebeam_auth}`
+            // location: `http://127.0.0.1:8080/authredirect.html?5beam_auth=${fivebeam_auth}`
         }
     });
 };

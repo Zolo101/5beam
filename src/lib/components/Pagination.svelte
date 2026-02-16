@@ -1,80 +1,85 @@
 <script lang="ts">
-    import { clamp } from "$lib/misc";
+    import type { RemoteQueryFunction } from "@sveltejs/kit";
     import type { Component } from "svelte";
 
     type PaginationObject = {
         page: number;
         type: number;
-        sort: number;
+        sortCode: number;
         featured: boolean;
         amount: number;
+        mod: string;
+        text?: string;
+        id?: string;
+        areaCode: number;
+        characters: string[];
+        options?: Record<string, unknown>;
     };
-
-    const changePage = async (by: number) => {
-        // dont go below zero
-        if (page + by < 1) return;
-
-        const newOutput = await callback({ page: page + by, type, sort, featured, amount });
-
-        if (newOutput && newOutput.length > 0) {
-            page += by;
-            output = newOutput;
-        }
-    };
-
-    const updateFilters = async () => {
-        // Reset to page 1 and fetch new data when filter/sort changes
-        page = 1;
-
-        const newOutput = await callback({ page, type, sort, featured, amount });
-        if (newOutput) {
-            output = newOutput;
-        }
-    };
-
-    const resetPage = () => (page = 1);
 
     interface Props<T> {
         page?: number;
-        callback: (pagination: PaginationObject) => Promise<T[] | null>;
+        query: RemoteQueryFunction<PaginationObject, T[]>;
         // Output variable to bind to
-        output: T[] | null;
+        // output: T[] | null;
         columns?: number;
         type?: number;
+        amount?: number;
         featured?: boolean;
         sort?: number;
+        mod?: string;
+        text?: string;
+        id?: string;
+        areaCode?: number;
+        characters?: string[];
         removeOptions?: boolean;
         removeMovement?: boolean;
-        PageComponent?: Component;
+        // TODO: 'any' alternative?
+        PageComponent?: Component<any, {}, any>;
     }
 
     let {
-        page = $bindable(1),
-        callback,
-        output = $bindable(),
+        query,
+        // output = $bindable(),
         columns = 2,
         type = 0,
-        featured = $bindable(false),
-        sort = $bindable(0),
+        amount = 12,
+        featured: defaultFeatured = false,
+        sort: defaultSortCode = 0,
+        mod = "",
+        text = "",
+        id = "",
+        areaCode = 0,
+        characters = [],
         removeOptions = false,
         removeMovement = false,
         PageComponent
     }: Props<unknown> = $props();
 
-    let windowWidth = $state(0);
-    let amount = $derived(clamp(columns * Math.floor((windowWidth - 512) / 256), 1, 8));
+    let page = $state(1);
+    let featured = $derived(defaultFeatured);
+    let sortCode = $derived(defaultSortCode);
 
-    // Run updateFilters when amount changes
-    // TODO: Bug where if you to go page 4 on small screens then resize, you can get softlocked
-    $effect(() => {
-        if (amount > 0) {
-            callback({ page, type, sort, featured, amount }).then((newOutput) => {
-                if (newOutput) {
-                    output = newOutput;
-                }
-            });
-        }
-    });
+    let windowWidth = $state(0);
+
+    let internalText = $state(text);
+
+    let output = $derived(
+        await query({
+            page,
+            type,
+            sortCode,
+            featured,
+            amount,
+            mod,
+            areaCode,
+            characters,
+            text: internalText,
+            id,
+            options: { requestKey: null }
+        })
+    );
+
+    const resetPage = () => (page = 1);
 
     // Must always be amount length
     const viewOutput = $derived.by(() => {
@@ -83,29 +88,36 @@
         while (arr.length < amount) arr.push(null);
         return arr;
     });
-</script>
 
-<svelte:window bind:innerWidth={windowWidth} />
+    $effect(() => {
+        if (internalText !== text) {
+            internalText = text;
+            page = 1;
+        }
+    });
+</script>
 
 {#if !removeOptions}
     <div
         data-nosnippet
-        class="mb-3 ml-5 *:mx-1 *:cursor-pointer *:rounded *:bg-neutral-800 *:p-2 *:text-neutral-50 *:shadow *:transition-colors *:hover:bg-neutral-700"
+        class="mb-5 flex justify-center gap-3 [&_select]:cursor-pointer [&_select]:rounded [&_select]:bg-neutral-800 [&_select]:p-2 [&_select]:transition-colors [&_select]:hover:bg-neutral-700"
     >
         <select name="filter" bind:value={featured} onchange={resetPage}>
             <option value={false}>All</option>
             <option value={true}>Featured</option>
         </select>
-        <select name="sort" bind:value={sort} onchange={resetPage}>
+        <select name="sort" bind:value={sortCode} onchange={resetPage}>
             <option value={0}>Newest</option>
             <option value={1}>Oldest</option>
-            <option value={2}>Most Popular</option>
+            <option value={2}>Most plays</option>
+            <option value={3}>Most stars</option>
         </select>
     </div>
 {/if}
 <div
     class="m-auto flex flex-wrap justify-center gap-4"
-    style="grid-template-columns: repeat({Math.floor(amount / columns)}, minmax(0, 1fr));"
+    bind:clientWidth={windowWidth}
+    style="grid-template-columns: repeat({Math.floor(amount / columns)}, minmax(350px, 1fr));"
 >
     {#if viewOutput}
         {#each viewOutput as data}
@@ -117,12 +129,12 @@
     <div class="p-5 text-center text-6xl font-bold text-neutral-300 select-none">
         <button
             class="cursor-pointer transition-colors hover:text-neutral-500"
-            onclick={() => changePage(-1)}>{"⟵"}</button
+            onclick={() => (page = Math.max(1, page - 1))}>{"⟵"}</button
         >
         <span class="font-mono">{page}</span>
         <button
             class="cursor-pointer transition-colors hover:text-neutral-500"
-            onclick={() => changePage(1)}>{"⟶"}</button
+            onclick={() => (page += 1)}>{"⟶"}</button
         >
     </div>
 {/if}

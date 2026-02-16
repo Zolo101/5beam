@@ -3,8 +3,8 @@
     import UserComponent from "$lib/components/UserComponent.svelte";
     import Button from "$lib/components/Button.svelte";
     import Difficulty from "$lib/components/Difficulty.svelte";
-    import { clamp, formatDate_Day, getLevelThumbnailURL, snap } from "$lib/misc";
-    import Icon from "$lib/components/Icon.svelte";
+    import { clamp, formatDate_Day, getLevelThumbnailURL, getPlaysString, snap } from "$lib/misc";
+
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";
@@ -14,8 +14,13 @@
     import validate from "$lib/client/FileValidator";
     import BigButton from "$lib/components/BigButton.svelte";
     import { postModifyLevelClient } from "$lib/client/ClientSideAPI";
-    import ReportDialog from "$lib/components/ReportDialog.svelte";
     import { editThumbnail } from "$lib/thumbnail.remote";
+    import Featured from "$lib/assets/icons/Featured.svg?component";
+    import Star from "$lib/components/Star.svelte";
+    import Report from "$lib/components/Report.svelte";
+
+    import Plays from "$lib/assets/icons/Plays.svg?component";
+    import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
 
     interface Props {
         data: PageData;
@@ -23,14 +28,16 @@
 
     let { data }: Props = $props();
 
-    let { level, relatedLevels, user } = $derived(data);
+    let { level, relatedLevels, user, starred } = $derived(data);
     let {
         id,
         title,
         description,
         thumbnail,
         difficulty,
+        unlisted,
         plays,
+        stars,
         featured,
         creator,
         modded,
@@ -43,6 +50,8 @@
     let editSending = $derived(false);
     let showDifference = $state(false);
 
+    // TODO: Can we put this thumbnail moving thing SOMEWHERE ELSE??
+    // TODO: Only for 5beam, I need the thumbnail mover to show in HTML5b aswell
     let showThumbnailDialog = $state(false);
     let cropX = $state(0);
     let cropY = $state(0);
@@ -152,9 +161,6 @@
         cropY = Math.max(0, (img.naturalHeight - CROP_HEIGHT) / 2);
     }
 
-    let reportMode = $state(false);
-    let reportSending = $state(false);
-
     $effect(() => {
         if (!editMode) editSending = false;
     });
@@ -251,13 +257,14 @@
     <meta property="og:description" content={description} />
     <meta property="og:image" content={thumbnailUrl} />
     <meta property="description" content={description} />
+    <meta property="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <section
     itemscope
     itemtype="https://schema.org/CreativeWork"
-    class="mt-2 flex flex-col text-neutral-100 max-xl:items-center xl:mx-48"
+    class="mt-2 flex flex-col max-xl:items-center xl:mx-48"
 >
     <meta itemprop="author" content={creatorName} />
     <meta itemprop="name" content={title} />
@@ -269,23 +276,36 @@
         <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
         <meta itemprop="userInteractionCount" content={plays.toString()} />
     </div>
-    <div class="flex items-center gap-2">
-        {#if featured}
-            <Icon name="starred" width="56" height="56" />
-        {/if}
-        <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
-            {title}
-        </span>
+    <div class="flex items-baseline justify-between gap-2">
+        <div class="flex items-baseline gap-3">
+            {#if featured}
+                <Featured width="56" height="56" />
+            {/if}
+            <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
+                {title}
+            </span>
+            {#if user}
+                <Star bind:stars bind:starred width="48" height="48" {id} type="0" />
+            {/if}
+        </div>
+        <Report kind="level" />
     </div>
-    <section class="flex text-xl">
+    <section class="flex items-baseline gap-10 text-xl font-bold">
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
-        <span class="px-1">::</span>
-        <span class="font-black"><Difficulty includeText includeImage={false} {difficulty} /></span>
-        <span class="px-1">::</span>
-        <span class="pr-1 font-black text-green-500">{plays}</span>
-        <span class="text-green-500">plays</span>
-        <span class="px-1">::</span>
-        <span class="font-black text-amber-500">{formatDate_Day(created)}</span>
+        <span>
+            <Plays width="13" height="13" />
+            <span class="text-green-500">
+                {getPlaysString(plays)}
+            </span>
+        </span>
+        <span>
+            <StarEnabled width="15" height="15" />
+            <span class="text-yellow-500">
+                {getPlaysString(stars)}
+            </span>
+        </span>
+        <span><Difficulty includeText {difficulty} /></span>
+        <span>{formatDate_Day(created)}</span>
     </section>
 </section>
 <div class="flex justify-center gap-5 py-6 max-md:flex-col">
@@ -294,7 +314,7 @@
         {#if isOwner || data.admin}
             <button
                 onclick={() => (showThumbnailDialog = true)}
-                class="absolute top-2 right-2 cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors hover:bg-neutral-900"
+                class="absolute top-2 right-2 cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-100 drop-shadow-2xl transition-colors hover:bg-neutral-900"
             >
                 Change thumbnail
             </button>
@@ -317,12 +337,6 @@
             />
         {/if}
         <BigButton text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
-        <BigButton
-            text={reportSending ? "Reported" : "Report"}
-            bg="#ff5555"
-            onclick={() => (reportMode = !reportMode)}
-            disabled={reportSending}
-        />
     </div>
 </div>
 
@@ -339,8 +353,6 @@
         <LevelComponent data={level} />
     {/each}
 </div>
-
-<ReportDialog bind:open={reportMode} bind:reportSending kind="level" />
 
 <Dialog bind:open={showThumbnailDialog}>
     <div class="relative flex w-full flex-col items-center gap-5 rounded-lg p-5 text-xl">
@@ -446,6 +458,14 @@
                 />
                 {#key difficulty}<Difficulty {difficulty} includeText />{/key}
             </div>
+            <!-- TODO: Inline this (somehow) -->
+            <!-- <label for="unlisted" class="text-2xl font-bold">Unlisted</label>
+            <input
+                name="unlisted"
+                type="checkbox"
+                bind:checked={unlisted}
+                class="h-6 w-6 rounded border-neutral-600 bg-neutral-800 accent-neutral-500"
+            /> -->
             <div class="flex justify-end gap-2 *:grow">
                 <!-- <button onclick={deleteLevel} class="float-left text-xs opacity-50">Delete</button> -->
                 <Button
@@ -507,11 +527,11 @@
     </div>
     <Dialog bind:open={showDifference}>
         <div class="grid grid-cols-2 gap-3 px-5 pt-5">
-            <LevelInfo selectedLevel={validate(level.data).levels[0]} />
+            <LevelInfo level={validate(level.data).levels[0]} />
             {#await levelDataJSON}
                 <div class="m-auto text-sm"><p>Loading...</p></div>
             {:then dataJSON}
-                <LevelInfo selectedLevel={dataJSON} />
+                <LevelInfo level={dataJSON} />
             {/await}
         </div>
         <div class="flex justify-center p-5 text-xl">

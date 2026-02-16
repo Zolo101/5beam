@@ -6,15 +6,15 @@
 
     let { directory, oppositeSlash = false }: Props = $props();
 
-    const slash = oppositeSlash ? "\\" : "/";
+    const slash = $derived(oppositeSlash ? "\\" : "/");
 </script>
 
 <div class="filepath">
     {#each directory as folder, i}
         {#if i > 0}
-            <span class="h-9 px-2 text-3xl font-bold text-neutral-500">{slash}</span>
+            <span class="h-9 px-2 text-3xl font-bold text-white mix-blend-overlay">{slash}</span>
         {/if}
-        <span class="filepath-folder text-neutral-200">{folder}</span>
+        <span class="filepath-folder text-neutral-100">{folder}</span>
     {/each}
 </div>
 

@@ -1,136 +1,144 @@
 <script lang="ts">
-    import { fly } from "svelte/transition";
+    import { fade } from "svelte/transition";
     import Logo from "./Logo.svelte";
-    import { getSearchClient } from "$lib/client/ClientSideAPI";
-    import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
-    import Pagination from "$lib/components/Pagination.svelte";
-    import FiveBStyle from "$lib/components/FiveBStyle.svelte";
     import type { PocketbaseUser } from "$lib/types";
-    import questionIcon from "$lib/assets/question.png";
     import { enhance } from "$app/forms";
     import { page } from "$app/state";
 
-    let { user = $bindable() }: { user: PocketbaseUser } = $props();
+    import DefaultPFP from "$lib/assets/icons/defaultPFP.svg?component";
+    import Dropdown from "$lib/assets/icons/dropdown.svg?component";
+
+    let { user = $bindable() }: { user: PocketbaseUser | undefined } = $props();
     let { admin, loggedIn } = $derived(page.data);
 
-    let searchFocused = $state(false);
-    let searchPage = $state(0);
-
-    let searchResults = $state([]);
-    let searchText = $state("");
-
-    // TODO: I believe svelte 5 fixes this but for some reason
-    // it runs on page load, causing getSearchClient to be called
-    // EACH TIME!!!
-    // So this is a temp fix
-
-    $effect(() => {
-        searchFocused = searchText.length > 0;
-        if (searchFocused) {
-            getSearchClient(searchText).then((results) => {
-                searchResults = results;
-            });
-        }
-    });
+    let dropdownOpen = $state(false);
 </script>
 
-<nav class="flex items-center justify-center p-1.5 text-black backdrop-blur-[4px]">
-    <div class="mx-5 flex h-24 grow justify-between pt-2">
-        <Logo />
-        <div class="list mb-1 flex flex-row items-center gap-3 text-xl">
-            <input
-                type="text"
-                id="search"
-                name="search"
-                class="w-full min-w-10 rounded-sm bg-neutral-800 px-2 py-0.5 text-2xl text-neutral-200"
-                maxlength="64"
-                placeholder="Search..."
-                bind:value={searchText}
-            />
-            <a href="/upload" class="rainbow-outline">Upload</a>
-            <!-- <a href="/mods">Mods</a> -->
-
-            {#if admin}
-                <a href="/reports">Reports</a>
-            {/if}
+<nav class="flex items-center justify-center bg-black p-1.5 text-neutral-100">
+    <div class="container m-auto mx-5 flex h-24 grow pt-2">
+        <div class="flex flex-1 items-center justify-start">
+            <Logo />
+        </div>
+        <section class="flex items-center gap-5 text-3xl font-medium max-lg:text-lg">
+            <a href="/discover">Discover</a>
+            <span>•</span>
+            <a href="/upload">Upload</a>
+            <span>•</span>
+            <a href="https://discord.gg/Xm8xzhEFjy" target="_blank">Discuss</a>
+        </section>
+        <div class="list mb-1 flex flex-1 flex-row items-center justify-end gap-3 text-xl">
             {#if loggedIn}
-                <!-- TODO: Removed temp until we make a pocketbase module that updates 5beam_users upon oauth -->
-                <!-- <a href="/user" class="p-0!" -->
-                <a href="/user"
-                    >Profile
-                    <!-- {#if user.record.avatar}
-                        <img src={user.record.avatar} alt="Profile" class="max-w-9 min-w-9 rounded" />
-                    {:else}
-                        <img src={questionIcon} alt="Profile" class="max-w-9 min-w-9 rounded" />
-                    {/if} -->
-                </a>
-                <form method="POST" action="/logout">
-                    <button type="submit" class="w-30">Log Out</button>
-                </form>
+                <div class="relative flex items-center gap-2">
+                    <button
+                        onclick={() => (dropdownOpen = !dropdownOpen)}
+                        class="flex items-center gap-2 rounded-sm bg-transparent! transition-colors"
+                    >
+                        <!-- TODO: make this a component, this is being used in the settings page -->
+                        <!-- zelo: If you get a weird svg related error during development, its sveltekit-svg acting weird, comment this out then restart -->
+                        {#if user?.record?.avatar}
+                            <img src={user.record.avatar} alt="Profile" class="w-12 rounded-full" />
+                        {:else}
+                            <DefaultPFP aria-valuetext="Profile" class="h-12 w-12" />
+                        {/if}
+                        <Dropdown
+                            width="20"
+                            class={[
+                                dropdownOpen ? "rotate-180" : "rotate-0",
+                                "transition-transform"
+                            ]}
+                        />
+                    </button>
+                    {#if dropdownOpen}
+                        <div
+                            transition:fade={{ duration: 100 }}
+                            class="dropdown absolute top-full right-0 z-10 mt-1 flex w-48 flex-col gap-1 rounded-sm bg-zinc-800 py-2 shadow-lg"
+                        >
+                            <span class="text-center text-sm">{user?.record.username}</span>
+                            <a
+                                href="/user"
+                                onclick={() => (dropdownOpen = false)}
+                                class="px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-700"
+                            >
+                                Profile
+                            </a>
+                            <!-- <a
+                                href="/stars"
+                                onclick={() => (dropdownOpen = false)}
+                                class="px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-700"
+                            >
+                                My Starred
+                            </a> -->
+                            {#if admin}
+                                <a href="/reports" class="px-4 py-2">Reports</a>
+                            {/if}
+                            <!-- <a
+                                href="/user/settings"
+                                onclick={() => (dropdownOpen = false)}
+                                class="px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-700"
+                            >
+                                Settings
+                            </a> -->
+                            <form method="POST" action="/logout" class="w-full">
+                                <button
+                                    type="submit"
+                                    onclick={() => (dropdownOpen = false)}
+                                    class="w-full px-4 py-2 text-left text-neutral-100 transition-colors hover:bg-neutral-700"
+                                >
+                                    Log Out
+                                </button>
+                            </form>
+                        </div>
+                    {/if}
+                </div>
             {:else}
                 <form use:enhance method="POST" action="/login">
-                    <button type="submit" class="w-30">Log In</button>
+                    <button
+                        type="submit"
+                        class="w-30 px-4 py-1 text-neutral-100 transition-colors hover:bg-neutral-700"
+                        >Log In</button
+                    >
                 </form>
             {/if}
-            <span>•</span>
-            <a href="https://discord.gg/Xm8xzhEFjy" target="_blank">Discord</a>
         </div>
     </div>
 </nav>
 
-{#if searchFocused}
-    <div
-        transition:fly={{ y: 500 }}
-        class="absolute top-24 z-20 w-full bg-black/80 py-10 shadow-2xl backdrop-blur-md"
-    >
-        <div class="flex flex-col gap-5">
-            <div
-                class="mx-10 flex justify-between text-6xl transition-colors"
-                style:color={!searchResults.length ? "#ff7b7b" : "#e5e5e5"}
-            >
-                <div>
-                    <FiveBStyle text={searchText} />
-                </div>
-                <button
-                    class="font-black transition-transform hover:scale-120"
-                    onclick={() => (searchText = "")}>✕</button
-                >
-            </div>
-            {#if searchResults.length}
-                <!-- TODO: Allow 3 levels in the same row at >1600px width-->
-                <div class="flex w-full flex-wrap justify-center gap-4">
-                    <Pagination
-                        bind:page={searchPage}
-                        bind:output={searchResults}
-                        callback={({ amount }) => getSearchClient(searchText, amount)}
-                        columns={2}
-                        removeOptions
-                        removeMovement
-                        PageComponent={LevelComponent}
-                    />
-                </div>
-            {:else}
-                <p class="w-full text-center text-4xl">No results...</p>
-            {/if}
-        </div>
-    </div>
-{/if}
-
 <style>
-    nav {
+    /* nav {
         background: linear-gradient(
             rgba(255, 255, 255, 0.2),
             rgba(233, 233, 233, 0.2) 90%,
             rgba(255, 255, 255, 0)
         );
+    } */
+
+    .list {
+        a,
+        :global(button) {
+            cursor: pointer;
+            border-radius: 0.375rem;
+            background: var(--color-zinc-800);
+            color: var(--color-neutral-100);
+            /* box-shadow: var(--tw-drop-shadow-2xl); */
+            transition:
+                color 0.2s,
+                background-color 0.2s;
+            /* @apply cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-100 drop-shadow-2xl transition-colors; */
+        }
+
+        a:hover,
+        :global(button):hover {
+            background: var(--color-zinc-700);
+            /* @apply bg-neutral-900; */
+        }
     }
 
     /* TODO: Inset rainbow? */
-    .rainbow-outline {
+    /* .rainbow-outline {
         animation: rainbow-outline 10s linear infinite;
-        --rainbow-outline-width: 2px;
+        --rainbow-outline-width: 3px;
         --rainbow-outline-blur: 0px;
-    }
+    } */
 
     @keyframes rainbow-outline {
         0% {

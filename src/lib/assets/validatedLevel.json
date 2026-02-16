@@ -1,0 +1,59 @@
+{
+    "levels": [
+        {
+            "id": 1,
+            "name": "Time to explore",
+            "width": 32,
+            "height": 18,
+            "spriteNumber": 1,
+            "background": 0,
+            "levelType": "L",
+            "data": "...........................................................................................................................................................................................................................................................................................................................................................................................4....666......................////.:.//6666........5...../////////>>>/////6666.....//////////////////////////////////////////////////////////////////////////////////////////////////////////////////",
+            "sprites": [
+                {
+                    "entityId": 1,
+                    "x": 3.5,
+                    "y": 0,
+                    "roleId": 10
+                }
+            ],
+            "dialogues": [
+                {
+                    "entityOrder": 0,
+                    "emotion": "S",
+                    "text": "Whoa!  Hold on a second, this place doesn't look familiar.  What happened?    I don't remember anything!"
+                },
+                {
+                    "entityOrder": 0,
+                    "emotion": "S",
+                    "text": "Uh... well, um... uh.... gosh, I'm so confused."
+                },
+                {
+                    "entityOrder": 0,
+                    "emotion": "H",
+                    "text": "Oh, I know!  I'll look through my journal entries!   After all, I am a journal.  So, let's see...   five minutes ago, I..."
+                },
+                {
+                    "entityOrder": 0,
+                    "emotion": "S",
+                    "text": "...got eaten by Evil Leafy? WHAT?  That doesn't make any sense!"
+                },
+                {
+                    "entityOrder": 0,
+                    "emotion": "S",
+                    "text": "Well, I guess I'll go look for my fellow FreeSmarters to get a sense of what's going on."
+                },
+                {
+                    "entityOrder": 99,
+                    "emotion": "S",
+                    "text": "Use the arrow keys to move and press the space bar to jump."
+                }
+            ],
+            "deathsRequired": 2,
+            "logs": [],
+            "raw": "Time to explore\n32,18,01,00,L\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n................................\n...........................4....\n666......................////.:.\n//6666........5...../////////>>>\n/////6666.....//////////////////\n////////////////////////////////\n////////////////////////////////\n////////////////////////////////\n01,03.50,00.00,10\n06\n00S Whoa!  Hold on a second, this place doesn't look familiar.  What happened?    I don't remember anything!\n00S Uh... well, um... uh.... gosh, I'm so confused.\n00H Oh, I know!  I'll look through my journal entries!   After all, I am a journal.  So, let's see...   five minutes ago, I...\n00S ...got eaten by Evil Leafy? WHAT?  That doesn't make any sense!\n00S Well, I guess I'll go look for my fellow FreeSmarters to get a sense of what's going on.\n99S Use the arrow keys to move and press the space bar to jump.\n000002"
+        }
+    ],
+    "globalLogs": [],
+    "valid": true
+}

@@ -2,9 +2,17 @@ import { dev } from "$app/environment";
 import type { Handle } from "@sveltejs/kit";
 import Pocketbase from "pocketbase";
 
-// This is required for accessing protected routes, DM me if you have a site that uses 5beam and you want to be added!
-const protectedDomains = ["http://localhost:8080", "https://coppersalts.github.io"];
+// TODO: Rename "protected" -> "restricted"?
+// This is required for accessing protected routes, see the "CORS" section of https://5beam.zelo.dev/api for more info.
+const protectedDomains = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://coppersalts.github.io"
+];
+
 const protectedRoutes = [
+    "/api/level/star",
+    "/api/levelpack/star",
     "/api/create/level",
     "/api/create/levelpack",
     "/api/modify/level",
@@ -16,11 +24,11 @@ const protectedRoutes = [
 
 export const handle = (async ({ event, resolve }) => {
     event.locals.pb = new Pocketbase("https://cdn.zelo.dev");
-    event.locals.pb.authStore.loadFromCookie(
-        event.request.headers.get("cookie") || event.request.headers.get("Authorization") || ""
-    );
-
     try {
+        event.locals.pb.authStore.loadFromCookie(
+            event.request.headers.get("cookie") || event.request.headers.get("Authorization") || ""
+        );
+
         if (event.locals.pb.authStore.isValid) {
             event.locals.user = await event.locals.pb.collection("5beam_users").authRefresh();
         }
@@ -66,7 +74,7 @@ export const handle = (async ({ event, resolve }) => {
             httpOnly: true,
             // TODO: Make this strict since we arent going the third party cookie route
             // its OK to use in this instance but be careful https://web.dev/articles/samesite-cookies-explained
-            sameSite: "lax"
+            sameSite: "strict"
         })
     );
 

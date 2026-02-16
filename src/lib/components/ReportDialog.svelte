@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
+    import { reportKindById } from "$lib/create.remote";
     import Button from "./Button.svelte";
     import Dialog from "./Dialog.svelte";
     import FiveBStyle from "./FiveBStyle.svelte";
@@ -22,7 +22,7 @@
             <div class="p-10 text-center text-5xl">
                 <FiveBStyle text="Report {kind}" />
             </div>
-            <form class="flex flex-col gap-3" use:enhance method="POST" action="?/report">
+            <form class="flex flex-col gap-3" {...reportKindById}>
                 <input type="hidden" name="reportKind" value={kind} />
                 <label for="reportReason" class="text-2xl font-bold">Reason</label>
                 <select
@@ -54,6 +54,7 @@
                     type="submit"
                 />
             </form>
+            <Button text="Close" bg="#aaaaaa" onclick={() => (open = false)} />
         </div>
     </div>
 </Dialog>

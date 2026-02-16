@@ -3,55 +3,64 @@
     import { backgrounds, to5bLevelFormat } from "$lib/misc";
     import Table from "$lib/components/layout/Table.svelte";
     import Log from "./Log.svelte";
+    import { generateThumbnailFull } from "$lib/talk/create";
+    import type LevelpackManipulator from "$lib/client/LevelpackManipulator.svelte";
 
     interface Props {
-        selectedLevel: DetectedLevel | null;
+        level: DetectedLevel | null;
+        index: number;
+        // if you want to change it's data
+        manipulator?: LevelpackManipulator;
     }
 
-    let { selectedLevel = $bindable() }: Props = $props();
+    let { level, index, manipulator }: Props = $props();
     let tableSprites = $derived(
-        selectedLevel?.sprites.map((s) => Object.values(s).filter((v) => v !== undefined))
+        level?.sprites.map((s) => Object.values(s).filter((v) => v !== undefined))
     );
 
-    let tableDialogues = $derived(selectedLevel?.dialogues.map((d) => Object.values(d)));
+    let tableDialogues = $derived(level?.dialogues.map((d) => Object.values(d)));
 
     // TODO: This is a duplicate of the ValidatedLevel.svelte function
     const getBackground = (background: number) =>
         backgrounds[`/src/lib/assets/backgrounds/${background}.png`].default;
+
+    const thumbnail = $derived.by(async () => {
+        const response = await generateThumbnailFull(level?.raw);
+        return await response.blob();
+    });
 </script>
 
-{#if selectedLevel}
+<!-- TODO: Move to Validator -->
+{#if level}
     <div
         id="levelDetails"
-        class="relative flex max-h-screen flex-col gap-3 overflow-hidden rounded-lg p-5"
+        class="relative flex max-h-full flex-col gap-3 overflow-hidden rounded-lg p-5 text-xs text-white"
     >
         <div
             class="absolute -inset-4 -z-10 bg-cover bg-center blur-xs"
-            style="background-image: url({getBackground(selectedLevel.background)});"
+            style="background-image: url({getBackground(level.background)});"
             aria-hidden="true"
         ></div>
-        <div class="flex items-start justify-between text-5xl">
-            <div class="text-white">
-                <span>{to5bLevelFormat(selectedLevel.id)}.</span>
-                <span class="font-bold">{selectedLevel.name}</span>
+        <div class="flex flex-col items-start text-2xl">
+            <div>
+                <span>{to5bLevelFormat(index + 1)}.</span>
+                <span class="font-bold">{level.name}</span>
             </div>
-            <button
-                class="cursor-pointer rounded bg-green-600 px-3 py-1 text-4xl hover:bg-green-500"
-                onclick={() => (selectedLevel = null)}>OK</button
-            >
-            <!-- <div>
-                <button class="p-0 text-3xl" onclick={() => (selectedLevel = undefined)}>✕</button>
-            </div> -->
+            <img
+                src={URL.createObjectURL(await thumbnail)}
+                alt="Level Thumbnail"
+                class="max-h-200 w-100 rounded-md object-contain"
+            />
         </div>
-        <div class="flex content-between items-end gap-5 text-3xl">
+        <div class="flex content-between items-end gap-5 text-xl">
             <div class="flex w-full items-end gap-5">
                 <div class="flex items-end gap-2">
-                    <span class="code">{selectedLevel.width}</span>
-                    <span class="text-5xl font-black">×</span>
-                    <span class="code">{selectedLevel.height}</span>
+                    <span class="code">{level.width}</span>
+                    <span class="text-2xl font-black">×</span>
+                    <span class="code">{level.height}</span>
                 </div>
                 <div>
-                    {#if selectedLevel.levelType === "L"}
+                    {#if level.levelType === "L"}
                         <span class="code bg-green-500/50! text-green-300 outline-green-500/80!"
                             >L</span
                         >
@@ -65,24 +74,24 @@
         </div>
         <div>
             <Table
-                title="Sprites ({selectedLevel.sprites.length})"
+                title="Sprites ({level.sprites.length})"
                 heads={["Sprite ID", "X", "Y", "Role ID", "Motion Speed", "Motion Path"]}
                 content={tableSprites}
             />
         </div>
-        {#if selectedLevel.dialogues.length > 0}
-            <div>
+        {#if level.dialogues.length > 0}
+            <div class="w-100">
                 <Table
-                    title="Dialogues ({selectedLevel.dialogues.length})"
+                    title="Dialogues ({level.dialogues.length})"
                     heads={["Sprite ID", "Emotion", "Text"]}
                     content={tableDialogues}
                 />
             </div>
         {/if}
-        {#if selectedLevel.logs.length > 0}
+        {#if level.logs.length > 0}
             <div class="info">
-                <div class="rounded-sm bg-neutral-700/50 p-2.5 text-neutral-200">
-                    {#each selectedLevel.logs as log}
+                <div class="rounded-sm bg-neutral-700/50 p-2.5 text-neutral-100">
+                    {#each level.logs as log}
                         <Log {log} />
                     {/each}
                 </div>

@@ -11,16 +11,16 @@
 
 <table
     class:dynamicWidth
-    class="mt-5 rounded border-hidden text-neutral-200 outline-4 outline-black"
+    class="mt-5 rounded border-hidden text-neutral-100 outline-4 outline-black"
 >
     {#if title}
         <caption class="bg-black p-1 text-sm">{title}</caption>
     {/if}
     {#if heads}
         <thead>
-            <tr class="bg-neutral-700">
+            <tr class="bg-zinc-700">
                 {#each heads as head}
-                    <th class="border-2 border-neutral-800 bg-neutral-700 p-2.5">{head}</th>
+                    <th class="border-2 border-zinc-800 bg-zinc-700 p-2.5">{head}</th>
                 {/each}
             </tr>
         </thead>
@@ -29,7 +29,7 @@
         {#each content as row}
             <tr>
                 {#each row as item}
-                    <td class="border-2 border-neutral-800 bg-neutral-600 p-2.5">{item}</td>
+                    <td class="border-2 border-zinc-800 bg-zinc-600 p-2.5">{item}</td>
                 {/each}
             </tr>
         {/each}

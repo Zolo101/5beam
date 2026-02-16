@@ -5,10 +5,10 @@
     import type { PageData } from "./$types";
     import type { Snippet } from "svelte";
 
-    import clouds from "$lib/assets/background_homepage/clouds.svg";
-    import moon from "$lib/assets/background_homepage/moon.svg";
-    import platforms from "$lib/assets/background_homepage/platforms.svg";
-    import stars from "$lib/assets/background_homepage/stars.svg";
+    import Clouds from "$lib/assets/background_homepage/clouds.svg?component";
+    import Moon from "$lib/assets/background_homepage/moon.svg?component";
+    import Platforms from "$lib/assets/background_homepage/platforms.svg?component";
+    import Stars from "$lib/assets/background_homepage/stars.svg?component";
 
     interface Props {
         data: PageData;
@@ -17,7 +17,7 @@
 
     let { data, children }: Props = $props();
 
-    let user = data.user;
+    let user = $derived(data.user);
 
     let scrollY = $state(0);
 </script>
@@ -34,13 +34,17 @@
 <svelte:window bind:scrollY />
 
 <div class="background fixed -z-10 h-screen w-screen bg-cover">
-    <img src={moon} alt="" />
-    <img src={stars} alt="" />
-    <img src={platforms} alt="" />
-    <img src={clouds} alt="" />
+    <Moon class="-top-50 left-55" />
+    <!-- <Stars class="left-1/3" /> -->
+    <!-- <Stars class="" /> -->
+    <Platforms class="top-110 right-20" />
+    <Platforms class="top-130 -left-50 rotate-y-180" />
+    <Platforms class="top-100 left-250" />
+    <Clouds class="top-1/5 right-1/4" />
+    <Clouds class="top-1/3 left-1/4" />
 </div>
 <Navbar {user} />
-<div class="container m-auto w-full">
+<div class="container mx-auto w-full">
     {@render children?.()}
 </div>
 <Footer />
@@ -52,7 +56,7 @@
         /* This is heavy on the CPU so I'm disabling */
         /* animation: hue-rotate 10s linear infinite; */
 
-        & img {
+        & :global(svg) {
             position: absolute;
             width: 100%;
             height: 100%;

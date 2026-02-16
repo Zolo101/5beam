@@ -1,5 +1,6 @@
 import { diffLines } from "diff";
 import { dev } from "$app/environment";
+import placeholderImage from "$lib/assets/backgrounds/0.png";
 import type { PrivateBaseUserV2 } from "$lib/types";
 
 export const difficultyMap = new Map<number, string>([
@@ -44,13 +45,31 @@ export const backgrounds: Glob = import.meta.glob("$lib/assets/backgrounds/*.png
     query: "?url"
 });
 
-// TODO: Research temporal https://tc39.es/proposal-temporal/docs/index.html
-export function formatDate_Day(date: string) {
-    return new Date(date).toLocaleDateString("en-gb", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
+export function formatDate_Day(dateString: string) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const ordinal = getOrdinal(day);
+    return date
+        .toLocaleDateString("en-gb", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        })
+        .replace(day.toString(), `${day}${ordinal}`);
+}
+
+function getOrdinal(day: number): string {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+        case 1:
+            return "st";
+        case 2:
+            return "nd";
+        case 3:
+            return "rd";
+        default:
+            return "th";
+    }
 }
 
 export function clamp(value: number, min: number, max: number) {
@@ -73,6 +92,15 @@ export function sample<T>(array: T[], amount: number) {
     return result;
 }
 
+export function zip<T, U>(a: T[], b: U[]): [T, U][] {
+    const length = Math.min(a.length, b.length);
+    const result: [T, U][] = [];
+    for (let i = 0; i < length; i++) {
+        result.push([a[i], b[i]]);
+    }
+    return result;
+}
+
 export function to5bLevelFormat(number: number) {
     return number.toString().padStart(3, "0");
 }
@@ -91,7 +119,7 @@ export function getLevelThumbnailURL(id: string, filename: string, mini: boolean
 }
 
 // if i ever get a time travelling machine im going to 2013 to tell cary to use utf8 for levels 😭
-export function readBlobInANSI(blob: Blob) {
+export function readBlobInANSI(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -161,4 +189,4 @@ export const apiURL = dev ? "http://localhost:5173" : "https://5beam.zelo.dev";
 export const functionsApiURL = "https://44u9xta0sk.execute-api.eu-west-2.amazonaws.com/default";
 export const redirectURL = `${apiURL}/login/callback/discord`;
 export const redirectURL_html5b = `${apiURL}/login/callback/html5b`;
-export const fallbackThumbnailURL = `${apiURL}/placeholder.png`;
+export const fallbackThumbnailURL = placeholderImage;

@@ -6,11 +6,13 @@
         endpoint: string[];
         deprecated?: boolean;
         wip?: boolean;
+        // protected endpoints
         game_only?: boolean;
         token_required?: boolean;
-        type?: "INFO" | "GET" | "POST" | "STRUCT";
+        type?: "INFO" | "GET" | "POST" | "STRUCT" | "WARNING";
         params?: [string, string, string, unknown?][];
         code?: string;
+        open?: boolean;
         children?: import("svelte").Snippet;
     }
 
@@ -23,6 +25,7 @@
         type = "GET",
         params,
         code,
+        open,
         children
     }: Props = $props();
 
@@ -30,23 +33,30 @@
         INFO: "grey",
         GET: "lawngreen",
         POST: "hotpink",
-        STRUCT: "deepskyblue"
+        STRUCT: "deepskyblue",
+        WARNING: "orange"
     };
 </script>
 
-<section
-    class="bg-neutral-600/40 outline outline-white/10 backdrop-blur-xl"
+<details
+    class="rounded-xl bg-zinc-800/80 outline outline-white/10 backdrop-blur-xl"
     class:deprecated={deprecated || wip}
     class:game_only
+    {open}
 >
-    <div class="bg-black p-2 text-3xl font-bold">
-        <span style:color={colors[type]}>{type}</span>
-        <span class="name"><Filepath directory={endpoint} /></span>
+    <summary
+        class="flex cursor-pointer items-baseline justify-between rounded-xl bg-zinc-900 px-5 py-2 text-2xl font-bold select-none"
+        style="background-color: color-mix(in oklab, {colors[type]} 20%, #18181b)"
+    >
+        <div>
+            <span style="color: {colors[type]}">{type}</span>
+            <span class="name"><Filepath directory={endpoint} /></span>
+        </div>
         {#if token_required}
-            <span class="float-right bg-black p-2 text-lg text-amber-600">Auth Required</span>
+            <span class="text-2xl text-yellow-300">Auth Required</span>
         {/if}
-    </div>
-    <div class="p-5">
+    </summary>
+    <div class="p-5 text-sm">
         {#if deprecated}
             <p class="warning">Warning, this endpoint is deprecated! Do not use!</p>
         {/if}
@@ -73,11 +83,13 @@
 
         {#if code}
             <pre
-                class="rounded-sm bg-neutral-800 p-5 font-mono outline outline-neutral-500">{code}</pre>
+                class="overflow-auto rounded-sm bg-zinc-800 p-5 font-mono text-xs text-wrap wrap-anywhere outline outline-zinc-500">{code}</pre>
         {/if}
 
-        <div class="p-5 text-neutral-300">
-            {@render children?.()}
-        </div>
+        {#if children}
+            <div class="p-5 text-neutral-300">
+                {@render children?.()}
+            </div>
+        {/if}
     </div>
-</section>
+</details>

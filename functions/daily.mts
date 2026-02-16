@@ -56,9 +56,7 @@ function makeAuthor(level: Level) {
 }
 
 function getLevelThumbnailURL(id: string, filename: string, mini: boolean = false) {
-    return filename
-        ? `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=335x184" : ""}`
-        : `https://5beam.zelo.dev/placeholder.png`;
+    return `https://cdn.zelo.dev/api/files/vrxyo8zslj53wuy/${id}/${filename}${mini ? "?thumb=335x184" : ""}`;
 }
 
 function sample<T>(array: T[], amount: number) {
@@ -151,7 +149,7 @@ export default async () => {
             // console.log(nextUp);
 
             let randomLevel: Level | null = null;
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 100; i++) {
                 try {
                     if (!randomLevel) {
                         randomLevel = await attemptToCreateDaily(adminPb);

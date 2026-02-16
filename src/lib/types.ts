@@ -15,7 +15,12 @@ export type Level = {
 
     thumbnail: string;
 
+    unlisted: boolean;
     modded: string;
+
+    area: number;
+    background: number;
+    characters: string[];
 };
 
 export type Levelpack = {
@@ -33,6 +38,8 @@ export type Levelpack = {
     featured: boolean;
 
     modded: string;
+
+    unlisted: boolean;
 
     // TODO: thumbnail property?
 };
@@ -63,6 +70,18 @@ export type WeeklyChallenge = {
     attempts: number;
 };
 
+export type LevelStarred = {
+    user: string;
+    /** level id */
+    item: string;
+};
+
+export type LevelpackStarred = {
+    user: string;
+    /** levelpack id */
+    item: string;
+};
+
 export type CreateUser = {
     discordId: string;
     username: string;
@@ -86,7 +105,7 @@ export type CreateLevelpack = {
     modded: string;
 };
 
-export type PocketbaseUser = PrivateBaseUserV2["record"];
+export type PocketbaseUser = PrivateBaseUserV2; //["record"];
 
 /** @deprecated we are just gonna use the "private" one now */
 export type BaseUserV2 = {
@@ -150,4 +169,12 @@ export type LevelpackDifficultyChange = {
     title: string;
     oldD: number;
     newD: number;
+};
+
+export type Character = {
+    id: string;
+    name: string;
+    image: string;
+    created: string;
+    updated: string;
 };

@@ -1,23 +1,5 @@
 @import "tailwindcss";
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
-
 :root {
     color-scheme: dark;
     background-color: #000000;
@@ -29,16 +11,10 @@ html {
 
 /* Globals */
 body {
-    @apply m-0 h-full text-neutral-100;
+    margin: 0;
+    height: 100%;
+    color: var(--color-neutral-100);
     font-family: Inter, sans-serif;
-    /*background: repeating-linear-gradient(*/
-    /*        46.2deg,*/
-    /*        #721e1e,*/
-    /*        #721e1e 10px,*/
-    /*        #4c1414 10px,*/
-    /*        #4c1414 20px*/
-    /*);*/
-    /*background-image: url("lib/assets/backgrounds/2.png");*/
 }
 
 h2 {
@@ -47,7 +23,8 @@ h2 {
 
 .button {
     @apply rounded-lg bg-linear-to-b px-7 shadow-md;
-    background: linear-gradient(to bottom, transparent, #00000044);
+    background: linear-gradient(to bottom, #ffffff22, #00000055);
+    corner-shape: squircle;
 }
 
 svg {
@@ -66,12 +43,12 @@ svg {
     /* Animated yellow repeated gradient text color */
     background: repeating-linear-gradient(
         45deg,
-        #feb900 0%,
-        #ffed7a 20%,
-        #feb900 40%,
-        #ffed7a 60%,
-        #feb900 80%,
-        #ffed7a 100%
+        #00b6fe 0%,
+        #7affdc 20%,
+        #00b6fe 40%,
+        #7affdc 60%,
+        #00b6fe 80%,
+        #7affdc 100%
     );
     background-size: 200% auto;
     /* animation: featured-gradient-move 2s linear infinite; */
@@ -80,27 +57,7 @@ svg {
     background-clip: text;
 }
 
-@keyframes featured-gradient-move {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
-}
-
 /* TODO: Eventually we want to get rid of all below */
-/* Navbar */
-
-.list a,
-.list button {
-    @apply cursor-pointer rounded bg-neutral-800 px-4 py-1 text-neutral-200 drop-shadow-2xl transition-colors;
-}
-
-.list a:hover,
-.list button:hover {
-    @apply bg-neutral-900;
-}
 
 /* Level Component */
 
@@ -177,12 +134,6 @@ ul {
     padding: 10px;
 }
 
-/* Log */
-
-.log {
-    @apply my-2 rounded p-2 font-bold shadow drop-shadow *:gap-2;
-}
-
-.icon {
-    @apply text-2xl;
+.glow {
+    filter: drop-shadow(0 0 4px rgba(255, 223, 82, 0.7));
 }

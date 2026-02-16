@@ -1,32 +1,40 @@
 <script lang="ts">
-    import star from "$lib/assets/star.png";
+    import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
+    import { operateStar } from "$lib/stars.remote";
+    import type { SVGAttributes } from "svelte/elements";
 
-    interface Props {
-        amount?: number;
-        includeText?: boolean;
+    let {
+        stars = $bindable(),
+        starred = $bindable(false),
+        id,
+        type,
+        ...props
+    }: SVGAttributes<SVGSVGElement> & {
+        stars: number;
+        id: string;
+        type: string;
+        starred?: boolean;
+    } = $props();
+
+    async function handleStarClick() {
+        try {
+            const result = await operateStar({ id, type });
+            starred = result.starred;
+
+            // @ts-ignore
+            if (starred) window.umami?.track("star");
+
+            starred ? stars++ : stars--;
+        } catch (err) {
+            console.error("Failed to star/unstar level:", err);
+        }
     }
-
-    let { amount = 0, includeText = true }: Props = $props();
 </script>
 
-<div class="star">
-    {#if includeText}
-        <span>{amount}</span>
-    {/if}
-    <img src={star} alt="Star" />
-</div>
-
-<style>
-    .star {
-        display: inline-flex;
-        align-items: center;
-        font-weight: bold;
-    }
-
-    img {
-        width: 32px;
-        height: 32px;
-        /*padding: 5px;*/
-        image-rendering: pixelated;
-    }
-</style>
+<StarEnabled
+    {...props}
+    class="hover:opactiy-100 cursor-pointer opacity-50 transition-all hover:scale-105 {starred &&
+        'opacity-100'}"
+    opacity={starred ? 1 : 0.5}
+    onclick={handleStarClick}
+/>

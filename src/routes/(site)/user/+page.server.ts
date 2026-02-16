@@ -1,5 +1,5 @@
 import type { PageServerLoad } from "./$types";
-import { getUserById } from "$lib/server/get";
+import { getUserById } from "$lib/get.remote";
 import { redirect } from "@sveltejs/kit";
 
 export const load = (async ({ locals }) => {

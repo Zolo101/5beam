@@ -2,33 +2,28 @@
     import type { ValidateLog } from "$lib/client/FileValidator";
 
     interface Props {
-        log: ValidateLog; // console.log(log)
+        log: ValidateLog;
     }
 
     let { log }: Props = $props();
 
-    // ℹ️, ⚠️, 🛑
+    const text = {
+        info: "ℹ️",
+        warning: "⚠️",
+        error: "🛑"
+    };
 </script>
 
-{#if log.level === "info"}
-    <div class="log bg-blue-900/75 text-blue-200">
-        <div class="flex items-center">
-            <span class="icon">ℹ️</span>
-            <span>{log.message}</span>
-        </div>
+<div
+    class={[
+        log.level === "info" && "bg-blue-900 text-blue-200",
+        log.level === "warning" && "bg-amber-900 text-amber-200",
+        log.level === "error" && "bg-red-900 text-red-200",
+        "my-2 rounded p-2 font-bold"
+    ]}
+>
+    <div class="flex items-center gap-3">
+        <span class="text-2xl">{text[log.level]}</span>
+        <span>{log.message}</span>
     </div>
-{:else if log.level === "warning"}
-    <div class="log bg-amber-900/75 text-amber-200">
-        <div class="flex items-center">
-            <span class="icon">⚠️</span>
-            <span>{log.message}</span>
-        </div>
-    </div>
-{:else if log.level === "error"}
-    <div class="log bg-red-900/75 text-red-200">
-        <div class="flex items-center">
-            <span class="icon">🛑</span>
-            <span>{log.message}</span>
-        </div>
-    </div>
-{/if}
+</div>

@@ -1,6 +1,10 @@
+// import languageEncoding from "detect-file-encoding-and-language";
+// import { readBlobInANSI } from "$lib/misc";
+import { primitives } from "$lib/parse";
 import { z } from "zod";
 
 export type ValidateLog = z.infer<typeof validateLogSchema>;
+export type DetectedLevelMeta = z.infer<typeof detectedLevelMetaSchema>;
 
 export type ValidateResult = z.infer<typeof validateResultSchema>;
 
@@ -10,7 +14,7 @@ export type Sprite = z.infer<typeof spriteSchema>;
 
 export type Dialogue = z.infer<typeof dialogueSchema>;
 
-export const validateLogSchema = z.object({
+const validateLogSchema = z.object({
     at: z.number(),
     message: z.string(),
     level: z.union([z.literal("info"), z.literal("warning"), z.literal("error")])
@@ -20,7 +24,16 @@ export async function validateFile(f: File) {
     if (f.size > 1_000_000) throw new Error("File too big! (1MB MAX)");
     if (f.type !== "text/plain") throw new Error("File must be a .txt file!");
 
-    return validate(await f.text());
+    // 5b levels can either be ANSI (flash) or UTF-8 (HTML5), so we need to support both.
+    // We need to support ANSI to preserve the wood blocks (€) in flash levels.
+    // const encoding = (await languageEncoding(f)).encoding;
+    // const isANSI = encoding === "CP1252";
+    // console.log(isANSI);
+
+    // const text = isANSI ? await readBlobInANSI(f) : await f.text();
+    const text = await f.text();
+
+    return validate(text);
 }
 
 const spriteSchema = z.object({
@@ -38,7 +51,13 @@ const dialogueSchema = z.object({
     text: z.string()
 });
 
-export const detectedLevelSchema = z.object({
+export const detectedLevelMetaSchema = z.object({
+    difficulty: primitives.difficulty,
+    tag: z.string(),
+    dbId: z.string()
+});
+
+const detectedLevelSchema = z.object({
     id: z.number(),
     name: z.string().max(64),
     width: z.number(),
@@ -50,11 +69,14 @@ export const detectedLevelSchema = z.object({
     sprites: z.array(spriteSchema),
     dialogues: z.array(dialogueSchema),
     deathsRequired: z.number(),
+    raw: z.string(),
     logs: z.array(validateLogSchema),
-    raw: z.string()
+
+    // 5beam meta
+    meta: detectedLevelMetaSchema.partial()
 });
 
-export const validateResultSchema = z.object({
+const validateResultSchema = z.object({
     levels: z.array(detectedLevelSchema),
     globalLogs: z.array(validateLogSchema),
     valid: z.boolean()
@@ -87,7 +109,7 @@ export default function validate(levelData: string): ValidateResult {
                 i += 1;
                 result.levels.push(processLevel(result, level, i));
             } catch (e) {
-                result.globalLogs.push(createError(0, `Error processing level ${i}: ${e}`));
+                result.globalLogs.push(createError(i, `Error processing level ${i}: ${e}`));
                 result.valid = false;
                 console.error(e);
             }
@@ -222,7 +244,8 @@ function processLevel(result: ValidateResult, level: string, id: number): Detect
         dialogues: processedDialogues,
         deathsRequired: deathsRequired,
         logs: logs,
-        raw: level
+        raw: level,
+        meta: {}
     };
 }
 

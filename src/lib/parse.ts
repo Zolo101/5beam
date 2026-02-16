@@ -48,6 +48,7 @@ export const primitives = {
 
     // modify/level
     // TODO: Can I give it a default HERE instead of in createLevel & createLevelpack?
+    difficulty: z.number().int().min(0).max(7),
     levelDifficulty: z
         .array(z.number().int().min(0).max(7))
         .length(1)
@@ -86,6 +87,9 @@ export const primitives = {
     //     .refine((file) => file.levels.length <= 200, {
     //         message: "Levelpack must contain at most 200 levels"
     //     })
+
+    // modify/level V2 (not on API, 5beam only for now)
+    order: z.array(z.string()),
 
     // report
     reportKind: z.enum(["level", "levelpack", "user"]),
