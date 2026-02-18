@@ -6,6 +6,7 @@ import {
     levelpackStars,
     levels,
     levelStars,
+    trending,
     usersV2,
     weeklies
 } from "./clientPocketbase";
@@ -140,13 +141,10 @@ export const getRelatedLevels = query(relatedSchema, async ({ id, modded, diffic
 
 const trendingSchema = pageSchema.pick({ page: true, amount: true, mod: true, options: true });
 export const getTrendingLevels = query(trendingSchema, async ({ page, amount, mod, options }) => {
-    const range = 1000 * 60 * 60 * 24 * 14; // 2 weeks
-    const date = new Date(Date.now() - range).toISOString().replace("T", " ").substring(0, 19);
-    const filter = pbf.stringify(pbf.and.maybe(modFilter(mod), createdAfter(date)));
+    const filter = pbf.stringify(pbf.and.maybe(modFilter(mod)));
 
-    return await levels.getList(page, amount, {
+    return await trending.getList(page, amount, {
         expand: "creator",
-        sort: "-plays",
         filter,
         ...options
     });
