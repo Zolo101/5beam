@@ -1,8 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import UserComponent from "$lib/components/UserComponent.svelte";
-    import Box from "$lib/assets/box.png";
-    import { formatDate_Day, getLevelThumbnailURL, getPlaysString } from "$lib/misc";
+    import { formatDate_Day, getLevelThumbnailURL, getPlaysString, safeJsonLd } from "$lib/misc";
     import BigButton from "$lib/components/BigButton.svelte";
 
     import Carousel from "$lib/components/Carousel.svelte";
@@ -35,6 +34,11 @@
 
     const creatorName = $derived(creator?.username ?? "Guest");
     const originalLevelpackFileData = $derived(levels.map((level) => level.data).join("\n\n"));
+    const levelpackImage = $derived(
+        levels.length > 0
+            ? getLevelThumbnailURL((levels[0] as any).id, (levels[0] as any).thumbnail, false)
+            : "https://5beam.zelo.dev/box.png"
+    );
 
     function downloadLevelpack() {
         const a = document.createElement("a");
@@ -52,32 +56,50 @@
     }
 
     let isOwner = $derived(creator?.id === user?.record.id);
+
+    const jsonLd = $derived(
+        safeJsonLd({
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            name: title,
+            description: description,
+            image: levelpackImage,
+            author: { "@type": "Person", name: creatorName },
+            dateCreated: created,
+            dateModified: updated,
+            interactionStatistic: {
+                "@type": "InteractionCounter",
+                interactionType: "https://schema.org/PlayAction",
+                userInteractionCount: plays
+            },
+            hasPart: (levels as any[]).map((level: any, i: number) => ({
+                "@type": "CreativeWork",
+                position: i + 1,
+                name: level.title,
+                image: getLevelThumbnailURL(level.id, level.thumbnail, false),
+                dateCreated: level.created,
+                dateModified: level.updated,
+                interactionStatistic: {
+                    "@type": "InteractionCounter",
+                    interactionType: "https://schema.org/PlayAction",
+                    userInteractionCount: level.plays
+                }
+            }))
+        })
+    );
 </script>
 
 <svelte:head>
     <title>{title} - 5beam</title>
     <meta property="og:title" content={title + " by " + creatorName} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={Box} />
-    <meta property="description" content={description} />
+    <meta property="og:image" content={levelpackImage} />
+    <meta name="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
+    {@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
-<section
-    itemscope
-    itemtype="https://schema.org/CreativeWork"
-    class="mt-2 flex flex-col max-xl:items-center xl:mx-48"
->
-    <meta itemprop="author" content={creatorName} />
-    <meta itemprop="name" content={title} />
-    <meta itemprop="description" content={description} />
-    <!-- <meta itemprop="image" content={thumbnailUrl} /> -->
-    <meta itemprop="dateCreated" content={created} />
-    <meta itemprop="dateModified" content={updated} />
-    <div itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
-        <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
-        <meta itemprop="userInteractionCount" content={plays.toString()} />
-    </div>
+<section class="mt-2 flex flex-col max-xl:items-center xl:mx-48">
     <div class="flex items-baseline justify-between gap-2">
         <div class="flex items-baseline gap-3">
             {#if featured}
@@ -145,34 +167,8 @@
     </p>
 {/if}
 <p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Levels included</p>
-<div
-    itemscope
-    itemtype="https://schema.org/ItemList"
-    class="flex flex-wrap justify-center gap-4 pt-5"
->
-    <meta itemprop="name" content="Levels" />
-    {#each levels as level, i}
-        <div itemprop="itemListElement" itemscope itemtype="https://schema.org/CreativeWork">
-            <meta itemprop="author" content={creatorName} />
-            <meta itemprop="name" content={level.title} />
-            <!-- This is usually just "This level is a part of..." -->
-            <!-- <meta itemprop="description" content={level.description} /> -->
-            <meta itemprop="position" content={i.toString()} />
-            <meta
-                itemprop="image"
-                content={getLevelThumbnailURL(level.id, level.thumbnail, false)}
-            />
-            <meta itemprop="dateCreated" content={level.created} />
-            <meta itemprop="dateModified" content={level.updated} />
-            <div
-                itemprop="interactionStatistic"
-                itemscope
-                itemtype="https://schema.org/InteractionCounter"
-            >
-                <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
-                <meta itemprop="userInteractionCount" content={level.plays.toString()} />
-            </div>
-            <LevelListComponent data={level} />
-        </div>
+<div class="flex flex-wrap justify-center gap-4 pt-5">
+    {#each levels as level}
+        <LevelListComponent data={level} />
     {/each}
 </div>

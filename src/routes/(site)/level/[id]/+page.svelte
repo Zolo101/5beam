@@ -3,7 +3,14 @@
     import UserComponent from "$lib/components/UserComponent.svelte";
     import Button from "$lib/components/Button.svelte";
     import Difficulty from "$lib/components/Difficulty.svelte";
-    import { clamp, formatDate_Day, getLevelThumbnailURL, getPlaysString, snap } from "$lib/misc";
+    import {
+        clamp,
+        formatDate_Day,
+        getLevelThumbnailURL,
+        getPlaysString,
+        safeJsonLd,
+        snap
+    } from "$lib/misc";
 
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
@@ -249,6 +256,24 @@
         if (!file) return;
         return await (await generateThumbnail(await file.text())).blob();
     });
+
+    const jsonLd = $derived(
+        safeJsonLd({
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            name: title,
+            description: description,
+            image: thumbnailUrl,
+            author: { "@type": "Person", name: creatorName },
+            dateCreated: created,
+            dateModified: updated,
+            interactionStatistic: {
+                "@type": "InteractionCounter",
+                interactionType: "https://schema.org/PlayAction",
+                userInteractionCount: plays
+            }
+        })
+    );
 </script>
 
 <svelte:head>
@@ -256,26 +281,12 @@
     <meta property="og:title" content={title + " by " + creatorName} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={thumbnailUrl} />
-    <meta property="description" content={description} />
-    <meta property="description" content={description} />
+    <meta name="description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
+    {@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
-<section
-    itemscope
-    itemtype="https://schema.org/CreativeWork"
-    class="mt-2 flex flex-col max-xl:items-center xl:mx-48"
->
-    <meta itemprop="author" content={creatorName} />
-    <meta itemprop="name" content={title} />
-    <meta itemprop="description" content={description} />
-    <meta itemprop="image" content={thumbnailUrl} />
-    <meta itemprop="dateCreated" content={created} />
-    <meta itemprop="dateModified" content={updated} />
-    <div itemprop="interactionStatistic" itemscope itemtype="https://schema.org/InteractionCounter">
-        <meta itemprop="interactionType" content="https://schema.org/PlayAction" />
-        <meta itemprop="userInteractionCount" content={plays.toString()} />
-    </div>
+<section class="mt-2 flex flex-col max-xl:items-center xl:mx-48">
     <div class="flex items-baseline justify-between gap-2">
         <div class="flex items-baseline gap-3">
             {#if featured}

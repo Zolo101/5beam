@@ -14,6 +14,19 @@
     const { level, levelpack, user } = $derived(data);
 </script>
 
+<svelte:head>
+    <title>API Reference - 5beam</title>
+    <meta
+        name="description"
+        content="5beam API reference documentation for levels, levelpacks, users, and authentication."
+    />
+    <meta property="og:title" content="API Reference - 5beam" />
+    <meta
+        property="og:description"
+        content="5beam API reference documentation for levels, levelpacks, users, and authentication."
+    />
+</svelte:head>
+
 {#snippet auth()}
     <p>
         To authenticate, include your <APIReference type={"TOKEN"} reference={"5beam_auth"} />

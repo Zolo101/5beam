@@ -12,7 +12,9 @@
 </script>
 
 <svelte:head>
+    <title>Random Levels - 5beam</title>
     <meta property="og:title" content="5beam" />
+    <meta name="description" content="Bored? Click here to play random online 5b levels!" />
     <meta property="og:description" content="Bored? Click here to play random online 5b levels!" />
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
     <meta name="theme-color" content="#d10000" />

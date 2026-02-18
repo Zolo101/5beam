@@ -43,6 +43,7 @@
 
 <svelte:head>
     <title>5beam - {description}</title>
+    <meta name="description" content={description} />
     <meta property="og:title" content="5beam" />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />

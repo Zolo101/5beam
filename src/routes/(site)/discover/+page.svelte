@@ -59,6 +59,17 @@
     let amount = $derived(boardType ? 36 : 12);
 </script>
 
+<svelte:head>
+    <title>Discover - 5beam</title>
+    <meta name="description" content="Search and browse BFDIA 5b levels and levelpacks on 5beam." />
+    <meta property="og:title" content="Discover - 5beam" />
+    <meta
+        property="og:description"
+        content="Search and browse BFDIA 5b levels and levelpacks on 5beam."
+    />
+    <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
+</svelte:head>
+
 <section class="full-width flex">
     <div
         class="flex min-w-64 flex-col gap-1 rounded-l-xl bg-zinc-800 p-5 text-xl shadow-lg [&_label]:pt-6 [&_label]:font-bold"

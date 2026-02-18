@@ -178,6 +178,13 @@ export function newlineSplitter(file: string) {
         .split("\r\n\r\n");
 }
 
+export function safeJsonLd(obj: unknown): string {
+    return JSON.stringify(obj)
+        .replace(/</g, "\\u003c")
+        .replace(/>/g, "\\u003e")
+        .replace(/&/g, "\\u0026");
+}
+
 export const isLoggedIn = (user: PrivateBaseUserV2 | undefined) => !!user;
 
 // TODO: Why is it client side only...? This is fine lol

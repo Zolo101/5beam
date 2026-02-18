@@ -9,6 +9,12 @@
     let { starredLevels, starredLevelpacks, user } = $derived(data);
 </script>
 
+<svelte:head>
+    <title>Your Stars - 5beam</title>
+    <meta name="description" content="View your starred BFDIA 5b levels and levelpacks on 5beam." />
+    <meta name="robots" content="noindex" />
+</svelte:head>
+
 <h2>Starred Levels</h2>
 <div class="flex flex-col items-center">
     {#if starredLevels.length}

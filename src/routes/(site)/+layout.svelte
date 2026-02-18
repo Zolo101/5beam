@@ -4,6 +4,7 @@
     import Footer from "$lib/components/layout/Footer.svelte";
     import type { PageData } from "./$types";
     import type { Snippet } from "svelte";
+    import { page } from "$app/state";
 
     import Clouds from "$lib/assets/background_homepage/clouds.svg?component";
     import Moon from "$lib/assets/background_homepage/moon.svg?component";
@@ -24,6 +25,8 @@
 
 <svelte:head>
     <meta name="theme-color" content="#d10000" />
+    <link rel="canonical" href={page.url.href} />
+    <meta property="og:url" content={page.url.href} />
     <script
         defer
         src="https://analytics.zelo.dev/script.js"

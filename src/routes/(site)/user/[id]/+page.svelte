@@ -61,7 +61,8 @@
     <title>5beam - Play, share and upload BFDIA 5b levels!</title>
     <meta property="og:title" content={creator.username} />
     <meta property="og:description" content="Check out {creator.username}'s levels on 5beam!" />
-    <meta property="description" content="Check out {creator.username}'s levels on 5beam!" />
+    <meta property="og:image" content={creator.avatar} />
+    <meta name="description" content="Check out {creator.username}'s levels on 5beam!" />
 </svelte:head>
 
 <section class="flex items-center gap-2 rounded-t-2xl bg-zinc-900 p-2 font-bold">

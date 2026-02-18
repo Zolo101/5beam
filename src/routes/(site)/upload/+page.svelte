@@ -71,6 +71,12 @@
 </script>
 
 <!-- "Changes may not be saved" -->
+<svelte:head>
+    <title>Upload - 5beam</title>
+    <meta name="description" content="Upload your BFDIA 5b levels and levelpacks to 5beam." />
+    <meta name="robots" content="noindex" />
+</svelte:head>
+
 <svelte:window
     onbeforeunload={(e) => {
         e.preventDefault();
