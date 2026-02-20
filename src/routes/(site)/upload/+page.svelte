@@ -58,6 +58,7 @@
             })
             .catch((err: unknown) => {
                 console.error(err);
+                uploading = false;
 
                 // @ts-ignore
                 window.umami?.track("upload-level-failed");
@@ -79,8 +80,10 @@
 
 <svelte:window
     onbeforeunload={(e) => {
-        e.preventDefault();
-        e.returnValue = true;
+        if (!uploading) {
+            e.preventDefault();
+            e.returnValue = true;
+        }
     }}
 />
 
