@@ -48,12 +48,22 @@
                             ]}
                         />
                     </button>
-                    {#if dropdownOpen}
+                    {#if !dropdownOpen}
                         <div
                             transition:fade={{ duration: 100 }}
                             class="dropdown absolute top-full right-0 z-10 mt-1 flex w-48 flex-col gap-1 rounded-sm bg-zinc-800 py-2 shadow-lg"
                         >
-                            <span class="text-center text-sm">{user?.record.username}</span>
+                            <div class="px-4">
+                                <span class="text-center text-sm">{user?.record.username}</span>
+                                {#if user?.record.roles}
+                                    <span
+                                        class="ml-2 rounded-full bg-red-700 px-2 text-xs font-bold text-white"
+                                    >
+                                        <!-- TODO: Why is it plural when its a string? -->
+                                        {user?.record.roles}
+                                    </span>
+                                {/if}
+                            </div>
                             <a
                                 href="/user"
                                 onclick={() => (dropdownOpen = false)}
