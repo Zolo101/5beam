@@ -94,7 +94,10 @@ export const primitives = {
     // report
     reportKind: z.enum(["level", "levelpack", "user"]),
     reportReason: z.enum(["inappropriate", "spam", "other"]),
-    reportDesc: z.string().max(1024).optional()
+    reportDesc: z.string().max(1024).optional(),
+
+    // delete
+    cascade: z.coerce.boolean<boolean>()
 };
 
 export function createObjectSchema<T extends keyof typeof primitives>(...keys: T[]) {

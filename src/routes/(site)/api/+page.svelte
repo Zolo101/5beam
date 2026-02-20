@@ -462,6 +462,37 @@
     </APIEndpoint>
 
     <APIEndpoint
+        endpoint={["api", "delete", "level"]}
+        type="POST"
+        params={[["id", "Level ID", ParamType.STRING]]}
+        token_required
+    >
+        <p>
+            Permanently deletes a <APIReference type={"STRUCT"} reference={"Level"} />. You must be
+            the creator of the level or an admin.
+        </p>
+        <br />
+        {@render auth()}
+    </APIEndpoint>
+    <APIEndpoint
+        endpoint={["api", "delete", "levelpack"]}
+        type="POST"
+        params={[
+            ["id", "Levelpack ID", ParamType.STRING],
+            ["cascade", "Whether to delete levels in the levelpack too", ParamType.BOOLEAN]
+        ]}
+        token_required
+    >
+        <p>
+            Permanently deletes a <APIReference type={"STRUCT"} reference={"Levelpack"} />. You can
+            also delete levels in the levelpack too if you set cascade to true, otherwise, they will
+            become visible, and turn into normal levels. You must be the creator of the levelpack or
+            an admin.
+        </p>
+        <br />
+        {@render auth()}
+    </APIEndpoint>
+    <APIEndpoint
         endpoint={["api", "login", "oauth"]}
         params={[["redirectURI", "Redirect URI", ParamType.STRING]]}
     >

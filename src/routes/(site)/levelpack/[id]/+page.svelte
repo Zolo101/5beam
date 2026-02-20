@@ -3,6 +3,9 @@
     import UserComponent from "$lib/components/UserComponent.svelte";
     import { formatDate_Day, getLevelThumbnailURL, getPlaysString, safeJsonLd } from "$lib/misc";
     import BigButton from "$lib/components/BigButton.svelte";
+    import Dialog from "$lib/components/Dialog.svelte";
+    import FiveBStyle from "$lib/components/FiveBStyle.svelte";
+    import Button from "$lib/components/Button.svelte";
 
     import Carousel from "$lib/components/Carousel.svelte";
     import Featured from "$lib/assets/icons/Featured.svg?component";
@@ -13,6 +16,7 @@
     import Levels from "$lib/assets/icons/Levels.svg?component";
     import Plays from "$lib/assets/icons/Plays.svg?component";
     import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
+    import { deleteLevelpack } from "$lib/delete.remote";
 
     const { data }: { data: PageData } = $props();
 
@@ -51,9 +55,8 @@
         a.click();
     }
 
-    function deleteLevelpack() {
-        console.log("deleteLevelpack");
-    }
+    let showDeleteDialog = $state(false);
+    let deleteSubmitting = $state(false);
 
     let isOwner = $derived(creator?.id === user?.record.id);
 
@@ -150,6 +153,7 @@
         />
         {#if isOwner || data.admin}
             <BigButton text="Edit" bg="#a8ff00" href="/edit/levelpack/{id}" event="edit-level" />
+            <BigButton text="Delete" bg="#ff4444" onclick={() => (showDeleteDialog = true)} />
         {/if}
         <BigButton
             text="Download"
@@ -159,6 +163,58 @@
         />
     </div>
 </div>
+
+<Dialog bind:open={showDeleteDialog}>
+    <div class="relative flex flex-col items-center gap-5 rounded-lg p-5 text-xl">
+        <form
+            class="flex flex-col items-center gap-5"
+            {...deleteLevelpack.enhance(async ({ submit }) => {
+                try {
+                    // @ts-ignore
+                    window.umami?.track("delete-levelpack");
+                    deleteSubmitting = true;
+
+                    await submit();
+                } catch (err) {
+                    console.error(err);
+                    deleteSubmitting = false;
+                    alert(
+                        "Failed to delete levelpack. Please try again or contact @zelo101 on discord."
+                    );
+                }
+            })}
+        >
+            <div class="flex text-5xl">
+                <FiveBStyle text="Delete Levelpack" />
+            </div>
+            <p class="text-2xl">
+                Are you sure you want to permanently delete <strong>{title}</strong>?
+            </p>
+            <p class="text-neutral-400">This action cannot be undone.</p>
+            <div>
+                <input {...deleteLevelpack.fields.id.as("text")} value={id} hidden />
+                <label class="text-lg">
+                    <span>Also delete levels?</span>
+                    <input {...deleteLevelpack.fields.cascade.as("checkbox")} />
+                </label>
+            </div>
+            <div class="w-48">
+                <Button
+                    text={deleteSubmitting ? "Deleting..." : "Delete"}
+                    bg="#ff4444"
+                    disabled={deleteSubmitting}
+                    type="submit"
+                />
+            </div>
+        </form>
+        <Button
+            text="Cancel"
+            bg="#cccccc"
+            onclick={() => (showDeleteDialog = false)}
+            disabled={deleteSubmitting}
+        />
+    </div>
+</Dialog>
 
 {#if description}
     <p class="pt-5 pl-2.5 text-4xl font-bold text-neutral-300">Description</p>

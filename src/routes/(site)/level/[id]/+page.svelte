@@ -28,6 +28,7 @@
 
     import Plays from "$lib/assets/icons/Plays.svg?component";
     import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
+    import { deleteLevel } from "$lib/delete.remote";
 
     interface Props {
         data: PageData;
@@ -56,6 +57,8 @@
     let editMode = $state(false);
     let editSending = $derived(false);
     let showDifference = $state(false);
+    let showDeleteDialog = $state(false);
+    let deleteSubmitting = $state(false);
 
     // TODO: Can we put this thumbnail moving thing SOMEWHERE ELSE??
     // TODO: Only for 5beam, I need the thumbnail mover to show in HTML5b aswell
@@ -183,10 +186,6 @@
         a.setAttribute("download", `levels.txt`);
 
         a.click();
-    }
-
-    function deleteLevel() {
-        console.log("deleteLevel");
     }
 
     async function editLevel() {
@@ -346,6 +345,7 @@
                 onclick={() => (editMode = !editMode)}
                 event="edit-level"
             />
+            <BigButton text="Delete" bg="#ff4444" onclick={() => (showDeleteDialog = true)} />
         {/if}
         <BigButton text="Download" bg="#4bffff" onclick={downloadLevel} event="download-level" />
     </div>
@@ -430,6 +430,52 @@
     </div>
 </Dialog>
 
+<Dialog bind:open={showDeleteDialog}>
+    <div class="relative flex flex-col items-center gap-5 rounded-lg p-5 text-xl">
+        <form
+            class="flex flex-col items-center gap-5"
+            {...deleteLevel.enhance(async ({ submit }) => {
+                try {
+                    // @ts-ignore
+                    window.umami?.track("delete-level");
+                    deleteSubmitting = true;
+
+                    await submit();
+                } catch (err) {
+                    console.error(err);
+                    deleteSubmitting = false;
+                    alert(
+                        "Failed to delete level. Please try again or contact @zelo101 on discord."
+                    );
+                }
+            })}
+        >
+            <div class="flex text-5xl">
+                <FiveBStyle text="Delete Level" />
+            </div>
+            <p class="text-2xl">
+                Are you sure you want to permanently delete <strong>{title}</strong>?
+            </p>
+            <p class="text-neutral-400">This action cannot be undone.</p>
+            <input {...deleteLevel.fields.id.as("text")} value={id} hidden />
+            <div class="w-48">
+                <Button
+                    text={deleteSubmitting ? "Deleting..." : "Delete"}
+                    bg="#ff4444"
+                    disabled={deleteSubmitting}
+                    type="submit"
+                />
+            </div>
+        </form>
+        <Button
+            text="Cancel"
+            bg="#cccccc"
+            onclick={() => (showDeleteDialog = false)}
+            disabled={deleteSubmitting}
+        />
+    </div>
+</Dialog>
+
 <Dialog bind:open={editMode}>
     <div class="relative flex gap-5 overflow-hidden rounded-lg p-5 text-xl">
         <!-- TODO: Make this a form? -->
@@ -478,7 +524,6 @@
                 class="h-6 w-6 rounded border-neutral-600 bg-neutral-800 accent-neutral-500"
             /> -->
             <div class="flex justify-end gap-2 *:grow">
-                <!-- <button onclick={deleteLevel} class="float-left text-xs opacity-50">Delete</button> -->
                 <Button
                     text={editSending ? "Saving..." : "Save"}
                     bg="#a8ff00"

@@ -17,6 +17,8 @@ const protectedRoutes = [
     "/api/create/levelpack",
     "/api/modify/level",
     "/api/modify/levelpack",
+    "/api/delete/level",
+    "/api/delete/levelpack",
     "/api/profile",
     "/login",
     "/logout"

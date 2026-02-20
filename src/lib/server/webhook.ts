@@ -93,15 +93,9 @@ function makeAuthor(level: Level | Levelpack) {
         : { name: getCreatorName(level) };
 }
 
-export const RemoveLevelWebhook = new Webhook("PrivateLog", (level: Level) => {
+export const RemoveItemWebhook = new Webhook("PrivateLog", (item: Level | Levelpack) => {
     return {
-        content: `\`**${level.title}\` by ${getCreatorName(level)} has been removed!**`
-    };
-});
-
-export const RemoveLevelpackWebhook = new Webhook("PrivateLog", (levelpack: Levelpack) => {
-    return {
-        content: `\`**${levelpack.title}\` by ${getCreatorName(levelpack)} has been removed!**`
+        content: `\`${item.title}\`** by ${getCreatorName(item)} has been removed!**`
     };
 });
 
