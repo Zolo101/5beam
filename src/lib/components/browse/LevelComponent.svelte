@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Level } from "$lib/types";
     import Difficulty from "../Difficulty.svelte";
-    import { getLevelThumbnailURL, getPlaysString } from "$lib/misc";
+    import { getLevelThumbnailURL, getPlaysShortString } from "$lib/misc";
 
     import Button from "../Button.svelte";
     import FunctionButton from "../FunctionButton.svelte";
@@ -122,14 +122,14 @@
                             <div class="flex items-end gap-1">
                                 <Plays width="13" height="13" />
                                 <p class="h-[15px] font-bold text-green-500">
-                                    {getPlaysString(plays)}
+                                    {getPlaysShortString(plays)}
                                 </p>
                             </div>
                             <div class="flex items-end gap-1">
                                 <StarEnabled width="15" height="15" />
                                 <p class="h-[15px] font-bold text-yellow-500">
                                     <!-- {getPlaysString(stars + +starred)} -->
-                                    {getPlaysString(stars)}
+                                    {getPlaysShortString(stars)}
                                 </p>
                             </div>
                         </div>

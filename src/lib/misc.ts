@@ -136,7 +136,7 @@ export function readBlobInANSI(blob: Blob): Promise<string> {
 }
 
 const prefixes = ["", "K", "M", "B", "T"];
-export const getPlaysString = (plays: number) => {
+export const getPlaysShortString = (plays: number) => {
     let prefixIndex = 0;
 
     while (plays > 1000) {

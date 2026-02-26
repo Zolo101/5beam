@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Level } from "$lib/types";
     import Difficulty from "../Difficulty.svelte";
-    import { getLevelThumbnailURL, getPlaysString } from "$lib/misc";
+    import { getLevelThumbnailURL, getPlaysShortString } from "$lib/misc";
 
     import Button from "../Button.svelte";
     import FunctionButton from "../FunctionButton.svelte";

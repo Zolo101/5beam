@@ -7,7 +7,7 @@
         clamp,
         formatDate_Day,
         getLevelThumbnailURL,
-        getPlaysString,
+        getPlaysShortString,
         safeJsonLd,
         snap
     } from "$lib/misc";
@@ -305,13 +305,13 @@
         <span>
             <Plays width="13" height="13" />
             <span class="text-green-500">
-                {getPlaysString(plays)}
+                {plays.toLocaleString()}
             </span>
         </span>
         <span>
             <StarEnabled width="15" height="15" />
             <span class="text-yellow-500">
-                {getPlaysString(stars)}
+                {stars.toLocaleString()}
             </span>
         </span>
         <span><Difficulty includeText {difficulty} /></span>

@@ -1,7 +1,12 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import UserComponent from "$lib/components/UserComponent.svelte";
-    import { formatDate_Day, getLevelThumbnailURL, getPlaysString, safeJsonLd } from "$lib/misc";
+    import {
+        formatDate_Day,
+        getLevelThumbnailURL,
+        getPlaysShortString,
+        safeJsonLd
+    } from "$lib/misc";
     import BigButton from "$lib/components/BigButton.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";
@@ -129,13 +134,13 @@
         <span>
             <Plays width="13" height="13" />
             <span class="text-green-500">
-                {getPlaysString(plays)}
+                {plays.toLocaleString()}
             </span>
         </span>
         <span>
             <StarEnabled width="15" height="15" />
             <span class="text-yellow-500">
-                {getPlaysString(stars)}
+                {stars.toLocaleString()}
             </span>
         </span>
         <span>{formatDate_Day(created)}</span>

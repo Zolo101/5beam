@@ -2,7 +2,7 @@
     import type { Levelpack } from "$lib/types";
     import Box from "$lib/assets/box.png";
 
-    import { getPlaysString } from "$lib/misc";
+    import { getPlaysShortString } from "$lib/misc";
     import Button from "../Button.svelte";
     import UserComponent from "../UserComponent.svelte";
     import Levels from "$lib/assets/icons/Levels.svg?component";
@@ -61,20 +61,20 @@
                         <div class="flex items-end gap-1">
                             <Levels width="13" height="13" />
                             <p class="h-[15px] font-bold text-purple-400">
-                                {getPlaysString(levels.length)}
+                                {getPlaysShortString(levels.length)}
                             </p>
                         </div>
                     {/if}
                     <div class="flex items-end gap-1">
                         <Plays width="13" height="13" />
                         <p class="h-[15px] font-bold text-green-500">
-                            {getPlaysString(plays)}
+                            {getPlaysShortString(plays)}
                         </p>
                     </div>
                     <div class="flex items-end gap-1">
                         <StarEnabled width="15" height="15" />
                         <p class="h-[15px] font-bold text-yellow-500">
-                            {getPlaysString(stars)}
+                            {getPlaysShortString(stars)}
                         </p>
                     </div>
                 </div>

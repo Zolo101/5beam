@@ -5,7 +5,7 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import type { PageData } from "./$types";
     import UserComponent from "$lib/components/UserComponent.svelte";
-    import { getLevelThumbnailURL, getPlaysString } from "$lib/misc";
+    import { getLevelThumbnailURL, getPlaysShortString } from "$lib/misc";
     import Plays from "$lib/assets/icons/Plays.svg?component";
 
     import Difficulty from "$lib/components/Difficulty.svelte";
@@ -95,7 +95,7 @@
                 </div>
                 <div class="inline font-bold text-green-500">
                     <Plays width="26" height="26" />
-                    <span class="drop-shadow-sm">{getPlaysString(dailyLevel.plays)}</span>
+                    <span class="drop-shadow-sm">{dailyLevel.plays.toLocaleString()}</span>
                 </div>
             </div>
             <div class="**:w-full **:text-2xl">
