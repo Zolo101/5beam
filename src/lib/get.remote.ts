@@ -28,7 +28,6 @@ const charactersFilter = (v?: string[]) =>
         ...v.map((v) => pbf.like("characters", v))
     );
 const ignoreUnlisted = pbf.eq("unlisted", false);
-const createdAfter = (v: string) => pbf.gte.maybe("created", v);
 
 const pageSchema = z.object({
     page: z.number().min(1),

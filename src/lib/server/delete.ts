@@ -15,6 +15,7 @@ export async function _deleteLevel({ id }: { id: string }) {
         if (!level) return NOT_FOUND();
         if (!level.creator) return DENIED(); // A Guest made this
 
+        // This is done database-side, but we check it here just in case
         const allowed = user.record.id === level.creator.id || isAdmin(user);
         if (!allowed) return DENIED();
 
@@ -39,6 +40,7 @@ export async function _deleteLevelpack({ id, cascade }: { id: string; cascade?: 
         if (!levelpack) return NOT_FOUND();
         if (!levelpack.creator) return DENIED(); // A Guest made this
 
+        // This is done database-side, but we check it here just in case
         const allowed = user.record.id === levelpack.creator.id || isAdmin(user);
         if (!allowed) return DENIED();
 

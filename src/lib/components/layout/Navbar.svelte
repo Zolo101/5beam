@@ -22,7 +22,13 @@
         <section class="flex items-center gap-5 text-3xl font-medium max-lg:text-lg">
             <a href="/discover">Discover</a>
             <span>•</span>
-            <a href="/upload">Upload</a>
+            {#if loggedIn}
+                <a href="/upload">Upload</a>
+            {:else}
+                <form use:enhance method="POST" action="/login">
+                    <button type="submit" class="cursor-pointer">Upload</button>
+                </form>
+            {/if}
             <span>•</span>
             <a href="https://discord.gg/Xm8xzhEFjy" target="_blank">Discuss</a>
         </section>

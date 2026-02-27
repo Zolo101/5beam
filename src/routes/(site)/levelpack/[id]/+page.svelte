@@ -1,12 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
     import UserComponent from "$lib/components/UserComponent.svelte";
-    import {
-        formatDate_Day,
-        getLevelThumbnailURL,
-        getPlaysShortString,
-        safeJsonLd
-    } from "$lib/misc";
+    import { formatDate_Day, getLevelThumbnailURL, safeJsonLd } from "$lib/misc";
     import BigButton from "$lib/components/BigButton.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
     import FiveBStyle from "$lib/components/FiveBStyle.svelte";

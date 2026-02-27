@@ -5,7 +5,7 @@
     import Pagination from "$lib/components/Pagination.svelte";
     import type { PageData } from "./$types";
     import UserComponent from "$lib/components/UserComponent.svelte";
-    import { getLevelThumbnailURL, getPlaysShortString } from "$lib/misc";
+    import { getLevelThumbnailURL } from "$lib/misc";
     import Plays from "$lib/assets/icons/Plays.svg?component";
 
     import Difficulty from "$lib/components/Difficulty.svelte";
@@ -49,8 +49,8 @@
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
 </svelte:head>
 
-<section class="mx-5 flex pt-2 max-lg:flex-col">
-    <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
+<section class="mx-5 flex justify-center pt-2 max-lg:flex-col">
+    <!-- <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
         <p class="p-5 text-center text-3xl font-bold">{description}</p>
         <div
             class="mx-10 flex justify-center gap-4 text-2xl font-bold max-lg:items-center max-sm:flex-col"
@@ -63,12 +63,12 @@
             />
             <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" />
         </div>
-    </section>
-    <aside>
-        {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5, options: { requestKey: null } } ) then featuredLevels}
-            <Carousel height={450} width={800} levels={featuredLevels} autoPlay details />
-        {/await}
-    </aside>
+    </section> -->
+    <!-- <aside> -->
+    {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5, options: { requestKey: null } } ) then featuredLevels}
+        <Carousel height={450} width={800} levels={featuredLevels} autoPlay details />
+    {/await}
+    <!-- </aside> -->
 </section>
 
 <div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">

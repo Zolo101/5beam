@@ -3,14 +3,7 @@
     import UserComponent from "$lib/components/UserComponent.svelte";
     import Button from "$lib/components/Button.svelte";
     import Difficulty from "$lib/components/Difficulty.svelte";
-    import {
-        clamp,
-        formatDate_Day,
-        getLevelThumbnailURL,
-        getPlaysShortString,
-        safeJsonLd,
-        snap
-    } from "$lib/misc";
+    import { clamp, formatDate_Day, getLevelThumbnailURL, safeJsonLd, snap } from "$lib/misc";
 
     import LevelComponent from "$lib/components/browse/LevelComponent.svelte";
     import Dialog from "$lib/components/Dialog.svelte";
