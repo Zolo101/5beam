@@ -47,7 +47,7 @@ const WebhookChannel = {
 // 058. etc ruins the link because of markdown, so replace the dot with a similar unicode character
 function getMarkdownLevelURL(level: Level | Levelpack) {
     // TODO: Hardcoded... also WTF
-    const type = "difficulty" in level ? "levelpack" : "level";
+    const type = "levels" in level ? "levelpack" : "level";
     return `[${level.title.replace(".", "ꓸ")}](<https://5beam.zelo.dev/${type}/${level.id}>)`;
 }
 
