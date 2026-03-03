@@ -7,6 +7,8 @@ import type { Levelpack, PrivateBaseUserV2 } from "$lib/types";
 import { levelpacks } from "$lib/clientPocketbase";
 import { NewLevelpackWebhook } from "$lib/server/webhook";
 import type PocketBase from "pocketbase";
+import validate from "$lib/client/FileValidator";
+import { spriteToPocketBaseCharacterId } from "$lib/misc";
 
 async function createLevelpack(
     levelpack: PostLevelpackType,
@@ -53,6 +55,20 @@ async function createLevelpack(
             levelFormData.append("difficulty", "0");
         }
         levelFormData.append("unlisted", "true");
+
+        // TODO: Check if redundant?
+        const {
+            levels: [levelInfo]
+        } = validate(level);
+        const characters = levelInfo.sprites
+            .map(spriteToPocketBaseCharacterId)
+            .filter((id) => id !== undefined) as string[];
+
+        // level info columns
+        levelFormData.append("area", (levelInfo.width * levelInfo.height).toString());
+        levelFormData.append("background", levelInfo.background.toString());
+        levelFormData.append("charactersCount", levelInfo.spriteNumber.toString());
+        levelFormData.append("characters", JSON.stringify(characters));
 
         levelsFormData.push(levelFormData);
 

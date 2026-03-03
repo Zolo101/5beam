@@ -2,6 +2,7 @@ import { diffLines } from "diff";
 import { dev } from "$app/environment";
 import placeholderImage from "$lib/assets/backgrounds/0.png";
 import type { PrivateBaseUserV2 } from "$lib/types";
+import type { Sprite } from "./client/FileValidator";
 
 export const difficultyMap = new Map<number, string>([
     [0, "Unknown"],
@@ -44,6 +45,31 @@ export const backgrounds: Glob = import.meta.glob("$lib/assets/backgrounds/*.png
     eager: true,
     query: "?url"
 });
+
+export function spriteToPocketBaseCharacterId(sprite: Sprite) {
+    switch (sprite.entityId) {
+        case 0: // Ruby
+            return "s4dmiou51ox6tra";
+        case 1: // Book
+            return "9azb46ypgafu271";
+        case 2: // Ice Cube
+            return "vllrchrqxdo1o5y";
+        case 3: // Match
+            return "y8ge9xhroc7w3fj";
+        case 4: // Pencil
+            return "m5d9bccwongwpfa";
+        case 5: // Bubble
+            return "ihnvzp3mbty59z3";
+        case 6: // Lego Brick
+            return "bl212buwh7k37a4";
+        case 7: // Waffle
+            return "a16m9z4avnsa5s3";
+        case 8: // Tune
+            return "cne8pxayuxcy02e";
+        default: // Don't care
+            return undefined;
+    }
+}
 
 export function formatDate_Day(dateString: string) {
     const date = new Date(dateString);

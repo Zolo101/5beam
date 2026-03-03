@@ -2,39 +2,14 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { MY_BAD, BAD, OK, DENIED } from "$lib/server/misc";
 import { type PostLevelType } from "$lib/parse";
 import { PostLevelSchema } from "$lib/parse";
-import { generateThumbnail, isLevelValid } from "$lib/talk/create";
+import { generateThumbnail } from "$lib/talk/create";
 import { levels } from "$lib/clientPocketbase";
 import type { Level, PrivateBaseUserV2 } from "$lib/types";
 import { NewLevelWebhook } from "$lib/server/webhook";
 import { getLevelDataHash, isLevelUniqueToUser } from "$lib/server/hash";
 import { DuplicateError, InvalidError } from "$lib/server/errors";
-import validate, { type Sprite } from "$lib/client/FileValidator";
-
-// TODO: Put this somewhere appropiate
-function spriteToPocketBaseCharacterId(sprite: Sprite) {
-    switch (sprite.entityId) {
-        case 0: // Ruby
-            return "s4dmiou51ox6tra";
-        case 1: // Book
-            return "9azb46ypgafu271";
-        case 2: // Ice Cube
-            return "vllrchrqxdo1o5y";
-        case 3: // Match
-            return "y8ge9xhroc7w3fj";
-        case 4: // Pencil
-            return "m5d9bccwongwpfa";
-        case 5: // Bubble
-            return "ihnvzp3mbty59z3";
-        case 6: // Lego Brick
-            return "bl212buwh7k37a4";
-        case 7: // Waffle
-            return "a16m9z4avnsa5s3";
-        case 8: // Tune
-            return "cne8pxayuxcy02e";
-        default: // Don't care
-            return undefined;
-    }
-}
+import validate from "$lib/client/FileValidator";
+import { spriteToPocketBaseCharacterId } from "$lib/misc";
 
 export async function _createLevel(
     level: PostLevelType,
