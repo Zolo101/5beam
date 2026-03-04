@@ -54,7 +54,7 @@
                             ]}
                         />
                     </button>
-                    {#if !dropdownOpen}
+                    {#if dropdownOpen}
                         <div
                             transition:fade={{ duration: 100 }}
                             class="dropdown absolute top-full right-0 z-10 mt-1 flex w-48 flex-col gap-1 rounded-sm bg-zinc-800 py-2 shadow-lg"
