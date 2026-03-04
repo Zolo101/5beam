@@ -1,3 +1,9 @@
-<a href="/" class="px-5 text-7xl text-neutral-100">
-    <span class="font-extrabold">5b</span><span>eam</span>
+<script lang="ts">
+    import FiveBStyle from "../FiveBStyle.svelte";
+</script>
+
+<a href="/" class="px-5 text-5xl text-neutral-100">
+    <FiveBStyle text="5beam 4" />
+    <br />
+    <FiveBStyle text="5beam 4" />
 </a>
