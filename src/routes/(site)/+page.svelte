@@ -11,9 +11,11 @@
     import Difficulty from "$lib/components/Difficulty.svelte";
     import BigButton from "$lib/components/BigButton.svelte";
     import Carousel from "$lib/components/Carousel.svelte";
+    import FiveBTrophy from "$lib/assets/5bys_256x_2.webp";
     import { getDaily, getLevelpacks, getLevels, getTrendingLevels } from "$lib/get.remote";
 
     let { data }: { data: PageData } = $props();
+    const { nominatedLevels, nominatedLevelpacks, meanieTweezie } = data;
 
     const daily = await getDaily();
 
@@ -49,8 +51,38 @@
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
 </svelte:head>
 
-<section class="mx-5 flex justify-center pt-2 max-lg:flex-col">
-    <!-- <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
+<div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
+    <img class="w-32" src={FiveBTrophy} alt="5by trophy icon" />
+    <div class="grow p-2 text-center">
+        <p>VOTING FOR 5by NOMINATIONS HAS OPENED!</p>
+        <p>For more info, check out the discord</p>
+        <p class="text-base">Trophy icon by <UserComponent creator={meanieTweezie} /></p>
+    </div>
+    <img class="w-32" src={FiveBTrophy} alt="5by trophy icon" />
+</div>
+<section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
+    <section
+        class="m-auto flex w-275 flex-col items-center gap-5 rounded-sm bg-linear-to-b from-yellow-200/30 to-yellow-400/30 p-2 outline-4 outline-amber-400/90 backdrop-blur-md"
+    >
+        <div class="flex flex-wrap gap-3">
+            {#each nominatedLevels as level}
+                <LevelComponent data={level} />
+            {/each}
+        </div>
+        <div class="flex flex-wrap gap-3">
+            {#each nominatedLevelpacks as levelpack}
+                <LevelpackComponent data={levelpack} />
+            {/each}
+        </div>
+    </section>
+    <!-- <section
+        class="min-h-full content-center rounded-sm bg-gradient-to-b from-emerald-500/50 to-emerald-700/50 p-3 text-center text-4xl font-bold text-emerald-100 outline-2 outline-emerald-400/90 backdrop-blur-md"
+    >
+        <p>Weekly challenges coming soon!</p>
+    </section> -->
+</section>
+<!-- <section class="mx-5 flex justify-center pt-2 max-lg:flex-col"> -->
+<!-- <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
         <p class="p-5 text-center text-3xl font-bold">{description}</p>
         <div
             class="mx-10 flex justify-center gap-4 text-2xl font-bold max-lg:items-center max-sm:flex-col"
@@ -64,12 +96,12 @@
             <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" />
         </div>
     </section> -->
-    <!-- <aside> -->
-    {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5, options: { requestKey: null } } ) then featuredLevels}
+<!-- <aside> -->
+<!-- {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5, options: { requestKey: null } } ) then featuredLevels}
         <Carousel height={450} width={800} levels={featuredLevels} autoPlay details />
-    {/await}
-    <!-- </aside> -->
-</section>
+    {/await} -->
+<!-- </aside> -->
+<!-- </section> -->
 
 <div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
     <p class="p-2">Daily Level</p>
