@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { sveltekit } from "@sveltejs/kit/vite";
 import devtoolsJson from "vite-plugin-devtools-json";
 import svg from "@poppanator/sveltekit-svg";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     plugins: [
@@ -18,5 +18,9 @@ export default defineConfig({
                 ]
             }
         })
-    ]
+    ],
+    test: {
+        globals: true,
+        environment: "node"
+    }
 });
