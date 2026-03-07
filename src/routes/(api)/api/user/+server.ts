@@ -2,6 +2,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { getUserById } from "$lib/get.remote";
 import { MY_BAD, BAD, OK, NOT_FOUND } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
+import { ClientResponseError } from "pocketbase";
 
 const schema = createObjectSchema("id");
 export const GET: RequestHandler = async ({ url }) => {
@@ -14,8 +15,12 @@ export const GET: RequestHandler = async ({ url }) => {
             } else {
                 return OK(user);
             }
-        } catch {
-            return MY_BAD();
+        } catch (e) {
+            if (e instanceof ClientResponseError && e.status === 404) {
+                return NOT_FOUND();
+            } else {
+                return MY_BAD();
+            }
         }
     } catch {
         return BAD();

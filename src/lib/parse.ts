@@ -17,7 +17,7 @@ export const primitives = {
     discordId: z.string(),
 
     // page
-    page: z.coerce.number().int().min(0).default(0),
+    page: z.coerce.number().int().min(0).default(1),
     type: z.coerce.number().int().min(0).max(1).default(0),
     sort: z.coerce.number().int().min(0).max(2).default(0),
     featured: z.stringbool().default(false),
@@ -27,7 +27,7 @@ export const primitives = {
     amount: z.coerce.number().int().min(1).max(16).default(8),
 
     // search
-    text: z.string().max(64),
+    text: z.string().max(64).optional(),
 
     // create/level
     access_token: z.string(),

@@ -6,7 +6,8 @@ import {
     levelpackStars,
     levels,
     levelStars,
-    trending,
+    trendingLevels,
+    trendingLevelpacks,
     usersV2,
     weeklies
 } from "./clientPocketbase";
@@ -30,14 +31,15 @@ const charactersFilter = (v?: string[]) =>
 const ignoreUnlisted = pbf.eq("unlisted", false);
 
 const pageSchema = z.object({
-    page: z.number().min(1),
+    page: z.number().min(1).default(1),
     sortCode: z.number().min(0).max(3),
     featured: z.boolean().optional(),
     mod: z.string(),
     amount: z.number(),
     areaCode: z.number().optional(),
     characters: z.array(z.string()).optional(),
-    options: z.record(z.any(), z.any()).optional()
+    options: z.record(z.any(), z.any()).optional(),
+    unlisted: z.boolean().optional()
 });
 
 // TODO: We should make a pocketbase level type schema
@@ -83,13 +85,29 @@ export const getLevels = query(
 );
 
 export const getRandomLevels = query(
-    pageSchema,
+    pageSchema.omit({ sortCode: true }),
     async ({ page, featured, mod, amount, options }) => {
         const filter = pbf.stringify(
             pbf.and.maybe(optionalFeaturedOnly(featured), modFilter(mod), ignoreUnlisted)
         );
 
         return await levels.getList(page, amount, {
+            expand: "creator",
+            sort: "@random",
+            filter,
+            ...options
+        });
+    }
+);
+
+export const getRandomLevelpacks = query(
+    pageSchema.omit({ sortCode: true }),
+    async ({ page, featured, mod, amount, options }) => {
+        const filter = pbf.stringify(
+            pbf.and.maybe(optionalFeaturedOnly(featured), modFilter(mod), ignoreUnlisted)
+        );
+
+        return await levelpacks.getList(page, amount, {
             expand: "creator",
             sort: "@random",
             filter,
@@ -142,17 +160,30 @@ const trendingSchema = pageSchema.pick({ page: true, amount: true, mod: true, op
 export const getTrendingLevels = query(trendingSchema, async ({ page, amount, mod, options }) => {
     const filter = pbf.stringify(pbf.and.maybe(modFilter(mod)));
 
-    return await trending.getList(page, amount, {
+    return await trendingLevels.getList(page, amount, {
         expand: "creator",
         filter,
         ...options
     });
 });
 
+export const getTrendingLevelpacks = query(
+    trendingSchema,
+    async ({ page, amount, mod, options }) => {
+        const filter = pbf.stringify(pbf.and.maybe(modFilter(mod)));
+
+        return await trendingLevelpacks.getList(page, amount, {
+            expand: "creator",
+            filter,
+            ...options
+        });
+    }
+);
+
 // TODO: Whats the difference between this and getLevels?
 // TODO: Make this nonempty
 export const getLevelSearch = query(
-    z.object({ ...pageSchema.shape, text: z.string() }),
+    z.object({ ...pageSchema.shape, text: z.string().optional() }),
     async ({ text, page, sortCode, featured, mod, areaCode, characters, amount, options }) => {
         const sort = getSort(sortCode);
         const filter = pbf.stringify(
@@ -175,7 +206,7 @@ export const getLevelSearch = query(
 );
 
 export const getLevelpackSearch = query(
-    z.object({ ...pageSchema.shape, text: z.string() }),
+    z.object({ ...pageSchema.shape, text: z.string().optional() }),
     async ({ text, page, sortCode, featured, mod, amount, options }) => {
         const sort = getSort(sortCode);
         const filter = pbf.stringify(

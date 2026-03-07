@@ -21,7 +21,9 @@ export const usersV2 = clientPb.collection<PrivateBaseUserV2["record"]>("5beam_u
 /** @deprecated We should be using the API instead */
 export const levels = clientPb.collection<Level>("5beam_levels");
 /** @deprecated We should be using the API instead */
-export const trending = clientPb.collection<Level>("5beam_trending");
+export const trendingLevels = clientPb.collection<Level>("5beam_trending_levels");
+/** @deprecated We should be using the API instead */
+export const trendingLevelpacks = clientPb.collection<Levelpack>("5beam_trending_levelpacks");
 /** @deprecated We should be using the API instead */
 export const levelpacks = clientPb.collection<Levelpack>("5beam_levelpacks");
 

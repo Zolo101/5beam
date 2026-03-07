@@ -1,14 +1,15 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { getRandomLevels } from "$lib/get.remote";
+import { getRandomLevelpacks, getRandomLevels } from "$lib/get.remote";
 import { MY_BAD, BAD, OK } from "$lib/server/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 
-const schema = createObjectSchema("amount", "type", "featured", "mod");
+const schema = createObjectSchema("page", "amount", "type", "featured", "mod");
 export const GET: RequestHandler = async ({ url }) => {
     try {
-        const { amount, type, featured, mod } = parseFromUrlSearchParams(schema, url);
+        const { page, amount, type, featured, mod } = parseFromUrlSearchParams(schema, url);
         try {
-            return OK(await getRandomLevels(amount, type, featured, mod));
+            const getFunc = type ? getRandomLevelpacks : getRandomLevels;
+            return OK(await getFunc({ page, amount, featured, mod }));
         } catch {
             return MY_BAD();
         }

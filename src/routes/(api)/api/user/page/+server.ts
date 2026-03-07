@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
         try {
             const getFunc = type ? getUserLevelpacks : getUserLevels;
-            return OK(await getFunc(id, page, sort, featured, amount, mod));
+            return OK(await getFunc({ id, page, sortCode: sort, featured, amount, mod }));
         } catch {
             return MY_BAD();
         }

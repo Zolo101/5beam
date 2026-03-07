@@ -1,48 +1,68 @@
-export type Level = {
-    id: string;
-    creator: PocketbaseUser | null;
-    created: string;
-    updated: string;
+import z from "zod";
+import { primitives } from "./parse";
 
-    title: string;
-    description: string;
-    data: string;
+export const UserSchema = z.object({
+    // collectionId: z.string(),
+    // collectionName: z.string(),
+    id: primitives.id,
+    username: z.string(),
+    avatar: z.string(),
+    stars: z.string().array(), // soon(tm)
+    created: z.string() // Date
+});
 
-    plays: number;
-    stars: number;
-    difficulty: number;
-    featured: boolean;
+export const LevelSchema = z.object({
+    id: primitives.id,
+    creator: z.union([UserSchema, z.null()]), // TODO
+    // FOR SOME REASON POCKETBASE REMVOES THE T IN THE ISO STRING??
+    // created: z.iso.datetime(), // TODO make this a primitive
+    // updated: z.iso.datetime(),
+    created: z.string(), // TODO make this a primitive
+    updated: z.string(),
 
-    thumbnail: string;
+    title: primitives.title,
+    description: primitives.description,
+    data: z.string().max(1000000), // 1MB // TODO: is this true?
 
-    unlisted: boolean;
-    modded: string;
+    plays: z.number().int().min(0),
+    stars: z.number().int().min(0),
+    difficulty: primitives.difficulty,
+    featured: z.boolean(),
 
-    area: number;
-    background: number;
-    characters: string[];
-};
+    // File name, not URL
+    thumbnail: z.string().max(1000), // 1KB
 
-export type Levelpack = {
-    id: string;
-    creator: PocketbaseUser | null;
-    created: string;
-    updated: string;
+    unlisted: z.boolean(),
+    modded: z.string().max(1000), // 1KB
 
-    title: string;
-    description: string;
-    levels: string[];
+    area: z.number().int().min(0),
+    background: z.number().int().min(0),
+    characters: z.array(z.string())
+});
 
-    plays: number;
-    stars: number;
-    featured: boolean;
+export const LevelpackSchema = z.object({
+    id: primitives.id,
+    creator: z.union([UserSchema, z.null()]), // TODO
+    created: z.string(), // TODO make this a primitive
+    updated: z.string(),
+    title: primitives.title,
+    description: primitives.description,
+    levels: z.string().array(),
 
-    modded: string;
+    plays: z.number().int().min(0),
+    stars: z.number().int().min(0),
+    featured: z.boolean(),
 
-    unlisted: boolean;
+    modded: z.string().max(1000) // 1KB;
+
+    // unlisted: z.boolean() // TODO: Add this. levelpack doesnt have unlisted functionality
 
     // TODO: thumbnail property?
-};
+});
+
+export type Level = z.infer<typeof LevelSchema>;
+export type Levelpack = z.infer<typeof LevelpackSchema>;
+export type User = z.infer<typeof UserSchema>;
 
 export type Daily = {
     /** level id */
@@ -131,7 +151,7 @@ export type PrivateBaseUserV2 = {
         username: string;
         avatar: string;
         roles: string;
-        stars: string[]; // soon(tm)
+        stars: string[]; // TODO: Does this exist?
         verified: boolean;
     };
     token: string;
