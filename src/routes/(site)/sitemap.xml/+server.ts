@@ -59,14 +59,14 @@ async function mainSitemap() {
 }
 
 async function sitemap() {
-    return [
-        await Promise.all([
-            mainSitemap(),
-            createLevelSitemap(),
-            createLevelpackSitemap(),
-            createUserSitemap()
-        ])
-    ].join("\n");
+    const [main, levels, levelpacks, users] = await Promise.all([
+        mainSitemap(),
+        createLevelSitemap(),
+        createLevelpackSitemap(),
+        createUserSitemap()
+    ]);
+
+    return [main, ...levels, ...levelpacks, ...users].join("\n");
 }
 
 export const GET: RequestHandler = async () => {
@@ -86,7 +86,8 @@ export const GET: RequestHandler = async () => {
         </urlset>`.trim(),
         {
             headers: {
-                "Content-Type": "application/xml"
+                "Content-Type": "application/xml",
+                "Cache-Control": "public, max-age=86400"
             }
         }
     );
