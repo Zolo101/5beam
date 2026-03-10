@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { fade } from "svelte/transition";
+    import { fade, fly } from "svelte/transition";
     import Logo from "./Logo.svelte";
     import type { PocketbaseUser } from "$lib/types";
     import { enhance } from "$app/forms";
+    import { resolve } from "$app/paths";
     import { page } from "$app/state";
 
     import DefaultPFP from "$lib/assets/icons/defaultPFP.svg?component";
@@ -12,14 +13,15 @@
     let { admin, loggedIn } = $derived(page.data);
 
     let dropdownOpen = $state(false);
+    let mobileMenuOpen = $state(false);
 </script>
 
 <nav class="flex items-center justify-center bg-black p-1.5 text-neutral-100">
-    <div class="container m-auto mx-5 flex h-24 grow pt-2">
+    <div class="container m-auto mx-5 flex h-24 grow items-center pt-2">
         <div class="flex flex-1 items-center justify-start">
             <Logo />
         </div>
-        <section class="flex items-center gap-5 text-3xl font-medium max-lg:text-lg">
+        <section class="hidden items-center gap-5 text-3xl font-medium lg:flex">
             <a href="/discover">Discover</a>
             <span>•</span>
             {#if loggedIn}
@@ -32,7 +34,9 @@
             <span>•</span>
             <a href="https://discord.gg/Xm8xzhEFjy" target="_blank">Discuss</a>
         </section>
-        <div class="list mb-1 flex flex-1 flex-row items-center justify-end gap-3 text-xl">
+        <div
+            class="list mb-1 hidden flex-1 flex-row items-center justify-end gap-3 text-xl lg:flex"
+        >
             {#if loggedIn}
                 <div class="relative flex items-center gap-2">
                     <button
@@ -116,7 +120,139 @@
                 </form>
             {/if}
         </div>
+
+        <div class="flex flex-1 items-center justify-end lg:hidden">
+            <button
+                type="button"
+                aria-label="Toggle navigation menu"
+                aria-expanded={mobileMenuOpen}
+                onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+                class="inline-flex h-11 w-11 items-center justify-center rounded-sm bg-zinc-800 transition-colors hover:bg-zinc-700"
+            >
+                <span class="sr-only">Open menu</span>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    class="h-6 w-6"
+                >
+                    <path d="M4 7h16" />
+                    <path d="M4 12h16" />
+                    <path d="M4 17h16" />
+                </svg>
+            </button>
+        </div>
     </div>
+
+    {#if mobileMenuOpen}
+        <div transition:fade={{ duration: 120 }} class="fixed inset-0 z-40 lg:hidden">
+            <button
+                type="button"
+                aria-label="Close navigation menu"
+                class="absolute inset-0 h-full w-full bg-black/45"
+                onclick={() => (mobileMenuOpen = false)}
+            ></button>
+            <div
+                transition:fly={{ x: -320, duration: 220 }}
+                class="relative flex h-full w-full flex-col gap-2 bg-zinc-900/50 p-5 text-3xl backdrop-blur-lg"
+            >
+                <div class="mb-2 flex items-center justify-end">
+                    <button
+                        type="button"
+                        aria-label="Close navigation menu"
+                        onclick={() => (mobileMenuOpen = false)}
+                        class="inline-flex h-11 w-11 items-center justify-center rounded-sm bg-zinc-800 transition-colors hover:bg-zinc-700"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            class="h-6 w-6"
+                        >
+                            <path d="M6 6l12 12" />
+                            <path d="M18 6l-12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <a
+                    href="/discover"
+                    onclick={() => (mobileMenuOpen = false)}
+                    class="rounded-sm px-3 py-3 hover:bg-zinc-800">Discover</a
+                >
+                {#if loggedIn}
+                    <a
+                        href="/upload"
+                        onclick={() => (mobileMenuOpen = false)}
+                        class="rounded-sm px-3 py-3 hover:bg-zinc-800">Upload</a
+                    >
+                {:else}
+                    <form use:enhance method="POST" action="/login" class="w-full">
+                        <button
+                            type="submit"
+                            onclick={() => (mobileMenuOpen = false)}
+                            class="w-full rounded-sm px-3 py-3 text-left hover:bg-zinc-800"
+                        >
+                            Upload
+                        </button>
+                    </form>
+                {/if}
+                <a
+                    href="https://discord.gg/Xm8xzhEFjy"
+                    target="_blank"
+                    rel="noreferrer"
+                    onclick={() => (mobileMenuOpen = false)}
+                    class="rounded-sm px-3 py-3 hover:bg-zinc-800"
+                >
+                    Discuss
+                </a>
+
+                <div class="my-2 h-px w-full bg-zinc-700"></div>
+
+                {#if loggedIn}
+                    <a
+                        href="/user"
+                        onclick={() => (mobileMenuOpen = false)}
+                        class="rounded-sm px-3 py-3 hover:bg-zinc-800">Profile</a
+                    >
+                    {#if admin}
+                        <a
+                            href="/reports"
+                            onclick={() => (mobileMenuOpen = false)}
+                            class="rounded-sm px-3 py-3 hover:bg-zinc-800"
+                        >
+                            Reports
+                        </a>
+                    {/if}
+                    <form method="POST" action="/logout" class="w-full">
+                        <button
+                            type="submit"
+                            onclick={() => (mobileMenuOpen = false)}
+                            class="w-full rounded-sm px-3 py-3 text-left hover:bg-zinc-800"
+                        >
+                            Log Out
+                        </button>
+                    </form>
+                {:else}
+                    <form use:enhance method="POST" action="/login" class="w-full">
+                        <button
+                            type="submit"
+                            onclick={() => (mobileMenuOpen = false)}
+                            class="w-full rounded-sm px-3 py-3 text-left hover:bg-zinc-800"
+                        >
+                            Log In
+                        </button>
+                    </form>
+                {/if}
+            </div>
+        </div>
+    {/if}
 </nav>
 
 <style>
