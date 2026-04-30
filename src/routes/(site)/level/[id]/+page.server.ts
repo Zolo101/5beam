@@ -18,5 +18,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
         }
     }
 
-    return { level, starred, relatedLevels };
+        // return { level, starred, relatedLevels };
+        return { level, starred };
 };

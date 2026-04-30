@@ -351,12 +351,12 @@
     </p>
 {/if}
 
-<p class="pl-2.5 text-4xl font-bold">Similar Levels</p>
-<div class="flex flex-wrap justify-center gap-5 p-3">
+<!-- <p class="pl-2.5 text-4xl font-bold">Similar Levels</p>
+<div class="grid auto-rows-[50px] grid-cols-2 flex-wrap justify-center gap-5 p-3 max-lg:flex-col">
     {#each relatedLevels as level}
-        <LevelComponent data={level} />
+        <HybridLevelComponent data={level} />
     {/each}
-</div>
+</div> -->
 
 <Dialog bind:open={showThumbnailDialog}>
     <div class="relative flex w-full flex-col items-center gap-5 rounded-lg p-5 text-xl">
