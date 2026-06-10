@@ -140,7 +140,7 @@
             class="w-full rounded-lg bg-black/30 p-2.5"
             rows="5"
             cols="33"
-            placeholder="Level description (max 1024 chars)"
+            placeholder="Level description (max 4096 chars)"
         ></textarea>
         <br />
         <!-- <label for="unlisted">Unlisted:</label> -->

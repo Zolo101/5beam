@@ -491,7 +491,7 @@
                 bind:value={description}
                 rows="5"
                 cols="33"
-                maxlength="1024"
+                maxlength="4096"
             ></textarea>
             <label for="difficulty" class="text-2xl font-bold">Difficulty</label>
             <div

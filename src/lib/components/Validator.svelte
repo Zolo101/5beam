@@ -99,8 +99,8 @@
                         name="description"
                         rows="5"
                         cols="33"
-                        maxlength="1024"
-                        placeholder="Level description (max 1024 chars)"
+                        maxlength="4096"
+                        placeholder="Level description (max 4096 chars)"
                         required
                         disabled
                     ></textarea>

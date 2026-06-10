@@ -32,7 +32,7 @@ export const primitives = {
     // create/level
     access_token: z.string(),
     title: z.string().min(2).max(64),
-    description: z.string().max(1024),
+    description: z.string().max(4096),
     data: z.instanceof(File),
     modded: z.string().max(64),
 
