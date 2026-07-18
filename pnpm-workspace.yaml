@@ -1,0 +1,5 @@
+allowBuilds:
+    esbuild: true
+    svelte-preprocess: false
+patchedDependencies:
+    "@nedpals/pbf": "patches/@nedpals__pbf.patch"
