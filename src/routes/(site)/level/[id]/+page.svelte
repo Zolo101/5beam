@@ -22,6 +22,7 @@
     import Plays from "$lib/assets/icons/Plays.svg?component";
     import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
     import { deleteLevel } from "$lib/delete.remote";
+    import Throphy from "$lib/components/Throphy.svelte";
 
     interface Props {
         data: PageData;
@@ -43,7 +44,8 @@
         creator,
         modded,
         created,
-        updated
+        updated,
+        badges
     } = $derived(level);
     const creatorName = $derived(creator?.username ?? "Guest");
     let thumbnailUrl = $derived(getLevelThumbnailURL(id, thumbnail, false));
@@ -281,37 +283,46 @@
 <section class="mt-2 flex flex-col max-xl:items-center xl:mx-48">
     <div class="flex items-baseline justify-between gap-2">
         <div class="flex items-baseline gap-3">
-            {#if featured}
-                <Featured width="56" height="56" />
-            {/if}
             <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
                 {title}
             </span>
+            {#if featured}
+                <Featured width="56" height="56" />
+            {/if}
+            {#each badges as badge}
+                <Throphy {badge} />
+            {/each}
             {#if user}
                 <Star bind:stars bind:starred width="48" height="48" {id} type="0" />
             {/if}
         </div>
-        <Report kind="level" />
     </div>
-    <section class="flex items-baseline gap-10 text-xl font-bold">
+    <section
+        class="flex items-baseline gap-10 font-bold *:gap-5 max-lg:flex-col max-lg:gap-2 lg:text-xl lg:*:gap-5"
+    >
         <span class="text-xl"><UserComponent prefix="by" {creator} /></span>
-        <span>
-            <Plays width="13" height="13" />
-            <span class="text-green-500">
-                {plays.toLocaleString()}
+        <div class="flex items-baseline">
+            <span>
+                <Plays width="13" height="13" />
+                <span class="text-green-500">
+                    {plays.toLocaleString()}
+                </span>
             </span>
-        </span>
-        <span>
-            <StarEnabled width="15" height="15" />
-            <span class="text-yellow-500">
-                {stars.toLocaleString()}
+            <span>
+                <StarEnabled width="15" height="15" />
+                <span class="text-yellow-500">
+                    {stars.toLocaleString()}
+                </span>
             </span>
-        </span>
-        <span><Difficulty includeText {difficulty} /></span>
-        <span>{formatDate_Day(created)}</span>
+        </div>
+        <div class="flex items-baseline">
+            <span><Difficulty includeText {difficulty} /></span>
+            <span>{formatDate_Day(created)}</span>
+            <Report kind="level" />
+        </div>
     </section>
 </section>
-<div class="flex justify-center gap-5 py-6 max-md:flex-col">
+<div class="flex justify-center gap-5 py-6 max-lg:mx-4 max-md:flex-col">
     <div class="relative">
         <img class="rounded-sm object-contain shadow-xl" src={thumbnailUrl} alt="Level thumbnail" />
         {#if isOwner || data.admin}
@@ -491,8 +502,7 @@
                 bind:value={description}
                 rows="5"
                 cols="33"
-                maxlength="4096"
-            ></textarea>
+                maxlength="4096"></textarea>
             <label for="difficulty" class="text-2xl font-bold">Difficulty</label>
             <div
                 class="flex flex-col items-center justify-items-center align-middle text-2xl font-bold"

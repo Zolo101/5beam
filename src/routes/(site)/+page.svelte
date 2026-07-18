@@ -11,7 +11,6 @@
     import Difficulty from "$lib/components/Difficulty.svelte";
     import BigButton from "$lib/components/BigButton.svelte";
     import Carousel from "$lib/components/Carousel.svelte";
-    import FiveBTrophy from "$lib/assets/5bys_256x_2.webp";
     import { getDaily, getLevelpacks, getLevels, getTrendingLevels } from "$lib/get.remote";
 
     let { data }: { data: PageData } = $props();
@@ -53,7 +52,7 @@
 
 <section class="mx-5 flex justify-center pt-2 max-lg:flex-col">
     <section class="flex flex-col justify-center max-lg:w-full max-lg:pb-2">
-        <p class="p-5 text-center text-3xl font-bold">{description}</p>
+        <p class="p-5 text-center text-4xl font-bold">{description}</p>
         <div
             class="mx-10 flex justify-center gap-4 text-2xl font-bold max-lg:items-center max-sm:flex-col"
         >
@@ -66,7 +65,7 @@
             <BigButton text="Upload a level!" bg="#38bdf8" href="/upload" />
         </div>
     </section>
-    <aside>
+    <aside class="max-lg:hidden">
         {#await getLevels( { page: 1, featured: true, sortCode: 0, mod: "", amount: 5, options: { requestKey: null } } ) then featuredLevels}
             <Carousel height={450} width={800} levels={featuredLevels} autoPlay details />
         {/await}
@@ -76,9 +75,9 @@
 <div class="m-2 flex items-center gap-2 pl-10 text-4xl font-bold">
     <p class="p-2">Daily Level</p>
 </div>
-<section class="mx-10 mb-10 flex gap-5 max-lg:flex-col">
+<section class="mx-5 mb-10 flex gap-5 max-lg:flex-col lg:mx-10">
     <section
-        class="flex grow gap-2 rounded-sm bg-linear-to-b from-green-700/70 to-green-900/70 p-3 outline-4 outline-green-400/90 backdrop-blur-md"
+        class="flex grow gap-2 rounded-sm bg-linear-to-b from-green-700/70 to-green-900/70 p-3 outline-4 outline-green-400/90 backdrop-blur-md max-lg:flex-col"
     >
         <a class="w-full" href="/level/{dailyLevel.id}">
             <img class="rounded-sm object-cover" src={dailyLevelThumbnail} alt="Level Thumbnail" />

@@ -37,7 +37,8 @@ export const LevelSchema = z.object({
 
     area: z.number().int().min(0),
     background: z.number().int().min(0),
-    characters: z.array(z.string())
+    characters: z.array(z.string()),
+    badges: z.array(z.string()) // ids
 });
 
 export const LevelpackSchema = z.object({
@@ -53,7 +54,8 @@ export const LevelpackSchema = z.object({
     stars: z.number().int().min(0),
     featured: z.boolean(),
 
-    modded: z.string().max(1000) // 1KB;
+    modded: z.string().max(1000), // 1KB;
+    badges: z.array(z.string()) // ids
 
     // unlisted: z.boolean() // TODO: Add this. levelpack doesnt have unlisted functionality
 

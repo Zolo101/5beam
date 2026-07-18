@@ -6,13 +6,14 @@
 }
 
 html {
-    @apply h-full;
+    height: 100%;
+    background: #777777;
 }
 
 /* Globals */
 body {
-    margin: 0;
     height: 100%;
+    margin: 0;
     color: var(--color-neutral-100);
     font-family: Inter, sans-serif;
 }
@@ -40,7 +41,6 @@ svg {
 }
 
 .featured {
-    /* Animated yellow repeated gradient text color */
     background: repeating-linear-gradient(
         45deg,
         #00b6fe 0%,
@@ -51,7 +51,24 @@ svg {
         #7affdc 100%
     );
     background-size: 200% auto;
-    /* animation: featured-gradient-move 2s linear infinite; */
+    /* animation: featured-gradient-move 2s linear infinite; harsh on CPU */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.badge-5bys {
+    background: repeating-linear-gradient(
+        45deg,
+        #aefe00 0%,
+        #a0ff7a 20%,
+        #aefe00 40%,
+        #a0ff7a 60%,
+        #aefe00 80%,
+        #a0ff7a 100%
+    );
+    background-size: 200% auto;
+    /* animation: featured-gradient-move 2s linear infinite; harsh on CPU */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

@@ -17,6 +17,7 @@
     import Plays from "$lib/assets/icons/Plays.svg?component";
     import StarEnabled from "$lib/assets/icons/starEnabled.svg?component";
     import { deleteLevelpack } from "$lib/delete.remote";
+    import Throphy from "$lib/components/Throphy.svelte";
 
     const { data }: { data: PageData } = $props();
 
@@ -33,7 +34,8 @@
         created,
         updated,
         levels,
-        stars
+        stars,
+        badges
     } = $derived(levelpack);
 
     const creatorName = $derived(creator?.username ?? "Guest");
@@ -105,12 +107,15 @@
 <section class="mt-2 flex flex-col max-xl:items-center xl:mx-48">
     <div class="flex items-baseline justify-between gap-2">
         <div class="flex items-baseline gap-3">
-            {#if featured}
-                <Featured width="56" height="56" />
-            {/if}
             <span class="mb-1 text-6xl font-bold max-sm:text-center" class:featured>
                 {title}
             </span>
+            {#if featured}
+                <Featured width="56" height="56" />
+            {/if}
+            {#each badges as badge}
+                <Throphy {badge} />
+            {/each}
             {#if user}
                 <Star bind:stars bind:starred width="48" height="48" {id} type="1" />
             {/if}
