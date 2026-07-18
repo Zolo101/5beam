@@ -65,6 +65,7 @@ export const getWeeklyChallenge = query(async () => {
     });
 });
 
+/** API Routes ONLY ; weird 500 errors otherwise, probably a sveltekit bug */
 export const getLevelById = query(z.string(), async (id) => {
     return await levels.getOne(id, { expand: "creator" });
 });

@@ -12,14 +12,13 @@
         getUserLevelStars
     } from "$lib/get.remote";
     import Toggle from "$lib/components/Toggle.svelte";
-    getUserLevelStars;
 
     interface Props {
         data: PageData;
     }
 
     let { data }: Props = $props();
-    let { levels, levelpacks, creator } = $derived(data);
+    let { creator } = $derived(data);
 
     let pageType = $state("Levels");
     let starPageType = $state("Levels");

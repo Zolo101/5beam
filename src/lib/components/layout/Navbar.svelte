@@ -3,7 +3,6 @@
     import Logo from "./Logo.svelte";
     import type { PocketbaseUser } from "$lib/types";
     import { enhance } from "$app/forms";
-    import { resolve } from "$app/paths";
     import { page } from "$app/state";
 
     import DefaultPFP from "$lib/assets/icons/defaultPFP.svg?component";

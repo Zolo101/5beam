@@ -22,6 +22,7 @@
     }: Props = $props();
 </script>
 
+<!-- TODO: This class is BS can we please replace  -->
 <a {href} target={newWindow ? "_blank" : "_self"}>
     <button
         {disabled}

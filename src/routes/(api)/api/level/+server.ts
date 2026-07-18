@@ -4,6 +4,7 @@ import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import { getLevelById } from "$lib/get.remote";
 import { ClientResponseError } from "pocketbase";
 
+// TODO: e instanceof ClientResponseError DOES NOT WORK!
 // TODO: If user is logged in, include starred as well
 const schema = createObjectSchema("id");
 export const GET: RequestHandler = async ({ url }) => {

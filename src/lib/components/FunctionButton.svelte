@@ -21,6 +21,7 @@
     }: Props = $props();
 </script>
 
+<!-- TODO: Does not work, please fix! -->
 {#if page.data.admin}
     <form use:enhance method="POST" action="/admin?/{action}">
         {#if data}

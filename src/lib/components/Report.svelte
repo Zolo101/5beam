@@ -16,8 +16,8 @@
 
 <ReportDialog bind:open={reportMode} bind:reportSending {kind} />
 <Flag
-    width="48"
-    height="48"
+    width="32"
+    height="32"
     class={[
         "cursor-pointer justify-self-end opacity-50 transition-opacity hover:opacity-100",
         reportSending && "cursor-not-allowed"
