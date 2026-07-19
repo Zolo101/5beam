@@ -21,7 +21,7 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
 
     // big thanks to advertisers for ruining third party cookies
 
-    const fivebeam_auth = encodeURI(JSON.stringify({ record, token }));
+    const fivebeam_auth = encodeURIComponent(JSON.stringify({ record, token }));
 
     return new Response("", {
         status: 302,
