@@ -11,7 +11,7 @@
 
 <svelte:head>
     <title>Your Stars - 5beam</title>
-    <meta name="description" content="View your starred BFDIA 5b levels and levelpacks on 5beam." />
+    <meta name="description" content="View your starred HTML5b levels and levelpacks on 5beam." />
     <meta name="robots" content="noindex" />
 </svelte:head>
 

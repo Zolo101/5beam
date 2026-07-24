@@ -119,10 +119,7 @@ export default function validate(levelData: string): ValidateResult {
         result.valid = noErrors(result);
     } catch (e) {
         result.globalLogs.push(
-            createError(
-                0,
-                "Malformed level / levelpack. Are you sure this is a BFDIA 5b level file?"
-            )
+            createError(0, "Malformed level / levelpack. Are you sure this is a HTML5b level file?")
         );
         result.valid = false;
         console.error(e);

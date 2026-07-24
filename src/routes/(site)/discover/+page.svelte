@@ -61,11 +61,11 @@
 
 <svelte:head>
     <title>Discover - 5beam</title>
-    <meta name="description" content="Search and browse BFDIA 5b levels and levelpacks on 5beam." />
+    <meta name="description" content="Search and browse HTML5b levels and levelpacks on 5beam." />
     <meta property="og:title" content="Discover - 5beam" />
     <meta
         property="og:description"
-        content="Search and browse BFDIA 5b levels and levelpacks on 5beam."
+        content="Search and browse HTML5b levels and levelpacks on 5beam."
     />
     <meta property="og:image" content="https://5beam.zelo.dev/box.png" />
 </svelte:head>

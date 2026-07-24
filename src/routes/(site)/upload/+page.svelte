@@ -74,7 +74,7 @@
 <!-- "Changes may not be saved" -->
 <svelte:head>
     <title>Upload - 5beam</title>
-    <meta name="description" content="Upload your BFDIA 5b levels and levelpacks to 5beam." />
+    <meta name="description" content="Upload your HTML5b levels and levelpacks to 5beam." />
     <meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -112,8 +112,7 @@
             cols="33"
             maxlength="4096"
             placeholder="Level description (max 4096 chars)"
-            required
-        ></textarea>
+            required></textarea>
         <label for="modded" class="pt-6">Is this for a 5b mod?</label>
         <span class="text-sm">Changing this removes all currently uploaded files.</span>
         {#if manipulator.mod}

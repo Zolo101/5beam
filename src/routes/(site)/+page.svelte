@@ -23,7 +23,7 @@
         getLevelThumbnailURL(dailyLevel.id, dailyLevel.thumbnail, false)
     );
 
-    const description = "Play, share and upload BFDIA 5b levels!";
+    const description = "Play, share and upload HTML5b levels!";
 
     // function cacheStarred() {
     //     const { starredLevels, starredLevelpacks } = data;
@@ -57,7 +57,7 @@
             class="mx-10 flex justify-center gap-4 text-2xl font-bold max-lg:items-center max-sm:flex-col"
         >
             <BigButton
-                text="Play BFDIA 5b!"
+                text="Play HTML5b!"
                 bg="#4ade80"
                 href="https://coppersalts.github.io/HTML5b/"
                 newWindow
