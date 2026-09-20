@@ -37,10 +37,6 @@ export const Sprites: Glob = import.meta.glob("$lib/assets/sprites/*.svg", {
     eager: true,
     query: "?raw"
 });
-export const difficultyImages: Glob = import.meta.glob("$lib/assets/difficulty/*.png", {
-    eager: true,
-    query: "?url"
-});
 export const backgrounds: Glob = import.meta.glob("$lib/assets/backgrounds/*.png", {
     eager: true,
     query: "?url"

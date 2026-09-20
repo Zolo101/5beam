@@ -5,6 +5,7 @@
 // https://github.com/sveltejs/kit/issues/3766
 
 import "@poppanator/sveltekit-svg/dist/svg.d.ts";
+import "@sveltejs/enhanced-img";
 import type { PrivateBaseUserV2 } from "$lib/types";
 import type Pocketbase from "pocketbase";
 

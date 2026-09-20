@@ -65,7 +65,7 @@
 </svelte:head>
 
 <section class="flex items-center gap-2 rounded-t-2xl bg-zinc-900 p-2 font-bold">
-    <img src={creator.avatar} alt="Profile" class="h-24 w-24 rounded-full" />
+    <img src={creator.avatar} alt="Profile" class="size-24 rounded-full" />
     <div class="w-full px-5">
         <div class="flex items-center">
             <span class="text-7xl">{creator.username}</span>

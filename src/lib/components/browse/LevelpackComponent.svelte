@@ -1,7 +1,5 @@
 <script lang="ts">
     import type { Levelpack } from "$lib/types";
-    import Box from "$lib/assets/box.png";
-
     import { getPlaysShortString } from "$lib/misc";
     import Button from "../Button.svelte";
     import UserComponent from "../UserComponent.svelte";
@@ -27,12 +25,13 @@
             class="w-[350px] rounded-lg bg-zinc-700/20 p-2 text-sm text-neutral-50 shadow-sm outline-4 outline-white/10 backdrop-blur-xl backdrop-saturate-200 transition-all hover:outline-white/40"
         >
             <div class="flex w-full justify-center">
-                <a href="/levelpack/{id}">
-                    <img
+                <a href="/levelpack/{id}" aria-label="View {title}">
+                    <enhanced:img
                         width="128"
                         height="128"
                         class="rounded-xs"
-                        src={Box}
+                        src="$lib/assets/box.png?w=128;256"
+                        sizes="128px"
                         alt="Placeholder Thumbnail"
                     />
                 </a>

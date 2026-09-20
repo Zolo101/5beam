@@ -524,7 +524,7 @@
                 name="unlisted"
                 type="checkbox"
                 bind:checked={unlisted}
-                class="h-6 w-6 rounded border-neutral-600 bg-neutral-800 accent-neutral-500"
+                class="size-6 rounded border-neutral-600 bg-neutral-800 accent-neutral-500"
             /> -->
             <div class="flex justify-end gap-2 *:grow">
                 <Button

@@ -131,13 +131,13 @@
             {/each}
         </div>
     </div>
-    <section class="flex grow flex-col items-start gap-5 rounded-r-xl bg-zinc-900 p-4">
+    <section class="flex grow flex-col items-start gap-5 rounded-r-xl p-4">
         <div class="flex w-full items-center gap-2">
             <input
                 type="text"
                 id="search"
                 name="search"
-                class="min-w-10 grow rounded-lg bg-zinc-950 px-4 py-2 text-2xl text-neutral-100"
+                class="min-w-10 grow rounded-lg bg-zinc-800 px-4 py-2 text-2xl text-neutral-100 outline-3 outline-zinc-600"
                 maxlength="64"
                 placeholder="Search..."
                 bind:value={searchText}

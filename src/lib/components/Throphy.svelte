@@ -20,7 +20,7 @@
 
 <!-- TODO: title prop for name of throphy -->
 {#if image !== null}
-    <img src={image()} alt={badge} class="my-auto h-16 w-16 object-contain" />
+    <img src={image()} alt={badge} class="my-auto size-16 object-contain" />
 {:else}
     <p class="text-4xl text-red-500">no throphy found!</p>
 {/if}
