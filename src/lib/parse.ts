@@ -45,6 +45,7 @@ export const primitives = {
 
     // login/oauth
     redirectURI: z.string().optional(),
+    client: z.enum(["coppersalts", "tylerosc"]).optional(),
 
     // modify/level
     // TODO: Can I give it a default HERE instead of in createLevel & createLevelpack?

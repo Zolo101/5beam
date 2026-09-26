@@ -2,6 +2,7 @@ import { redirect, type RequestHandler } from "@sveltejs/kit";
 import { redirectURL_html5b } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
 import type { DiscordMeta, PocketbaseUser } from "$lib/types";
+import { html5bAuthRedirects } from "$lib/server/html5bAuth";
 
 const schema = createObjectSchema("code");
 export const GET: RequestHandler = async ({ cookies, locals, url }) => {
@@ -18,15 +19,18 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
     };
 
     cookies.delete("discord_code_verifier", { path: "/" });
+    const client = cookies.get("html5b_auth_client");
+    cookies.delete("html5b_auth_client", { path: "/login/callback/html5b" });
 
     // big thanks to advertisers for ruining third party cookies
 
     const fivebeam_auth = encodeURIComponent(JSON.stringify({ record, token }));
+    const returnURL = html5bAuthRedirects[client === "tylerosc" ? "tylerosc" : "coppersalts"];
 
     return new Response("", {
         status: 302,
         headers: {
-            location: `https://coppersalts.github.io/HTML5b/authredirect?5beam_auth=${fivebeam_auth}`
+            location: `${returnURL}?5beam_auth=${fivebeam_auth}`
             // location: `http://127.0.0.1:8080/authredirect.html?5beam_auth=${fivebeam_auth}`
         }
     });

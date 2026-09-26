@@ -7,7 +7,8 @@ import Pocketbase from "pocketbase";
 const protectedDomains = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
-    "https://coppersalts.github.io"
+    "https://coppersalts.github.io",
+    "https://tylerosc.github.io"
 ];
 
 const protectedRoutes = [

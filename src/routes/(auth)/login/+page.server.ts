@@ -1,11 +1,13 @@
+import { dev } from "$app/environment";
 import { redirect, type Actions } from "@sveltejs/kit";
-import { redirectURL } from "$lib/misc";
+import { redirectURL, redirectURL_html5b } from "$lib/misc";
 import { createObjectSchema, parseFromUrlSearchParams } from "$lib/parse";
+import { getHtml5bClient } from "$lib/server/html5bAuth";
 
-const schema = createObjectSchema("redirectURI");
+const schema = createObjectSchema("redirectURI", "client");
 export const actions = {
-    default: async ({ locals, cookies, url }) => {
-        const { redirectURI } = parseFromUrlSearchParams(schema, url);
+    default: async ({ locals, cookies, request, url }) => {
+        const { redirectURI, client } = parseFromUrlSearchParams(schema, url);
 
         const authMethods = await locals.pb.collection("5beam_users").listAuthMethods();
 
@@ -21,6 +23,19 @@ export const actions = {
         const authURL = discordAuth.authURL.replace("identify+email", "identify");
 
         cookies.set("discord_code_verifier", discordAuth.codeVerifier, { path: "/" });
+
+        if (redirectURI === redirectURL_html5b) {
+            cookies.set(
+                "html5b_auth_client",
+                getHtml5bClient(client, request.headers.get("referer")),
+                {
+                    path: "/login/callback/html5b",
+                    httpOnly: true,
+                    sameSite: "lax",
+                    secure: !dev
+                }
+            );
+        }
 
         // Redirect to the Discord OAuth2 URL
         // redirectURI is the user given redirectURL (5beam oauth)
