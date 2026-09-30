@@ -12,24 +12,40 @@
     let {
         text = "(text)",
         bg = "#ffffff",
-        href = "#",
-        onclick = () => {},
+        href,
+        onclick,
         event = "",
         disabled = false,
         newWindow = false
     }: Props = $props();
+
+    const buttonClass =
+        "button inline-flex h-24 w-full items-center justify-center cursor-pointer text-black/75 inset-ring-2 inset-shadow-sm inset-shadow-black/25 inset-ring-white/10 transition-all hover:outline-black/50 hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75";
 </script>
 
-<a {href} {onclick} target={newWindow ? "_blank" : "_self"}>
+{#if href && !disabled}
+    <a
+        {href}
+        {onclick}
+        target={newWindow ? "_blank" : "_self"}
+        rel={newWindow ? "noopener noreferrer" : undefined}
+        class={buttonClass}
+        style="background-color: {bg}"
+    >
+        <!-- Track the label so analytics does not intercept link navigation. -->
+        <span class="flex h-full w-full items-center justify-center" data-umami-event={event}>
+            {text}
+        </span>
+    </a>
+{:else}
     <button
+        type="button"
         {disabled}
+        {onclick}
         data-umami-event={event}
-        class="
-        button h-24 w-full cursor-pointer text-black/75 inset-ring-2 inset-shadow-sm inset-shadow-black/25 inset-ring-white/10 transition-all
-        hover:outline-black/50 hover:brightness-90 disabled:cursor-not-allowed disabled:opacity-75 disabled:brightness-75
-    "
+        class={buttonClass}
         style="background-color: {bg}"
     >
         {text}
     </button>
-</a>
+{/if}
