@@ -1,6 +1,6 @@
 export const html5bAuthRedirects = {
     coppersalts: "https://coppersalts.github.io/HTML5b/authredirect",
-    tylerosc: "https://tylerosc.github.io/HTML5b-Complete/authredirect"
+    tylerosc: "https://tylerosc.github.io/HTML5bComplete/authredirect"
 } as const;
 
 export type Html5bClient = keyof typeof html5bAuthRedirects;
